@@ -1,0 +1,557 @@
+{%- comment -%}
+  sf-pdp-main — DailyDip product page main section.
+  Gallery (left / top) + block-based info column (right / below).
+  Each variant renders as a pack card. Optional variant metafields:
+    custom.badge     → yellow pill above the card (e.g. BEST SELLER)
+    custom.subtitle  → small line under the pack name (e.g. 60 Servings)
+    custom.servings  → integer; enables "₹x / serving" on the card
+  Works without theme JS — adds to cart via the AJAX API and refreshes
+  the theme's offcanvas cart + count badge with section rendering.
+{%- endcomment -%}
+
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+
+{%- if section.settings.load_fonts -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{%- endif -%}
+
+<style>
+  .sf-pdp {
+    --sf-ink: {{ section.settings.c_ink }};
+    --sf-card: {{ section.settings.c_card }};
+    --sf-green: {{ section.settings.c_green }};
+    --sf-green-h: {{ section.settings.c_green | color_lighten: 6 }};
+    --sf-lime: {{ section.settings.c_lime }};
+    --sf-yellow: {{ section.settings.c_yellow }};
+    --sf-red: {{ section.settings.c_red }};
+    --sf-mute: {{ section.settings.c_mute }};
+    --sf-chip: {{ section.settings.c_chip }};
+    {%- unless section.settings.load_fonts %}
+    --sf-font-head: inherit;
+    --sf-font-body: inherit;
+    {%- endunless %}
+  }
+  #shopify-section-{{ section.id }} .sf-pdp-main {
+    background: {{ section.settings.c_bg }};
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+  }
+</style>
+
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'sf-pdp-form-' | append: section.id
+  assign save_tpl = section.settings.save_label | default: 'Save [percent]%'
+
+  case section.settings.img_ratio
+    when 'portrait'
+      assign gal_ratio = '4 / 5'
+    when 'landscape'
+      assign gal_ratio = '4 / 3'
+    else
+      assign gal_ratio = '1'
+  endcase
+-%}
+
+<sf-pdp-main
+  class="sf-pdp sf-pdp-main"
+  data-section="{{ section.id }}"
+  data-url="{{ product.url }}"
+  data-added-label="{{ section.settings.added_label | escape }}"
+  data-cart-action="{{ section.settings.after_add }}"
+>
+  <script type="application/json" data-sf-variants>
+    [
+      {%- for v in product.variants -%}
+        {%- liquid
+          assign v_save = ''
+          if v.compare_at_price > v.price
+            assign pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+            assign v_save = save_tpl | replace: '[percent]', pct
+          endif
+          assign v_inv = 'null'
+          if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+            assign v_inv = v.inventory_quantity
+          endif
+        -%}
+        {
+          "id": {{ v.id }},
+          "title": {{ v.title | json }},
+          "available": {{ v.available | json }},
+          "price": {{ v.price | money_without_trailing_zeros | json }},
+          "compare": {% if v.compare_at_price > v.price %}{{ v.compare_at_price | money_without_trailing_zeros | json }}{% else %}""{% endif %},
+          "save": {{ v_save | json }},
+          "inv": {{ v_inv }},
+          "media": {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  </script>
+
+  <div class="sf-pdp__wrap">
+    <div class="sf-pdp-main__grid">
+
+      {%- comment -%} ---------- Gallery ---------- {%- endcomment -%}
+      <div class="sf-pdp-main__media">
+        <div class="sf-box sf-gal" style="--sf-gal-ratio: {{ gal_ratio }}; --sf-gal-fit: {{ section.settings.img_fit }};">
+          <div class="sf-gal__stage">
+            {%- if section.settings.tag != blank -%}
+              <span class="sf-gal__tag">{{ section.settings.tag }}</span>
+            {%- endif -%}
+            <div class="sf-gal__track" data-sf-track tabindex="0" aria-label="{{ product.title | escape }} images">
+              {%- for media in product.media -%}
+                {%- liquid
+                  assign img = media.preview_image
+                  assign img_loading = 'lazy'
+                  assign img_priority = 'auto'
+                  if forloop.first
+                    assign img_loading = 'eager'
+                    assign img_priority = 'high'
+                  endif
+                -%}
+                <div class="sf-gal__slide" data-media-id="{{ media.id }}" id="sf-slide-{{ section.id }}-{{ forloop.index }}">
+                  {{ img | image_url: width: 1200 | image_tag:
+                      widths: '400, 600, 800, 1000, 1200',
+                      sizes: '(min-width: 990px) 560px, 100vw',
+                      loading: img_loading,
+                      fetchpriority: img_priority,
+                      alt: img.alt | default: product.title
+                  }}
+                </div>
+              {%- else -%}
+                <div class="sf-gal__slide">{{ 'product-1' | placeholder_svg_tag }}</div>
+              {%- endfor -%}
+            </div>
+            {%- if product.media.size > 1 -%}
+              <button type="button" class="sf-gal__arrow sf-gal__arrow--prev" data-sf-prev aria-label="Previous image">&#8249;</button>
+              <button type="button" class="sf-gal__arrow sf-gal__arrow--next" data-sf-next aria-label="Next image">&#8250;</button>
+            {%- endif -%}
+          </div>
+          {%- if product.media.size > 1 -%}
+            <div class="sf-gal__thumbs">
+              {%- for media in product.media -%}
+                <button
+                  type="button"
+                  class="sf-gal__thumb"
+                  data-sf-thumb="{{ forloop.index0 }}"
+                  aria-label="Show image {{ forloop.index }}"
+                  {% if forloop.first %}aria-current="true"{% endif %}
+                >
+                  {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ---------- Info ---------- {%- endcomment -%}
+      <div class="sf-pdp-main__info">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+
+            {%- when '@app' -%}
+              <div {{ block.shopify_attributes }}>{% render block %}</div>
+
+            {%- when 'title' -%}
+              <h1 class="sf-pdp__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+            {%- when 'rating' -%}
+              {%- if product.metafields.reviews.rating.value != blank -%}
+                {%- liquid
+                  assign r = product.metafields.reviews.rating.value.rating | times: 1.0
+                  assign r_count = product.metafields.reviews.rating_count.value | default: 0
+                  assign r_full = r | round
+                -%}
+                <a class="sf-rate" href="#sf-pdp-reviews" {{ block.shopify_attributes }}>
+                  <span class="sf-stars" aria-hidden="true">
+                    {%- for i in (1..5) -%}{% if i <= r_full %}★{% else %}☆{% endif %}{%- endfor -%}
+                  </span>
+                  <span>{{ r | round: 1 }} · {{ r_count }} {{ block.settings.reviews_label }}</span>
+                </a>
+              {%- elsif request.design_mode -%}
+                <p class="sf-rate" {{ block.shopify_attributes }}>Rating shows once the product has reviews (reviews.rating metafield). Or use the reviews app's star block instead.</p>
+              {%- endif -%}
+
+            {%- when 'price' -%}
+              <div class="sf-price" {{ block.shopify_attributes }}>
+                <span class="sf-price__now" data-sf-price>{{ current.price | money_without_trailing_zeros }}</span>
+                <s class="sf-price__mrp" data-sf-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>
+                  {%- if current.compare_at_price > current.price -%}{{ current.compare_at_price | money_without_trailing_zeros }}{%- endif -%}
+                </s>
+                {%- liquid
+                  assign save_now = ''
+                  if current.compare_at_price > current.price
+                    assign pct = current.compare_at_price | minus: current.price | times: 100.0 | divided_by: current.compare_at_price | round
+                    assign save_now = save_tpl | replace: '[percent]', pct
+                  endif
+                -%}
+                <span class="sf-price__save" data-sf-save {% if save_now == blank %}hidden{% endif %}>{{ save_now }}</span>
+                {%- if block.settings.tax_note != blank -%}
+                  <p class="sf-price__tax">{{ block.settings.tax_note }}</p>
+                {%- endif -%}
+              </div>
+
+            {%- when 'stock' -%}
+              {%- liquid
+                assign th = block.settings.threshold
+                assign show_stock = false
+                if current.inventory_management == 'shopify' and current.inventory_policy == 'deny' and current.inventory_quantity > 0 and current.inventory_quantity <= th
+                  assign show_stock = true
+                endif
+                assign bar_w = current.inventory_quantity | times: 100 | divided_by: th
+              -%}
+              <div class="sf-stock" data-sf-stock data-threshold="{{ th }}" data-template="{{ block.settings.text | escape }}" {% unless show_stock %}hidden{% endunless %} {{ block.shopify_attributes }}>
+                <p class="sf-stock__text" data-sf-stock-text>
+                  {{- block.settings.text | replace: '[count]', current.inventory_quantity -}}
+                </p>
+                <div class="sf-stock__bar"><i data-sf-stock-bar style="width: {{ bar_w | at_most: 100 }}%"></i></div>
+              </div>
+
+            {%- when 'chips' -%}
+              {%- assign chip_lines = block.settings.items | newline_to_br | split: '<br />' -%}
+              <div class="sf-chips" {{ block.shopify_attributes }}>
+                {%- for line in chip_lines -%}
+                  {%- assign t = line | strip -%}
+                  {%- if t != blank -%}
+                    <div class="sf-chip"><span class="sf-chip__tick" aria-hidden="true">✓</span>{{ t }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+
+            {%- when 'description' -%}
+              <div class="sf-desc" {{ block.shopify_attributes }}>
+                {%- if block.settings.text != blank -%}
+                  {{ block.settings.text }}
+                {%- else -%}
+                  {{ product.description }}
+                {%- endif -%}
+              </div>
+
+            {%- when 'packs' -%}
+              {%- unless product.has_only_default_variant -%}
+                {%- assign icons = block.settings.icons | split: ',' -%}
+                <div {{ block.shopify_attributes }}>
+                  {%- if block.settings.title != blank -%}
+                    <h2 class="sf-h2" id="sf-packs-title-{{ section.id }}">{{ block.settings.title }}</h2>
+                  {%- endif -%}
+                  <fieldset class="sf-packs" style="--sf-pack-cols: {{ block.settings.columns }};" aria-labelledby="sf-packs-title-{{ section.id }}">
+                    {%- for v in product.variants -%}
+                      <label class="sf-pack">
+                        <input
+                          type="radio"
+                          name="sf-pack-{{ section.id }}"
+                          value="{{ v.id }}"
+                          data-sf-pack
+                          {% if v.id == current.id %}checked{% endif %}
+                          {% unless v.available %}disabled{% endunless %}
+                        >
+                        <span class="sf-pack__card">
+                          {%- if v.metafields.custom.badge != blank -%}
+                            <span class="sf-pack__badge">{{ v.metafields.custom.badge }}</span>
+                          {%- endif -%}
+                          {%- if block.settings.show_images and v.featured_image -%}
+                            {{ v.featured_image | image_url: width: 160 | image_tag: class: 'sf-pack__img', loading: 'lazy', alt: '' }}
+                          {%- else -%}
+                            {%- assign icon = icons[forloop.index0] | strip -%}
+                            {%- if icon != blank -%}<span class="sf-pack__icon" aria-hidden="true">{{ icon }}</span>{%- endif -%}
+                          {%- endif -%}
+                          <span class="sf-pack__name">{{ v.title }}</span>
+                          {%- if v.metafields.custom.subtitle != blank -%}
+                            <span class="sf-pack__sub">{{ v.metafields.custom.subtitle }}</span>
+                          {%- endif -%}
+                          <span class="sf-pack__pr">{{ v.price | money_without_trailing_zeros }}</span>
+                          <span class="sf-pack__mrp">
+                            {%- if v.compare_at_price > v.price -%}{{ block.settings.mrp_label }} {{ v.compare_at_price | money_without_trailing_zeros }}{%- endif -%}
+                          </span>
+                          {%- assign servings = v.metafields.custom.servings.value | plus: 0 -%}
+                          {%- if block.settings.show_per_serving and servings > 0 -%}
+                            <span class="sf-pack__per">{{ v.price | divided_by: servings | money_without_trailing_zeros }} / {{ block.settings.serving_label }}</span>
+                          {%- endif -%}
+                          {%- unless v.available -%}<span class="sf-pack__per">Sold out</span>{%- endunless -%}
+                        </span>
+                      </label>
+                    {%- endfor -%}
+                  </fieldset>
+                </div>
+              {%- endunless -%}
+
+            {%- when 'buy' -%}
+              <div {{ block.shopify_attributes }}>
+                {%- form 'product', product, id: form_id, novalidate: 'novalidate', data-sf-form: '' -%}
+                  <input type="hidden" name="id" value="{{ current.id }}" data-sf-id>
+                  <div class="sf-buy">
+                    {%- if block.settings.show_qty -%}
+                      <div class="sf-qty">
+                        <button type="button" data-sf-qty="-1" aria-label="Decrease quantity">−</button>
+                        <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="Quantity" data-sf-qty-input>
+                        <button type="button" data-sf-qty="1" aria-label="Increase quantity">+</button>
+                      </div>
+                    {%- endif -%}
+                    <button
+                      type="submit"
+                      name="add"
+                      class="sf-btn"
+                      data-sf-atc
+                      data-label="{{ block.settings.atc_label | escape }}"
+                      data-soldout="{{ block.settings.soldout_label | escape }}"
+                      {% unless current.available %}disabled{% endunless %}
+                    >
+                      {%- if current.available -%}{{ block.settings.atc_label }}{%- else -%}{{ block.settings.soldout_label }}{%- endif -%}
+                    </button>
+                  </div>
+                  {%- if block.settings.show_buy_now -%}
+                    <button type="button" class="sf-btn sf-btn--alt" data-sf-buynow {% unless current.available %}disabled{% endunless %}>
+                      {{ block.settings.buy_now_label }}
+                    </button>
+                  {%- endif -%}
+                  <p class="sf-buy__error" data-sf-error role="alert" hidden></p>
+                {%- endform -%}
+              </div>
+
+            {%- when 'ship' -%}
+              {%- if block.settings.text != blank -%}
+                <div class="sf-ship" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+              {%- endif -%}
+
+            {%- when 'trust' -%}
+              {%- assign trust_lines = block.settings.items | newline_to_br | split: '<br />' -%}
+              <div class="sf-trust" {{ block.shopify_attributes }}>
+                {%- for line in trust_lines -%}
+                  {%- assign parts = line | strip | split: '|' -%}
+                  {%- if parts.size > 0 -%}
+                    {%- assign t_icon = parts[0] | strip -%}
+                    {%- assign t_label = parts[1] | strip -%}
+                    {%- if parts.size == 1 -%}{%- assign t_label = t_icon -%}{%- assign t_icon = '' -%}{%- endif -%}
+                    <div>
+                      {%- if t_icon != blank -%}<span class="sf-trust__icon" aria-hidden="true">{{ t_icon }}</span>{%- endif -%}
+                      {{ t_label }}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+
+            {%- when 'tabs' -%}
+              <div class="sf-tabs" data-sf-tabs {{ block.shopify_attributes }}>
+                <div class="sf-tabs__list" role="tablist">
+                  {%- assign first_tab = true -%}
+                  {%- for i in (1..3) -%}
+                    {%- assign t_key = 'tab' | append: i | append: '_title' -%}
+                    {%- assign c_key = 'tab' | append: i | append: '_content' -%}
+                    {%- if block.settings[t_key] != blank and block.settings[c_key] != blank -%}
+                      <button
+                        type="button"
+                        class="sf-tab"
+                        role="tab"
+                        id="sf-tab-{{ block.id }}-{{ i }}"
+                        aria-controls="sf-panel-{{ block.id }}-{{ i }}"
+                        aria-selected="{{ first_tab }}"
+                        {% unless first_tab %}tabindex="-1"{% endunless %}
+                      >{{ block.settings[t_key] }}</button>
+                      {%- assign first_tab = false -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                {%- assign first_tab = true -%}
+                {%- for i in (1..3) -%}
+                  {%- assign t_key = 'tab' | append: i | append: '_title' -%}
+                  {%- assign c_key = 'tab' | append: i | append: '_content' -%}
+                  {%- if block.settings[t_key] != blank and block.settings[c_key] != blank -%}
+                    <div
+                      class="sf-box sf-tabs__panel"
+                      role="tabpanel"
+                      id="sf-panel-{{ block.id }}-{{ i }}"
+                      aria-labelledby="sf-tab-{{ block.id }}-{{ i }}"
+                      {% unless first_tab %}hidden{% endunless %}
+                    >{{ block.settings[c_key] }}</div>
+                    {%- assign first_tab = false -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+
+            {%- when 'text' -%}
+              <div class="sf-desc" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.sticky != 'off' -%}
+    <div class="sf-sticky {% if section.settings.sticky == 'mobile' %}sf-sticky--mobile-only{% endif %}" data-sf-sticky aria-hidden="true">
+      <div class="sf-sticky__info">
+        <div class="sf-sticky__name">{{ product.title }}</div>
+        <div class="sf-sticky__price"><span data-sf-sticky-variant>{% unless product.has_only_default_variant %}{{ current.title }} · {% endunless %}</span><span data-sf-price>{{ current.price | money_without_trailing_zeros }}</span></div>
+      </div>
+      <button type="button" class="sf-btn" data-sf-sticky-btn tabindex="-1" {% unless current.available %}disabled{% endunless %}>
+        {{ section.settings.sticky_label }}
+      </button>
+    </div>
+  {%- endif -%}
+</sf-pdp-main>
+
+{% schema %}
+{
+  "name": "SF · Product main",
+  "tag": "section",
+  "class": "sf-pdp-main-section",
+  "settings": [
+    { "type": "header", "content": "Gallery" },
+    { "type": "text", "id": "tag", "label": "Image tag", "default": "NEW", "info": "Leave empty to hide." },
+    {
+      "type": "select", "id": "img_ratio", "label": "Image ratio", "default": "square",
+      "options": [
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (4:3)" }
+      ]
+    },
+    {
+      "type": "select", "id": "img_fit", "label": "Image fit", "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Fill (crop)" },
+        { "value": "contain", "label": "Fit (no crop)" }
+      ]
+    },
+    { "type": "header", "content": "Cart" },
+    {
+      "type": "select", "id": "after_add", "label": "After add to cart", "default": "drawer",
+      "options": [
+        { "value": "drawer", "label": "Open cart drawer" },
+        { "value": "cart", "label": "Go to cart page" },
+        { "value": "none", "label": "Stay on page" }
+      ]
+    },
+    { "type": "text", "id": "added_label", "label": "Added confirmation text", "default": "ADDED ✓" },
+    {
+      "type": "select", "id": "sticky", "label": "Sticky add to cart bar", "default": "mobile",
+      "options": [
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "all", "label": "All devices" },
+        { "value": "off", "label": "Off" }
+      ]
+    },
+    { "type": "text", "id": "sticky_label", "label": "Sticky bar button", "default": "Add to cart" },
+    { "type": "text", "id": "save_label", "label": "Savings text", "default": "Save [percent]%", "info": "[percent] is replaced with the discount." },
+    { "type": "header", "content": "Colours" },
+    { "type": "paragraph", "content": "Shared by every SF product section on the page." },
+    { "type": "color", "id": "c_bg", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "c_ink", "label": "Ink (text, borders, shadows)", "default": "#1c1c1c" },
+    { "type": "color", "id": "c_card", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "c_green", "label": "Primary (price, buttons)", "default": "#1f7a35" },
+    { "type": "color", "id": "c_lime", "label": "Selected pack / accent", "default": "#c8f169" },
+    { "type": "color", "id": "c_yellow", "label": "Badges / active tab", "default": "#ffd23f" },
+    { "type": "color", "id": "c_red", "label": "MRP / stock / shipping strip", "default": "#ff5a4d" },
+    { "type": "color", "id": "c_chip", "label": "Benefit chip background", "default": "#e9f7d0" },
+    { "type": "color", "id": "c_mute", "label": "Muted text", "default": "#6b6557" },
+    { "type": "header", "content": "Typography" },
+    { "type": "checkbox", "id": "load_fonts", "label": "Use Fredoka + Poppins", "default": true, "info": "Off = inherit the theme fonts." },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "title", "name": "Title", "limit": 1, "settings": [] },
+    {
+      "type": "rating", "name": "Rating (reviews metafield)", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "reviews_label", "label": "Label", "default": "reviews" },
+        { "type": "paragraph", "content": "Reads the standard reviews.rating / reviews.rating_count metafields. If your reviews app doesn't fill them, remove this block and add the app's star rating block instead." }
+      ]
+    },
+    {
+      "type": "price", "name": "Price", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "tax_note", "label": "Note under price", "default": "Inclusive of all taxes" }
+      ]
+    },
+    {
+      "type": "stock", "name": "Low stock bar", "limit": 1,
+      "settings": [
+        { "type": "range", "id": "threshold", "label": "Show when stock is at or below", "min": 1, "max": 50, "step": 1, "default": 20 },
+        { "type": "text", "id": "text", "label": "Text", "default": "Only <b>[count] items</b> are in stock!", "info": "[count] is replaced with the stock. Needs Shopify inventory tracking." }
+      ]
+    },
+    {
+      "type": "chips", "name": "Benefit chips",
+      "settings": [
+        { "type": "textarea", "id": "items", "label": "Chips (one per line)", "default": "Supports Healthy Digestion\nZero Caffeine\nNo Added Sugar\nPlastic-Free Teabags" }
+      ]
+    },
+    {
+      "type": "description", "name": "Description",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "info": "Leave empty to use the product description. Connect a metafield for per-product text." }
+      ]
+    },
+    {
+      "type": "packs", "name": "Pack selector", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Choose your pack" },
+        { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 4, "step": 1, "default": 3 },
+        { "type": "checkbox", "id": "show_images", "label": "Use variant images", "default": false, "info": "Off = emoji icons below." },
+        { "type": "text", "id": "icons", "label": "Emoji icons (comma separated, in variant order)", "default": "📦,🎁,🍃" },
+        { "type": "text", "id": "mrp_label", "label": "MRP label", "default": "MRP" },
+        { "type": "checkbox", "id": "show_per_serving", "label": "Show price per serving", "default": true, "info": "Needs a custom.servings number metafield on each variant." },
+        { "type": "text", "id": "serving_label", "label": "Serving label", "default": "serving" },
+        { "type": "paragraph", "content": "Badge and subtitle come from variant metafields custom.badge and custom.subtitle." }
+      ]
+    },
+    {
+      "type": "buy", "name": "Quantity + buttons", "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_qty", "label": "Show quantity", "default": true },
+        { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
+        { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
+        { "type": "checkbox", "id": "show_buy_now", "label": "Show buy it now", "default": false },
+        { "type": "text", "id": "buy_now_label", "label": "Buy it now text", "default": "Buy it now" }
+      ]
+    },
+    {
+      "type": "ship", "name": "Shipping strip",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "🚚 Free shipping + 3% prepaid bonus" }
+      ]
+    },
+    {
+      "type": "trust", "name": "Trust icons",
+      "settings": [
+        { "type": "textarea", "id": "items", "label": "Items (icon | label, one per line)", "default": "🍃 | Tastes Fresh & Light\n☕ | Zero Caffeine\n🫖 | Plastic Free Teabags\n🚫 | No Added Sugar" }
+      ]
+    },
+    {
+      "type": "tabs", "name": "Tabs",
+      "settings": [
+        { "type": "text", "id": "tab1_title", "label": "Tab 1 title", "default": "Nutritional info" },
+        { "type": "richtext", "id": "tab1_content", "label": "Tab 1 content", "default": "<ul><li>Zero caffeine</li><li>No added sugar</li><li>Per-serving values: add from lab report</li></ul>" },
+        { "type": "text", "id": "tab2_title", "label": "Tab 2 title", "default": "Ingredients" },
+        { "type": "richtext", "id": "tab2_content", "label": "Tab 2 content", "default": "<ul><li>Blue Pea Flower</li><li>Ginger</li><li>Cinnamon</li><li>Fennel</li><li>Dandelion Root</li></ul>" },
+        { "type": "text", "id": "tab3_title", "label": "Tab 3 title" },
+        { "type": "richtext", "id": "tab3_content", "label": "Tab 3 content" }
+      ]
+    },
+    {
+      "type": "text", "name": "Text",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add any extra text here.</p>" }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] },
+  "presets": [
+    {
+      "name": "SF · Product main",
+      "blocks": [
+        { "type": "title" }, { "type": "rating" }, { "type": "price" }, { "type": "stock" },
+        { "type": "chips" }, { "type": "description" }, { "type": "packs" }, { "type": "buy" },
+        { "type": "ship" }, { "type": "trust" }, { "type": "tabs" }
+      ]
+    }
+  ]
+}
+{% endschema %}

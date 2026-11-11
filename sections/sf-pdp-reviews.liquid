@@ -1,0 +1,55 @@
+{%- comment -%}
+  Wrapper for the reviews app (AG Product Reviews) so it sits in the
+  SF design with a heading and optional topic tags. Add the app's
+  "Reviews" block inside this section from the theme editor.
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} .sf-pdp-reviews {
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+  }
+</style>
+
+<div class="sf-pdp sf-pdp-reviews" id="sf-pdp-reviews">
+  <div class="sf-pdp__wrap sf-pdp__wrap--narrow">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="sf-h2">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- assign tags = section.settings.tags | split: ',' -%}
+    {%- if section.settings.tags != blank -%}
+      <div class="sf-reviews__tags">
+        {%- for t in tags -%}
+          {%- assign tt = t | strip -%}
+          {%- if tt != blank -%}<span>{{ tt }}</span>{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      <div {{ block.shopify_attributes }}>{% render block %}</div>
+    {%- else -%}
+      {%- if request.design_mode -%}
+        <p class="sf-desc">Add your reviews app block here: <b>Add block → Apps</b>.</p>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SF · Reviews",
+  "tag": "section",
+  "class": "sf-pdp-reviews-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What our customers say" },
+    { "type": "text", "id": "tags", "label": "Topic tags (comma separated)", "default": "gut-friendly, digestion, taste, herbal-infusion, packaging" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "SF · Reviews" }]
+}
+{% endschema %}

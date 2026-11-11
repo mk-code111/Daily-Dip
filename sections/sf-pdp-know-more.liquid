@@ -1,0 +1,61 @@
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} .sf-pdp-know-more {
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+  }
+</style>
+
+<div class="sf-pdp sf-pdp-know-more">
+  <div class="sf-pdp__wrap sf-pdp__wrap--narrow">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="sf-h2">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="sf-box sf-acc">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.title != blank and block.settings.content != blank -%}
+            <details {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.title }}</summary>
+              <div class="sf-acc__body">{{ block.settings.content }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SF · Know more",
+  "tag": "section",
+  "class": "sf-pdp-know-more-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Know more" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Directions" },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>", "info": "Connect a product metafield for per-product text." },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Know more",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Ingredients & Allergies" } },
+        { "type": "item", "settings": { "title": "Directions" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,63 @@
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} .sf-pdp-banner {
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+  }
+</style>
+
+<div class="sf-pdp sf-pdp-banner">
+  <div class="sf-pdp__wrap {% if section.settings.narrow %}sf-pdp__wrap--narrow{% endif %}">
+    <div
+      class="sf-banner"
+      style="--sf-banner-h: {{ section.settings.height }}px; --sf-banner-a: {{ section.settings.c_a }}; --sf-banner-b: {{ section.settings.c_b }}; --sf-banner-text: {{ section.settings.c_text }};"
+    >
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1600 | image_tag:
+            class: 'sf-banner__img',
+            widths: '600, 900, 1200, 1600',
+            sizes: '(min-width: 1200px) 1170px, 100vw',
+            loading: 'lazy',
+            alt: section.settings.image.alt | default: ''
+        }}
+        <span class="sf-banner__overlay" style="opacity: {{ section.settings.overlay | divided_by: 100.0 }}"></span>
+      {%- endif -%}
+      <div class="sf-banner__content">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="sf-banner__heading">{{ section.settings.heading | newline_to_br }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <span class="sf-banner__sub">{{ section.settings.subheading }}</span>
+        {%- endif -%}
+        {%- if section.settings.btn_label != blank and section.settings.btn_link != blank -%}
+          <a class="sf-btn sf-btn--alt" href="{{ section.settings.btn_link }}" style="width:auto; display:inline-flex; padding: 10px 22px; font-size: 16px;">{{ section.settings.btn_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SF · Banner",
+  "tag": "section",
+  "class": "sf-pdp-banner-section",
+  "settings": [
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Gut care?\nLet's dip." },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Tear · Dip · Sip" },
+    { "type": "text", "id": "btn_label", "label": "Button label" },
+    { "type": "url", "id": "btn_link", "label": "Button link" },
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Optional — replaces the gradient." },
+    { "type": "range", "id": "overlay", "label": "Image overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 25 },
+    { "type": "range", "id": "height", "label": "Minimum height", "min": 160, "max": 600, "step": 20, "unit": "px", "default": 260 },
+    { "type": "checkbox", "id": "narrow", "label": "Narrow width", "default": false },
+    { "type": "color", "id": "c_a", "label": "Gradient start", "default": "#7ed957" },
+    { "type": "color", "id": "c_b", "label": "Gradient end", "default": "#1f7a35" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#ffffff" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 8 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 8 }
+  ],
+  "presets": [{ "name": "SF · Banner" }]
+}
+{% endschema %}
