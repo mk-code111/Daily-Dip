@@ -1,0 +1,48 @@
+{% liquid 
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign pt = block.settings.pt | prepend: 'pt-'
+  assign pb = block.settings.pb | prepend: 'pb-'
+
+  if current_variant.available == false
+    assign text = 'product.stock_indicator.no_stock' | t
+    assign bg_color = ''
+    assign percentage = 0
+  elsif current_variant.inventory_management == nil or current_variant.inventory_policy == 'continue'
+    assign text = 'product.stock_indicator.untracked_stock' | t
+    assign bg_color = block.settings.has_stock_bg_color
+    assign percentage = 75
+  elsif current_variant.inventory_quantity <= block.settings.low_stock_threshold
+    assign text = 'product.stock_indicator.low_stock_html' | t: count: current_variant.inventory_quantity
+    assign bg_color = block.settings.low_stock_bg_color
+    assign percentage = 5
+  else
+    assign text = 'product.stock_indicator.normal_stock_html' | t: count: current_variant.inventory_quantity
+    assign bg_color = block.settings.has_stock_bg_color
+    assign percentage = 75
+  endif
+%}
+
+<product-stock-indicator 
+  id="product-block-stock-indicator-{{ block.id }}"
+  class="product-block-stock-indicator d-block {{ pt }} {{ pb }}" 
+  data-product-url="{{ product.url }}"
+  {{ block.shopify_attributes }}>
+  <div class="product-block-stock-indicator-inner transition-all">
+    <div class="descriptin rte small mb-2">
+      <p>
+        {{ text }}
+      </p>
+    </div>
+    <div 
+      class="progress" 
+      style="height: {{ block.settings.progress_height | append: 'px' }}" 
+      aria-hidden="true">
+      <div 
+        class="progress-bar progress-bar progress-bar-animated progress-bar-striped {{ bg_color }}" 
+        data-width="{{ percentage }}%"
+        style="width: 0%;">
+      </div>
+    </div>
+  </div>
+</product-stock-indicator>

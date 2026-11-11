@@ -1,0 +1,576 @@
+{% comment %}
+  Premium Product Card
+  - Custom product benefits using:
+    custom.benefit_1_icon
+    custom.benefit_1_text
+    custom.benefit_2_icon
+    custom.benefit_2_text
+    custom.benefit_3_icon
+    custom.benefit_3_text
+
+  Usage:
+  {% render 'product-card', product: product %}
+{% endcomment %}
+
+<product-card class="product-card premium-product-card {{ settings.product_card_text_align }}">
+
+  <a
+    href="{{ product.url | within: collection }}"
+    class="product-card-link premium-product-card-link"
+  >
+
+    <!-- PRODUCT IMAGE -->
+    <div class="premium-product-image-wrap">
+      {% render 'product-card-image', product: product %}
+    </div>
+
+
+    <!-- BENEFITS / FEATURES -->
+    {% if product.metafields.custom.benefit_1_text != blank
+      or product.metafields.custom.benefit_2_text != blank
+      or product.metafields.custom.benefit_3_text != blank
+    %}
+
+      <div class="premium-product-benefits">
+
+        <!-- BENEFIT 1 -->
+        {% if product.metafields.custom.benefit_1_text != blank %}
+          <div class="premium-product-benefit">
+
+            {% if product.metafields.custom.benefit_1_icon != blank %}
+              <div class="premium-benefit-icon-wrap">
+                <img
+                  src="{{ product.metafields.custom.benefit_1_icon | image_url: width: 50 }}"
+                  alt=""
+                  class="premium-benefit-icon"
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+
+            <span class="premium-benefit-text">
+              {{ product.metafields.custom.benefit_1_text }}
+            </span>
+
+          </div>
+        {% endif %}
+
+
+        <!-- BENEFIT 2 -->
+        {% if product.metafields.custom.benefit_2_text != blank %}
+          <div class="premium-product-benefit">
+
+            {% if product.metafields.custom.benefit_2_icon != blank %}
+              <div class="premium-benefit-icon-wrap">
+                <img
+                  src="{{ product.metafields.custom.benefit_2_icon | image_url: width: 50 }}"
+                  alt=""
+                  class="premium-benefit-icon"
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+
+            <span class="premium-benefit-text">
+              {{ product.metafields.custom.benefit_2_text }}
+            </span>
+
+          </div>
+        {% endif %}
+
+
+        <!-- BENEFIT 3 -->
+        {% if product.metafields.custom.benefit_3_text != blank %}
+          <div class="premium-product-benefit">
+
+            {% if product.metafields.custom.benefit_3_icon != blank %}
+              <div class="premium-benefit-icon-wrap">
+                <img
+                  src="{{ product.metafields.custom.benefit_3_icon | image_url: width: 50 }}"
+                  alt=""
+                  class="premium-benefit-icon"
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+
+            <span class="premium-benefit-text">
+              {{ product.metafields.custom.benefit_3_text }}
+            </span>
+
+          </div>
+        {% endif %}
+
+      </div>
+
+    {% endif %}
+
+
+    <!-- PRODUCT TITLE -->
+    <h3 class="product-card-title product-title {{ settings.product_card_title_font_size }} premium-product-title">
+      {{ product.title | default: 'Product title' }}
+    </h3>
+
+
+    <!-- RATING -->
+    {% render 'product-rating-badge', product: product %}
+
+
+    <!-- PRICE -->
+    <div class="premium-product-price">
+      {% render 'product-card-price', product: product %}
+    </div>
+
+  </a>
+
+
+  <!-- SWATCHES / VARIANTS -->
+  {% render 'product-card-swatches', product: product %}
+
+
+  <!-- ADD TO CART -->
+  {% if settings.product_card_show_atc_form %}
+    <div class="premium-product-atc">
+      {% render 'product-card-form', product: product %}
+    </div>
+  {% endif %}
+
+</product-card>
+
+
+<style>
+
+  /* =========================================================
+     PREMIUM PRODUCT CARD
+     ========================================================= */
+
+  .premium-product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #f8f7f1;
+    border-radius: 14px;
+    overflow: visible;
+    box-shadow:
+      0 8px 25px rgba(19, 54, 38, 0.08),
+      0 2px 8px rgba(19, 54, 38, 0.05);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+
+  .premium-product-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 35px rgba(19, 54, 38, 0.13),
+      0 4px 12px rgba(19, 54, 38, 0.07);
+  }
+
+
+  /* =========================================================
+     PRODUCT LINK
+     ========================================================= */
+
+  .premium-product-card-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+
+  /* =========================================================
+     PRODUCT IMAGE
+     ========================================================= */
+
+  .premium-product-image-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 14px 14px 0 0;
+    overflow: hidden;
+  }
+
+
+  /* =========================================================
+     BENEFITS PANEL
+     ========================================================= */
+
+  .premium-product-benefits {
+  position: relative;
+  z-index: 5;
+
+  display: flex;
+  align-items: stretch;
+
+  width: calc(100% - 16px);
+
+  margin: -52px 8px 0;
+
+  min-height: 58px;
+
+  border-radius: 11px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      120deg,
+      #0b442d 0%,
+      #105437 48%,
+      #41622f 78%,
+      #75672f 100%
+    );
+
+  border: 1px solid rgba(224, 210, 154, 0.55);
+
+  box-shadow:
+    0 7px 16px rgba(7, 48, 29, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  box-sizing: border-box;
+}
+
+
+  /* =========================================================
+     INDIVIDUAL BENEFIT
+     ========================================================= */
+
+  .premium-product-benefit {
+  position: relative;
+
+  flex: 1 1 0;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 7px 6px;
+
+  color: #f5efd8;
+
+  text-align: left;
+
+  box-sizing: border-box;
+}
+
+
+  /* VERTICAL DIVIDER */
+
+  .premium-product-benefit + .premium-product-benefit::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+
+  width: 1px;
+
+  background: rgba(225, 211, 160, 0.28);
+}
+
+
+  /* =========================================================
+     BENEFIT ICON
+     ========================================================= */
+
+  .premium-benefit-icon-wrap {
+  width: 21px;
+  height: 21px;
+
+  flex: 0 0 21px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+  .premium-benefit-icon {
+  display: block;
+
+  width: 18px;
+  height: 18px;
+
+  max-width: 18px;
+  max-height: 18px;
+
+  object-fit: contain;
+
+  filter:
+    brightness(0)
+    saturate(100%)
+    invert(88%)
+    sepia(20%)
+    saturate(500%)
+    hue-rotate(5deg)
+    brightness(105%)
+    contrast(90%);
+}
+
+
+  /* =========================================================
+     BENEFIT TEXT
+     ========================================================= */
+
+  .premium-benefit-text {
+
+    display: block;
+
+    max-width: 85px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.25;
+
+    letter-spacing: 0.01em;
+
+    color: #f7f3dd;
+  }
+
+
+  /* =========================================================
+     PRODUCT TITLE
+     ========================================================= */
+
+  .premium-product-title {
+  margin-top: 11px !important;
+  margin-bottom: 4px !important;
+
+  padding: 0 12px;
+
+  color: #0b3c2c;
+
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  text-align: left;
+}
+
+
+  /* =========================================================
+     PRICE
+     ========================================================= */
+
+  .premium-product-price {
+
+    padding: 0 14px;
+
+    text-align: left;
+  }
+
+
+  /* =========================================================
+     ADD TO CART AREA
+     ========================================================= */
+
+  .premium-product-atc {
+
+    padding: 9px 12px 12px;
+  }
+
+
+  /* =========================================================
+     ADD TO CART BUTTON
+     ========================================================= */
+
+  .premium-product-atc button,
+.premium-product-atc .button {
+  width: 100%;
+
+  min-height: 40px;
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #064b32,
+      #075f3c
+    ) !important;
+
+  border: 1px solid #06452f !important;
+
+  color: #ffffff !important;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.01em;
+
+  box-shadow:
+    0 4px 10px rgba(3, 67, 42, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+  .premium-product-atc button:hover,
+  .premium-product-atc .button:hover {
+
+    background:
+      linear-gradient(
+        135deg,
+        #075f3c,
+        #087148
+      ) !important;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 7px 16px rgba(3, 67, 42, 0.25);
+  }
+
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+
+  @media (max-width: 575px) {
+
+    .premium-product-card {
+      border-radius: 12px;
+    }
+
+
+    .premium-product-benefits {
+
+      width: calc(100% - 10px);
+
+      margin-left: 5px;
+      margin-right: 5px;
+
+      margin-top: -62px;
+
+      min-height: 62px;
+
+      border-radius: 11px 11px 9px 9px;
+    }
+
+
+    .premium-product-benefit {
+
+      gap: 4px;
+
+      padding: 7px 4px;
+    }
+
+
+    .premium-benefit-icon-wrap {
+
+      width: 19px;
+      height: 19px;
+
+      flex-basis: 19px;
+    }
+
+
+    .premium-benefit-icon {
+
+      width: 17px;
+      height: 17px;
+    }
+
+
+    .premium-benefit-text {
+
+      max-width: 68px;
+
+      font-size: 9px;
+
+      line-height: 1.2;
+    }
+
+
+    .premium-product-title {
+
+      margin-top: 11px !important;
+
+      padding-left: 10px;
+      padding-right: 10px;
+
+      font-size: 15px !important;
+    }
+
+
+    .premium-product-price {
+
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+
+    .premium-product-atc {
+
+      padding:
+        8px
+        10px
+        10px;
+    }
+
+
+    .premium-product-atc button,
+    .premium-product-atc .button {
+
+      min-height: 38px;
+
+      font-size: 12px;
+    }
+  }
+
+
+  /* =========================================================
+     TABLET
+     ========================================================= */
+
+  @media (min-width: 576px) and (max-width: 991px) {
+
+    .premium-product-benefits {
+
+      margin-top: -68px;
+
+      min-height: 68px;
+    }
+
+
+    .premium-product-benefit {
+
+      gap: 5px;
+
+      padding: 8px 5px;
+    }
+
+
+    .premium-benefit-icon {
+
+      width: 19px;
+      height: 19px;
+    }
+
+
+    .premium-benefit-text {
+
+      font-size: 10px;
+    }
+  }
+
+</style>

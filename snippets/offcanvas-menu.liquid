@@ -1,0 +1,147 @@
+<div 
+  id="offcanvas-menu" 
+  class="offcanvas offcanvas-bottom" 
+  tabindex="-1" 
+  data-bs-backdrop="false"
+  aria-label="{{ 'general.accessibility.menu' | t }}">
+  <div class="offcanvas-body {{ section.settings.text_color }}">
+
+    {% unless block.settings.collections_menu == nil %}
+      <ul class="nav collections-nav mb-3">
+        {% for link in linklists[block.settings.collections_menu].links %}
+          {% liquid 
+            if link.type == 'collection_link'
+              assign img = link.object.image
+            elsif link.type == 'product_link'
+              assign img = link.object.featured_image
+            endif
+            assign title = link.title | split: '|' | first
+            assign subtitle = nil
+            if link.title contains '|' 
+              assign subtitle = link.title | split: '|' | last
+            endif
+          %}
+          <li class="nav-item">
+            <a 
+              class="nav-link {% if link.active %}active{% endif %}" 
+              href="{{ link.url }}"
+              aria-current="{% if link.active %}page{% endif %}">
+              <div class="img-thumbnail">
+                {% render 'image-url' img: img, ratio: block.settings.collections_menu_img_ratio %}
+                <span class="img-thumbnail-title">
+                  {{ title }}
+                  {% if subtitle %}
+                    <small class="dropdown-item-subtitle">
+                      {{ subtitle }}
+                    </small>
+                  {% endif %}
+                </span>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endunless %}
+
+    {% unless block.settings.main_menu == nil %}
+      <ul class="nav accordion-nav mb-9">
+        {% for link in linklists[block.settings.main_menu].links %}
+          {% if link.links == blank %}
+            <li class="nav-item">
+              <a 
+                class="nav-link {% if link.active %}active{% endif %}" 
+                href="{{ link.url }}" 
+                aria-current="{% if link.active %}page{% endif %}">
+                {{ link.title }}
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item collapse-wrapper">
+              <a 
+                class="nav-link {% if link.child_active %}active{% endif %}" 
+                href="#offcanvas-menu-collapse-{{ forloop.index }}" 
+                aria-controls="offcanvas-menu-collapse-{{ forloop.index }}"
+                aria-expanded="{% if link.child_active %}true{% else %}false{% endif %}" 
+                data-bs-toggle="collapse"
+                role="button">
+                {{ link.title }}
+                {% render 'svg-icons', icon: 'chevron-down', size: 20 %}
+              </a>
+              <div 
+                id="offcanvas-menu-collapse-{{ forloop.index }}" 
+                class="collapse {% if link.child_active %}show{% endif %}">
+                <ul class="nav flex-column">
+                  {% for child_link in link.links %}
+                    {% render 'navbar-dropdown-item', link: child_link %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endunless %}
+
+    {% if block.settings.social_icons %}
+      <div class="social-icons-wrapper text-center mb-5">
+        {% render 'social-icons', show_title: false %}
+      </div>
+    {% endif %}
+
+    {% unless block.settings.secondary_menu == nil %}
+      <ul class="nav nav-secondary justify-content-center mb-4">
+        {% for link in linklists[block.settings.secondary_menu].links %}
+          <li class="nav-item">
+            <a 
+              class="nav-link py-2 px-4 {% if link.active %}active{% endif %}" 
+              href="{{ link.url }}" 
+              aria-current="{% if link.active %}page{% endif %}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endunless %}
+
+    <ul class="nav justify-content-center mb-4">
+      {% if shop.customer_accounts_enabled %}
+        <li class="nav-item">
+          <a 
+            class="nav-link nav-link-icon{% if template.name == 'login' or template.name == 'account' %}active{% endif %}" 
+            aria-current="{% if template.name == 'login' or template.name == 'account' %}page{% endif %}" 
+            href="{{ routes.account_url }}"
+            aria-label="{{ 'general.accessibility.account' | t }}">
+            {% render 'svg-icons', icon: 'account', stroke_width: 2 %}
+          </a>
+        </li>
+      {% endif %}
+      {% if settings.recently_viewed %}
+        <li class="nav-item">
+          <a
+            class="nav-link nav-link-icon" 
+            href="#offcanvas-recently-viewed" 
+            data-bs-toggle="offcanvas"
+            aria-controls="offcanvas-recently-viewed" 
+            aria-label="{{ 'general.accessibility.recently_viewed' | t }}"
+            role="button">
+            {% render 'svg-icons', icon: 'recently-viewed', stroke_width: 2 %}
+          </a>
+        </li>
+      {% endif %}
+      {% if localization.available_countries.size > 1 %}
+        <li class="nav-item">
+          <a
+            class="nav-link nav-link-icon"
+            href="#modal-localization"
+            data-bs-toggle="modal"
+            aria-controls="modal-localization" 
+            aria-label="{{ 'general.accessibility.localization' | t }} {{ localization.country.name }}"
+            role="button">
+            {{ localization.country | image_url: width: 20, height: 20 | image_tag }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    
+  </div>
+</div>

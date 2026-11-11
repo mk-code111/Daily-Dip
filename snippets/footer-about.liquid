@@ -1,0 +1,149 @@
+<div 
+  id="footer-about-{{ suffix }}" 
+  class=" 
+    footer-about p-6 p-desktop-7
+    {{ block.settings.text_align_mobile }} 
+    {{ block.settings.text_align_desktop }}
+  "
+  style=" 
+    --bs-bg-opacity: {{ block.settings.bg_opacity | append: '%' }};
+    --bs-border-width: {{ block.settings.border_width | append: 'px' }};
+    --bs-border-opacity: {{ block.settings.border_opacity | append: '%' }};
+  ">
+  {% if block.settings.logo != nil %}
+    {% assign logo_height_x2 = block.settings.logo_height | times: 2 %}
+    <img
+      class="img-fluid mb-5"
+      src="{{ block.settings.logo | image_url: height: logo_height_x2 }}" 
+      alt="{{ shop.name }}"
+      width="{{ block.settings.logo_height | times: block.settings.logo.aspect_ratio | round }}" 
+      height="{{ block.settings.logo_height }}"
+      loading="lazy">
+  {% endif %}
+  {% unless block.settings.title == blank %}
+    <h3 class="title mb-4 {{ block.settings.title_font_size }}">
+      <span>
+        {{ block.settings.title }}
+      </span>
+    </h3>
+  {% endunless %}
+  {% unless block.settings.description == blank %}
+    <div class="description rte mb-7 {{ block.settings.description_font_size }}">
+      {{ block.settings.description }}
+    </div>
+  {% endunless %}
+  {% if block.settings.show_social_icons %}
+    <div class="social-icons-wrapper mt-n4 mb-7">
+      {% render 'social-icons', icon_size: block.settings.social_icons_size, show_title: false %}
+    </div>
+  {% endif %}
+  {% unless block.settings.collapse_1_title == blank %}
+    <div id="footer-about-collapses-{{ suffix }}" class="mb-7">
+      {% unless block.settings.collapse_1_title == blank %}
+        <div class="collapse-wrapper">
+          <button
+            id="footer-about-collapse-btn-1-{{ suffix }}" 
+            class="heading" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#footer-about-collapse-1-{{ suffix }}" 
+            aria-expanded="false" 
+            aria-controls="footer-about-collapse-1-{{ suffix }}">
+            <div class="d-flex align-items-center">
+              {% unless block.settings.collapse_1_icon == blank %}
+                <div class="svg-wrapper d-flex me-5 ms-1" aria-hidden="true">
+                  {% render 'svg-icons', icon: block.settings.collapse_1_icon, size: 18, stroke_width: 1.5 %}
+                </div>
+              {% endunless %}
+              {{ block.settings.collapse_1_title }}
+            </div>
+            {% render 'svg-icons', icon: 'chevron-down', size: 18, stroke_width: 1.5 %}
+          </button>
+          <div id="footer-about-collapse-1-{{ suffix }}" class="collapse">
+            <div class="collapse-inner">
+              <div class="description rte mb-0">
+                {{  block.settings.collapse_1_description }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endunless %}
+      {% unless block.settings.collapse_2_title == blank %}
+        <div class="collapse-wrapper">
+          <button
+            id="footer-about-collapse-btn-2-{{ suffix }}" 
+            class="heading" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#footer-about-collapse-2-{{ suffix }}" 
+            aria-expanded="false" 
+            aria-controls="footer-about-collapse-2-{{ suffix }}">
+            <div class="d-flex align-items-center">
+              {% unless block.settings.collapse_1_icon == blank %}
+                <div class="svg-wrapper d-flex me-5 ms-1" aria-hidden="true">
+                  {% render 'svg-icons', icon: block.settings.collapse_2_icon, size: 18, stroke_width: 1.5 %}
+                </div>
+              {% endunless %}
+              {{ block.settings.collapse_2_title }}
+            </div>
+            {% render 'svg-icons', icon: 'chevron-down', size: 18, stroke_width: 1.5 %}
+          </button>
+          <div id="footer-about-collapse-2-{{ suffix }}" class="collapse">
+            <div class="collapse-inner">
+              <div class="description rte mb-0">
+                {{ block.settings.collapse_2_description }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endunless %}
+      {% unless block.settings.collapse_3_title == blank %}
+        <div class="collapse-wrapper">
+          <button
+            id="footer-about-collapse-btn-3-{{ suffix }}" 
+            class="heading" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#footer-about-collapse-3-{{ suffix }}" 
+            aria-expanded="false" 
+            aria-controls="footer-about-collapse-3-{{ suffix }}">
+            <div class="d-flex align-items-center">
+              {% unless block.settings.collapse_3_icon == blank %}
+                <div class="svg-wrapper d-flex me-5 ms-1" aria-hidden="true">
+                  {% render 'svg-icons', icon: block.settings.collapse_3_icon, size: 18, stroke_width: 1.5 %}
+                </div>
+              {% endunless %}
+              {{ block.settings.collapse_3_title }}
+            </div>
+            {% render 'svg-icons', icon: 'chevron-down', size: 18, stroke_width: 1.5 %}
+          </button>
+          <div id="footer-about-collapse-3-{{ suffix }}" class="collapse">
+            <div class="collapse-inner">
+              <div class="description rte mb-0">
+                {{ block.settings.collapse_3_description }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endunless %}
+    </div>
+  {% endunless %}
+  {% unless block.settings.btn_primary_text == blank %}
+    <div class="d-flex mx-n2">
+      {% unless block.settings.btn_primary_text == blank %}
+        <a 
+          class="btn w-100 mx-2 {{ block.settings.btn_primary_color }} {{ block.settings.btn_primary_size }}" 
+          href="{{ block.settings.btn_primary_url }}">
+          {{ block.settings.btn_primary_text }}
+        </a>
+      {% endunless %}
+      {% unless block.settings.btn_secondary_text == blank %}
+        <a 
+          class="btn w-100 mx-2 {{ block.settings.btn_secondary_color }} {{ block.settings.btn_secondary_size }}" 
+          href="{{ block.settings.btn_secondary_url }}">
+          {{ block.settings.btn_secondary_text }}
+        </a>
+      {% endunless %}
+    </div>
+  {% endunless %}
+</div>

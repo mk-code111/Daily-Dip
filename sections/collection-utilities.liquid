@@ -1,0 +1,375 @@
+{% liquid 
+  for filter in collection.filters
+    if filter.type == "price_range"
+      if filter.min_value.value > 0 or filter.max_value.value < filter.range_max
+        assign active_filter_values = 1 | plus: active_filter_values
+      endif
+    else
+      assign active_filter_values = filter.active_values.size | plus: active_filter_values
+    endif
+  endfor
+%}
+
+<div 
+  id="collection-utilities-{{ collection.id }}" 
+  class="
+    collection-utilities
+    {{ section.settings.bg_color }} 
+    {{ section.settings.text_color }}
+    {{ section.settings.border_top_width | prepend: 'border-top-' }}
+    {{ section.settings.border_bottom_width | prepend: 'border-bottom-' }}
+    {{ section.settings.border_color }} 
+    {{ section.settings.pt_mobile | prepend: 'pt-' }} 
+    {{ section.settings.pb_mobile | prepend: 'pb-' }}
+    {{ section.settings.pt_desktop | prepend: 'pt-desktop-' }} 
+    {{ section.settings.pb_desktop | prepend: 'pb-desktop-' }}
+  "
+  style="
+    --bs-bg-opacity: {{ section.settings.bg_opacity | append: '%' }};
+    --bs-border-opacity: {{ section.settings.border_opacity | append: '%' }};
+    background-image: linear-gradient({{ section.settings.bg_gradient_direction | append: 'deg' }}, rgba(var(--text-color-rgb), {{ section.settings.bg_gradient_opacity | append: '%'}}), rgba(var(--text-color-rgb), 0));
+  ">
+  <div 
+    class="container"
+    style="max-width: {{ section.settings.container_max_width | append: 'px' }};">
+
+    <div class="collection-utilities-mobile d-desktop-none">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="">
+          {% if section.settings.show_product_count %}
+            <p class="collection-product-count small mb-0">
+              {{ 'collection.count_products' | t: count: collection.products_count }}
+            </p>
+          {% endif %}
+        </div>
+        <div class="d-flex mx-n2">
+          {% if section.settings.show_filters %}
+            <button 
+              class="btn btn-sm mx-2 {{ section.settings.filters_btn_color }}" 
+              type="button" 
+              data-bs-toggle="offcanvas" 
+              data-bs-target="#offcanvas-collection-filters"
+              aria-controls="offcanvas-collection-filters">
+              <span class="d-flex align-items-center"  data-collection-filter-label data-filter-label="all-mobile">
+                {% render 'svg-icons', icon: 'filter', size: 16, class: 'me-3' %}
+                {{ 'collection.filters.btn_text' | t }}
+                {% if active_filter_values > 0 %}
+                  ({{ active_filter_values }})
+                {% endif %}
+              </span>
+            </button>
+          {% endif %}
+          {% render 'collection-sort-by', suffix: 'mobile' %}
+        </div>
+      </div>
+    </div>
+
+    <div class="collection-utilities-desktop d-none d-desktop-block">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="">
+          {% if section.settings.show_product_count %}
+            <p class="collection-product-count small mb-0">
+              {{ 'collection.count_products' | t: count: collection.products_count }}
+            </p>
+          {% endif %}
+        </div>
+        <div class="d-flex text-end">
+          {% if section.settings.show_filters %}
+            <collection-filters 
+              id="collection-filters-inline" 
+              class="collection-filters d-inline-flex">
+              <form class="collection-filters-form">
+                <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+                <div
+                  class="d-inline-flex"       
+                  role="list" 
+                  aria-label="{{ 'collection.filters.title' | t }}">
+                  {% for filter in collection.filters %}
+                    <div class="" role="listitem">
+                      <div class="dropdown">
+                        <button 
+                          class="btn btn-sm dropdown-toggle mx-2 {{ section.settings.filters_btn_color }}" 
+                          type="button" 
+                          data-bs-toggle="dropdown" 
+                          data-bs-auto-close="outside"
+                          data-bs-offset="0,5"
+                          aria-expanded="false">
+                          <span class="" data-collection-filter-label data-filter-label="{{ filter.label }}">
+                            {{ filter.label }} 
+                            {% if filter.active_values.size > 0 %}
+                              <span>
+                                ({{ filter.active_values.size }})
+                              </span>
+                            {% endif %}
+                          </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end px-5" data-filter-type="{{ filter.type }}">
+                          {% render 'collection-filters-filter', filter: filter, suffix: 'inline' %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </form>
+              <button 
+                class="btn btn-sm mx-2 {{ section.settings.filters_btn_color }}" 
+                type="button" 
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvas-collection-filters"
+                aria-controls="offcanvas-collection-filters">
+                <span class="d-flex align-items-center"  data-collection-filter-label data-filter-label="all-desktop">
+                  {% render 'svg-icons', icon: 'filter', size: 16, class: 'me-3' %}
+                  {{ 'collection.filters.show_all' | t }}
+                  {% if active_filter_values > 0 %}
+                    ({{ active_filter_values }})
+                  {% endif %}
+                </span>
+              </button>
+            </collection-filters>
+          {% endif %}
+          {% render 'collection-sort-by', suffix: 'desktop' %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% if section.settings.show_filters %}
+  {% render 'collection-offcanvas-filters' %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection utilities",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "bg-body",
+      "options": [
+        { "value": "bg-primary", "label": "Primary" },
+        { "value": "bg-secondary", "label": "Secondary" },
+        { "value": "bg-body", "label": "Body" },
+        { "value": "bg-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "label": "Background opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_opacity",
+      "label": "Background gradient opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_direction",
+      "label": "Background gradient direction",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "default": 180,
+      "unit": "deg"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text-body",
+      "options": [
+        { "value": "text-primary", "label": "Primary" },
+        { "value": "text-secondary", "label": "Secondary" },
+        { "value": "text-body", "label": "Body" },
+        { "value": "text-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Border top width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_bottom_width",
+      "label": "Border bottom width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "border-body",
+      "options": [
+        { "value": "border-primary", "label": "Primary" },
+        { "value": "border-secondary", "label": "Secondary" },
+        { "value": "border-body", "label": "Body" },
+        { "value": "border-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "Border opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "text",
+      "id": "container_max_width",
+      "label": "Container max-width (px)",
+      "info": "Leave empty to use the global container width"
+    },
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Enable filters",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "filters_btn_color",
+      "label": "Filters button color",
+      "default": "btn-outline-primary",
+      "options": [
+        { "group": "Solid", "value": "btn-primary", "label": "Primary" },
+        { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
+        { "group": "Solid", "value": "btn-white", "label": "White" },
+        { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
+        { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
+        { "group": "Light", "value": "btn-light-white", "label": "White" },
+        { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
+        { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
+        { "group": "Outline", "value": "btn-outline-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "html",
+      "id": "filters_color_swatches",
+      "label": "Color swatches",
+      "default": "Color, color",
+      "info": "Comma separated list of product option names to show as color swatches. Leave empty to disable"
+    },
+    {
+      "type": "header",
+      "content": "Sort by"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort_by",
+      "label": "Show \"Sort by\"",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "sort_by_btn_color",
+      "label": "Sort-by button color",
+      "default": "btn-outline-primary",
+      "options": [
+        { "group": "Solid", "value": "btn-primary", "label": "Primary" },
+        { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
+        { "group": "Solid", "value": "btn-white", "label": "White" },
+        { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
+        { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
+        { "group": "Light", "value": "btn-light-white", "label": "White" },
+        { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
+        { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
+        { "group": "Outline", "value": "btn-outline-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Spacing - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "pt_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pb_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "pt_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pb_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    }
+  ],
+  "templates": ["collection"],
+  "presets": [
+    {
+      "name": "Collection utilities"
+    }
+  ]
+}
+{% endschema %}

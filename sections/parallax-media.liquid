@@ -1,0 +1,535 @@
+{% liquid 
+  if section.index > 1
+    assign media_loading = 'lazy'
+  else
+    assign media_loading = 'eager'
+  endif
+
+  if section.settings.media_adapt == false
+    assign media_mobile_height = section.settings.media_mobile_height | prepend: 'height: ' | append: 'px;'
+    assign media_desktop_height = section.settings.media_desktop_height | prepend: 'height: ' | append: 'px;'
+  endif
+%}
+
+<script src="{{ 'vendor-simple-parallax.min.js' | asset_url }}" defer></script>
+
+<parallax-media
+  id="parallax-media-{{ section.id }}" 
+  class="
+    parallax-media
+    {{ section.settings.text_color }}
+    {{ section.settings.border_top_width | prepend: 'border-top-' }}
+    {{ section.settings.border_bottom_width | prepend: 'border-bottom-' }}
+    {{ section.settings.border_color }}
+    {{ section.settings.mt | prepend: 'mt-' }} 
+    {{ section.settings.mb | prepend: 'mb-' }}
+  "
+  style="
+    --bs-border-opacity: {{ section.settings.border_opacity | append: '%' }};
+  "
+  data-section-id="{{ section.id }}"
+  data-full-screen="{% if section.settings.media_full %}true{% else %}false{% endif %}"
+  data-overlay-top-bottom-border="{% if section.settings.overlay_top_bottom_border %}true{% else %}false{% endif %}"
+  data-parallax-orientation="{{ section.settings.parallax_orientation }}"
+  data-parallax-scale="{{ section.settings.parallax_scale }}">
+  <div 
+    class="media-wrapper" 
+    data-overlay-opacity="{{ section.settings.overlay_opacity }}"
+    style="
+      --overlay-color-rgb: {{ section.settings.overlay_color | prepend: 'var(--' | append: ')' }};
+      --overlay-opacity: {{ section.settings.overlay_opacity | append: '%' }};
+      --overlay-blur: {{ section.settings.overlay_blur | append: 'px' }}">
+    {% if section.settings.video_mobile != blank or section.settings.video_desktop != blank %}
+      <div class="d-desktop-none">
+        {{-
+          section.settings.video_mobile | video_tag: 
+            class: 'parallax-media-media',
+            style: media_mobile_height,
+            image_size: '800x', 
+            autoplay: false, 
+            loop: true, 
+            muted: true, 
+            controls: false,
+            loading: media_loading,
+            preload: 'none',
+            data-autoplay: true
+        -}}
+      </div>
+      <div class="d-none d-desktop-block">
+        {{-
+          section.settings.video_desktop | video_tag: 
+            class: 'parallax-media-media',
+            style: media_desktop_height,
+            image_size: '1600x', 
+            autoplay: false, 
+            loop: true, 
+            muted: true, 
+            controls: false,
+            loading: media_loading,
+            preload: 'none',
+            data-autoplay: true
+        -}}
+      </div>
+    {% elsif section.settings.img_mobile != blank or section.settings.img_desktop != blank %}
+      <div class="d-desktop-none">
+        <img 
+          class="parallax-media-media"
+          src="{{ section.settings.img_mobile | image_url: width: '800' }}" 
+          alt=" {{ section.settings.img_mobile.alt }}"
+          width="800"
+          height="{{ 800 | divided_by: section.settings.img_mobile.aspect_ratio | round }}"
+          loading="{{ media_loading }}"
+          style="{{ media_mobile_height }}">
+      </div>
+      <div class="d-none d-desktop-block">
+        <img 
+          class="parallax-media-media"
+          src="{{ section.settings.img_desktop | image_url: width: '1600' }}" 
+          alt=" {{ section.settings.img_desktop.alt }}"
+          width="1600"
+          height="{{ 1600 | divided_by: section.settings.img_desktop.aspect_ratio | round }}"
+          loading="{{ media_loading }}"
+          style="{{ media_desktop_height }}">
+      </div>
+    {% else %}
+      {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+      {{ 'lifestyle-' | append: current | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+  <div class="parallax-media-caption-wrapper">
+    <div 
+      class="parallax-media-caption-inner" 
+      style="max-width: {{ section.settings.caption_max_width | append: 'px' }};">
+      <div class="parallax-media-caption-inner-inner">
+        {% unless section.settings.subtitle == blank %}
+          <p class="subtitle {{ section.settings.subtitle_font_size }}">
+            {{ section.settings.subtitle }}
+          </p>
+        {% endunless %}
+        {% unless section.settings.title == blank %}
+          <h2 class="title mb-4 mb-desktop-5 {{ section.settings.title_font_size }}">
+            {{ section.settings.title }}
+          </h2>
+        {% endunless %}
+        {% unless section.settings.description == blank %}
+          <div class="description rte {{ section.settings.description_font_size }}">
+            {{ section.settings.description }}
+          </div>
+        {% endunless %}
+        {% if section.settings.btn_primary_text != blank or section.settings.btn_secondary_text != blank %}
+          <div class="btn-wrapper m-n2">
+            {% unless section.settings.btn_primary_text == blank %}
+              <a 
+                class="btn m-2 {{ section.settings.btn_primary_color }} {{ section.settings.btn_primary_font_size }}"  
+                href="{{ section.settings.btn_primary_url }}">
+                {{ section.settings.btn_primary_text }}
+              </a>
+            {% endunless %}
+            {% unless section.settings.btn_secondary_text == blank %}
+              <a 
+                class="btn m-2 {{ section.settings.btn_secondary_color }} {{ section.settings.btn_secondary_font_size }}"  
+                href="{{ section.settings.btn_secondary_url }}">
+                {{ section.settings.btn_secondary_text }}
+              </a>
+            {% endunless %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</parallax-media>
+
+{% schema %}
+{
+  "name": "Parallax media",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Border top width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_bottom_width",
+      "label": "Border bottom width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "border-body",
+      "options": [
+        { "value": "border-primary", "label": "Primary" },
+        { "value": "border-secondary", "label": "Secondary" },
+        { "value": "border-body", "label": "Body" },
+        { "value": "border-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "Border opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    }, 
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text-white",
+      "options": [
+        { "value": "text-primary", "label": "Primary" },
+        { "value": "text-secondary", "label": "Secondary" },
+        { "value": "text-body", "label": "Body" },
+        { "value": "text-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_mobile",
+      "label": "Image - mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_desktop",
+      "label": "Image - desktop"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Video - mobile"
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Video - desktop" 
+    },
+    {
+      "type": "header",
+      "content": "Media (Image/Video)"
+    },
+    {
+      "type": "range",
+      "id": "media_mobile_height",
+      "label": "Mobile media height (px)",
+      "min": 400,
+      "max": 1000,
+      "step": 10,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "media_desktop_height",
+      "label": "Desktop media height (px)",
+      "min": 400,
+      "max": 1000,
+      "step": 10,
+      "default": 700
+    },
+    {
+      "type": "checkbox",
+      "id": "media_adapt",
+      "label": "Adapt media",
+      "default": false,
+      "info": "If this setting is enabled, the original media propotions will be used. Also, the two settings above will not have effect."
+    },
+    {
+      "type": "checkbox",
+      "id": "media_full",
+      "label": "Full-screen media",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "select",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "bs-body-color-rgb",
+      "options": [
+        { "value": "bs-primary-rgb", "label": "Primary" },
+        { "value": "bs-secondary-rgb", "label": "Secondary" },
+        { "value": "bs-body-color-rgb", "label": "Body" },
+        { "value": "bs-white-rgb", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "default": 30,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "overlay_blur",
+      "label": "Blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_top_bottom_border",
+      "label": "Top/Bottom border",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Parallax"
+    },
+    {
+      "type": "select",
+      "id": "parallax_orientation",
+      "label": "Orientation",
+      "default": "up",
+      "options": [
+        { "value": "up", "label": "Up" },
+        { "value": "right", "label": "Right" },
+        { "value": "down", "label": "Down" },
+        { "value": "left", "label": "Left" },
+        { "value": "up left", "label": "Up left" },
+        { "value": "up right", "label": "Up right" },
+        { "value": "down left", "label": "Down left" },
+        { "value": "down right", "label": "Down right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "parallax_scale",
+      "label": "Scale",
+      "default": 1.2,
+      "min": 1,
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Caption"
+    },
+    {
+      "type": "text",
+      "id": "caption_max_width",
+      "label": "Caption max-width (px)",
+      "default": "900"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Optional Subtitle",
+      "info": "Leave empty to disable"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_font_size",
+      "label": "Subtitle font-size",
+      "default": "fs-md",
+      "options": [
+        { "value": "fs-xs", "label": "xs" },
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fs-xl", "label": "xl" }
+      ]
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Parallax media",
+      "info": "Leave empty to disable"
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Title font-size",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>An optional description for this slide</p>",
+      "info": "Leave empty to disable"
+    },
+    {
+      "type": "select",
+      "id": "description_font_size",
+      "label": "Description font-size",
+      "default": "fs-lg",
+      "options": [
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fs-xl", "label": "xl" },
+        { "value": "fs-xxl", "label": "xxl" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Primary button"
+    },
+    {
+      "type": "text",
+      "id": "btn_primary_text",
+      "label": "Button text",
+      "default": "Primary button",
+      "info": "Leave empty to disable"
+    },
+    {
+      "type": "select",
+      "id": "btn_primary_color",
+      "label": "Button color",
+      "default": "btn-primary",
+      "options": [
+        { "group": "Solid", "value": "btn-primary", "label": "Primary" },
+        { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
+        { "group": "Solid", "value": "btn-white", "label": "White" },
+        { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
+        { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
+        { "group": "Light", "value": "btn-light-white", "label": "White" },
+        { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
+        { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
+        { "group": "Outline", "value": "btn-outline-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "btn_primary_font_size",
+      "label": "Button font-size",
+      "default": "fs-md",
+      "options": [
+        { "value": "fs-xs", "label": "xs" },
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fs-xl", "label": "xl" },
+        { "value": "fs-xxl", "label": "xxl" }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "btn_primary_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Secondary button"
+    },
+    {
+      "type": "text",
+      "id": "btn_secondary_text",
+      "label": "Button text",
+      "default": "Secondary button",
+      "info": "Leave empty to disable"
+    },
+    {
+      "type": "select",
+      "id": "btn_secondary_color",
+      "label": "Button color",
+      "default": "btn-secondary",
+      "options": [
+        { "group": "Solid", "value": "btn-primary", "label": "Primary" },
+        { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
+        { "group": "Solid", "value": "btn-white", "label": "White" },
+        { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
+        { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
+        { "group": "Light", "value": "btn-light-white", "label": "White" },
+        { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
+        { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
+        { "group": "Outline", "value": "btn-outline-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "btn_secondary_font_size",
+      "label": "Button font-size",
+      "default": "fs-md",
+      "options": [
+        { "value": "fs-xs", "label": "xs" },
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fs-xl", "label": "xl" },
+        { "value": "fs-xxl", "label": "xxl" }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "btn_secondary_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "mt",
+      "label": "Top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Parallax media"
+    }
+  ]
+}
+{% endschema %}

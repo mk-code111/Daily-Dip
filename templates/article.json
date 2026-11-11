@@ -1,0 +1,70 @@
+{
+  "sections": {
+    "template-article": {
+      "type": "article-main",
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 100,
+        "bg_gradient_opacity": 5,
+        "bg_gradient_direction": 180,
+        "text_color": "text-body",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 100,
+        "img_show": true,
+        "img_ratio": "ratio-16x9",
+        "img_border": "img-thumbnail",
+        "max_width": "720",
+        "title_font_size": "h2",
+        "article_meta": true,
+        "show_tags": true,
+        "pt": 8,
+        "pb": 10
+      }
+    },
+    "blog_slider_8CCbek": {
+      "type": "blog-slider",
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 100,
+        "bg_gradient": "",
+        "text_color": "text-body",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 100,
+        "container_max_width": "",
+        "header_title": "Latest Posts",
+        "header_title_font_size": "h2",
+        "header_description": "<p>Add on optional description for this section<\/p>",
+        "header_description_font_size": "fs-md",
+        "slider_speed": 300,
+        "slider_navigation": true,
+        "slider_pagination": true,
+        "slider_pagination_type": "bullets",
+        "slider_scrollbar": true,
+        "slider_partial_slides_mobile": true,
+        "slider_autoplay": 0,
+        "blog": "news",
+        "limit": 8,
+        "article_card_text_align": "text-start",
+        "article_card_img_ratio": "ratio-16x9",
+        "article_card_img_border": "img-thumbnail",
+        "article_card_title_size": "fs-xl",
+        "article_card_meta": true,
+        "article_card_tags": true,
+        "article_card_excerpt": true,
+        "breakpoint_mobile": 1,
+        "breakpoint_tablet": 2,
+        "breakpoint_desktop": 3,
+        "pt": 6,
+        "pb": 11
+      }
+    }
+  },
+  "order": [
+    "template-article",
+    "blog_slider_8CCbek"
+  ]
+}

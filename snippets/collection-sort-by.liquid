@@ -1,0 +1,30 @@
+{% if section.settings.show_sort_by %}
+  <sort-by class="sort-by dropdown">
+    <button 
+      class="btn btn-sm dropdown-toggle mx-2 {{ section.settings.sort_by_btn_color }}" 
+      type="button" 
+      data-bs-toggle="dropdown" 
+      data-bs-offset="0,5"
+      aria-expanded="false">
+      {{ 'collection.sort_by' | t }}
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      {% for option in collection.sort_options %}
+        <li>
+          <input 
+            id="sort-by-{{ option.value }}-{{ suffix }}" 
+            type="radio" 
+            class="btn-check" 
+            name="sort_by-{{ suffix }}" 
+            value="{{ option.value }}"
+            {% if option.value == collection.sort_by %}checked{% endif %}>
+          <label 
+            class="dropdown-item" 
+            for="sort-by-{{ option.value }}-{{ suffix }}">
+            {{ option.name }}
+          </label>
+        </li>
+      {% endfor %}
+    </ul>
+  </sort-by>
+{% endif %}

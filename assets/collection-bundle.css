@@ -1,0 +1,140 @@
+/*
+  © 2024 Jhango
+  https://www.jhango.com
+*/
+console.log('The Street - Premium Shopify Theme by JHANGO.com | Learn more at https://www.JHANGO.com')
+
+/* 
+  General 
+*/
+.bundle-builder {
+  display: block;
+}
+
+.bundle-builder .btn-bundle-checkout:disabled,
+.bundle-builder .btn-bundle-checkout.disabled {
+  animation-play-state: paused;
+}
+
+
+/*
+  Bundle Card
+*/
+.collection-bundle-card {
+  position: static;
+}
+
+.collection-bundle-card .card-header {
+  background-color: rgba(var(--text-color-rgb), 1);
+  color: rgba(var(--bg-color-rgb), 1);
+  border: none;
+}
+
+.collection-bundle-card-list-wrapper > .title em {
+  font-style: normal;
+  display: none;
+}
+
+.collection-bundle-card-list-wrapper.active > .title {
+  color: var(--bs-success);
+  animation: flash 1s;
+}
+
+.collection-bundle-card-list-wrapper.active > .title em {
+  display: inline-block;
+}
+
+.collection-bundle-card-list li {
+}
+
+.collection-bundle-card-list li img {
+  display: block;
+}
+
+.collection-bundle-card-list li:not(.active) img {
+  background-color: rgba(var(--text-color-rgb), .1);
+}
+
+.collection-bundle-card-list li span[data-number] {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(var(--bg-color-rgb), 1);
+  border: 1px solid rgba(var(--text-color-rgb), 1);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-bundle-card-list li.active span[data-number] {
+  opacity: 0;
+}
+
+.collection-bundle-card-list li .btn-close {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 60%);
+  padding: .5rem;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 50%;
+}
+
+.collection-bundle-card-list li .btn-close span {
+  background-color: rgba(var(--text-color-rgb), 1);
+  color: rgba(var(--bg-color-rgb), 1);
+  padding: .25rem;
+  border-radius: 50%;
+  display: flex;
+}
+
+.collection-bundle-card-list li.active .btn-close {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 45%);
+}
+
+.collection-bundle-card-list li.active .btn-close:hover, 
+.collection-bundle-card-list li.active .btn-close:focus {
+  transform: translate(-50%, 45%) scale(1.1) rotate(90deg);
+}
+
+@media (min-width: 800px) {
+  .collection-bundle-card {
+    position: sticky;
+    top: 0;
+    transition: all .4s ease-out;
+  }
+}
+
+
+/*
+  Sticky mobile card
+*/
+.collection-bundle-sticky-mobile-card {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  transform: translateY(100%);
+  transition: all 0.4s ease-out;
+  visibility: hidden;
+  box-shadow: 0 -.125rem .25rem rgba(var(--bs-body-color-rgb), .125);
+}
+
+.collection-bundle-sticky-mobile-card.show {
+  visibility: visible;
+  z-index: 1019;
+  transform: translateY(0);
+}
+
+@media (min-width: 800px) {
+  .collection-bundle-sticky-mobile-card {
+    display: none !important;
+  }
+}

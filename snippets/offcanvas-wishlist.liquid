@@ -1,0 +1,41 @@
+{% liquid 
+  if settings.cart_upsells_enable and settings.wishlist_cart_upsells
+    assign cart_upsells_enable = true
+  endif
+%}
+
+<div
+  id="offcanvas-wishlist"
+  class="offcanvas-wishlist offcanvas offcanvas-end" 
+  tabindex="-1" 
+  aria-labelledby="offcanvas-wishlist-label"
+  {% if cart_upsells_enable %}data-cart-upsells{% endif %}>
+  <wishlist-container 
+    class="wishlist-container"
+    data-img-ratio="{{ settings.product_card_img_ratio }}"
+    data-img-border="{{ settings.product_card_img_border }}"
+    data-show-quick-view="true"
+    data-quick-view-btn-color="btn-outline-primary">
+    <div class="offcanvas-header">
+      <h2 id="offcanvas-wishlist-label" class="offcanvas-title">
+        {{ 'general.wishlist.title' | t }}
+      </h2>
+      <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="{{ 'general.accessibility.close' | t }}">
+        {% render 'svg-icons', icon: 'x', stroke_width: 1.5 %}
+      </button>
+    </div> 
+    <div class="offcanvas-body">
+      <div class="wishlist-empty pt-10 pb-12 text-center" hidden>
+        <div class="svg-icon-horizontal-animate">
+          {% render 'svg-icons', icon: 'heart', class: 'mb-3' %}
+        </div>
+        {{ 'general.wishlist.empty_html' | t }} 
+        <button class="btn btn-outline-primary" type="button" data-bs-dismiss="offcanvas">
+          {{ 'general.wishlist.continue_shopping' | t }}
+        </button>
+      </div>
+      <ul class="wishlist-product-list list-unstyled mb-7" hidden></ul>
+      {% render 'cart-upsells' %}
+    </div>
+  </wishlist-container>
+</div>

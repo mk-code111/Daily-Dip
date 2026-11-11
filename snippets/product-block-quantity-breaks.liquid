@@ -1,0 +1,70 @@
+{% liquid 
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign metafield_namespace = block.settings.metafield | split: '.' | first
+  assign metafield_key = block.settings.metafield | split: '.' | last
+
+  assign metafield_value = product.metafields[metafield_namespace][metafield_key].value
+
+  assign pt = block.settings.pt | prepend: 'pt-'
+  assign pb = block.settings.pb | prepend: 'pb-'
+%}
+
+{% if metafield_value.size > 0 %}
+  <product-quantity-breaks 
+    class="product-block-quantity-breaks {{ pt }} {{ pb }}" 
+    data-product-url="{{ product.url }}"
+    {{ block.shopify_attributes }}>
+    {% unless block.settings.title == blank %}
+      <h2 class="title {{ block.settings.title_font_size }}">
+        {{ block.settings.title }}
+      </h2>
+    {% endunless %}
+    {% unless block.settings.description == blank %}
+      <div class="description rte opacity-70 mt-n2 mb-4 {{ block.settings.description_font_size }}">
+        {{ block.settings.description }}
+      </div>
+    {% endunless %}
+    <div 
+      class="product-block-quantity-breaks-list row m-n2 {% if block.settings.cols_desktop == '2' %}row-cols-tablet-2{% endif %}" 
+      role="list">
+      {% for item in metafield_value %}
+        {% liquid 
+          assign quantity = item | split: ':' | first
+          assign discount = item | split: ':' | last
+          assign discount_text = discount | append: '%'
+          assign discounted_item_price = 100 | minus: discount | divided_by: 100.0 | times: current_variant.price | money_without_trailing_zeros
+          assign compare_total = current_variant.price | times: quantity | money_without_trailing_zeros
+          assign discounted_total = 100 | minus: discount | divided_by: 100.0 | times: current_variant.price | times: quantity | money_without_trailing_zeros
+          assign savings = discount | divided_by: 100.0 | times: current_variant.price | times: quantity | money_without_trailing_zeros
+        %}
+        <div class="product-block-quantity-breaks-item p-2" role="listitem">
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="radio" 
+              name="qty-breaks-{{ product.id }}"
+              id="qty-breaks-{{ product.id }}-{{ forloop.index }}" 
+              value="{{ quantity | escape }}"
+              {% unless current_variant.available %}disabled{% endunless %}>
+            <label for="qty-breaks-{{ product.id }}-{{ forloop.index }}" class="form-check-label">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="">
+                  <div class="product-block-quantity-breaks-item-title">
+                    {{ 'product.quantity_breaks.title_html' | t: quantity: quantity, discount: discount_text, discounted_item_price: discounted_item_price, compare_total: compare_total, discounted_total: discounted_total, savings: savings }}
+                  </div>
+                  <div class="product-block-quantity-breaks-item-subtitle">
+                    {{ 'product.quantity_breaks.subtitle_html' | t: quantity: quantity, discount: discount_text, discounted_item_price: discounted_item_price, compare_total: compare_total, discounted_total: discounted_total, savings: savings }}
+                  </div>
+                </div>
+                <div class="product-block-quantity-breaks-item-badge badge ms-3">
+                  {{ 'product.quantity_breaks.badge' | t: save: discount_text }}
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </product-quantity-breaks>
+{% endif %}

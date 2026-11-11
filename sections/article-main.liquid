@@ -1,0 +1,282 @@
+<article 
+  id="article-main-{{ collection.id }}" 
+  class="
+    article-main
+    {{ section.settings.bg_color }} 
+    {{ section.settings.text_color }}
+    {{ section.settings.border_top_width | prepend: 'border-top-' }}
+    {{ section.settings.border_bottom_width | prepend: 'border-bottom-' }}
+    {{ section.settings.border_color }} 
+    {{  section.settings.pt | prepend: 'pt-' }}
+    {{  section.settings.pb | prepend: 'pb-' }}
+  "
+  style="
+    --bs-bg-opacity: {{ section.settings.bg_opacity | append: '%' }};
+    --bs-border-opacity: {{ section.settings.border_opacity | append: '%' }};
+    background-image: linear-gradient({{ section.settings.bg_gradient_direction | append: 'deg' }}, rgba(var(--text-color-rgb), {{ section.settings.bg_gradient_opacity | append: '%'}}), rgba(var(--text-color-rgb), 0));
+  ">
+  {% if section.settings.img_show and article.image %}
+    <div class="img-wrapper mb-8">
+      <div class="container">
+        {% render 'image-url', img: article.image, size: 1600, ratio: section.settings.img_ratio, class: section.settings.img_border %}
+      </div>
+    </div>
+  {% endif %}
+  <div class="article-content">
+    <div 
+      class="container" 
+      style="max-width: {{ section.settings.max_width }}px">
+      {% if section.settings.breadcrumb %}
+        <div class="breadcrumb-wrapper mb-4">
+          {% render 'breadcrumb' %}
+        </div>
+      {% endif %}
+      <h1 class="article-title title mb-4 {{ section.settings.title_font_size }}">
+        {{ article.title }}
+      </h1>
+      {% if section.settings.article_meta %}
+        <p class="article-meta opacity-70 mb-5">
+          {{ article.author }} @ {{ article.created_at | time_tag: '%b %d, %Y' }}
+        </p>
+      {% endif %}
+      <div class="article-content rte mb-7">
+        {{ article.content }}
+      </div>
+      <div class="article-footer d-flex justify-content-between align-items-center">
+        {% if section.settings.show_tags and article.tags.size > 0 %}
+          <div class="article-tags small opacity-70 me-4">
+            {{ 'general.blog.posted_in' | t }}: 
+            {% for tag in article.tags %}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+              {{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+            {% endfor %}
+          </div>
+        {% endif %} 
+        {% if section.settings.share %}
+          <div class="share-btn-wrapper">
+            {% render 'share-button', btn_color: 'btn-light-primary' %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article main",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "bg-body",
+      "options": [
+        { "value": "bg-primary", "label": "Primary" },
+        { "value": "bg-secondary", "label": "Secondary" },
+        { "value": "bg-body", "label": "Body" },
+        { "value": "bg-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "label": "Background opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_opacity",
+      "label": "Background gradient opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_direction",
+      "label": "Background gradient direction",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "default": 180,
+      "unit": "deg"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text-body",
+      "options": [
+        { "value": "text-primary", "label": "Primary" },
+        { "value": "text-secondary", "label": "Secondary" },
+        { "value": "text-body", "label": "Body" },
+        { "value": "text-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Border top width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_bottom_width",
+      "label": "Border bottom width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "border-body",
+      "options": [
+        { "value": "border-primary", "label": "Primary" },
+        { "value": "border-secondary", "label": "Secondary" },
+        { "value": "border-body", "label": "Body" },
+        { "value": "border-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "Border opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "img_show",
+      "label": "Show article image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "img_ratio",
+      "label": "Image ratio",
+      "default": "adapt",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt" },
+        { "group": "Square", "value": "ratio-1x1", "label": "1x1" },
+        { "group": "Horizontal", "value": "ratio-4x3", "label": "4x3" },
+        { "group": "Horizontal", "value": "ratio-16x9", "label": "16x9" },
+        { "group": "Horizontal", "value": "ratio-21x9", "label": "21x9" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "img_border",
+      "label": "Image border",
+      "default": "img-thumbnail",
+      "options": [
+        { "value": "", "label": "None" },
+        { "value": "rounded", "label": "Rounded" },
+        { "value": "img-thumbnail", "label": "Thumbnail" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "max_width",
+      "label": "Content max-width (px)",
+      "default": "720"
+    },
+    {
+      "type": "checkbox",
+      "id": "breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Title font-size",
+      "default": "h1",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "article_meta",
+      "label": "Show article meta",
+      "info": "Author and date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "share",
+      "label": "Show share button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    }
+  ],
+  "templates": ["article"],
+  "presets": [
+    {
+      "name": "Article main"
+    }
+  ]
+}
+{% endschema %}

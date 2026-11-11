@@ -1,0 +1,23 @@
+<product-quick-view-modal>
+  <div 
+    id="quick-view-modal"
+    class="modal quick-view-modal fade" 
+    tabindex="-1"
+    aria-labelledby="quick-view-modal-label" 
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-body pt-0 pt-tablet-5">
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="{{ 'general.accessibility.close' | t }}">
+            {% render 'svg-icons', icon: 'x', stroke_width: 1.5 %}
+          </button>
+          <div class="product">
+            <div data-quick-view-contents>
+              {% comment %} The content is injected via JavaScript {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</product-quick-view-modal>

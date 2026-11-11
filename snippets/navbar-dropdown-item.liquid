@@ -1,0 +1,42 @@
+{% liquid 
+  assign title = link.title | split: '|' | first
+  assign subtitle = nil
+  if link.title contains '|' 
+    assign subtitle = link.title | split: '|' | last
+  endif
+%}
+
+<li>
+  {% if link.title == '-' %}
+    <hr class="dropdown-divider">
+  {% elsif link.url == '#' %}
+    <h6 class="dropdown-header">
+      {{ link.title }}
+    </h6>
+  {% else %}
+    <a
+      class="dropdown-item {% if link.active %}active{% endif %}" 
+      href="{{ link.url }}"
+      aria-current="{% if link.active %}page{% endif %}">
+      <div class="d-flex align-items-center">
+        {% if link.type == 'collection_link' and subtitle %}
+          <div class="dropdown-item-img-wrapper me-4">
+            {% render 'image-url' img: link.object.image, ratio: 'ratio-4x3', size: 64, scale: true, class: 'img-thumbnail p-1' %}
+          </div>
+        {% elsif link.type == 'product_link' and subtitle %}
+          <div class="dropdown-item-img-wrapper me-4">
+            {% render 'image-url' img: link.object.featured_image, ratio: 'ratio-4x3', size: 64, scale: true, class: 'img-thumbnail p-1' %}
+          </div>
+        {% endif %}
+        <div class="">
+          {{ title }}
+          {% if subtitle %}
+            <small class="dropdown-item-subtitle">
+              {{ subtitle }}
+            </small>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  {% endif %}
+</li>

@@ -1,0 +1,371 @@
+{% liquid
+  assign pt = block.settings.pt | prepend: 'pt-'
+  assign pb = block.settings.pb | prepend: 'pb-'
+  assign target_option = null
+  for option in product.options_with_values
+    if option.name == block.settings.option_name
+      assign target_option = option
+    endif
+  endfor
+%}
+
+{% if target_option %}
+<div class="pack-selector {{ pt }} {{ pb }}" {{ block.shopify_attributes }}>
+  {% if block.settings.title != blank %}
+    <h3 class="title h6 mb-2">{{ block.settings.title }}</h3>
+  {% endif %}
+  <div class="row row-cols-{{ block.settings.columns }} g-2 g-md-3">
+    {% for value in target_option.values %}
+      {% liquid
+        assign matched_variant = null
+        for variant in product.variants
+          if variant.options contains value
+            assign matched_variant = variant
+            break
+          endif
+        endfor
+      %}
+      <div class="col">
+        <input
+          class="visually-hidden pack-selector__input"
+          type="radio"
+          name="option-{{ target_option.name | handleize }}"
+          id="option-{{ target_option.name | handleize }}-{{ value | handleize }}"
+          value="{{ value | escape }}"
+          {% if target_option.selected_value == value %}checked{% endif %}>
+                <label
+          class="pack-selector__card"
+          for="option-{{ target_option.name | handleize }}-{{ value | handleize }}">
+                                        {% if matched_variant.featured_image %}
+            <span class="pack-selector__img-wrap">
+              <img
+                class="pack-selector__img"
+                src="{{ matched_variant.featured_image | image_url: width: 400 }}"
+                alt="{{ value | escape }}"
+                width="400" height="400" loading="lazy">
+              {% if matched_variant.metafields.custom.badge != blank %}
+                <span class="pack-selector__badge">{{ matched_variant.metafields.custom.badge }}</span>
+              {% endif %}
+            </span>
+          {% elsif product.featured_image %}
+            <span class="pack-selector__img-wrap">
+              <img
+                class="pack-selector__img"
+                src="{{ product.featured_image | image_url: width: 400 }}"
+                alt="{{ value | escape }}"
+                width="400" height="400" loading="lazy">
+              {% if matched_variant.metafields.custom.badge != blank %}
+                <span class="pack-selector__badge">{{ matched_variant.metafields.custom.badge }}</span>
+              {% endif %}
+            </span>
+          {% endif %}
+          <span class="pack-selector__content">
+            <span class="pack-selector__title">{{ value }}</span>
+            {% if matched_variant.metafields.custom.subtitle != blank %}
+              <span class="pack-selector__subtitle">{{ matched_variant.metafields.custom.subtitle }}</span>
+            {% endif %}
+            
+{% if block.settings.show_price and matched_variant %}
+  <span class="pack-selector__price">
+    <span class="pack-selector__price-badge">
+      {{ matched_variant.price | money }}
+    </span>
+
+    {% if matched_variant.compare_at_price > matched_variant.price %}
+      <s class="pack-selector__compare-price">
+        MRP {{ matched_variant.compare_at_price | money }}
+      </s>
+    {% endif %}
+  </span>
+{% endif %}
+
+          </span>
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+    .pack-selector__card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 100%;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .pack-selector__card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    transform: translateY(-2px);
+  }
+  .pack-selector__input:checked + .pack-selector__card {
+    border-color: rgb(var(--primary-color-rgb, 13,106,79));
+    border-width: 2px;
+    box-shadow: 0 0 0 1px rgb(var(--primary-color-rgb, 13,106,79));
+  }
+  .pack-selector__input:focus-visible + .pack-selector__card {
+    outline: 2px solid rgb(var(--primary-color-rgb, 13,106,79));
+    outline-offset: 2px;
+  }
+      .pack-selector__img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+  .pack-selector__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+       .pack-selector__badge {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: #fff;
+    background: rgb(var(--primary-color-rgb, 13,106,79));
+    padding: 6px 16px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    z-index: 1;
+  }
+    .pack-selector__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 14px 16px;
+    gap: 2px;
+  }
+  .pack-selector__title { font-weight: 700; font-size: 15px; }
+  .pack-selector__subtitle { font-size: 12px; opacity: .65; margin-bottom: 2px; }
+  
+/* Pack price layout */
+.pack-selector__price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* 3D selling-price badge */
+.pack-selector__price-badge {
+  --pack-price-face: #29983d;
+  --pack-price-bottom: #17652b;
+  --pack-price-border: #064c20;
+  --pack-price-text: #ffffff;
+  --pack-price-depth: 3px;
+  --pack-price-radius: 8px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 3px 8px;
+  background: var(--pack-price-face);
+  color: var(--pack-price-text);
+  border: 1px solid var(--pack-price-border);
+  border-radius: var(--pack-price-radius);
+  box-shadow: 0 var(--pack-price-depth) 0 var(--pack-price-bottom);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  white-space: nowrap;
+  margin-bottom: var(--pack-price-depth);
+}
+
+/* MRP */
+.pack-selector__compare-price {
+  font-size: 12px;
+  font-weight: 400;
+  color: #84949a;
+  opacity: 1;
+  white-space: nowrap;
+}
+
+
+      @media (max-width: 576px) {
+    .pack-selector__badge {
+      font-size: 10px;
+      padding: 4px 10px;
+      bottom: 8px;
+    }
+    .pack-selector__content {
+      padding: 10px 8px 12px;
+    }
+    .pack-selector__title {
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .pack-selector__subtitle {
+      font-size: 10px;
+    }
+    
+.pack-selector__price {
+  font-size: 11px;
+  margin-top: 4px;
+  gap: 6px;
+}
+
+.pack-selector__price-badge {
+  font-size: 13px;
+  padding: 3px 6px;
+}
+
+.pack-selector__compare-price {
+  font-size: 10px;
+}
+
+  }
+</style>
+
+<script>
+{% raw %}
+(function() {
+  function formatMoney(cents) {
+    var format = (window.Shopify && Shopify.moneyFormat) || '${{amount}}';
+    var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+    function withDelimiters(number, precision, thousands, decimal) {
+      precision = precision === undefined ? 2 : precision;
+      thousands = thousands === undefined ? ',' : thousands;
+      decimal = decimal === undefined ? '.' : decimal;
+      if (isNaN(number) || number == null) return 0;
+      number = (number / 100.0).toFixed(precision);
+      var parts = number.split('.'),
+        dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+        rest = parts[1] ? decimal + parts[1] : '';
+      return dollars + rest;
+    }
+    var match = format.match(placeholderRegex);
+    if (!match) return format;
+    var value;
+    switch (match[1]) {
+      case 'amount_no_decimals':
+        value = withDelimiters(cents, 0);
+        break;
+      case 'amount_with_comma_separator':
+        value = withDelimiters(cents, 2, '.', ',');
+        break;
+      case 'amount_no_decimals_with_comma_separator':
+        value = withDelimiters(cents, 0, '.', ',');
+        break;
+      default:
+        value = withDelimiters(cents, 2);
+    }
+    return format.replace(placeholderRegex, value);
+  }
+
+    document.querySelectorAll('form[data-variants]').forEach(function(formEl) {
+    var variantsAttr = formEl.getAttribute('data-variants');
+    if (!variantsAttr) return;
+
+    var variants;
+    try {
+      variants = JSON.parse(variantsAttr);
+    } catch (e) {
+      return;
+    }
+
+    var packInputs = formEl.querySelectorAll('.pack-selector__input');
+    if (!packInputs.length) return;
+
+    var idInput = formEl.querySelector('input[name="id"]');
+    var container = formEl.closest('.product-contents') || document;
+    var compareEl = container.querySelector('.product-price-compare');
+    var finalEl = container.querySelector('.product-price-final');
+    var saleBadge = container.querySelector('.product-sale-badge');
+    var soldOutBadge = container.querySelector('.product-sold-out-badge');
+    var submitBtn = formEl.querySelector('[type="submit"]');
+
+    function updateVariant(variant) {
+      if (!variant) return;
+      if (idInput) idInput.value = variant.id;
+
+      var onSale = variant.compare_at_price > variant.price;
+
+      if (finalEl) {
+        finalEl.textContent = formatMoney(variant.price);
+        finalEl.classList.toggle('product-price-final-sale', onSale);
+      }
+      if (compareEl) {
+        if (onSale) {
+          compareEl.textContent = formatMoney(variant.compare_at_price);
+          compareEl.removeAttribute('hidden');
+        } else {
+          compareEl.setAttribute('hidden', '');
+        }
+      }
+      if (saleBadge) {
+        if (onSale) {
+          var discountType = saleBadge.getAttribute('data-discount-type');
+          var saveText = (window.theme && theme.locales && theme.locales.product && theme.locales.product.save) || 'Save';
+          var discountValue;
+          if (discountType === 'percentage') {
+            discountValue = Math.round((variant.compare_at_price - variant.price) * 100 / variant.compare_at_price) + '%';
+          } else {
+            discountValue = formatMoney(variant.compare_at_price - variant.price);
+          }
+          saleBadge.textContent = saveText + ' ' + discountValue;
+          saleBadge.removeAttribute('hidden');
+        } else {
+          saleBadge.setAttribute('hidden', '');
+        }
+      }
+      if (soldOutBadge) {
+        if (!variant.available) {
+          soldOutBadge.removeAttribute('hidden');
+        } else {
+          soldOutBadge.setAttribute('hidden', '');
+        }
+      }
+      if (submitBtn) {
+        submitBtn.disabled = !variant.available;
+      }
+    }
+
+        function syncToCheckedInput() {
+      var checkedInput = null;
+      packInputs.forEach(function(input) {
+        if (input.checked) checkedInput = input;
+      });
+      if (!checkedInput) return;
+      var matched = variants.find(function(v) {
+        return v.options.indexOf(checkedInput.value) !== -1;
+      });
+      updateVariant(matched);
+    }
+
+    packInputs.forEach(function(input) {
+      input.addEventListener('change', function() {
+        if (!input.checked) return;
+        var value = input.value;
+        var matched = variants.find(function(v) {
+          return v.options.indexOf(value) !== -1;
+        });
+        updateVariant(matched);
+      });
+    });
+
+    syncToCheckedInput();
+    window.addEventListener('pageshow', syncToCheckedInput);
+  });
+})();
+{% endraw %}
+</script>
+{% endif %}

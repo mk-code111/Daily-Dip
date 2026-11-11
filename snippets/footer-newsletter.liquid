@@ -1,0 +1,55 @@
+<div id="footer-newsletter">
+  <div class="text-center">
+    {% unless block.settings.title == blank %}
+      <h3 class="title mb-3 {{ block.settings.title_font_size }}">
+        <span>
+          {{ block.settings.title }}
+        </span>
+      </h3>
+    {% endunless %}
+    {% unless block.settings.description == blank %}
+      <div class="description rte mb-6 opacity-70 {{ block.settings.description_font_size }}">
+        {{ block.settings.description }}
+      </div>
+    {% endunless %}
+  </div>
+  {% form 'customer', class: 'newsletter-form' %}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully? %}
+      <p class="alert alert-success">
+        {{ 'general.newsletter.confirmation_text' | t }}
+      </p>
+    {% endif %}
+    <div class="form-floating">
+      <div class="form-floating-icon">
+        {% render 'svg-icons', icon: 'mail', stroke_width: 1 %}
+      </div>
+      <input 
+        id="newsletter-input-email"
+        type="email" 
+        name="contact[email]" 
+        size="30"
+        class="form-control" 
+        value="{% if customer.email != blank %}{{ customer.email }}{% endif %}" 
+        placeholder="{{ 'general.newsletter.input_label' | t }}"
+        autocorrect="off" 
+        autocapitalize="off"
+        required>
+      <label for="newsletter-input-email">
+        {{ 'general.newsletter.input_label' | t }}
+      </label>
+      <button 
+        class="btn {{ section.settings.btn_color }} {{ section.settings.btn_size }}" 
+        type="submit" 
+        name="commit"
+        aria-label="{{ 'general.newsletter.submit_button' | t }}">
+        <svg width="22" height="22" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <path d="M28,61 C28,161.710136 28,212.065204 28,212.065204 C28,212.065204 351.044692,255.885938 351.044692,255.885938 C351.044692,255.885938 243.363128,270.4319 28,299.523824 L28,451 L483.555218,256 L28,61 Z" fill="currentColor"></path>
+          </g>
+        </svg>
+      </button>
+    </div>
+  {% endform %}
+</div>

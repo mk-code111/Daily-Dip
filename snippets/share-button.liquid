@@ -1,0 +1,20 @@
+{% capture title %}
+  {{ page_title }}
+  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+  {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+{% endcapture %}
+
+<share-button>
+  <button
+    class="btn-share btn btn-sm d-inline-flex align-items-center {{ btn_color | default: 'btn-outline-primary' }}" 
+    type="button"
+    data-text-share="{{ 'general.share.share' | t }}"
+    data-text-copy="{{ 'general.share.copy' | t }}"
+    data-text-copied="{{ 'general.share.copied' | t }}"
+    data-share-title="{{ title }}"
+    onclick="onLinkShare(this, event)">
+    {% render 'svg-icons', icon: 'share', size: 16, class: 'me-3' %}
+    {{ 'general.share.share' | t }}
+  </button>
+</share-button>

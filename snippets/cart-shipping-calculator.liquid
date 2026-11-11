@@ -1,0 +1,80 @@
+{% if settings.cart_shipping_calculator %}
+  <div class="collapse-wrapper">
+    <button 
+      class="" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#cart-shipping-calculator-collapse" 
+      aria-expanded="false" 
+      aria-controls="cart-shipping-calculator-collapse">
+      <div class="d-flex align-items-center">
+        {% render 'svg-icons', icon: 'truck', size: 16, class: 'me-4' %}
+        {{ 'cart.shipping_calculator.title' | t }}
+      </div>
+      {% render 'svg-icons', icon: 'chevron-down', size: 18 %}
+    </button>
+    <div id="cart-shipping-calculator-collapse" class="collapse">
+      <div class="collapse-inner">
+        <cart-shipping-calculator
+          class="cart-shipping-calculator"
+          data-shopify-common-js="{{ 'shopify_common.js' | shopify_asset_url }}">
+          <div 
+            id="shipping-calculator-alert" 
+            class="alert" 
+            role="alert" 
+            aria-atomic="true"
+            data-text-no-results="{{ 'cart.shipping_calculator.no_results' | t }}"
+            hidden>
+          </div>
+          <div class="input-group input-group-sm mb-4">
+            <label 
+              class="input-group-text" 
+              for="shipping-calculator-country">
+              {{ 'cart.shipping_calculator.country' | t }}
+            </label>
+            <select 
+              id="shipping-calculator-country"
+              class="form-select"
+              autocomplete="country">
+              {{ all_country_option_tags }}
+            </select>
+          </div>
+          <div
+            id="shipping-calculator-province-wrapper" 
+            class="input-group input-group-sm mb-4"
+            style="display: none;">
+            <label 
+              class="input-group-text" 
+              for="shipping-calculator-province">
+              {{ 'cart.shipping_calculator.province' | t }}
+            </label>
+            <select 
+              id="shipping-calculator-province"
+              class="form-select"
+              autocomplete="address-level1">
+            </select>
+          </div>
+          <div class="input-group input-group-sm mb-4">
+            <label 
+              class="input-group-text md" 
+              for="shipping-calculator-zip">
+              {{ 'cart.shipping_calculator.zip' | t }}
+            </label>
+            <input 
+              id="shipping-calculator-zip" 
+              class="form-control" 
+              type="text"
+              autocomplete="postal-code">
+          </div>
+          <button 
+            id="shipping-calculator-btn" 
+            class="btn btn-light-primary btn-sm w-100"
+            data-text="{{ 'cart.shipping_calculator.btn_label' | t }}"
+            type="button">
+            {{ 'cart.shipping_calculator.btn_label' | t }}
+          </button>
+        </cart-shipping-calculator>
+      </div>
+    </div>
+  </div>
+{% endif %}

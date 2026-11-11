@@ -1,0 +1,40 @@
+<div
+  id="offcanvas-cart"
+  class="offcanvas-cart offcanvas offcanvas-end" 
+  tabindex="-1" 
+  aria-labelledby="offcanvas-cart-label"
+  {% if settings.cart_upsells_enable %}data-cart-upsells{% endif %}
+  {% if settings.cart_announcement_description != blank %}data-has-cart-announcement{% endif %}
+>
+  <cart-container class="cart-container">
+    <div class="offcanvas-header">
+      <h2 id="offcanvas-cart-label" class="offcanvas-title">
+        {{ 'cart.title' | t }} (<span>{{ cart.item_count }}</span>)
+      </h2>
+      <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="{{ 'general.accessibility.close' | t }}">
+        {% render 'svg-icons', icon: 'x', stroke_width: 1.5 %}
+      </button>
+    </div>
+    <div class="offcanvas-body pt-4 pb-8">
+      {% render 'cart-announcement' %}
+      <div id="cart-alert" class="cart-alert alert alert-danger small px-4 py-3" role="alert" hidden>
+        <div class="d-flex align-items-center">
+          <div class="alert-icon me-4 flex-shrink-0">
+            {% render 'svg-icons', icon: 'alert-circle', size: 18 %}
+          </div>
+          <p class="mb-0" data-alert-msg></p>
+        </div>
+      </div>
+      {% liquid
+        render 'cart-goal' 
+        render 'cart-items' 
+        render 'cart-upsells'
+        render 'cart-gift-upsell'
+        render 'cart-note'
+        render 'cart-shipping-calculator'
+        render 'cart-discount'
+      %}
+    </div>
+    {% render 'cart-footer' %}
+  </cart-container>
+</div>

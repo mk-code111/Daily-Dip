@@ -1,0 +1,48 @@
+{% liquid 
+  assign product = settings.cart_gift_upsell_product
+  assign is_in_cart = false 
+
+  for line_item in cart.items
+    if line_item.product.handle == product.handle
+      assign is_in_cart = true
+    endif
+  endfor
+%}
+
+{% if product != nil and is_in_cart == false %}
+  <div class="collapse-wrapper">
+    <button 
+      class="" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#cart-gift-upsell-collapse" 
+      aria-expanded="false" 
+      aria-controls="cart-gift-upsell-collapse">
+      <div class="d-flex align-items-center">
+        {% render 'svg-icons', icon: 'gift', size: 16, class: 'me-4' %}
+        {{ settings.cart_gift_upsell_title }}
+      </div>
+      {% render 'svg-icons', icon: 'chevron-down', size: 18 %}
+    </button>
+    <div id="cart-gift-upsell-collapse" class="collapse">
+      <div class="collapse-inner">
+        <div id="cart-gift-upsell">
+          <div class="row mx-n3 align-items-center">
+            <div class="col-6 px-3">
+              <a href="{{ product.url }}" tabindex="-1">
+                {% render 'image-url', img: product.featured_image, ratio: settings.product_card_img_ratio, class: settings.product_card_img_border %}
+              </a>
+            </div>
+            <div class="col-12 px-3">
+              <div class="cart-gift-description rte description mb-4 lh-sm">
+                {% assign price = product.price | money %}
+                  {{ settings.cart_gift_upsell_description | replace: '[price]', price }}
+              </div>
+              {% render 'product-card-form', product: product, btn_class: 'w-100 btn-sm', btn_color: settings.cart_upsells_btn_color %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,482 @@
+<marquee-container
+  id="marquee-{{ section.id }}" 
+  class="
+    marquee
+    {{ section.settings.bg_color }}
+    {{ section.settings.text_color }} 
+    {{ section.settings.border_top_width | prepend: 'border-top-' }}
+    {{ section.settings.border_bottom_width | prepend: 'border-bottom-' }}
+    {{ section.settings.border_color }} 
+    {{ section.settings.pt | prepend: 'pt-' }} 
+    {{ section.settings.pb | prepend: 'pb-' }}
+  "
+  style="
+    --bs-bg-opacity: {{ section.settings.bg_opacity | append: '%' }};
+    --bs-border-opacity: {{ section.settings.border_opacity | append: '%' }};
+    background-image: linear-gradient({{ section.settings.bg_gradient_direction | append: 'deg' }}, rgba(var(--text-color-rgb), {{ section.settings.bg_gradient_opacity | append: '%'}}), rgba(var(--text-color-rgb), 0));
+    --separator-icon-color: {{ section.settings.separator_icon_color | prepend: 'var(--' | append: ')' }};
+    --separator-icon-opacity: {{ section.settings.separator_icon_opacity | append: '%' }};
+  "
+  data-marquee-duration="{{ section.settings.marquee_duration }}"
+  data-marquee-direction="{{ section.settings.marquee_direction }}"
+  data-marquee-id="{{ section.id }}">
+  <div class="container">
+    {% render 'section-header' %}
+  </div>
+  <div class="marquee-wrapper">
+    <ul 
+      class="
+        marquee-list
+        {{ section.settings.text_transform }}
+        {{ section.settings.letter_spacing | prepend: 'ls-' }} 
+        {{ section.settings.font_size }}
+        {{ section.settings.font_size_desktop }}
+      " 
+      aria-label="{{ section.settings.list_label }}">
+      {% for block in section.blocks %}
+        <li 
+          class="marquee-item" 
+          {{ block.shopify_attributes }}>
+          <span class="{{ section.settings.gap | prepend: 'px-' }}">
+            {% if block.settings.url != nil %}
+              <a href="{{ block.settings.url }}">
+            {% endif %}
+            {% if block.type == 'image' %}
+              {% if block.settings.img == blank %}
+                <div 
+                  class="" 
+                  style="width: 120px; height: 120px;">
+                  {{ 'image' | placeholder_svg_tag: 'img-thumbnail' }}
+                </div>
+              {% else %}
+                {% assign height_x2 = section.settings.img_height | times: 2 %}
+                <img
+                  src="{{ block.settings.img | image_url: height: height_x2 }}"
+                  class="img-fluid"
+                  alt="{{ block.settings.img.alt }}"
+                  width="{{ section.settings.img_height | times: block.settings.img.aspect_ratio | round }}"
+                  height="{{ section.settings.img_height }}"
+                  loading="lazy"
+                  style="opacity: {{ section.settings.img_opacity }}">
+              {% endif %}
+            {% else %}
+              <span>
+                {{ block.settings.text }}
+              </span>
+            {% endif %}
+            {% if block.settings.url != nil %}
+              </a>
+            {% endif %}
+          </span>
+          {% if section.settings.separator_icon != blank %}
+            <div 
+              class="marquee-separator-icon"
+              aria-hidden="true">
+              {% render 'svg-icons', icon: section.settings.separator_icon, size: section.settings.separator_icon_size, stroke_width: 1.5 %}
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</marquee-container>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "bg-body",
+      "options": [
+        { "value": "bg-primary", "label": "Primary" },
+        { "value": "bg-secondary", "label": "Secondary" },
+        { "value": "bg-body", "label": "Body" },
+        { "value": "bg-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "label": "Background opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_opacity",
+      "label": "Background gradient opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_direction",
+      "label": "Background gradient direction",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "default": 180,
+      "unit": "deg"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text-body",
+      "options": [
+        { "value": "text-primary", "label": "Primary" },
+        { "value": "text-secondary", "label": "Secondary" },
+        { "value": "text-body", "label": "Body" },
+        { "value": "text-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Border top width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_bottom_width",
+      "label": "Border bottom width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "border-primary",
+      "options": [
+        { "value": "border-primary", "label": "Primary" },
+        { "value": "border-secondary", "label": "Secondary" },
+        { "value": "border-body", "label": "Body" },
+        { "value": "border-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "Border opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "list_label",
+      "label": "List label",
+      "default": "Promotional list",
+      "info": "It is used for accessiblity purposes."
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "select",
+      "id": "header_text_align",
+      "label": "Text align",
+      "default": "text-center",
+      "options": [
+        { "value": "text-start", "label": "Left" },
+        { "value": "text-center", "label": "Center" }
+      ]
+    },
+    {
+      "type": "inline_richtext",
+      "id": "header_title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "header_title_font_size",
+      "label": "Title font-size",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "header_description",
+      "label": "Description (optional)"
+    },
+    {
+      "type": "select",
+      "id": "header_description_font_size",
+      "label": "Description font-size",
+      "default": "fs-sm",
+      "options": [
+        { "value": "fs-xs", "label": "xs" },
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fonfst-xl", "label": "xl" },
+        { "value": "fs-xxl", "label": "xxl" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Marquee"
+    },
+    {
+      "type": "range",
+      "id": "marquee_duration",
+      "label": "Duration",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 30,
+      "unit": "sec"
+    },
+    {
+      "type": "select",
+      "id": "marquee_direction",
+      "label": "Marquee direction",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Item"
+    },
+    {
+      "type": "text",
+      "id": "img_height",
+      "label": "Image height (px)",
+      "default": "60"
+    },
+    {
+      "type": "range",
+      "id": "img_opacity",
+      "label": "Image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "Font size - mobile",
+      "default": "fs-sm",
+      "options": [
+        { "value": "fs-xs", "label": "xs" },
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fs-xl", "label": "xl" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_size_desktop",
+      "label": "Font size - desktop",
+      "default": "fs-desktop-md",
+      "options": [
+        { "value": "fs-desktop-sm", "label": "sm" },
+        { "value": "fs-desktop-md", "label": "md" },
+        { "value": "fs-desktop-lg", "label": "lg" },
+        { "value": "fs-desktop-xl", "label": "xl" },
+        { "value": "fs-desktop-xxl", "label": "xxl" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text transform",
+      "default": "text-capitalize",
+      "options": [
+        { "value": "", "label": "Normal" },
+        { "value": "text-capitalize", "label": "Capitalize" },
+        { "value": "text-lowercase", "label": "Lowercase" },
+        { "value": "text-uppercase", "label": "Uppercase" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "default": 0,
+      "min": 0,
+      "max": 5
+    },
+    {
+      "type": "header",
+      "content": "Separator"
+    },
+    {
+      "type": "select",
+      "id": "separator_icon",
+      "label": "Icon",
+      "default": "star",
+      "options": [
+        { "value": "", "label": "None" },
+        { "value": "award", "label": "Award" },
+        { "value": "smile", "label": "Smile" },
+        { "value": "star", "label": "Star" },
+        { "value": "percent", "label": "Percent" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "gift", "label": "Gift" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "cart", "label": "Cart" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "separator_icon_size",
+      "label": "Icon size",
+      "default": 20,
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "separator_icon_color",
+      "label": "Icon color",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Inherit" },
+        { "value": "bs-primary", "label": "Primary" },
+        { "value": "bs-secondary", "label": "Secondary" },
+        { "value": "bs-body-color", "label": "Body" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "separator_icon_opacity",
+      "label": "Icon opacity",
+      "default": 100,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "info": "Spacing between items",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Padding top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "info": "Optional"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Marquee Text"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "info": "Optional"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        { "type": "text" },
+        { "type": "image" },
+        { "type": "text" },
+        { "type": "image" },
+        { "type": "text" },
+        { "type": "image" },
+        { "type": "text" },
+        { "type": "image" },
+        { "type": "text" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

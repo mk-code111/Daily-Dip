@@ -1,0 +1,110 @@
+{% liquid 
+  assign block = section.blocks | where: 'type', 'media_gallery' | first
+
+  assign current_variant = product.selected_or_first_available_variant
+
+  if current_variant.featured_image
+    assign initial_slide = product.selected_or_first_available_variant.featured_media.position | minus: 1
+  else
+    assign initial_slide = 0
+  endif
+%}
+
+{% if block.settings.full_screen %}
+  <link href="{{ 'vendor-glightbox.min.css' | asset_url }}" rel="stylesheet">
+  <script src="{{ 'vendor-glightbox.min.js' | asset_url }}" defer></script>
+{% endif %}
+
+
+{% if product == nil %}
+  {{ 'image' | placeholder_svg_tag: 'img-thumbnail' }}
+{% elsif block != nil %}
+  <product-media-gallery
+    class="product-media-gallery"
+    data-product-id="{{ product.id }}"
+    data-initial-slide="{{ initial_slide }}"
+    data-effect="{{ block.settings.effect }}"
+    data-speed="{{ block.settings.speed }}"
+    data-pagination-type="{{ block.settings.pagination_type }}"
+    data-scrollbar="{{ block.settings.scrollbar }}"
+    data-partial-slides-mobile="{{ block.settings.partial_slides_mobile }}"
+    data-thumbs-per-view="{{ block.settings.thumbs_per_view }}"
+    data-full-screen="{% if block.settings.full_screen %}true{% else %}false{% endif %}"
+    data-full-screen-effect="{{ block.settings.full_screen_effect }}">
+    {% render 'product-custom-badge', product: product %}
+    <div class="swiper-main-wrapper {{ block.settings.img_border }}">
+      <div 
+        class="swiper-main swiper"
+        style="--swiper-theme-color: {{ block.settings.controls_color | prepend: 'var(--bs-' | append: '-rgb)' }}">
+        <div class="swiper-wrapper">
+          {% for media in product.media %}
+            {% liquid 
+              assign media_loading = 'eager' 
+              if forloop.index > 2
+                assign media_loading = 'lazy' 
+              endif
+            %}
+            <div class="swiper-slide" lazy="{% if media_loading == 'lazy' %}true{% endif %}">
+              {% case media.media_type %}
+                {% when 'image' %}
+                  {% if block.settings.full_screen %}
+                    <a 
+                      class="product-media-gallery-zoom"
+                      href="{{ media | image_url: width: 2040 }}" 
+                      data-gallery="gallery-{{ product.id }}" 
+                      aria-label="{{ 'general.accessibility.full_screen' }}">
+                      {% render 'svg-icons', icon: 'maximize', size: 20, stroke_width: 2 %}
+                    </a>
+                  {% endif %}
+                  {% render 'image-url', img: media, size: 800, ratio: block.settings.img_ratio, loading: media_loading, class: '' %}
+                {% when 'video' %}
+                  {{ media | video_tag: controls: true, image_size: '800x', loading: media_loading, class: 'bg-black w-100' }}
+              {% endcase %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-controls">
+          <div class="swiper-pagination"></div>
+          <div class="swiper-scrollbar"></div>
+          <div class="swiper-button-prev">
+            {% render 'svg-icons', icon: 'arrow-left' %}
+          </div>
+          <div class="swiper-button-next">
+            {% render 'svg-icons', icon: 'arrow-right' %}
+          </div>
+        </div>
+      </div>
+      {% if settings.wishlist and block.settings.show_wishlist %}
+        <wishlist-button data-product-url="{{ product.url | split: '?' | first }}">
+          <button 
+            class="img-btn-wishlist btn-wishlist btn"
+            data-controls-color="{{ settings.product_img_controls_color }}"
+            aria-label="{{ 'general.wishlist.add' | t }}"
+            aria-pressed="false"
+            style="--controls-color-rgb: {{ settings.product_card_carousel_controls_color | prepend: 'var(--bs-' | append: '-rgb)' }}">
+            {% render 'svg-icons', icon: 'heart', size: 18 %}
+          </button>
+        </wishlist-button>
+      {% endif %}
+    </div>
+    <div 
+      class="swiper-thumbs swiper mt-4" 
+      data-show-thumbs="{{ block.settings.show_thumbs }}"
+      data-controls-color="{{ block.settings.controls_color }}"
+      {% if product.media.size < 2 %}hidden{% endif %}>
+      <div class="swiper-wrapper">
+        {% for media in product.media %}
+          <div class="swiper-slide" data-media-type="{{ media.media_type }}">
+            {% case media.media_type %}
+              {% when 'image' %}
+                {% render 'image-url', img: media, size: 800, ratio: 'ratio-1x1', class: 'img-thumbnail' %}
+              {% when 'video' %}
+                {% render 'svg-icons', icon: 'play', size: '18', aria-hidden: 'true' %}
+                {% render 'image-url', img: media.preview_image, size: 800, ratio: 'ratio-1x1', class: 'img-thumbnail' %}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </product-media-gallery>
+{% endif %}

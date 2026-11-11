@@ -1,0 +1,18 @@
+{% if settings.product_card_custom_badge_metafield != blank %}
+  {% liquid 
+    assign custom_badge_metafield_namespace = settings.product_card_custom_badge_metafield | split: '.' | first
+    assign custom_badge_metafield_key = settings.product_card_custom_badge_metafield | split: '.' | last
+    assign custom_badge_metafield = product.metafields[custom_badge_metafield_namespace][custom_badge_metafield_key]
+  %}
+  {% if custom_badge_metafield %}
+    {% liquid
+      assign custom_badge_text = custom_badge_metafield | split: '|' | first
+      assign custom_badge_color = custom_badge_metafield | split: '|' | last 
+    %}
+    <span 
+      class="product-custom-badge badge"
+      style="background-color: {{ custom_badge_color | default: 'var(--bs-primary)' }};">
+      {{ custom_badge_text }}
+    </span>
+  {% endif %}
+{% endif %}

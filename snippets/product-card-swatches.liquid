@@ -1,0 +1,57 @@
+{% comment %}
+  Renders the color swatches for the product card, but it may be used on other parts 
+  where there is a product list
+
+  Accepts:
+  - product: {object} The product object
+
+  Usage:
+  {% render 'product-card-price' product: product  %}
+{% endcomment %}
+
+{% if settings.product_card_color_swatches != blank %}
+  {% liquid
+    for option in product.options_with_values
+      if settings.product_card_color_swatches contains option.name
+        assign color_swatches = option.values
+      endif
+    endfor
+  %}
+  {% if color_swatches %}
+    <ul 
+      class="product-card-color-swatches color-swatches list-unstyled mt-n1 mb-5" 
+      aria-label="{{ 'general.accessibility.color_options' | t }}">
+      {% for value in color_swatches %}
+        {% liquid
+          assign swatch_variant = nil
+          assign variants = product.variants | reverse
+          for variant in variants
+            if variant.title contains value
+              assign swatch_variant = variant
+            endif
+          endfor
+          assign swatch_img = value | handleize | prepend: 'swatch-' | append: '.png'
+        %}
+        <li class="">
+          <a 
+            class="btn"
+            href="{{ product.url | within: collection }}?variant={{ swatch_variant.id }}"
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top"
+            data-bs-html="true"
+            data-bs-custom-class="product-card-color-swatches-tooltip"
+            data-bs-title='<h6>{{ value }}</h6>{% render 'image-url', img: swatch_variant.image, ratio: settings.product_card_img_ratio %}'>
+            <img
+              class="img-fluid swatch-custom-image"
+              src="{{ swatch_img | file_img_url: '30x30', crop: 'center' }}"
+              alt="{{ value | escape }}"
+              width="18"
+              height="18"
+              loading="lazy"
+              aria-hidden="true">
+            </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endif %}

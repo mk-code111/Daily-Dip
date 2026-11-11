@@ -1,0 +1,61 @@
+{% comment %}
+  Renders a collection card within a collection list. Usually within a collection template or the Featured Collections section
+
+  Accepts:
+  - collection: {object} The collection object - https://shopify.dev/docs/api/liquid/objects/collection
+  - block: {object} (Optional) The section block, if rendered within the Featured Collections section.
+
+  Usage:
+  {% render 'collection-card' collection: collection, block: block  %}
+{% endcomment %}
+
+{% liquid 
+  unless collection.id
+    assign collection = nil
+  endunless
+
+  if index <= 6
+    assign img_placeholdeer = 'collection-' | append: index
+  else
+    assign img_placeholdeer = 'collection-1'
+  endif
+
+  assign img = block.settings.img | default: collection.image
+  assign title = block.settings.title | default: collection.title
+%}
+
+<div class="collection-card {{ section.settings.collection_card_text_align }}">
+  <a 
+    href="{{ collection.url }}" 
+    class="collection-card-link">
+    <div class="collection-card-img-wrapper {{ section.settings.collection_card_img_border }}">
+      {% if img %}
+        {% render 'image-url', img: img, size: 900, ratio: section.settings.collection_card_img_ratio, class: '' %}
+      {% else %}
+        {{ img_placeholdeer | placeholder_svg_tag: '' }}
+      {% endif %}
+      {% if section.settings.collection_card_show_title %}
+        <h3 
+          class=" 
+            collection-card-title collection-title mb-0 
+            {{ section.settings.collection_card_title_font_size }}
+            {{ section.settings.collection_card_title_position }}
+          ">
+          {% if title %}
+            {{ title }} 
+            {% if section.settings.collection_card_show_product_count %}
+              ({{ collection.products_count }})
+            {% endif %}
+            {% if block.settings.subtitle != blank %}
+              <small class="collection-card-subtitle">
+                {{ block.settings.subtitle }}
+              </small>
+            {% endif %}
+          {% else %}
+            Collection {{ index }}
+          {% endif %}
+        </h3>
+      {% endif %}
+    </div>
+  </a>
+</div>

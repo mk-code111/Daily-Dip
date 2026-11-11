@@ -1,0 +1,106 @@
+{
+  "sections": {
+    "richtext": {
+      "type": "richtext",
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 100,
+        "bg_gradient_opacity": 5,
+        "bg_gradient_direction": 180,
+        "text_color": "text-body",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 100,
+        "container_max_width": "900",
+        "text_align": "text-center",
+        "subtitle": "Error 404",
+        "subtitle_font_size": "fs-xl",
+        "title": "Page not found!",
+        "title_font_size": "h1",
+        "description": "<p>The page you were looking for does not exist<\/p>",
+        "description_font_size": "fs-lg",
+        "btn_primary_text": "Go to homepage",
+        "btn_primary_url": "\/",
+        "btn_primary_color": "btn-primary",
+        "btn_secondary_text": "Shop all products",
+        "btn_secondary_url": "shopify:\/\/collections\/all",
+        "btn_secondary_color": "btn-secondary",
+        "pt": 14,
+        "pb": 15
+      }
+    },
+    "separator_TdBaEC": {
+      "type": "separator",
+      "settings": {
+        "bg_color": "bg-primary",
+        "bg_opacity": 15,
+        "height": 1,
+        "container": "container",
+        "container_max_width": "",
+        "pt": 0,
+        "pb": 4
+      }
+    },
+    "featured_products_UhEbjM": {
+      "type": "featured-products",
+      "blocks": {
+        "block_aU4Q3J": {
+          "type": "block",
+          "settings": {
+            "products": [],
+            "collection": "latest-arrivals",
+            "limit": 8,
+            "tab_title": "Latest arrivals"
+          }
+        },
+        "block_KiCggL": {
+          "type": "block",
+          "settings": {
+            "products": [],
+            "collection": "best-selling",
+            "limit": 8,
+            "tab_title": "Best-selling"
+          }
+        }
+      },
+      "block_order": [
+        "block_aU4Q3J",
+        "block_KiCggL"
+      ],
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 5,
+        "bg_gradient_opacity": 0,
+        "bg_gradient_direction": 180,
+        "text_color": "text-body",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 15,
+        "container_max_width": "",
+        "header_title": "Featured Products",
+        "header_title_font_size": "h2",
+        "header_description": "<p>Add on optional description for this section<\/p>",
+        "header_description_font_size": "fs-md",
+        "slider_speed": 300,
+        "slider_navigation": true,
+        "slider_pagination": true,
+        "slider_pagination_type": "bullets",
+        "slider_scrollbar": true,
+        "slider_partial_slides_mobile": true,
+        "slider_autoplay": 0,
+        "breakpoint_mobile": 1,
+        "breakpoint_tablet": 2,
+        "breakpoint_desktop": 4,
+        "pt": 10,
+        "pb": 11
+      }
+    }
+  },
+  "order": [
+    "richtext",
+    "separator_TdBaEC",
+    "featured_products_UhEbjM"
+  ]
+}

@@ -1,0 +1,109 @@
+{% schema %}
+{
+  "name": "Slideshow - Custom",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slideshow",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image_bro",
+          "label": "Desktop Banner -bro"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image_bro",
+          "label": "Mobile Banner -bro"
+        },
+        {
+          "type": "url",
+          "id": "banner_link_bro",
+          "label": "Banner Link -bro"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Slideshow",
+      "category": "Slideshow"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="slideshow-container-bro">
+  <div class="slideshow-carousel-bro">
+    {% for block in section.blocks %}
+      <div class="slideshow-slide-bro">
+        <a href="{{ block.settings.banner_link_bro }}" class="banner-link-bro">
+          <img src="{{ block.settings.desktop_image_bro | img_url: 'master' }}" alt="Desktop Image -bro" class="desktop-banner-bro" />
+          <img src="{{ block.settings.mobile_image_bro | img_url: 'master' }}" alt="Mobile Image -bro" class="mobile-banner-bro" />
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .slideshow-container-bro {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slideshow-carousel-bro {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .slideshow-slide-bro {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .desktop-banner-bro,
+  .mobile-banner-bro {
+    width: 100%;
+    height: auto;
+    display: none;
+  }
+
+  .banner-link-bro {
+    display: block;
+    text-decoration: none;
+  }
+
+  /* Show appropriate banner for the device */
+  @media (min-width: 768px) {
+    .desktop-banner-bro {
+      display: block;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mobile-banner-bro {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var slides = document.querySelectorAll('.slideshow-slide-bro');
+    var totalSlides = slides.length;
+    var currentIndex = 0;
+
+    function showNextSlide() {
+      var carousel = document.querySelector('.slideshow-carousel-bro');
+      currentIndex = (currentIndex + 1) % totalSlides;
+      var offset = -currentIndex * 100; // Shift by 100% of the width for each slide
+      carousel.style.transform = 'translateX(' + offset + '%)';
+    }
+
+    // Automatically advance slides every 5 seconds
+    setInterval(showNextSlide, 5000);
+  });
+</script>

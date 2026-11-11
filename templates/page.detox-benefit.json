@@ -1,0 +1,243 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_carousel_tdHVay": {
+      "type": "hero-carousel",
+      "blocks": {
+        "slide_eGdG3z": {
+          "type": "slide",
+          "settings": {
+            "img_mobile": "shopify://shop_images/pexels-pavel-danilyuk-8001234_4c7e434f-184b-4589-90ed-46048cf57904.jpg",
+            "img_desktop": "shopify://shop_images/pexels-pavel-danilyuk-8038354_b7f7b141-5fb9-4785-bae3-0b4c98c1b88f.jpg",
+            "overlay_color": "bs-body-color-rgb",
+            "overlay_opacity": 30,
+            "overlay_blur": 0,
+            "caption_position_mobile": "carousel-caption-mobile-center",
+            "caption_text_align_mobile": "text-center",
+            "caption_position_desktop": "carousel-caption-desktop-center",
+            "caption_text_align_desktop": "text-desktop-center",
+            "caption_max_width": "900",
+            "caption_animation": "animate__fadeInUp",
+            "subtitle": "Developed By Jhango",
+            "subtitle_font_size": "fs-md",
+            "title": "The Most Versatile Shopify Theme",
+            "title_font_size": "h2",
+            "description": "<p>Best in class for customization options, yet extreme performance</p>",
+            "description_font_size": "fs-lg",
+            "btn_primary_text": "",
+            "btn_primary_color": "btn-primary",
+            "btn_primary_font_size": "fs-md",
+            "btn_primary_url": "",
+            "btn_secondary_text": "",
+            "btn_secondary_color": "btn-secondary",
+            "btn_secondary_font_size": "fs-md",
+            "btn_secondary_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_eGdG3z"
+      ],
+      "settings": {
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 100,
+        "text_color": "text-white",
+        "carousel_controls": true,
+        "carousel_indicators": true,
+        "carousel_transition": "slide",
+        "carousel_transition_duration": 500,
+        "carousel_autoplay": 5,
+        "carousel_effect": "carousel-zoom-in",
+        "media_mobile_height": 400,
+        "media_desktop_height": 500,
+        "media_adapt": false,
+        "media_full": false,
+        "pt": 0,
+        "pb": 0
+      }
+    },
+    "18e3bb8e-f1ba-421c-91c3-37c1c5b25a2a": {
+      "type": "separator",
+      "disabled": true,
+      "settings": {
+        "bg_color": "bg-body text-body",
+        "bg_opacity": 10,
+        "height": 1,
+        "container": "true",
+        "container_max_width": "",
+        "pt": 0,
+        "pb": 0
+      }
+    },
+    "91fa2e27-741f-431f-b658-c6ce03d0f6eb": {
+      "type": "page-content",
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 100,
+        "bg_gradient_opacity": 5,
+        "bg_gradient_direction": 180,
+        "text_color": "text-body",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 10,
+        "container_max_width": "800",
+        "show_title": true,
+        "title_font_size": "h1",
+        "description_font_size": "fs-md",
+        "pt": 9,
+        "pb": 9
+      }
+    },
+    "54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e": {
+      "type": "card-list",
+      "blocks": {
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-1": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8001285_90ae7f40-9b94-40a6-a6ef-4f51b60a7fe2.jpg",
+            "title": "John Doe",
+            "description": "<p>CEO & Founder</p>",
+            "btn_text": "Learn more",
+            "btn_url": ""
+          }
+        },
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-2": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8001234_4c7e434f-184b-4589-90ed-46048cf57904.jpg",
+            "title": "Jane Doe",
+            "description": "<p>Marketing</p>",
+            "btn_text": "Learn more",
+            "btn_url": ""
+          }
+        },
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-4": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8038354_b7f7b141-5fb9-4785-bae3-0b4c98c1b88f.jpg",
+            "title": "Jim Doe",
+            "description": "<p>Sales</p>",
+            "btn_text": "Learn more",
+            "btn_url": ""
+          }
+        },
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-3": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8001065.jpg",
+            "title": "Jill Doe",
+            "description": "<p>Developer</p>",
+            "btn_text": "Learn more",
+            "btn_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-1",
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-2",
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-4",
+        "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-3"
+      ],
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 0,
+        "bg_gradient_opacity": 5,
+        "bg_gradient_direction": 0,
+        "text_color": "text-primary",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-primary",
+        "border_opacity": 50,
+        "container_max_width": "",
+        "header_title": "Our Team",
+        "header_title_font_size": "h3",
+        "header_description": "<p>Add on optional description for this section</p>",
+        "header_description_font_size": "fs-md",
+        "item_bg_color": "bg-body",
+        "item_bg_opacity": 100,
+        "item_bg_gradient_opacity": 0,
+        "item_bg_gradient_direction": 180,
+        "item_text_color": "text-primary",
+        "item_border_width": 0,
+        "item_border_color": "border-primary",
+        "item_border_opacity": 100,
+        "item_shadow": "shadow-md",
+        "item_text_align": "text-center",
+        "item_img_ratio": "ratio-4x3",
+        "item_title_font_size": "h5",
+        "item_description_font_size": "fs-md",
+        "item_btn_color": "btn-primary",
+        "item_btn_size": "btn-sm",
+        "breakpoint_mobile": 1,
+        "breakpoint_tablet": 2,
+        "breakpoint_desktop": 4,
+        "pt": 5,
+        "pb": 10
+      }
+    },
+    "664feedb-7180-4e8f-a84d-1cf45bc1dd42": {
+      "type": "richtext",
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 100,
+        "bg_gradient_opacity": 5,
+        "bg_gradient_direction": 180,
+        "text_color": "text-primary",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 100,
+        "container_max_width": "900",
+        "text_align": "text-center",
+        "subtitle": "Optional Subtitle",
+        "subtitle_font_size": "fs-md",
+        "title": "Want to get in touch?!",
+        "title_font_size": "h3",
+        "description": "<p>Please contact us anytime from Monday to Friday</p>",
+        "description_font_size": "",
+        "btn_primary_text": "Contact us",
+        "btn_primary_url": "shopify://pages/contact-us",
+        "btn_primary_color": "btn-light-primary",
+        "btn_primary_size": "btn-md",
+        "btn_secondary_text": "",
+        "btn_secondary_url": "",
+        "btn_secondary_color": "btn-secondary",
+        "btn_secondary_size": "btn-md",
+        "pt": 8,
+        "pb": 12
+      }
+    },
+    "cfc6ff50-e3a5-4219-8350-f2db73f829c8": {
+      "type": "separator",
+      "disabled": true,
+      "settings": {
+        "bg_color": "bg-light text-body",
+        "bg_opacity": 10,
+        "height": 1,
+        "container": "container",
+        "container_max_width": "",
+        "pt": 0,
+        "pb": 0
+      }
+    }
+  },
+  "order": [
+    "hero_carousel_tdHVay",
+    "18e3bb8e-f1ba-421c-91c3-37c1c5b25a2a",
+    "91fa2e27-741f-431f-b658-c6ce03d0f6eb",
+    "54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e",
+    "664feedb-7180-4e8f-a84d-1cf45bc1dd42",
+    "cfc6ff50-e3a5-4219-8350-f2db73f829c8"
+  ]
+}

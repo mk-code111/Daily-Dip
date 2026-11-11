@@ -1,0 +1,533 @@
+<style>
+
+  #lookbook-{{ section.id }} .lookbook-point-list-item button > span {
+    border-color: {{ section.settings.point_color }};
+    animation: lookbook-point-animation-{{ section.id }} 2s infinite;
+  }
+
+  #lookbook-{{ section.id }} .lookbook-point-list-item button > span > span {
+    background: {{ section.settings.point_color }};
+    width: {{ section.settings.point_diameter | append: 'rem' }};
+    height: {{ section.settings.point_diameter | append: 'rem' }};
+  }
+
+  @keyframes lookbook-point-animation-{{ section.id }} {
+    0% { box-shadow: 0 0 0 0px rgba({{ section.settings.point_color | color_to_rgb | remove: 'rgb(' | remove: ')' }}, 0.25); }
+    100% { box-shadow: 0 0 0 20px rgba({{ section.settings.point_color | color_to_rgb | remove: 'rgb(' | remove: ')' }}, 0); }
+  }
+
+  @media (max-width: 599px) {
+    {% for block in section.blocks %}
+      #lookbook-{{ section.id }} .lookbook-point-list-item:nth-child({{ forloop.index }}) button {
+        left: {{ block.settings.mobile_pos_left }}%;
+        top: {{ block.settings.mobile_pos_top }}%;
+      }
+    {% endfor %}
+  }
+
+  @media (min-width: 600px) {
+    {% for block in section.blocks %}
+      #lookbook-{{ section.id }} .lookbook-point-list-item:nth-child({{ forloop.index }}) button {
+        left: {{ block.settings.desktop_pos_left }}%;
+        top: {{ block.settings.desktop_pos_top }}%;
+      }
+    {% endfor %}
+  }
+</style>
+
+<look-book
+  id="lookbook-{{ section.id }}" 
+  class="
+    lookbook
+    {{ section.settings.bg_color }}
+    {{ section.settings.text_color }}
+    {{ section.settings.border_top_width | prepend: 'border-top-' }}
+    {{ section.settings.border_bottom_width | prepend: 'border-bottom-' }}
+    {{ section.settings.border_color }} 
+    {{ section.settings.pt | prepend: 'pt-' }} 
+    {{ section.settings.pb | prepend: 'pb-' }}
+  "
+  style="
+    --bs-bg-opacity: {{ section.settings.bg_opacity | append: '%' }};
+    --bs-border-opacity: {{ section.settings.border_opacity | append: '%' }};
+    background-image: linear-gradient({{ section.settings.bg_gradient_direction | append: 'deg' }}, rgba(var(--text-color-rgb), {{ section.settings.bg_gradient_opacity | append: '%'}}), rgba(var(--text-color-rgb), 0));
+  ">
+  <div 
+    class="container" 
+    style="max-width: {{ section.settings.container_max_width }}px">
+    <div class="d-desktop-none">
+      {% render 'section-header' %}
+    </div>
+    <div class="row align-items-desktop-center">
+      <div class="col-18 col-desktop-{{ section.settings.img_desktop_col_size }} mb-5 mb-desktop-0">
+        <div class="img-wrapper {{ section.settings.img_border }}">
+          <div class="d-tablet-none">
+            {% if section.settings.img_mobile == nil %}
+              {{ 'lifestyle-1' | placeholder_svg_tag }}
+            {% else %}
+              {% render 'image-url', img: section.settings.img_mobile, size: 800, ratio: section.settings.img_mobile_ratio %}
+            {% endif %}
+          </div>
+          <div class="d-none d-tablet-block">
+            {% if section.settings.img_desktop == nil %}
+              {{ 'lifestyle-1' | placeholder_svg_tag }}
+            {% else %}
+              {% render 'image-url', img: section.settings.img_desktop, size: 1200, ratio: section.settings.img_desktop_ratio  %}
+            {% endif %}
+          </div>
+          <div 
+            class="lookbook-point-list"
+            aria-hidden="true"> 
+            {% for block in section.blocks %}
+              <div 
+                class="lookbook-point-list-item" 
+                role="listitem" {{ block.shopify_attributes }}>
+                <button 
+                  class="{% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}"
+                  data-bs-toggle="tooltip" 
+                  data-bs-placement="top"
+                  data-bs-offset="0,-7"
+                  data-bs-title="{{ block.settings.product.title | default: 'Product title' }} - {{ block.settings.product.price | money_without_trailing_zeros }}">
+                  <span><span>
+                  </span></span>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="col-18 col-desktop-{{ 18 | minus: section.settings.img_desktop_col_size }}">
+        <div class="d-none d-desktop-block">
+          {% render 'section-header' %}
+        </div>
+        <swiper-slider
+          class="swiper-slider"
+          data-slider-speed="{{ section.settings.slider_speed }}"
+          data-slider-navigation="{{ section.settings.slider_navigation }}"
+          data-slider-pagination="{{ section.settings.slider_pagination }}"
+          data-slider-pagination-type="{{ section.settings.slider_pagination_type }}"
+          data-slider-scrollbar="{{ section.settings.slider_scrollbar }}"
+          data-slider-partial-slides-mobile="{{ section.settings.slider_partial_slides_mobile }}"
+          data-slider-autoplay="{{ section.settings.slider_autoplay }}"
+          data-breakpoint-mobile="1"
+          data-breakpoint-tablet="1"
+          data-breakpoint-desktop="1">
+          <div class="swiper mx-n4">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %} 
+                <div class="swiper-slide px-4">
+                  {% render 'product-card', product: block.settings.product %}
+                </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-controls">
+              <div class="swiper-pagination"></div>
+              <div class="swiper-scrollbar"></div>
+              <div class="swiper-button-prev">
+                {% render 'svg-icons', icon: 'arrow-left', stroke_width: 1.5 %}
+              </div>
+              <div class="swiper-button-next">
+                {% render 'svg-icons', icon: 'arrow-right', stroke_width: 1.5 %}
+              </div>
+            </div>
+          </div>
+        </swiper-slider>
+      </div>
+    </div>
+  </div>
+</look-book>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "class": "overflow-hidden",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "bg-body",
+      "options": [
+        { "value": "bg-primary", "label": "Primary" },
+        { "value": "bg-secondary", "label": "Secondary" },
+        { "value": "bg-body", "label": "Body" },
+        { "value": "bg-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "label": "Background opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_opacity",
+      "label": "Background gradient opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "bg_gradient_direction",
+      "label": "Background gradient direction",
+      "min": 0,
+      "max": 360,
+      "step": 15,
+      "default": 180,
+      "unit": "deg"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text-body",
+      "options": [
+        { "value": "text-primary", "label": "Primary" },
+        { "value": "text-secondary", "label": "Secondary" },
+        { "value": "text-body", "label": "Body" },
+        { "value": "text-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Border top width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_bottom_width",
+      "label": "Border bottom width",
+      "default": 0,
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "border-body",
+      "options": [
+        { "value": "border-primary", "label": "Primary" },
+        { "value": "border-secondary", "label": "Secondary" },
+        { "value": "border-body", "label": "Body" },
+        { "value": "border-white", "label": "White" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "Border opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "text",
+      "id": "container_max_width",
+      "label": "Container max-width (px)",
+      "info": "Leave empty to use the global container width"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "header_title",
+      "label": "Title",
+      "default": "Lookbook"
+    },
+    {
+      "type": "select",
+      "id": "header_title_font_size",
+      "label": "Title font-size",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "header_description",
+      "label": "Description (optional)",
+      "default": "<p>Add on optional description for this section</p>"
+    },
+    {
+      "type": "select",
+      "id": "header_description_font_size",
+      "label": "Description font-size",
+      "default": "fs-md",
+      "options": [
+        { "value": "fs-sm", "label": "sm" },
+        { "value": "fs-md", "label": "md" },
+        { "value": "fs-lg", "label": "lg" },
+        { "value": "fs-xl", "label": "xl" },
+        { "value": "fs-xxl", "label": "xxl" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_mobile",
+      "label": "Image mobile"
+    },
+    {
+      "type": "select",
+      "id": "img_mobile_ratio",
+      "label": "Image mobile - ratio",
+      "default": "adapt",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt" },
+        { "group": "Square", "value": "ratio-1x1", "label": "1x1" },
+        { "group": "Horizontal", "value": "ratio-4x3", "label": "4x3" },
+        { "group": "Horizontal", "value": "ratio-16x9", "label": "16x9" },
+        { "group": "Horizontal", "value": "ratio-21x9", "label": "21x9" },
+        { "group": "Vertical", "value": "ratio-3x4", "label": "3x4" },
+        { "group": "Vertical", "value": "ratio-9x16", "label": "9x16" },
+        { "group": "Vertical", "value": "ratio-9x21", "label": "9x21" }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "img_desktop",
+      "label": "Image desktop"
+    },
+    {
+      "type": "select",
+      "id": "img_desktop_ratio",
+      "label": "Image desktop - ratio",
+      "default": "adapt",
+      "options": [
+        { "group": "Adapt", "value": "adapt", "label": "Adapt" },
+        { "group": "Square", "value": "ratio-1x1", "label": "1x1" },
+        { "group": "Horizontal", "value": "ratio-4x3", "label": "4x3" },
+        { "group": "Horizontal", "value": "ratio-16x9", "label": "16x9" },
+        { "group": "Horizontal", "value": "ratio-21x9", "label": "21x9" },
+        { "group": "Vertical", "value": "ratio-3x4", "label": "3x4" },
+        { "group": "Vertical", "value": "ratio-9x16", "label": "9x16" },
+        { "group": "Vertical", "value": "ratio-9x21", "label": "9x21" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "img_desktop_col_size",
+      "label": "Image desktop - column size",
+      "default": "12",
+      "options": [
+        { "value": "9", "label": "9/18" },
+        { "value": "10", "label": "10/18" },
+        { "value": "11", "label": "11/18" },
+        { "value": "12", "label": "12/18" },
+        { "value": "13", "label": "13/18" },
+        { "value": "14", "label": "14/18" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "img_border",
+      "label": "Image border",
+      "default": "img-thumbnail",
+      "options": [
+        { "value": "", "label": "None" },
+        { "value": "rounded",  "label": "Rounded" },
+        { "value": "img-thumbnail", "label": "Thumbnail" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Points"
+    },
+    {
+      "type": "color",
+      "id": "point_color",
+      "label": "Point color",
+      "default": "#1e293b"
+    },
+    {
+      "type": "range",
+      "id": "point_diameter",
+      "label": "Point diameter",
+      "unit": "rem",
+      "min": 0.2,
+      "max": 3,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "range",
+      "id": "slider_speed",
+      "label": "Speed",
+      "default": 300,
+      "min": 0,
+      "max": 2000,
+      "step": 100,
+      "unit": "ms"
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_navigation",
+      "label": "Show navigation (arrows)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_pagination",
+      "label": "Show pagination",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "slider_pagination_type",
+      "label": "Pagination type",
+      "default": "bullets", 
+      "options": [
+        { "value": "bullets", "label": "Bullets" },
+        { "value": "fraction", "label": "Fraction" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_scrollbar",
+      "label": "Show scrollbar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_partial_slides_mobile",
+      "label": "Partial slides on mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "slider_autoplay",
+      "label": "Autoplay",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "unit": "sec",
+      "info": "Selecing \"0\" will disable autoplay."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Point",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "header",
+          "content": "Point position - Mobile"
+        },
+        {
+          "type": "range",
+          "id": "mobile_pos_left",
+          "label": "Left (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mobile_pos_top",
+          "label": "Top (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Desktop Positioning"
+        },
+        {
+          "type": "range",
+          "id": "desktop_pos_left",
+          "label": "Left (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "desktop_pos_top",
+          "label": "Top (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Lookbook"
+    }
+  ]
+}
+{% endschema %}

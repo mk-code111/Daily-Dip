@@ -1,0 +1,6 @@
+{% unless settings.cart_announcement_description == blank %}
+  <div
+    class="cart-announcement description rte px-6 py-3 mt-1 mb-5 fs-sm text-center {{ settings.cart_announcement_bg_color }}">
+    {{ settings.cart_announcement_description }}
+  </div>
+{% endunless %}

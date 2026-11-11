@@ -1,0 +1,101 @@
+
+@font-face {
+  font-family: Syne;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("//dailydip.in/cdn/fonts/syne/syne_n7.71bcf7e9318b7a8ce2a714f6d6108b998ecf2290.woff2") format("woff2"),
+       url("//dailydip.in/cdn/fonts/syne/syne_n7.7c2f6db20e5c34357b8b752313646e67963ba59e.woff") format("woff");
+}
+
+
+
+  @font-face {
+  font-family: Archivo;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("//dailydip.in/cdn/fonts/archivo/archivo_n4.dc8d917cc69af0a65ae04d01fd8eeab28a3573c9.woff2") format("woff2"),
+       url("//dailydip.in/cdn/fonts/archivo/archivo_n4.bd6b9c34fdb81d7646836be8065ce3c80a2cc984.woff") format("woff");
+}
+
+  @font-face {
+  font-family: Archivo;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("//dailydip.in/cdn/fonts/archivo/archivo_n5.272841b6d6b831864f7fecfa55541752bb399511.woff2") format("woff2"),
+       url("//dailydip.in/cdn/fonts/archivo/archivo_n5.27fb58a71a175084eb68e15500549a69fe15738e.woff") format("woff");
+}
+
+  @font-face {
+  font-family: Archivo;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("//dailydip.in/cdn/fonts/archivo/archivo_n7.651b020b3543640c100112be6f1c1b8e816c7f13.woff2") format("woff2"),
+       url("//dailydip.in/cdn/fonts/archivo/archivo_n7.7e9106d320e6594976a7dcb57957f3e712e83c96.woff") format("woff");
+}
+
+  @font-face {
+  font-family: Archivo;
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("//dailydip.in/cdn/fonts/archivo/archivo_i4.37d8c4e02dc4f8e8b559f47082eb24a5c48c2908.woff2") format("woff2"),
+       url("//dailydip.in/cdn/fonts/archivo/archivo_i4.839d35d75c605237591e73815270f86ab696602c.woff") format("woff");
+}
+
+
+ 
+:root {--bs-primary: #097134;
+  --bs-primary-rgb: 9, 113, 52;
+  --bs-secondary: #E7F5D7;
+  --bs-secondary-rgb: 231, 245, 215;
+  --bs-body-bg: #FFFFFF;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-body-color: #003841;
+  --bs-body-color-rgb: 0, 56, 65;
+
+  --bs-container-max-width: 1400px;
+  --bs-border-radius: 0.3rem;
+  --bs-border-opacity: 75%;
+
+  --bs-body-font-family: Archivo, sans-serif;
+  --bs-body-font-weight: 400;
+  --bs-headings-font-family: Syne, sans-serif;
+  --bs-headings-font-weight: 700;
+
+  --bs-dialog-backdrop-color-rgb: var(--bs-body-color-rgb);
+  --bs-dialog-backdrop-opacity: 50%;
+  --bs-dialog-backdrop-blur: 5px;
+  --bs-dialog-backdrop-blur: 5px;
+  --bs-dialog-header-bg-color-rgb: var(--bs-body-bg-rgb);
+  --bs-dialog-header-bg-opacity: 100%;
+  --bs-dialog-header-text-color: var(--bs-body-color);
+  --bs-dialog-header-border-width: 1px;
+  --bs-dialog-header-border-color-rgb: var(--bs-body-color-rgb);
+  --bs-dialog-header-border-opacity: 25%;
+  --bs-dialog-header-title-font-size: 1.2em;
+
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(var(--bs-body-color-rgb), 0.075);
+  --bs-box-shadow-md: 0 0.25rem 0.5rem rgba(var(--bs-body-color-rgb), 0.125);
+  --bs-box-shadow-lg: 0 .5rem 1rem rgba(var(--bs-body-color-rgb), 0.175);
+  --bs-focus-box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .125);
+  --bs-box-shadow: var(--bs-box-shadow-md);
+}.btn {
+  --bs-btn-font-size: 1rem;
+  --bs-btn-text-transform: ;
+  --bs-btn-font-family-new: var(--bs-body-font-family);
+  --bs-btn-font-weight: 500;
+  --bs-btn-letter-spacing: 0.0rem;
+  --bs-btn-bg-gradient: var(--bs-gradient);
+  --bs-btn-padding-x: 1.2rem;
+  --bs-btn-padding-y: 0.4rem;
+}.form-check-input:checked[type=radio] {
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23FFFFFF'/%3e%3c/svg%3e");
+}
+.accordion {
+  --icon-chevron-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23003841' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 15l-6-6-6 6'/%3E%3C/svg%3E");
+  --icon-chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23003841' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}

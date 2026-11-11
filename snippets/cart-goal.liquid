@@ -1,0 +1,120 @@
+{% if settings.cart_goal_1_value contains cart.currency.iso_code %}
+  {% liquid
+    if settings.cart_goal_3_value != blank
+      assign no_of_tiers = 3
+    elsif settings.cart_goal_2_value != blank
+      assign no_of_tiers = 2
+    else
+      assign no_of_tiers = 1
+    endif
+
+    assign goal_1_value_list = settings.cart_goal_1_value | split: ','
+    assign goal_2_value_list = settings.cart_goal_2_value | split: ','
+    assign goal_3_value_list = settings.cart_goal_3_value | split: ','
+
+
+    for item in goal_1_value_list
+      if item contains cart.currency.iso_code
+        assign goal_1_value = item | split: ':' | last | strip
+      endif
+    endfor
+
+    for item in goal_2_value_list
+      if item contains cart.currency.iso_code
+        assign goal_2_value = item | split: ':' | last | strip
+        assign goal_2_diff = goal_2_value | minus: goal_1_value
+      endif
+    endfor
+
+    for item in goal_3_value_list
+      if item contains cart.currency.iso_code
+        assign goal_3_value = item | split: ':' | last | strip
+        assign goal_3_diff = goal_3_value | minus: goal_2_value
+      endif
+    endfor
+
+    assign goal_1_value_with_cents = goal_1_value | times: 100
+    assign goal_2_value_with_cents = goal_2_value | times: 100
+    assign goal_3_value_with_cents = goal_3_value | times: 100
+
+    if goal_3_value
+      assign divider = 33.33
+    elsif goal_2_value
+      assign divider = 50.00
+    else
+      assign divider = 100.00
+    endif
+
+    if cart.total_price < goal_1_value_with_cents
+      assign percentage = cart.total_price | divided_by: goal_1_value | times: divider | divided_by: 100
+      assign goal_remaining_money = goal_1_value_with_cents | minus: cart.total_price | money
+      assign desc = settings.cart_goal_1_desc | replace: '[amount]', goal_remaining_money
+    elsif cart.total_price < goal_2_value_with_cents
+      assign percentage = cart.total_price | minus: goal_1_value_with_cents | divided_by: goal_2_diff | times: divider | divided_by: 100 | plus: 33.33
+      assign goal_remaining_money = goal_2_value_with_cents | minus: cart.total_price | money
+      assign desc = settings.cart_goal_2_desc | replace: '[amount]', goal_remaining_money
+      assign goal_completed = 1
+    elsif cart.total_price < goal_3_value_with_cents
+      assign percentage = cart.total_price | minus: goal_2_value_with_cents | divided_by: goal_3_diff | times: divider | divided_by: 100 | plus: 66.66
+      assign goal_remaining_money = goal_3_value_with_cents | minus: cart.total_price | money
+      assign desc = settings.cart_goal_3_desc | replace: '[amount]', goal_remaining_money
+      assign goal_completed = 2
+    else
+      assign percentage = 100
+      assign desc = settings.cart_goal_desc_completed
+      assign goal_completed = 3
+    endif
+  %}
+
+  {% if settings.cart_goal_confetti %}
+    <script src="{{ 'vendor-confetti.min.js' | asset_url }}" defer></script>
+  {% endif %}
+
+  <cart-goal 
+    class="cart-goal mb-7 {{ settings.cart_goal_color | prepend: 'text-' }}"
+    data-no-of-tiers="{{ no_of_tiers }}"
+    data-goal-completed="{{ goal_completed | default: 0 }}"
+    data-show-confetti="{{ settings.cart_goal_confetti }}"
+    data-vendor-confetti-js="{{ 'vendor-confetti.min.js' | asset_url }}">
+    <div class="rte small mb-4 {{ color | prepend: 'text-' }}">
+      {{ desc }}
+    </div>
+    <div class="progress" style="height: {{ settings.cart_goal_progress_height | append: 'px' }};">
+      <div 
+        class="progress-bar progress-bar progress-bar-animated progress-bar-striped {{ settings.cart_goal_color | prepend: 'bg-' }}" 
+        role="progressbar" 
+        aria-valuenow="{{ cart.total_price | money }}" 
+        aria-valuemin="0"
+        aria-valuemax="{{ goal_value_3_with_cents | money }}"
+        data-width="{{ percentage }}%"
+        style="width: 0%;">
+      </div>
+      <ul class="cart-goal-icons" aria-label="{{ 'general.accessibility.cart_goal_offerings' | t }}">
+        {% for n in (1..no_of_tiers) %}
+          {% liquid 
+            case n
+              when 1
+                assign icon = settings.cart_goal_1_icon
+                assign title = settings.cart_goal_1_title
+              when 2
+                assign icon = settings.cart_goal_2_icon
+                assign title = settings.cart_goal_2_title
+              when 3
+                assign icon = settings.cart_goal_3_icon
+                assign title = settings.cart_goal_3_title
+            endcase
+          %}
+          <li aria-label="{{ title }}" class="{% if forloop.index <= goal_completed %}active{% endif %}">
+            <div 
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              data-bs-custom-class="{{ settings.cart_goal_color | prepend: 'bg-' }}"
+              data-bs-title="{{ title }}">
+              {% render 'svg-icons', icon: icon, size: 16 %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </cart-goal>
+{% endif %}

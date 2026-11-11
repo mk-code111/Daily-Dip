@@ -1,0 +1,84 @@
+{% if settings.cart_upsells_collection != nil %}
+  <div id="card-upsells-collapse-wrapper" class="collapse-wrapper">
+    <button 
+      class="" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#cart-upsells-collapse" 
+      aria-expanded="true" 
+      aria-controls="cart-upsells-collapse">
+      <div class="d-flex align-items-center">
+        {% render 'svg-icons', icon: 'star', size: 16, class: 'me-4' %}
+        {{ settings.cart_upsells_title }}
+      </div>
+      {% render 'svg-icons', icon: 'chevron-down', size: 18 %}
+    </button>
+    <div id="cart-upsells-collapse" class="collapse show">
+      <div class="collapse-inner pb-7">
+        <cart-upsells class="cart-upsells">
+          {% if settings.cart_upsells_style == 'slider' %}
+            <swiper-slider
+              class="swiper-slider pt-2 mx-n6"
+              data-slider-speed="300"
+              data-slider-navigation="true"
+              data-slider-pagination="true"
+              data-slider-pagination-type="fraction"
+              data-slider-scrollbar="false"
+              data-slider-partial-slides-mobile="false"
+              data-slider-autoplay="0"
+              data-breakpoint-mobile="1"
+              data-breakpoint-tablet="1"
+              data-breakpoint-desktop="1">
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  {% for product in settings.cart_upsells_collection.products limit: settings.cart_upsells_limit %}
+                    {% liquid 
+                      assign is_in_cart = false
+                      for line_item in cart.items
+                        if line_item.product.id == product.id
+                          assign is_in_cart = true
+                        endif
+                      endfor
+                    %}
+                    {% unless is_in_cart %}
+                      <div class="swiper-slide px-6">
+                        {% render 'cart-upsells-item', product: product %}
+                      </div>
+                    {% endunless %}
+                  {% endfor %}
+                </div>
+                <div class="swiper-controls mt-5">
+                  <div class="swiper-pagination"></div>
+                  <div class="swiper-button-prev">
+                    {% render 'svg-icons', icon: 'arrow-left', stroke_width: 1.5 %}
+                  </div>
+                  <div class="swiper-button-next">
+                    {% render 'svg-icons', icon: 'arrow-right', stroke_width: 1.5 %}
+                  </div>
+                </div>
+              </div>
+            </swiper-slider>
+          {% else %}
+            <div class="cart-upsells-list mb-0" role="list">
+              {% for product in settings.cart_upsells_collection.products limit: settings.cart_upsells_limit %}
+                {% liquid 
+                  assign is_in_cart = false
+                  for line_item in cart.items
+                    if line_item.product.id == product.id
+                      assign is_in_cart = true
+                    endif
+                  endfor
+                %}
+                {% unless is_in_cart %}
+                  <div class="py-4" role="listitem">
+                    {% render 'cart-upsells-item', product: product %}
+                  </div>
+                {% endunless %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </cart-upsells>
+      </div>
+    </div>
+  </div>
+{% endif %}

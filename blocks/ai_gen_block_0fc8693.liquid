@@ -1,0 +1,116 @@
+{% doc %}
+  @prompt
+    Create a premium, responsive Shopify homepage section inspired by the provided reference image. The section should communicate a simple 3-step tea preparation ritual in a clean, natural, wellness-focused design.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% style %}
+.ai-ritual-{{ai_gen_id}}{display:block;width:100%;background:{{block.settings.section_bg}};color:{{block.settings.text_color}};padding:{{block.settings.desktop_spacing}}px 0}
+.ai-ritual__inner-{{ai_gen_id}}{width:{{block.settings.desktop_width_percent}}%;max-width:1400px;margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:24px}
+.ai-ritual__card-{{ai_gen_id}},.ai-ritual__image-wrap-{{ai_gen_id}}{border-radius:{{block.settings.border_radius}}px;overflow:hidden}
+.ai-ritual__card-{{ai_gen_id}}{background:{{block.settings.card_bg}};border:1px solid {{block.settings.border_color}};padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;justify-content:center}
+.ai-ritual__heading-{{ai_gen_id}}{margin:0 0 12px;font-family:{% if block.settings.use_serif_heading %}'Playfair Display',Georgia,'Times New Roman',serif{% else %}var(--bs-headings-font-family){% endif %};font-weight:700;font-size:clamp(2rem,4vw,4rem);line-height:1.05}
+.ai-ritual__subtitle-{{ai_gen_id}}{margin:0 0 42px;font-size:1.05rem;opacity:.82}
+.ai-ritual__steps-{{ai_gen_id}}{display:flex;align-items:flex-start;gap:20px}
+.ai-ritual__step-{{ai_gen_id}}{flex:1 1 0;min-width:0}
+.ai-ritual__icon-line-{{ai_gen_id}}{display:flex;align-items:center;margin-bottom:18px}
+.ai-ritual__icon-{{ai_gen_id}}{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;background:{{block.settings.icon_bg}};border:1px solid {{block.settings.border_color}};flex:0 0 auto}
+.ai-ritual__icon-{{ai_gen_id}} img{width:60%;height:60%;object-fit:contain}
+.ai-ritual__title-row-{{ai_gen_id}}{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ai-ritual__number-{{ai_gen_id}}{flex:0 0 auto;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:{{block.settings.accent_color}};color:#fff;font-size:.75rem;font-weight:700}
+.ai-ritual__title-{{ai_gen_id}}{margin:0;font-family:{% if block.settings.use_serif_heading %}'Playfair Display',Georgia,'Times New Roman',serif{% else %}var(--bs-headings-font-family){% endif %};font-weight:700;font-size:1.15rem}
+.ai-ritual__description-{{ai_gen_id}}{margin:0;font-size:.88rem;line-height:1.6;opacity:.8}
+.ai-ritual__image-wrap-{{ai_gen_id}}{position:relative;min-height:380px;background:{{block.settings.card_bg}};border:1px solid {{block.settings.border_color}}}
+.ai-ritual__image-{{ai_gen_id}}{width:100%;height:100%;min-height:380px;object-fit:cover;display:block}
+.ai-ritual__placeholder-{{ai_gen_id}}{min-height:380px;display:grid;place-items:center;background:{{block.settings.icon_bg}}}
+.ai-ritual__placeholder-{{ai_gen_id}} svg{width:70%;height:70%;opacity:.35}
+.ai-ritual__empty-{{ai_gen_id}}{position:absolute;bottom:20px;left:20px;right:20px;text-align:center;font-size:.8rem;opacity:.65}
+.ai-ritual__overlay-{{ai_gen_id}}{position:absolute;right:6%;top:34%;max-width:62%;color:{{block.settings.overlay_color}};font-family:'Brush Script MT',cursive;font-size:clamp(1.1rem,2.4vw,2rem);line-height:1.25;text-align:right;white-space:pre-line}
+.ai-ritual__heart-{{ai_gen_id}}{display:block;margin-top:4px;font-size:1.1em}
+@media(max-width:749px){
+  .ai-ritual-{{ai_gen_id}}{padding:{{block.settings.mobile_spacing}}px 0}
+  .ai-ritual__inner-{{ai_gen_id}}{width:calc(100% - 32px);grid-template-columns:1fr;gap:16px}
+  .ai-ritual__card-{{ai_gen_id}}{padding:32px 22px}
+  .ai-ritual__subtitle-{{ai_gen_id}}{margin-bottom:30px}
+  .ai-ritual__steps-{{ai_gen_id}}{display:flex;flex-direction:column;align-items:stretch;gap:0}
+  .ai-ritual__step-{{ai_gen_id}}{display:grid;grid-template-columns:80px 1fr;column-gap:14px;margin-bottom:20px}
+  .ai-ritual__icon-line-{{ai_gen_id}}{grid-row:span 2;grid-column:1;margin:0;position:relative;display:block;align-self:start}
+  .ai-ritual__title-row-{{ai_gen_id}}{grid-column:2;margin-bottom:6px}
+  .ai-ritual__description-{{ai_gen_id}}{grid-column:2}
+  .ai-ritual__image-wrap-{{ai_gen_id}},.ai-ritual__image-{{ai_gen_id}},.ai-ritual__placeholder-{{ai_gen_id}}{min-height:300px}
+  .ai-ritual__overlay-{{ai_gen_id}}{max-width:70%;font-size:clamp(1rem,4.5vw,1.5rem);top:8%}
+}
+{% endstyle %}
+<div class="ai-ritual-{{ai_gen_id}}" {{block.shopify_attributes}}>
+  <div class="ai-ritual__inner-{{ai_gen_id}}">
+    <div class="ai-ritual__card-{{ai_gen_id}}">
+      <h2 class="ai-ritual__heading-{{ai_gen_id}}">{{block.settings.heading}}</h2>
+      <p class="ai-ritual__subtitle-{{ai_gen_id}}">{{block.settings.subtitle}}</p>
+      <div class="ai-ritual__steps-{{ai_gen_id}}">
+        {% for i in (1..3) %}
+          <div class="ai-ritual__step-{{ai_gen_id}}">
+            <div class="ai-ritual__icon-line-{{ai_gen_id}}">
+              <div class="ai-ritual__icon-{{ai_gen_id}}">
+                {% if i==1 %}{% assign icon=block.settings.step_1_icon %}
+                {% elsif i==2 %}{% assign icon=block.settings.step_2_icon %}
+                {% else %}{% assign icon=block.settings.step_3_icon %}{% endif %}
+                {% if icon %}<img src="{{icon|image_url:width:140}}" alt="" loading="lazy">{% endif %}
+              </div>
+            </div>
+            <div class="ai-ritual__title-row-{{ai_gen_id}}">
+              <span class="ai-ritual__number-{{ai_gen_id}}">{{i}}</span>
+              {% if i==1 %}<h3 class="ai-ritual__title-{{ai_gen_id}}">{{block.settings.step_1_title}}</h3>
+              {% elsif i==2 %}<h3 class="ai-ritual__title-{{ai_gen_id}}">{{block.settings.step_2_title}}</h3>
+              {% else %}<h3 class="ai-ritual__title-{{ai_gen_id}}">{{block.settings.step_3_title}}</h3>{% endif %}
+            </div>
+            {% if i==1 %}<p class="ai-ritual__description-{{ai_gen_id}}">{{block.settings.step_1_description}}</p>
+            {% elsif i==2 %}<p class="ai-ritual__description-{{ai_gen_id}}">{{block.settings.step_2_description}}</p>
+            {% else %}<p class="ai-ritual__description-{{ai_gen_id}}">{{block.settings.step_3_description}}</p>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="ai-ritual__image-wrap-{{ai_gen_id}}">
+      {% if block.settings.image %}
+        <img class="ai-ritual__image-{{ai_gen_id}}" src="{{block.settings.image|image_url:width:1200}}" alt="{{block.settings.image.alt|escape}}" loading="lazy">
+      {% else %}
+        <div class="ai-ritual__placeholder-{{ai_gen_id}}">{{'image'|placeholder_svg_tag}}<span class="ai-ritual__empty-{{ai_gen_id}}">Add a lifestyle image of your tea ritual</span></div>
+      {% endif %}
+      <div class="ai-ritual__overlay-{{ai_gen_id}}">{{block.settings.overlay_text}}<span class="ai-ritual__heart-{{ai_gen_id}}">♡</span></div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Tea ritual steps",
+  "tag": null,
+  "class": "tea-ritual-block",
+  "settings": [
+    {"type":"text","id":"heading","label":"Heading","default":"How to enjoy"},
+    {"type":"text","id":"subtitle","label":"Subtitle","default":"A simple ritual for a healthier you."},
+    {"type":"checkbox","id":"use_serif_heading","label":"Use serif heading font","default":true},
+    {"type":"image_picker","id":"step_1_icon","label":"Step 1 icon"},
+    {"type":"text","id":"step_1_title","label":"Step 1 title","default":"Dip"},
+    {"type":"textarea","id":"step_1_description","label":"Step 1 description","default":"Place one tea bag in hot water (200ml)."},
+    {"type":"image_picker","id":"step_2_icon","label":"Step 2 icon"},
+    {"type":"text","id":"step_2_title","label":"Step 2 title","default":"Brew"},
+    {"type":"textarea","id":"step_2_description","label":"Step 2 description","default":"Let it steep for 3–5 minutes."},
+    {"type":"image_picker","id":"step_3_icon","label":"Step 3 icon"},
+    {"type":"text","id":"step_3_title","label":"Step 3 title","default":"Sip"},
+    {"type":"textarea","id":"step_3_description","label":"Step 3 description","default":"Enjoy it warm, anytime of the day."},
+    {"type":"image_picker","id":"image","label":"Right-side image"},
+    {"type":"textarea","id":"overlay_text","label":"Overlay text","default":"Small Steps\nBig Changes"},
+    {"type":"color","id":"overlay_color","label":"Overlay text color","default":"#173f35"},
+    {"type":"color","id":"section_bg","label":"Section background","default":"#f9f8f4"},
+    {"type":"color","id":"card_bg","label":"Left card background","default":"#faf9f5"},
+    {"type":"color","id":"text_color","label":"Primary text","default":"#173f35"},
+    {"type":"color","id":"accent_color","label":"Accent green","default":"#527b5d"},
+    {"type":"color","id":"border_color","label":"Border","default":"#e4e4da"},
+    {"type":"color","id":"icon_bg","label":"Icon background","default":"#eef1e6"},
+    {"type":"range","id":"border_radius","label":"Border radius","min":0,"max":40,"step":2,"unit":"px","default":20},
+    {"type":"range","id":"desktop_spacing","label":"Desktop spacing","min":20,"max":120,"step":5,"unit":"px","default":65},
+    {"type":"range","id":"mobile_spacing","label":"Mobile spacing","min":16,"max":80,"step":4,"unit":"px","default":40},
+    {"type":"range","id":"desktop_width_percent","label":"Section width","min":50,"max":100,"step":5,"unit":"%","default":90}
+  ],
+  "presets": [{"name":"Tea ritual steps"}]
+}
+{% endschema %}

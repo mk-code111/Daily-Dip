@@ -1,0 +1,157 @@
+{% liquid 
+  assign metafield_namespace = block.settings.metafield | split: '.' | first
+  assign metafield_key = block.settings.metafield | split: '.' | last
+  assign metafield_value = product.metafields[metafield_namespace][metafield_key].value
+
+  assign product_handles = product.handle |  append: ','
+  assign total_price = 0
+  assign total_compare_price = 0
+
+  for product in metafield_value
+    assign product_handles = product_handles | append: product.handle
+    unless forloop.last
+      assign product_handles = product_handles |  append: ','
+    endunless
+  endfor
+
+  assign product_handles = product_handles | split: ','
+%}
+
+{% if metafield_value.count > 0 %}
+  <cross-sells 
+    class="
+      product-block-cross-sells 
+      {{ block.settings.bg_color }} 
+      {{ block.settings.text_color }} 
+      {{ block.settings.border_width | prepend: 'border-' }}
+      {{ block.settings.border_color }} 
+      {{ block.settings.p | prepend: 'p-' }}
+    "
+    style="
+      --bs-bg-opacity: {{ block.settings.bg_opacity | append: '%' }};
+      --bs-border-opacity: {{ block.settings.border_opacity | append: '%' }};
+    "
+    {{ block.shopify_attributes }}>
+    {% unless block.settings.title == blank %}
+      <h2 class="title mb-6 {{ block.settings.title_font_size }}">
+        {{ block.settings.title }}
+      </h2>
+    {% endunless %}
+    {% unless block.settings.description == blank %}
+      <div class="description rte opacity-70 mt-n6 mb-6 {{ block.settings.description_font_size }}">
+        {{ block.settings.description }}
+      </div>
+    {% endunless %}
+    <div class="row align-items-center">
+      <div class="col-18 col-tablet-11 mb-7 mb-tablet-0">
+        <div class="product-block-cross-sells-list my-n3" role="list">
+          {% for handle in product_handles %}
+            <div 
+              class="product-block-cross-sells-list-item product-card py-3 py-desktop-4" 
+              role="listitem">
+              {% liquid
+                assign product = all_products[handle] 
+                assign total_price = total_price | plus: product.first_available_variant.price
+                assign total_compare_price = total_compare_price | plus: product.first_available_variant.compare_at_price
+              %}
+              <div class="row align-items-center mx-n3">
+                <div class="col-6 px-3">
+                  <a href="{{ product.url }}">
+                    <div class="img-wrapper product-card-img-wrapper">
+                      {% render 'product-sale-badge', product: product %}
+                      {% render 'image-url', img: product.featured_image, ratio: settings.product_card_img_ratio, class: settings.product_card_img_border %}
+                    </div>
+                  </a>
+                </div>
+                <div class="col-12 px-3">
+                  <h3 class="product-title mb-4 {{ block.settings.item_title_font_size }}">
+                    <a href="{{ product.url }}" class="product-card-link" tabindex="-1">
+                      {{ product.title }}
+                    </a>
+                  </h3>
+                  {% if product.has_only_default_variant %}
+                    {% render 'product-card-price', product: product %}
+                    <input 
+                      type="hidden" 
+                      name="variant-id" 
+                      value="{{ product.first_available_variant.id }}"
+                      data-price="{{ product.first_available_variant.price }}"
+                      data-compare-at-price="{{ product.first_available_variant.compare_at_price }}">
+                  {% else %}
+                    <select 
+                      class="form-select form-select-sm mb-3 w-auto"
+                      name="variant-id" 
+                      aria-label="{{ 'product.select_variant' | t }}">
+                      {% unless product.available %}
+                        <option>
+                          {{ 'product.sold_out' | t }}
+                        </option>
+                      {% endunless %}
+                      {% for variant in product.variants %}
+                        <option 
+                          value="{{ variant.id }}" 
+                          data-price="{{ variant.price }}"
+                          data-compare-at-price="{{ variant.compare_at_price }}"
+                          data-variant-image="{%- if variant.image -%}{%- render 'image-url', img: variant.image, ratio: settings.product_card_img_ratio, only_src: true -%}{%- endif -%}"
+                          {% unless variant.available %}disabled{% endunless %}>
+                          {{ variant.title }} - {{ variant.price | money_without_trailing_zeros }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  {% endif %}
+                  <div class="form-check fs-sm">
+                    <input 
+                      id="cross-sells-selector-{{ product.id }}"
+                      class="form-check-input" 
+                      type="checkbox" 
+                      value="{{ product.first_available_variant.id }}"
+                      {% unless product.available %}disabled{% endunless %}
+                      {% if product.available %}checked{% endif %}>
+                    <label class="form-check-label" for="cross-sells-selector-{{ product.id }}">
+                      {% if product.available == false %}
+                        {{ 'product.cross_sells.sold_out' | t }}
+                      {% elsif forloop.first %}
+                        {{ 'product.cross_sells.current_product' | t }}
+                      {% else %}
+                        {{ 'product.cross_sells.select_this' | t }}
+                      {% endif %}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-18 col-tablet-7">
+        <div class="cross-sells-footer text-center mt-desktop-n6">
+          <p class="cross-sells-footer-total-price fs-lg mb-4" role="alert" aria-atomic="true">
+            {{ 'product.cross_sells.total_price' | t }}:
+            <s class="me-2 opacity-70" {% if total_compare_price <= total_price %}hidden{% endif %}>
+              <span class="visually-hidden">
+                {{ 'product.regular_price' | t }} 
+              </span>
+              <span data-total-compare-price>
+                {{ total_compare_price | money_without_trailing_zeros }}
+              </span>
+            </s>
+            <b data-total-price>
+              {{ total_price | money_without_trailing_zeros }}
+            </b>
+          </p>
+          <p class="cross-sells-footer-total-savings fs-lg mt-n5 mb-4 fst-italic" {% if total_compare_price <= total_price %}hidden{% endif %}>
+            {{ 'product.cross_sells.total_savings' | t }}:
+            <span data-total-savings>
+              {{ total_compare_price | minus: total_price | money_without_trailing_zeros }}
+            </span>
+          </p>
+          <button 
+            class="btn btn-atc text-nowrap {{ block.settings.atc_btn_color }} {{ block.settings.atc_btn_size }}"
+            {% if total_price == 0 %}disabled{% endif %}>
+            {{ 'product.cross_sells.add_selected_to_cart' | t }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </cross-sells>
+{% endif %}

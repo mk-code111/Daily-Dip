@@ -1,0 +1,68 @@
+{% comment %}
+  Renders the product image (or gallery) for the product card
+
+  Accepts:
+  - product: {object} The product object
+
+  Usage:
+  {% render 'product-card-image' product: product  %}
+{% endcomment %}
+
+{% if product and product.featured_image %}
+  <div class="product-card-img-wrapper mb-4">      
+    {% render 'product-custom-badge', product: product %}
+    {% render 'product-sale-badge', product: product %}
+    {% if settings.wishlist and settings.product_card_show_wishlist %}
+      <wishlist-button data-product-url="{{ product.url | split: '?' | first }}">
+        <button 
+          class="img-btn-wishlist btn-wishlist btn"
+          data-controls-color="{{ settings.product_img_controls_color }}"
+          aria-label="{{ 'general.wishlist.add' | t }}"
+          aria-pressed="false"
+          style="--controls-color-rgb: {{ settings.product_card_carousel_controls_color | prepend: 'var(--bs-' | append: '-rgb)' }}">
+          {% render 'svg-icons', icon: 'heart', size: 18 %}
+        </button>
+      </wishlist-button>
+    {% endif %}
+    {% if settings.product_card_img_mode == 'carousel' %}
+      <div 
+        id="carousel-{{ section.id }}-{{ product.id }}"
+        class="carousel {{ settings.product_card_carousel_transition }} {{ settings.product_card_img_border }}"
+        style="--controls-color-rgb: {{ settings.product_card_carousel_controls_color | prepend: 'var(--bs-' | append: '-rgb)' }}">
+        <div class="carousel-inner">
+          {% for image in product.images limit: 5 %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              {% render 'image-url', img: image, ratio: settings.product_card_img_ratio %}
+            </div>
+          {% endfor %}
+        </div>
+        {% if product.images.size > 1 %}
+          <div class="">
+            <button 
+              class="carousel-control carousel-control-prev" 
+              type="button" 
+              data-bs-target="#carousel-{{ section.id }}-{{ product.id }}" 
+              data-bs-slide="prev"
+              aria-label="{{ 'general.accessibility.previous' | t }}">
+              {% render 'svg-icons', icon: 'chevron-left', stroke_width: 1.5 %}
+            </button>
+            <button 
+              class="carousel-control carousel-control-next" 
+              type="button" 
+              data-bs-target="#carousel-{{ section.id }}-{{ product.id }}" 
+              data-bs-slide="next"
+              aria-label="{{ 'general.accessibility.next' | t }}">
+              {% render 'svg-icons', icon: 'chevron-right', stroke_width: 1.5 %}
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      {% render 'image-url', img: product.featured_image, ratio: settings.product_card_img_ratio, class: settings.product_card_img_border %}
+    {% endif %}
+  </div>
+{% else %}
+  <div class="product-card-img-wrapper mb-4"> 
+     {{ 'product-1' | placeholder_svg_tag: 'img-thumbnail' }}
+  </div>
+{% endif %}

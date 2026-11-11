@@ -1,0 +1,64 @@
+<div class="product-card cart-upsells-item">
+  <div class="row mx-n3 align-items-center">
+    <div class="col-6 px-3">
+      <a href="{{ product.url }}" tabindex="-1">
+        <div class="product-card-img-wrapper img-wrapper">
+          {% render 'image-url', img: product.featured_image, ratio: settings.product_card_img_ratio, class: settings.product_card_img_border %}
+        </div>
+      </a>
+    </div>
+    <div class="col-12 px-3">
+      <h4 class="product-card-title cart-upsells-item-title h6 mb-1">
+        <a href="{{ product.url }}" class="link-dark text-decoration-none">
+          {{ product.title }}
+        </a>
+      </h4>
+
+      <div class="mb-3">
+        {% render 'product-rating-badge', product: product %}
+      </div>
+
+      {% if product.has_only_default_variant %}
+        {% render 'product-card-price', product: product %}
+      {% endif %}
+      
+      <product-form>
+        {% form 'product', product, data-productid: product.id %}
+          {% if product.has_only_default_variant %}
+            <input type="hidden" name="id" data-productid="{{ product.id }}" value="{{ product.first_available_variant.id }}">
+          {% else %}
+            <select 
+              class="form-select form-select-sm mb-3"
+              name="id" 
+              aria-label="{{ 'product.select_variant' | t }}">
+              {% unless product.available %}
+                <option>
+                  {{ 'product.sold_out' | t }}
+                </option>
+              {% endunless %}
+              {% for variant in product.variants %}
+                <option 
+                  value="{{ variant.id }}" 
+                  data-variant-image="{%- if variant.image -%}{%- render 'image-url', img: variant.image, ratio: settings.product_card_img_ratio, only_src: true -%}{%- endif -%}"
+                  {% unless variant.available %}disabled{% endunless %}>
+                  {{ variant.title }} - {{ variant.price | money_without_trailing_zeros }}
+                </option>
+              {% endfor %}
+            </select>
+          {% endif %}
+          <button
+            class="btn btn-atc btn-sm {{ settings.cart_upsells_btn_color }}"
+            type="submit"
+            name="add"
+            {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}
+              {{ 'product.add_to_cart' | t }}
+            {% else %}
+              {{ 'product.sold_out' | t }}
+            {% endif %}
+          </button>
+        {% endform %}
+      </product-form>
+    </div>
+  </div>
+</div>

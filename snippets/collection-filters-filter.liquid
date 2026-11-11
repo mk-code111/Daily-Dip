@@ -1,0 +1,143 @@
+<div class="collection-filters-filter" data-filter-label="{{ filter.label }}">
+  {% case filter.type %}
+    {% when 'boolean' %}
+      <ul 
+        class="list-unstyled mb-0"
+        aria-label="{{ filter.label }}">
+        <li class="form-check">
+          <input 
+            type="checkbox" 
+            id="filter-{{ filter.param_name }}-{{ filter.true_value.value }}-{{ suffix }}"
+            class="form-check-input" 
+            name="{{ filter.param_name }}" 
+            value="{{ filter.true_value.value }}"
+            {% if filter.true_value.active %}checked{% endif %}
+            {% if filter.true_value.count == 0 and filter.true_value.active == false %}disabled{% endif %}>
+          <label 
+            class="form-check-label" 
+            for="filter-{{ filter.param_name }}-{{ filter.true_value.value }}-{{ suffix }}">
+            {{ filter.true_value.label }} ({{ filter.true_value.count }})
+          </label>
+        </li>
+        <li class="form-check">
+          <input 
+            type="checkbox" 
+            id="filter-{{ filter.param_name }}-{{ filter.false_value.value }}-{{ suffix }}"
+            class="form-check-input" 
+            name="{{ filter.param_name }}" 
+            value="{{ filter.false_value.value }}"
+            {% if filter.false_value.active %}checked{% endif %}
+            {% if filter.false_value.count == 0 and filter.false_value.active == false %}disabled{% endif %}>
+          <label 
+            class="form-check-label" 
+            for="filter-{{ filter.param_name }}-{{ filter.false_value.value }}-{{ suffix }}">
+            <div class="d-flex text-nowrap">
+              <span>{{ filter.false_value.label }}</span>
+              <span class="ms-2">({{ filter.false_value.count }})</span>
+            </div>
+          </label>
+        </li>
+      </ul>
+    {% when 'list' %}
+      <ul 
+        class="list-unstyled mb-0"
+        aria-label="{{ filter.label }}">
+        {% for filter_value in filter.values %}
+          <li class="form-check">
+            <input 
+              type="checkbox" 
+              id="filter-{{ filter.param_name }}-{{ forloop.index }}-{{ suffix }}"
+              class="form-check-input" 
+              name="{{ filter_value.param_name }}" 
+              value="{{ filter_value.value }}"
+              {% if filter_value.active -%}checked{%- endif %}
+              {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
+            <label 
+              class="form-check-label" 
+              for="filter-{{ filter.param_name }}-{{ forloop.index }}-{{ suffix }}">
+              <div class="d-flex align-items-center text-nowrap">
+                {% if section.settings.filters_color_swatches contains filter.label %}
+                  {% liquid
+                    assign swatch_img = filter_value.label | handleize | prepend: 'swatch-' | append: '.png'
+                  %}
+                  <img
+                    class="swatch-custom-image"
+                    src="{{ swatch_img | file_img_url: '30x30', crop: 'center' }}"
+                    alt=""
+                    width="12"
+                    height="12"
+                    loading="lazy"
+                    aria-hidden="true">
+                {% endif %}
+                <span>{{ filter_value.label | escape }}</span>
+                <span class="ms-2">({{ filter_value.count }})</span>
+              </div>
+            </label>
+          </li>
+        {% endfor %}
+      </ul>
+    {% when 'price_range' %}
+      {% liquid                                           
+        if filter.min_value.value
+          assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', ''
+        else 
+          assign filter_min_value = 0
+        endif
+        if filter.max_value.value
+          assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', ''
+        else 
+          assign filter_max_value = filter.range_max | money_without_currency | replace: ',', ''
+        endif
+      %}
+      <div 
+        class="filter-price-group row mx-n2 mb-2" 
+        aria-label="{{ filter.label }}">
+        <div class="col-9 px-2">
+          <div class="input-group">
+            <span class="input-group-text">
+              {{ cart.currency.symbol }}
+            </span>
+            <input 
+              class="form-control"
+              name="{{ filter.min_value.param_name }}"
+              value="{{ filter_min_value }}"
+              type="number"
+              min="0"
+              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+              placeholder="{{ 'collection.filters.from' | t }}"
+              aria-label=" {{ 'collection.filters.from' | t }}">
+          </div>
+        </div>
+        <div class="col-9 px-2">
+          <div class="input-group">
+            <span class="input-group-text">
+              {{ cart.currency.symbol }}
+            </span>
+            <input 
+              class="form-control"
+              name="{{ filter.max_value.param_name }}"
+              value="{{ filter_max_value }}"
+              type="number"
+              min="0"
+              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+              placeholder="{{ 'collection.filters.to' | t }}"
+              aria-label="{{ 'collection.filters.to' | t }}">
+          </div>
+        </div>
+      </div>
+      <div 
+        class="filter-price-group-slider mt-7 mb-4"
+        data-range-min="0"
+        data-range-max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+        data-min-value="{{ filter_min_value }}"
+        data-max-value="{{ filter_max_value }}"
+        data-vendor-css="{{ 'vendor-nouislider.min.css' | asset_url }}"
+        data-vendor-js="{{ 'vendor-nouislider.min.js' | asset_url }}">
+      </div>
+      {% comment %} 
+        <p class="small text-muted text-center mt-4 mb-0">
+          {{ 'collection.filters.max_range_notice' | t: value: max_range_money }}
+        </p> 
+      {% endcomment %}
+  {% endcase %}
+</div>

@@ -1,0 +1,36 @@
+{% if settings.cart_discount %} 
+  <div class="collapse-wrapper">
+    <button 
+      class="" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#cart-discount-collapse" 
+      aria-expanded="false" 
+      aria-controls="cart-discount-collapse">
+      <div class="d-flex align-items-center">
+        {% render 'svg-icons', icon: 'tag', size: 16, class: 'me-4' %}
+        {{ 'cart.discount.title' | t }}
+      </div>
+      {% render 'svg-icons', icon: 'chevron-down', size: 18 %}
+    </button>
+    <div id="cart-discount-collapse" class="collapse">
+      <div class="collapse-inner">
+        <cart-discount class="cart-discount">
+          <div class="input-group input-group-sm">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="{{ 'cart.discount.label' | t }}" 
+              aria-label="{{ 'cart.discount.label' | t }}">
+            <button 
+              class="btn btn-primary d-flex align-items-center ps-5" 
+              type="button">
+              {{ 'cart.discount.button' | t }}
+              {% render 'svg-icons', icon: 'arrow-right', size: 16, class: 'ms-2', stroke_width: 1.5 %}
+            </button>
+          </div>
+        </cart-discount>
+      </div>
+    </div>
+  </div>
+{% endif %}

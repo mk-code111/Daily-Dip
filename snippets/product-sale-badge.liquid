@@ -1,0 +1,22 @@
+{% if product.available == false %} 
+  <span class="product-sold-out-badge badge"
+    {% if current_variant.available %}hidden{% endif %}>
+    {{ 'product.sold_out' | t }}
+  </span>  
+{% elsif product.compare_at_price > product.price %}
+  <span 
+    class="product-sale-badge badge"
+    data-discount-type="{{ settings.product_card_badge_discount_type }}"> 
+    {% if product.compare_at_price > 0 %}
+      {% if settings.product_card_badge_discount_type == 'percentage' %} 
+        <span class="visually-hidden">
+          {{ 'product.save' | t }} 
+        </span>
+        {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round | prepend: '-' | append: '%' }}
+      {% else %}
+        {{ 'product.save' | t }} 
+        {{ product.compare_at_price | minus: product.price | money_without_trailing_zeros }}
+      {% endif %}
+    {% endif %}
+  </span>
+{% endif %}
