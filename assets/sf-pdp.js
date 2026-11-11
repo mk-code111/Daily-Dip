@@ -1,8 +1,49 @@
 /* SF PDP — DailyDip product page. Self-contained (no theme JS dependency). */
 (() => {
-  if (customElements.get('sf-pdp-main')) return;
+  if (window.SfCart) return;
 
   const root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+
+  /* ---------- Shared cart helpers ---------- */
+  const SfCart = {
+    async add(items) {
+      const res = await fetch(root + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items, sections: 'offcanvas-cart,cart-count-badge', sections_url: window.location.pathname })
+      });
+      const data = await res.json();
+      if (!res.ok || data.status) throw new Error(data.description || data.message || 'Could not add to cart');
+      this.render(data.sections || {});
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { source: 'sf-pdp', items } }));
+      return data;
+    },
+
+    render(sections) {
+      const parse = (html) => new DOMParser().parseFromString(html, 'text/html');
+      if (sections['offcanvas-cart']) {
+        const fresh = parse(sections['offcanvas-cart']).getElementById('offcanvas-cart');
+        const current = document.getElementById('offcanvas-cart');
+        if (fresh && current) current.innerHTML = fresh.innerHTML;
+      }
+      if (sections['cart-count-badge']) {
+        const fresh = parse(sections['cart-count-badge']).querySelector('.cart-count-badge');
+        if (fresh) document.querySelectorAll('.cart-count-badge').forEach((b) => { b.outerHTML = fresh.outerHTML; });
+      }
+    },
+
+    open() {
+      const el = document.getElementById('offcanvas-cart');
+      if (!el) { window.location.href = root + 'cart'; return; }
+      if (window.bootstrap && bootstrap.Offcanvas) {
+        bootstrap.Offcanvas.getOrCreateInstance(el).show();
+      } else {
+        const trigger = document.querySelector('[href="#offcanvas-cart"], [data-bs-target="#offcanvas-cart"]');
+        if (trigger) trigger.click();
+      }
+    }
+  };
+  window.SfCart = SfCart;
 
   class SfPdpMain extends HTMLElement {
     connectedCallback() {
@@ -177,54 +218,15 @@
       if (btn) btn.setAttribute('aria-busy', 'true');
 
       try {
-        const res = await fetch(root + 'cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            items: [{ id: v.id, quantity: this.qty }],
-            sections: 'offcanvas-cart,cart-count-badge',
-            sections_url: window.location.pathname
-          })
-        });
-        const data = await res.json();
-        if (!res.ok || data.status) throw new Error(data.description || data.message || 'Could not add to cart');
-
+        await SfCart.add([{ id: v.id, quantity: this.qty }]);
         if (action === 'checkout') { window.location.href = root + 'checkout'; return; }
         if (action === 'cart') { window.location.href = root + 'cart'; return; }
-
-        this.renderCart(data.sections || {});
         this.flash(btn);
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { source: 'sf-pdp', variantId: v.id } }));
-        if (action === 'drawer') this.openDrawer();
+        if (action === 'drawer') SfCart.open();
       } catch (err) {
         this.showError(err.message);
       } finally {
         if (btn) btn.removeAttribute('aria-busy');
-      }
-    }
-
-    renderCart(sections) {
-      const parse = (html) => new DOMParser().parseFromString(html, 'text/html');
-
-      if (sections['offcanvas-cart']) {
-        const fresh = parse(sections['offcanvas-cart']).getElementById('offcanvas-cart');
-        const current = document.getElementById('offcanvas-cart');
-        if (fresh && current) current.innerHTML = fresh.innerHTML;
-      }
-      if (sections['cart-count-badge']) {
-        const fresh = parse(sections['cart-count-badge']).querySelector('.cart-count-badge');
-        if (fresh) document.querySelectorAll('.cart-count-badge').forEach((b) => { b.outerHTML = fresh.outerHTML; });
-      }
-    }
-
-    openDrawer() {
-      const el = document.getElementById('offcanvas-cart');
-      if (!el) { window.location.href = root + 'cart'; return; }
-      if (window.bootstrap && bootstrap.Offcanvas) {
-        bootstrap.Offcanvas.getOrCreateInstance(el).show();
-      } else {
-        const trigger = document.querySelector('[href="#offcanvas-cart"], [data-bs-target="#offcanvas-cart"]');
-        if (trigger) trigger.click();
       }
     }
 
@@ -292,5 +294,48 @@
     }
   }
 
-  customElements.define('sf-pdp-main', SfPdpMain);
+  if (!customElements.get('sf-pdp-main')) customElements.define('sf-pdp-main', SfPdpMain);
+
+  /* ---------- Related products ---------- */
+  class SfPdpRelated extends HTMLElement {
+    connectedCallback() {
+      this.addEventListener('click', (e) => this.onClick(e));
+      if (this.querySelector('.sf-rel__track') || !this.dataset.url) return;
+      const load = () => {
+        fetch(this.dataset.url)
+          .then((r) => r.text())
+          .then((html) => {
+            const fresh = new DOMParser().parseFromString(html, 'text/html').querySelector('sf-pdp-related');
+            if (fresh && fresh.innerHTML.trim()) this.innerHTML = fresh.innerHTML;
+          })
+          .catch(() => {});
+      };
+      if (!('IntersectionObserver' in window)) return load();
+      const io = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        load();
+      }, { rootMargin: '0px 0px 400px 0px' });
+      io.observe(this);
+    }
+
+    async onClick(e) {
+      const btn = e.target.closest('[data-sf-quick-add]');
+      if (!btn) return;
+      btn.setAttribute('aria-busy', 'true');
+      try {
+        await SfCart.add([{ id: Number(btn.dataset.sfQuickAdd), quantity: 1 }]);
+        btn.textContent = '✓';
+        setTimeout(() => { btn.textContent = btn.dataset.label; }, 1400);
+        SfCart.open();
+      } catch (err) {
+        btn.textContent = err.message;
+        setTimeout(() => { btn.textContent = btn.dataset.label; }, 2500);
+      } finally {
+        btn.removeAttribute('aria-busy');
+      }
+    }
+  }
+
+  if (!customElements.get('sf-pdp-related')) customElements.define('sf-pdp-related', SfPdpRelated);
 })();

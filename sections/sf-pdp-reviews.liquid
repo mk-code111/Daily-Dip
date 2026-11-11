@@ -13,7 +13,9 @@
 </style>
 
 <div class="sf-pdp sf-pdp-reviews" id="sf-pdp-reviews">
-  <div class="sf-pdp__wrap sf-pdp__wrap--narrow">
+  <div class="sf-pdp__wrap">
+   <div class="sf-sec">
+    <div class="sf-reviews__head">
     {%- if section.settings.heading != blank -%}
       <h2 class="sf-h2">{{ section.settings.heading }}</h2>
     {%- endif -%}
@@ -27,6 +29,7 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
+    </div>
 
     {%- for block in section.blocks -%}
       <div {{ block.shopify_attributes }}>{% render block %}</div>
@@ -35,6 +38,7 @@
         <p class="sf-desc">Add your reviews app block here: <b>Add block → Apps</b>.</p>
       {%- endif -%}
     {%- endfor -%}
+   </div>
   </div>
 </div>
 
