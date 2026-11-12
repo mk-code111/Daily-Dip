@@ -94,7 +94,16 @@
 }
 .sf-gal__arrow--prev { left: 10px; } .sf-gal__arrow--next { right: 10px; }
 @media (hover: hover) and (min-width: 750px) { .sf-gal__arrow { display: grid; } }
-.sf-box.sf-gal { box-shadow: 0 18px 30px -16px rgba(70, 64, 40, .35), 0 4px 12px rgba(70, 64, 40, .08); }
+/* Gallery frame: no black borders; soft translucent ring around the image (like a frosted pill header) */
+.sf-box.sf-gal {
+  border: 0; border-radius: 28px; padding: 10px;
+  background: rgba(70, 64, 40, .07);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), 0 18px 34px -18px rgba(70, 64, 40, .35);
+}
+.sf-box.sf-gal .sf-gal__stage {
+  border: 0; border-radius: 20px;
+  box-shadow: 0 0 0 1px rgba(70, 64, 40, .10), 0 2px 10px rgba(70, 64, 40, .10);
+}
 .sf-gal__thumbs { display: flex; gap: 8px; margin-top: 6px; overflow-x: auto; padding: 6px 6px 16px; scrollbar-width: none; }
 .sf-gal__thumbs::-webkit-scrollbar { display: none; }
 .sf-gal__thumb {
