@@ -153,7 +153,7 @@
       const save = this.querySelector('[data-sf-save]');
       if (save) { save.textContent = v.save; save.hidden = !v.save; }
       const sv = this.querySelector('[data-sf-sticky-variant]');
-      if (sv) sv.textContent = v.title + ' · ';
+      if (sv) sv.textContent = v.title;
 
       this.updateStock(v);
       this.updateButtons(v);
@@ -182,8 +182,7 @@
         this.atc.textContent = v.available ? this.atc.dataset.label : this.atc.dataset.soldout;
       }
       if (this.buyNow) this.buyNow.disabled = !v.available;
-      const sticky = this.querySelector('[data-sf-sticky-btn]');
-      if (sticky) sticky.disabled = !v.available;
+      this.querySelectorAll('[data-sf-sticky-btn], [data-sf-sticky-buy]').forEach((b) => { b.disabled = !v.available; });
     }
 
     /* ---------- Quantity ---------- */
@@ -286,19 +285,23 @@
     /* ---------- Sticky bar ---------- */
     initSticky() {
       const bar = this.querySelector('[data-sf-sticky]');
-      if (!bar || !this.atc || !('IntersectionObserver' in window)) return;
-      const btn = bar.querySelector('[data-sf-sticky-btn]');
+      const target = this.form || this.atc;
+      if (!bar || !target || !('IntersectionObserver' in window)) return;
+      const atcBtn = bar.querySelector('[data-sf-sticky-btn]');
+      const buyBtn = bar.querySelector('[data-sf-sticky-buy]');
+      const btns = [atcBtn, buyBtn].filter(Boolean);
 
       this.stickyObserver = new IntersectionObserver(([entry]) => {
-        // Show only once the main button has scrolled above the viewport.
+        // Show only once the main buy buttons have scrolled above the viewport.
         const show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
         bar.classList.toggle('is-visible', show);
         bar.setAttribute('aria-hidden', show ? 'false' : 'true');
-        btn.tabIndex = show ? 0 : -1;
+        btns.forEach((b) => { b.tabIndex = show ? 0 : -1; });
       });
-      this.stickyObserver.observe(this.atc);
+      this.stickyObserver.observe(target);
 
-      btn.addEventListener('click', () => this.addToCart(btn, this.dataset.cartAction));
+      if (atcBtn) atcBtn.addEventListener('click', () => this.addToCart(atcBtn, this.dataset.cartAction));
+      if (buyBtn) buyBtn.addEventListener('click', () => this.addToCart(buyBtn, 'checkout'));
     }
   }
 

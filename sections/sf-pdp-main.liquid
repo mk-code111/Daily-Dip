@@ -390,14 +390,32 @@
   </div>
 
   {%- if section.settings.sticky != 'off' -%}
-    <div class="sf-sticky {% if section.settings.sticky == 'mobile' %}sf-sticky--mobile-only{% endif %}" data-sf-sticky aria-hidden="true">
+    {%- liquid
+      assign sticky_btns = section.settings.sticky_buttons | default: 'both'
+    -%}
+    <div class="sf-sticky sf-sticky--{{ sticky_btns }} {% if section.settings.sticky == 'mobile' %}sf-sticky--mobile-only{% endif %}" data-sf-sticky aria-hidden="true">
       <div class="sf-sticky__info">
         <div class="sf-sticky__name">{{ product.title }}</div>
-        <div class="sf-sticky__price"><span data-sf-sticky-variant>{% unless product.has_only_default_variant %}{{ current.title }} · {% endunless %}</span><span data-sf-price>{{ current.price | money_without_trailing_zeros }}</span></div>
+        <div class="sf-sticky__price"><span data-sf-sticky-variant>{% unless product.has_only_default_variant %}{{ current.title }}{% endunless %}</span><span data-sf-price>{{ current.price | money_without_trailing_zeros }}</span></div>
       </div>
-      <button type="button" class="sf-btn" data-sf-sticky-btn tabindex="-1" {% unless current.available %}disabled{% endunless %}>
-        {{ section.settings.sticky_label }}
-      </button>
+      <div class="sf-sticky__btns">
+        {%- unless sticky_btns == 'buy' -%}
+          <button type="button" class="sf-btn" data-sf-sticky-btn tabindex="-1" {% unless current.available %}disabled{% endunless %}>
+            {{ section.settings.sticky_label }}
+          </button>
+        {%- endunless -%}
+        {%- unless sticky_btns == 'atc' -%}
+          <button
+            type="button"
+            class="sf-btn sf-btn--alt{% if section.settings.sticky_jump %} sf-btn--jump{% endif %}"
+            data-sf-sticky-buy
+            tabindex="-1"
+            {% unless current.available %}disabled{% endunless %}
+          >
+            {{ section.settings.sticky_buy_label }}
+          </button>
+        {%- endunless -%}
+      </div>
     </div>
   {%- endif -%}
 </sf-pdp-main>
@@ -443,7 +461,17 @@
         { "value": "off", "label": "Off" }
       ]
     },
-    { "type": "text", "id": "sticky_label", "label": "Sticky bar button", "default": "Add to cart" },
+    {
+      "type": "select", "id": "sticky_buttons", "label": "Sticky bar buttons", "default": "both",
+      "options": [
+        { "value": "both", "label": "Add to cart + Buy it now" },
+        { "value": "buy", "label": "Buy it now only" },
+        { "value": "atc", "label": "Add to cart only" }
+      ]
+    },
+    { "type": "text", "id": "sticky_label", "label": "Sticky add to cart text", "default": "Add to cart" },
+    { "type": "text", "id": "sticky_buy_label", "label": "Sticky buy it now text", "default": "Buy now" },
+    { "type": "checkbox", "id": "sticky_jump", "label": "Bounce sticky buy it now", "default": true },
     { "type": "text", "id": "save_label", "label": "Savings text", "default": "Save [percent]%", "info": "[percent] is replaced with the discount." },
     { "type": "header", "content": "Colours" },
     { "type": "paragraph", "content": "Shared by every SF product section on the page." },

@@ -285,7 +285,24 @@
 .sf-sticky__info { min-width: 0; flex: 1; }
 .sf-sticky__name { font: 600 14px/1.2 var(--sf-font-head); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sf-sticky__price { font: 700 16px var(--sf-font-head); color: var(--sf-green); }
-.sf-sticky .sf-btn { flex: none; font-size: 15px; padding: 10px 18px; box-shadow: 0 4px 0 var(--sf-ink); }
+.sf-sticky__btns { display: flex; gap: 8px; flex: none; }
+[data-sf-sticky-variant]:not(:empty)::after { content: " · "; }
+.sf-sticky .sf-btn { flex: none; font-size: 15px; padding: 10px 18px; box-shadow: 0 4px 0 var(--sf-ink); white-space: nowrap; }
+.sf-sticky .sf-btn--alt { width: auto; margin-top: 0; }
+.sf-sticky .sf-btn:not([disabled]):active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sf-ink); }
+/* Two buttons on a phone: drop the product name, keep pack + price */
+@media (max-width: 480px) {
+  .sf-sticky--both { gap: 8px; padding-left: 10px; padding-right: 10px; }
+  .sf-sticky--both .sf-sticky__name { display: none; }
+  .sf-sticky--both .sf-sticky__price { font-size: 14px; line-height: 1.2; }
+  .sf-sticky--both [data-sf-sticky-variant]::after { content: none; }
+  .sf-sticky--both [data-sf-sticky-variant] { display: block; font: 500 11px/1.3 var(--sf-font-body); color: var(--sf-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sf-sticky--both .sf-btn { font-size: 13px; padding: 9px 12px; letter-spacing: .2px; }
+}
+@media (max-width: 350px) {
+  .sf-sticky--both .sf-btn { font-size: 12px; padding: 9px 9px; }
+  .sf-sticky--both .sf-sticky__btns { gap: 6px; }
+}
 @media (min-width: 768px) { .sf-sticky--mobile-only { display: none; } }
 @media (max-width: 767px) { body:has(.sf-sticky.is-visible) { padding-bottom: 76px; } }
 @media (min-width: 768px) { body:has(.sf-sticky.is-visible:not(.sf-sticky--mobile-only)) { padding-bottom: 76px; } }
@@ -458,7 +475,15 @@
 @keyframes sf-fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
 /* ---------- Sticky bar slide + button jump ---------- */
-.sf-sticky.is-visible .sf-btn--jump:not([disabled]) { animation: sf-jump 2.4s cubic-bezier(.28, .84, .42, 1) infinite; }
+.sf-sticky .sf-btn--jump:not([disabled]) { animation: sf-jump-sm 2.4s cubic-bezier(.28, .84, .42, 1) infinite; }
+.sf-sticky .sf-btn--jump:hover, .sf-sticky .sf-btn--jump:focus-visible, .sf-sticky .sf-btn--jump:active { animation: none; }
+@keyframes sf-jump-sm {
+  0%, 60%, 100% { transform: translateY(0); box-shadow: 0 4px 0 var(--sf-ink); }
+  70% { transform: translateY(-5px); box-shadow: 0 8px 0 var(--sf-ink); }
+  78% { transform: translateY(0); box-shadow: 0 4px 0 var(--sf-ink); }
+  84% { transform: translateY(-2px); box-shadow: 0 6px 0 var(--sf-ink); }
+  90% { transform: translateY(0); box-shadow: 0 4px 0 var(--sf-ink); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .sf-pdp *, .sf-pdp *::before, .sf-pdp *::after, .sf-sticky, .sf-sticky * {

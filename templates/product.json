@@ -124,7 +124,10 @@
         "c_mute": "#6b6557",
         "load_fonts": true,
         "pt": 16,
-        "pb": 24
+        "pb": 24,
+        "sticky_buttons": "both",
+        "sticky_buy_label": "Buy now",
+        "sticky_jump": true
       }
     },
     "banner": {
