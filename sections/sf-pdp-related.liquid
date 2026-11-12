@@ -26,7 +26,7 @@
         <div class="sf-rel__track" style="--sf-rel-cols: {{ recommendations.products_count | at_most: 4 }};">
           {%- for p in recommendations.products -%}
             {%- assign pv = p.selected_or_first_available_variant -%}
-            <div class="sf-box sf-card">
+            <div class="sf-box sf-card sf-reveal" style="--sf-delay: {{ forloop.index0 | times: 0.08 }}s;">
               <a class="sf-card__img" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
                 {%- if p.featured_image -%}
                   {{ p.featured_image | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 1100px) 270px, (min-width: 768px) 30vw, 46vw', loading: 'lazy', alt: p.featured_image.alt | default: p.title }}

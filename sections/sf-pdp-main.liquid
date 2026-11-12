@@ -312,7 +312,7 @@
                     </button>
                   </div>
                   {%- if block.settings.show_buy_now -%}
-                    <button type="button" class="sf-btn sf-btn--alt" data-sf-buynow {% unless current.available %}disabled{% endunless %}>
+                    <button type="button" class="sf-btn sf-btn--alt{% if block.settings.jump_buy_now %} sf-btn--jump{% endif %}" data-sf-buynow {% unless current.available %}disabled{% endunless %}>
                       {{ block.settings.buy_now_label }}
                     </button>
                   {%- endif -%}
@@ -517,7 +517,8 @@
         { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
         { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
         { "type": "checkbox", "id": "show_buy_now", "label": "Show buy it now", "default": true, "info": "Adds the selected pack and goes straight to checkout." },
-        { "type": "text", "id": "buy_now_label", "label": "Buy it now text", "default": "Buy it now" }
+        { "type": "text", "id": "buy_now_label", "label": "Buy it now text", "default": "Buy it now" },
+        { "type": "checkbox", "id": "jump_buy_now", "label": "Bounce animation on buy it now", "default": true }
       ]
     },
     {

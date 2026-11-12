@@ -62,7 +62,8 @@
             "atc_label": "Add to cart",
             "soldout_label": "Sold out",
             "show_buy_now": true,
-            "buy_now_label": "Buy it now"
+            "buy_now_label": "Buy it now",
+            "jump_buy_now": true
           }
         },
         "ship": {

@@ -234,6 +234,11 @@
     }
 
     flash(btn) {
+      if (btn) {
+        btn.classList.remove('sf-pop');
+        void btn.offsetWidth;
+        btn.classList.add('sf-pop');
+      }
       if (!btn || !this.dataset.addedLabel) return;
       const original = btn.textContent;
       btn.textContent = this.dataset.addedLabel;
@@ -309,7 +314,10 @@
           .then((r) => r.text())
           .then((html) => {
             const fresh = new DOMParser().parseFromString(html, 'text/html').querySelector('sf-pdp-related');
-            if (fresh && fresh.innerHTML.trim()) this.innerHTML = fresh.innerHTML;
+            if (fresh && fresh.innerHTML.trim()) {
+              this.innerHTML = fresh.innerHTML;
+              if (window.SfReveal) window.SfReveal(this);
+            }
           })
           .catch(() => {});
       };
@@ -341,4 +349,35 @@
   }
 
   if (!customElements.get('sf-pdp-related')) customElements.define('sf-pdp-related', SfPdpRelated);
+
+  /* ---------- Scroll reveal ----------
+     Only content that starts below the fold is hidden and faded in,
+     so nothing above the fold ever flashes. */
+  const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealIO = !reduceMotion && 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.remove('sf-reveal--pending');
+          e.target.classList.add('sf-reveal--in');
+          revealIO.unobserve(e.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px' })
+    : null;
+
+  const initReveal = (scope) => {
+    if (!revealIO) return;
+    scope.querySelectorAll('.sf-reveal:not([data-sf-revealed])').forEach((el) => {
+      el.dataset.sfRevealed = '';
+      if (el.getBoundingClientRect().top > window.innerHeight) {
+        el.classList.add('sf-reveal--pending');
+        revealIO.observe(el);
+      }
+    });
+  };
+  window.SfReveal = initReveal;
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => initReveal(document));
+  else initReveal(document);
+  document.addEventListener('shopify:section:load', (e) => initReveal(e.target));
 })();

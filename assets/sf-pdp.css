@@ -346,8 +346,125 @@
 
 .sf-pdp .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+
+/* ==========================================================================
+   Motion & hover effects
+   ========================================================================== */
+
+/* ---------- Buttons: lift, deeper shadow, shine sweep ---------- */
+.sf-btn { position: relative; overflow: hidden; isolation: isolate; }
+.sf-btn::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+@media (hover: hover) {
+  .sf-btn:not([disabled]):hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--sf-ink); }
+  .sf-btn:not([disabled]):hover::after { animation: sf-shine .7s ease forwards; }
+  .sf-card .sf-btn:not([disabled]):hover { box-shadow: 0 6px 0 var(--sf-ink); }
+  .sf-sticky .sf-btn:not([disabled]):hover { box-shadow: 0 6px 0 var(--sf-ink); }
+}
+.sf-btn:not([disabled]):active { transform: translateY(5px); box-shadow: 0 1px 0 var(--sf-ink); transition-duration: .05s; }
+@keyframes sf-shine { to { transform: translateX(120%); } }
+
+/* Added-to-cart pop */
+.sf-btn.sf-pop { animation: sf-pop .45s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes sf-pop { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+
+/* ---------- Buy it now: small continuous jump ---------- */
+.sf-btn--jump:not([disabled]) { animation: sf-jump 2.4s cubic-bezier(.28, .84, .42, 1) infinite; }
+@keyframes sf-jump {
+  0%, 60%, 100% { transform: translateY(0); box-shadow: 0 6px 0 var(--sf-ink); }
+  70% { transform: translateY(-6px); box-shadow: 0 11px 0 var(--sf-ink); }
+  78% { transform: translateY(0); box-shadow: 0 6px 0 var(--sf-ink); }
+  84% { transform: translateY(-3px); box-shadow: 0 9px 0 var(--sf-ink); }
+  90% { transform: translateY(0); box-shadow: 0 6px 0 var(--sf-ink); }
+}
+/* Pause the jump while the shopper is interacting with it */
+.sf-btn--jump:hover, .sf-btn--jump:focus-visible, .sf-btn--jump:active { animation: none; }
+
+/* ---------- Quantity buttons ---------- */
+.sf-qty button { transition: background .15s, transform .1s; }
+@media (hover: hover) { .sf-qty button:hover { background: var(--sf-chip); } }
+.sf-qty button:active { transform: scale(.85); }
+
+/* ---------- Pack cards ---------- */
+.sf-pack__card { transition: transform .15s, box-shadow .15s, background .15s; }
+@media (hover: hover) {
+  .sf-pack:hover input:not(:checked):not(:disabled) + .sf-pack__card { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--sf-ink); }
+  .sf-pack:hover .sf-pack__img { transform: scale(1.06); }
+}
+.sf-pack__img { transition: transform .3s; }
+.sf-pack input:checked + .sf-pack__card .sf-pack__badge { animation: sf-wiggle .5s ease; }
+@keyframes sf-wiggle {
+  0%, 100% { transform: translateX(-50%) rotate(0); }
+  25% { transform: translateX(-50%) rotate(-5deg); }
+  60% { transform: translateX(-50%) rotate(4deg); }
+}
+
+/* ---------- Chips & trust icons ---------- */
+.sf-chip, .sf-trust > div { transition: transform .15s, box-shadow .15s; }
+@media (hover: hover) {
+  .sf-chip:hover, .sf-trust > div:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--sf-ink); }
+  .sf-trust > div:hover .sf-trust__icon { animation: sf-bob .6s ease; }
+  .sf-chip:hover .sf-chip__tick { transform: rotate(360deg) scale(1.1); }
+}
+.sf-chip__tick { transition: transform .45s; }
+@keyframes sf-bob { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px) rotate(-8deg); } 70% { transform: translateY(1px) rotate(4deg); } }
+
+/* ---------- Save badge pulse ---------- */
+.sf-price__save { animation: sf-tilt 3s ease-in-out infinite; }
+@keyframes sf-tilt { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(2deg) scale(1.04); } }
+
+/* ---------- Tabs ---------- */
+.sf-tab { transition: transform .12s, box-shadow .12s, background .15s; }
+@media (hover: hover) { .sf-tab[aria-selected="false"]:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--sf-ink); } }
+.sf-tabs__panel:not([hidden]) { animation: sf-fade-up .3s ease; }
+
+/* ---------- Gallery ---------- */
+.sf-gal__thumb { transition: transform .15s, box-shadow .15s; }
+@media (hover: hover) {
+  .sf-gal__thumb:hover { transform: translate(-1px, -2px); box-shadow: 3px 4px 0 var(--sf-ink); }
+  .sf-gal__arrow:hover { transform: translateY(-50%) scale(1.1); background: var(--sf-yellow); }
+}
+.sf-gal__arrow { transition: transform .15s, background .15s; }
+.sf-gal__tag { animation: sf-tag 2.8s ease-in-out infinite; transform-origin: left center; }
+@keyframes sf-tag { 0%, 85%, 100% { transform: rotate(0); } 90% { transform: rotate(-6deg); } 95% { transform: rotate(4deg); } }
+
+/* ---------- Accordion ---------- */
+.sf-acc summary::after { transition: transform .25s, background .15s; }
+.sf-acc details[open] summary::after { transform: rotate(180deg); }
+@media (hover: hover) {
+  .sf-acc summary:hover::after { background: var(--sf-yellow); transform: scale(1.12); }
+  .sf-acc details[open] summary:hover::after { transform: rotate(180deg) scale(1.12); }
+}
+.sf-acc details[open] .sf-acc__body { animation: sf-fade-up .3s ease; }
+
+/* ---------- Banner ---------- */
+.sf-banner__heading { animation: sf-float 4s ease-in-out infinite; }
+@keyframes sf-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.sf-banner__img { transition: transform 6s ease; }
+@media (hover: hover) { .sf-banner:hover .sf-banner__img { transform: scale(1.06); } }
+
+/* ---------- Related cards ---------- */
+.sf-card { transition: transform .18s, box-shadow .18s; }
+@media (hover: hover) { .sf-card:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0 var(--sf-ink); } }
+.sf-reviews__tags span { transition: background .15s, transform .15s; }
+@media (hover: hover) { .sf-reviews__tags span:hover { background: var(--sf-lime); transform: translateY(-2px); } }
+
+/* ---------- Scroll reveal (only for content below the fold) ---------- */
+.sf-reveal--pending { opacity: 0; transform: translateY(24px); }
+.sf-reveal--in { animation: sf-fade-up .6s cubic-bezier(.2, .7, .3, 1) both; animation-delay: var(--sf-delay, 0s); }
+@keyframes sf-fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Sticky bar slide + button jump ---------- */
+.sf-sticky.is-visible .sf-btn--jump:not([disabled]) { animation: sf-jump 2.4s cubic-bezier(.28, .84, .42, 1) infinite; }
+
 @media (prefers-reduced-motion: reduce) {
-  .sf-pdp *, .sf-sticky { transition: none !important; scroll-behavior: auto !important; }
+  .sf-pdp *, .sf-pdp *::before, .sf-pdp *::after, .sf-sticky, .sf-sticky * {
+    transition: none !important; animation: none !important; scroll-behavior: auto !important;
+  }
+  .sf-reveal--pending { opacity: 1; transform: none; }
 }
 
 /* ---------- Related products ---------- */
