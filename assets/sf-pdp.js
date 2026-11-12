@@ -154,6 +154,8 @@
       if (save) { save.textContent = v.save; save.hidden = !v.save; }
       const sv = this.querySelector('[data-sf-sticky-variant]');
       if (sv) sv.textContent = v.title;
+      const si = this.querySelector('[data-sf-sticky-img]');
+      if (si && v.img) { si.removeAttribute('srcset'); si.src = v.img; }
 
       this.updateStock(v);
       this.updateButtons(v);

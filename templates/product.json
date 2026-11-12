@@ -110,7 +110,7 @@
         "img_fit": "cover",
         "after_add": "drawer",
         "added_label": "ADDED ✓",
-        "sticky": "mobile",
+        "sticky": "all",
         "sticky_label": "Add to cart",
         "save_label": "Save [percent]%",
         "c_bg": "#ffffff",
