@@ -48,7 +48,7 @@
           "settings": {
             "title": "Choose your pack",
             "columns": 3,
-            "show_images": false,
+            "show_images": true,
             "icons": "📦,🎁,🍃",
             "mrp_label": "MRP",
             "show_per_serving": true,
@@ -61,7 +61,7 @@
             "show_qty": true,
             "atc_label": "Add to cart",
             "soldout_label": "Sold out",
-            "show_buy_now": false,
+            "show_buy_now": true,
             "buy_now_label": "Buy it now"
           }
         },

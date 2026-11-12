@@ -23,7 +23,7 @@
         {%- if section.settings.heading != blank -%}
           <h2 class="sf-h2">{{ section.settings.heading }}</h2>
         {%- endif -%}
-        <div class="sf-rel__track" style="--sf-rel-cols: {{ section.settings.limit | at_most: 4 }};">
+        <div class="sf-rel__track" style="--sf-rel-cols: {{ recommendations.products_count | at_most: 4 }};">
           {%- for p in recommendations.products -%}
             {%- assign pv = p.selected_or_first_available_variant -%}
             <div class="sf-box sf-card">

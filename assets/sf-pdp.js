@@ -75,7 +75,10 @@
 
     setHeaderOffset() {
       const header = document.getElementById('header-group');
-      if (header) this.style.setProperty('--sf-header-h', header.offsetHeight + 'px');
+      if (!header) return;
+      const set = () => this.style.setProperty('--sf-header-h', header.offsetHeight + 'px');
+      set();
+      if ('ResizeObserver' in window) new ResizeObserver(set).observe(header);
     }
 
     /* ---------- Gallery ---------- */

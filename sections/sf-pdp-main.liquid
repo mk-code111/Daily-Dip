@@ -254,7 +254,15 @@
                             <span class="sf-pack__badge">{{ v.metafields.custom.badge }}</span>
                           {%- endif -%}
                           {%- if block.settings.show_images and v.featured_image -%}
-                            {{ v.featured_image | image_url: width: 160 | image_tag: class: 'sf-pack__img', loading: 'lazy', alt: '' }}
+                            <span class="sf-pack__media">
+                              {{ v.featured_image | image_url: width: 300 | image_tag:
+                                  class: 'sf-pack__img',
+                                  widths: '150, 220, 300',
+                                  sizes: '(min-width: 768px) 140px, 30vw',
+                                  loading: 'lazy',
+                                  alt: v.featured_image.alt | default: v.title
+                              }}
+                            </span>
                           {%- else -%}
                             {%- assign icon = icons[forloop.index0] | strip -%}
                             {%- if icon != blank -%}<span class="sf-pack__icon" aria-hidden="true">{{ icon }}</span>{%- endif -%}
@@ -494,8 +502,8 @@
       "settings": [
         { "type": "text", "id": "title", "label": "Heading", "default": "Choose your pack" },
         { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 4, "step": 1, "default": 3 },
-        { "type": "checkbox", "id": "show_images", "label": "Use variant images", "default": false, "info": "Off = emoji icons below." },
-        { "type": "text", "id": "icons", "label": "Emoji icons (comma separated, in variant order)", "default": "📦,🎁,🍃" },
+        { "type": "checkbox", "id": "show_images", "label": "Use variant images", "default": true, "info": "Shows each variant's image. Variants without an image fall back to the emoji below." },
+        { "type": "text", "id": "icons", "label": "Fallback emoji (comma separated, in variant order)", "default": "📦,🎁,🍃" },
         { "type": "text", "id": "mrp_label", "label": "MRP label", "default": "MRP" },
         { "type": "checkbox", "id": "show_per_serving", "label": "Show price per serving", "default": true, "info": "Needs a custom.servings number metafield on each variant." },
         { "type": "text", "id": "serving_label", "label": "Serving label", "default": "serving" },
@@ -508,7 +516,7 @@
         { "type": "checkbox", "id": "show_qty", "label": "Show quantity", "default": true },
         { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
         { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
-        { "type": "checkbox", "id": "show_buy_now", "label": "Show buy it now", "default": false },
+        { "type": "checkbox", "id": "show_buy_now", "label": "Show buy it now", "default": true, "info": "Adds the selected pack and goes straight to checkout." },
         { "type": "text", "id": "buy_now_label", "label": "Buy it now text", "default": "Buy it now" }
       ]
     },
