@@ -74,17 +74,8 @@
                   </h3>
                   {% render 'product-rating-badge', product: product %}
                   {% render 'product-card-price', product: product %}
-                  {% if settings.search_show_quick_view %}
-                    <product-quick-view-button>
-                      <button 
-                        class="btn btn-quick-view btn-sm {{ settings.search_quick_view_btn_color }}" 
-                        data-product-url="{{ product.url }}" 
-                        type="button"
-                        tabindex="-1">
-                        {{ 'product.quick_view' | t }}
-                      </button>
-                    </product-quick-view-button>
-                  {% endif %}
+                  {%- comment -%} Quick view replaced: the whole row links to the product page {%- endcomment -%}
+                  <span class="sf-search-view" aria-hidden="true">View product <span class="sf-search-view__arrow">&rarr;</span></span>
                 </div>
               </div>
             </a>
