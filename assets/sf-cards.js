@@ -180,13 +180,18 @@
       this.schedule();
     }
 
-    // phones use this to centre the side arrows on the product image (CSS decides)
+    // phones: put the side arrows in the gap between the product image and the
+    // benefits strip (or just below the image if there is no strip). CSS decides.
     alignArrows() {
       const stage = this.querySelector('.sf-car__stage');
-      const media = this.track.querySelector('.sf-car__slide:not([data-sf-clone]) .sf-pc__media');
+      const card = this.track.querySelector('.sf-car__slide:not([data-sf-clone]) .sf-pc__inner');
+      const media = card && card.querySelector('.sf-pc__media');
       if (!stage || !media) return;
-      const s = stage.getBoundingClientRect(), m = media.getBoundingClientRect();
-      this.style.setProperty('--sf-arrow-y', Math.round(m.top - s.top + m.height / 2) + 'px');
+      const s = stage.getBoundingClientRect();
+      const m = media.getBoundingClientRect();
+      const next = media.nextElementSibling;
+      const y = next ? (m.bottom + next.getBoundingClientRect().top) / 2 : m.bottom;
+      this.style.setProperty('--sf-arrow-y', Math.round(y - s.top) + 'px');
     }
 
     buildDots() {
