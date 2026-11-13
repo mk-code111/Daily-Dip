@@ -154,7 +154,8 @@
     build() {
       this.per = this.readPer();
       this.track.querySelectorAll('[data-sf-clone]').forEach((c) => c.remove());
-      this.canMove = this.n > this.per;
+      // with looping on, it can also scroll when the cards exactly fill the row
+      this.canMove = this.n > this.per || (this.wantLoop && this.n > 1 && this.n === this.per);
       this.loop = this.wantLoop && this.canMove;
       if (this.loop) {
         const mk = (s) => {
