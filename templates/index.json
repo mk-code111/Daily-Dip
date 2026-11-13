@@ -66,6 +66,64 @@
         "pb": 9
       }
     },
+    "sf_product_cards_cM7twj": {
+      "type": "sf-product-cards",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "name": "SF · Product cards",
+      "settings": {
+        "heading": "Pick your dip",
+        "subheading": "",
+        "product_list": [],
+        "collection": "bestsellers",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "load_fonts": true,
+        "c_bg": "#ffffff",
+        "pt": 32,
+        "pb": 40
+      }
+    },
     "featured_products_haJFj8": {
       "type": "featured-products",
       "blocks": {
@@ -167,64 +225,6 @@
         "media_full": false,
         "pt": 0,
         "pb": 0
-      }
-    },
-    "sf_product_cards_cM7twj": {
-      "type": "sf-product-cards",
-      "blocks": {
-        "benefit_qiXfqC": {
-          "type": "benefit",
-          "settings": {
-            "icon": "leaf",
-            "text": "Natural Ingredients"
-          }
-        },
-        "benefit_HqqpFN": {
-          "type": "benefit",
-          "settings": {
-            "icon": "drop",
-            "text": "Rich & Aromatic"
-          }
-        },
-        "benefit_y4y34L": {
-          "type": "benefit",
-          "settings": {
-            "icon": "cup",
-            "text": "Perfect for Daily Use"
-          }
-        }
-      },
-      "block_order": [
-        "benefit_qiXfqC",
-        "benefit_HqqpFN",
-        "benefit_y4y34L"
-      ],
-      "name": "SF · Product cards",
-      "settings": {
-        "heading": "Pick your dip",
-        "subheading": "",
-        "product_list": [],
-        "collection": "bestsellers",
-        "limit": 8,
-        "per_mobile": "1.5",
-        "per_tablet": 2.5,
-        "per_desktop": 4,
-        "per_wide": 4,
-        "loop": true,
-        "autoplay": true,
-        "speed": 3,
-        "show_arrows": true,
-        "show_dots": true,
-        "ratio": "1",
-        "card_arrows": true,
-        "show_discount": true,
-        "new_label": "NEW",
-        "atc_label": "Add to cart",
-        "soldout_label": "Sold out",
-        "load_fonts": true,
-        "c_bg": "#ffffff",
-        "pt": 32,
-        "pb": 40
       }
     },
     "marquee_FFm8CP": {
@@ -508,106 +508,6 @@
         "pb": 10
       }
     },
-    "card_slider_gDajUG": {
-      "type": "card-slider",
-      "blocks": {
-        "item_YBEPKB": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "description": "",
-            "btn_text": "",
-            "btn_url": ""
-          }
-        },
-        "item_q4KGBe": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "description": "",
-            "btn_text": "",
-            "btn_url": ""
-          }
-        },
-        "item_9DQX84": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "description": "",
-            "btn_text": "",
-            "btn_url": ""
-          }
-        },
-        "item_JJCyrw": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "description": "",
-            "btn_text": "",
-            "btn_url": ""
-          }
-        },
-        "item_rFmwwe": {
-          "type": "item",
-          "settings": {
-            "title": "",
-            "description": "",
-            "btn_text": "",
-            "btn_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "item_YBEPKB",
-        "item_q4KGBe",
-        "item_9DQX84",
-        "item_JJCyrw",
-        "item_rFmwwe"
-      ],
-      "settings": {
-        "bg_color": "bg-body",
-        "bg_opacity": 100,
-        "bg_gradient_opacity": 0,
-        "bg_gradient_direction": 180,
-        "text_color": "text-body",
-        "border_top_width": 0,
-        "border_bottom_width": 0,
-        "border_color": "border-body",
-        "border_opacity": 100,
-        "container_max_width": "",
-        "header_title": "See what our customers say!",
-        "header_title_font_size": "h1",
-        "header_description": "",
-        "header_description_font_size": "fs-md",
-        "slider_speed": 300,
-        "slider_navigation": false,
-        "slider_pagination": true,
-        "slider_pagination_type": "bullets",
-        "slider_scrollbar": true,
-        "slider_partial_slides_mobile": true,
-        "slider_autoplay": 0,
-        "item_bg_color": "bg-body",
-        "item_bg_opacity": 100,
-        "item_bg_gradient_opacity": 0,
-        "item_bg_gradient_direction": 180,
-        "item_text_color": "text-body",
-        "item_border_width": 0,
-        "item_border_color": "border-body",
-        "item_border_opacity": 0,
-        "item_shadow": "shadow-none",
-        "item_text_align": "text-start",
-        "item_img_ratio": "adapt",
-        "item_title_font_size": "h5",
-        "item_description_font_size": "fs-md",
-        "item_btn_color": "btn-outline-primary",
-        "item_btn_size": "btn-sm",
-        "breakpoint_mobile": 1,
-        "breakpoint_tablet": 2,
-        "breakpoint_desktop": 5,
-        "pt": 10,
-        "pb": 10
-      }
-    },
     "richtext_fLeqN4": {
       "type": "richtext",
       "disabled": true,
@@ -639,84 +539,6 @@
         "btn_secondary_size": "btn-md",
         "pt": 10,
         "pb": 10
-      }
-    },
-    "ss_instafeed_4thnaf": {
-      "type": "ss-instafeed",
-      "blocks": {
-        "image_px8r4N": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_fdHRaw": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_8nNbni": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_aMRdRF": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_xaGNMw": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_tGwDzX": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_ENVfAx": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        },
-        "image_e4P66G": {
-          "type": "image",
-          "settings": {
-            "gallery_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "image_px8r4N",
-        "image_fdHRaw",
-        "image_8nNbni",
-        "image_aMRdRF",
-        "image_xaGNMw",
-        "image_tGwDzX",
-        "image_ENVfAx",
-        "image_e4P66G"
-      ],
-      "settings": {
-        "background-color": "#002f30",
-        "text-color": "#ffffff",
-        "hide_image_mobile": 0,
-        "insta_url": "",
-        "instafeed_title": "Follow us",
-        "hashtag_title": "##healthyhigh",
-        "insta_handle": "@jhangoofficial",
-        "header_size": 18,
-        "hashtag_size": 36,
-        "handle_size": 12,
-        "padding_image": 0,
-        "padding_top": 36,
-        "padding_bottom": 0
       }
     },
     "faq_zbQYep": {
@@ -877,9 +699,7 @@
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
     "shoppable_videos_fyjcgm",
-    "card_slider_gDajUG",
     "richtext_fLeqN4",
-    "ss_instafeed_4thnaf",
     "faq_zbQYep",
     "trust_icons_tWUpz7"
   ]
