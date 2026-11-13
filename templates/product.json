@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -111,7 +120,10 @@
         "after_add": "drawer",
         "added_label": "ADDED ✓",
         "sticky": "all",
+        "sticky_buttons": "both",
         "sticky_label": "Add to cart",
+        "sticky_buy_label": "Buy now",
+        "sticky_jump": true,
         "save_label": "Save [percent]%",
         "c_bg": "#ffffff",
         "c_ink": "#1c1c1c",
@@ -124,10 +136,7 @@
         "c_mute": "#6b6557",
         "load_fonts": true,
         "pt": 16,
-        "pb": 24,
-        "sticky_buttons": "both",
-        "sticky_buy_label": "Buy now",
-        "sticky_jump": true
+        "pb": 24
       }
     },
     "banner": {
@@ -191,13 +200,14 @@
       ],
       "settings": {
         "heading": "Know more",
+        "intro": "<p>Everything inside the tin — what's in it, how to brew it and why it works.</p>",
         "pt": 16,
-        "pb": 16,
-        "intro": "<p>Everything inside the tin — what's in it, how to brew it and why it works.</p>"
+        "pb": 16
       }
     },
     "reviews": {
       "type": "sf-pdp-reviews",
+      "disabled": true,
       "settings": {
         "heading": "What our customers say",
         "tags": "gut-friendly, digestion, taste, herbal-infusion, packaging",
@@ -207,6 +217,7 @@
     },
     "related": {
       "type": "sf-pdp-related",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "intent": "related",
