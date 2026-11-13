@@ -75,7 +75,7 @@
 .sf-hd__icons { display: flex; align-items: center; gap: 2px; margin-left: auto; }
 .sf-hd__burger { margin-right: 2px; }
 .sf-hd__desk { display: none; }
-.sf-hd__cta { display: none; }
+.sf-hd .sf-hd__cta { display: none; }
 
 @media (min-width: 990px) {
   .sf-hd__burger { display: none; }
@@ -133,12 +133,12 @@
   .sf-hd__gtitle:hover { color: var(--sf-green); }
 
   /* CTA */
-  .sf-pdp .sf-hd__cta {
+  .sf-pdp.sf-hd .sf-hd__cta {
     display: inline-flex; flex: none; margin-left: 8px;
     padding: 10px 20px; font-size: 16px; gap: 8px; border-radius: 15px;
     box-shadow: 0 4px 0 var(--sf-ink);
   }
-  .sf-hd__cta .sf-icon { width: 19px; height: 19px; stroke-width: 2.2; }
+  .sf-hd .sf-hd__cta .sf-icon { width: 19px; height: 19px; stroke-width: 2.2; }
 }
 @media (min-width: 990px) and (max-width: 1150px) {
   .sf-hd__nav { margin-left: 10px; }
@@ -226,7 +226,7 @@
 }
 .sf-hd__mrow-icon .sf-icon { width: 21px; height: 21px; }
 .sf-hd__mrow-icon .wishlist-count-badge { top: -7px; right: -8px; }
-.sf-pdp .sf-hd__mcta { flex: none; width: 100%; margin-top: 6px; font-size: 18px; padding: 13px; gap: 10px; }
+.sf-pdp.sf-hd .sf-hd__mcta { flex: none; width: 100%; margin-top: 6px; font-size: 18px; padding: 13px; gap: 10px; }
 .sf-hd__mcta .sf-icon { width: 21px; height: 21px; stroke-width: 2.2; }
 
 html.sf-hd-locked, html.sf-hd-locked body { overflow: hidden; }
