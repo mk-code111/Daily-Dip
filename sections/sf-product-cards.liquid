@@ -65,6 +65,7 @@
         aria-roledescription="carousel"
         aria-label="{{ section.settings.heading | default: 'Products' | escape }}"
       >
+        <div class="sf-car__stage">
         <div class="sf-car__viewport">
           <div class="sf-car__track" data-sf-car-track>
             {%- for p in products limit: section.settings.limit -%}
@@ -91,22 +92,18 @@
           </div>
         </div>
 
-        {%- if section.settings.show_arrows or section.settings.show_dots -%}
-          <div class="sf-car__nav" data-sf-car-nav>
-            {%- if section.settings.show_arrows -%}
-              <button type="button" class="sf-car__arrow" data-sf-car-prev aria-label="Previous products">
-                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            {%- endif -%}
-            {%- if section.settings.show_dots -%}
-              <div class="sf-car__dots" data-sf-car-dots></div>
-            {%- endif -%}
-            {%- if section.settings.show_arrows -%}
-              <button type="button" class="sf-car__arrow" data-sf-car-next aria-label="Next products">
-                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            {%- endif -%}
-          </div>
+          {%- if section.settings.show_arrows -%}
+            <button type="button" class="sf-car__arrow sf-car__arrow--prev" data-sf-car-prev aria-label="Previous products">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="sf-car__arrow sf-car__arrow--next" data-sf-car-next aria-label="Next products">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_dots -%}
+          <div class="sf-car__dots" data-sf-car-dots></div>
         {%- endif -%}
       </sf-carousel>
     {%- elsif request.design_mode -%}
@@ -129,10 +126,10 @@
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "range", "id": "limit", "label": "Max products", "min": 2, "max": 12, "step": 1, "default": 8 },
     { "type": "header", "content": "Carousel" },
-    { "type": "select", "id": "per_mobile", "label": "Cards per view: phone", "default": "1", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }] },
-    { "type": "range", "id": "per_tablet", "label": "Cards per view: tablet", "min": 1, "max": 3, "step": 1, "default": 2 },
-    { "type": "range", "id": "per_desktop", "label": "Cards per view: desktop", "min": 2, "max": 4, "step": 1, "default": 3 },
-    { "type": "range", "id": "per_wide", "label": "Cards per view: wide", "min": 2, "max": 5, "step": 1, "default": 3 },
+    { "type": "select", "id": "per_mobile", "label": "Cards per view: phone", "default": "1.5", "options": [{ "value": "1", "label": "1" }, { "value": "1.5", "label": "1.5 (next card peeks in)" }, { "value": "2", "label": "2" }] },
+    { "type": "range", "id": "per_tablet", "label": "Cards per view: tablet", "min": 2, "max": 3, "step": 0.5, "default": 2.5 },
+    { "type": "range", "id": "per_desktop", "label": "Cards per view: desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "per_wide", "label": "Cards per view: wide", "min": 2, "max": 5, "step": 1, "default": 4 },
     { "type": "checkbox", "id": "loop", "label": "Infinite loop", "default": true },
     { "type": "checkbox", "id": "autoplay", "label": "Auto-scroll", "default": true },
     { "type": "range", "id": "speed", "label": "Auto-scroll every", "min": 2, "max": 10, "step": 1, "unit": "s", "default": 4 },

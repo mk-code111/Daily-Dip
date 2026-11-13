@@ -5,7 +5,8 @@
     - frosted outer frame + white card
     - image stage with own prev/next arrows (when the product has 2+ images),
       "NEW"-style tag and a round "-15%" discount sticker
-    - benefits strip (from the section's benefit blocks)
+    - benefits strip: product metafields custom.benefit_1..3_text / _icon,
+      falling back to the section's Benefit blocks when a product has none
     - title, price, variant (pack) pills, Add to cart
 
   Data sources:
@@ -98,13 +99,56 @@
       </div>
     </div>
 
-    {%- if benefits.size > 0 -%}
-      <ul class="sf-pc__benefits" style="--sf-pc-bcols: {{ benefits.size | at_most: 4 }};">
+    {%- liquid
+      # Benefits: product metafields custom.benefit_1..3_text / _icon (set per product in admin).
+      # If a product has none, the section's Benefit blocks are used instead.
+      assign mf_count = 0
+      for i in (1..3)
+        assign tkey = 'benefit_' | append: i | append: '_text'
+        if p.metafields.custom[tkey] != blank
+          assign mf_count = mf_count | plus: 1
+        endif
+      endfor
+      if mf_count > 0
+        assign b_cols = mf_count
+      else
+        assign b_cols = benefits.size | at_most: 4
+      endif
+    -%}
+    {%- if mf_count > 0 -%}
+      <ul class="sf-pc__benefits" style="--sf-pc-bcols: {{ b_cols }};">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            assign tkey = 'benefit_' | append: i | append: '_text'
+            assign ikey = 'benefit_' | append: i | append: '_icon'
+            assign b_text = p.metafields.custom[tkey]
+            assign b_icon = p.metafields.custom[ikey]
+            assign fb_index = i | minus: 1
+            assign fb_block = benefits[fb_index]
+          -%}
+          {%- if b_text != blank -%}
+            <li>
+              <span class="sf-pc__bicon">
+                {%- if b_icon != blank -%}
+                  <img src="{{ b_icon | image_url: width: 72 }}" alt="" width="26" height="26" loading="lazy">
+                {%- elsif fb_block.settings.image != blank -%}
+                  {{ fb_block.settings.image | image_url: width: 72 | image_tag: width: 26, height: 26, loading: 'lazy', alt: '' }}
+                {%- else -%}
+                  {%- render 'sf-icon', name: fb_block.settings.icon -%}
+                {%- endif -%}
+              </span>
+              <span class="sf-pc__btext">{{ b_text }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- elsif benefits.size > 0 -%}
+      <ul class="sf-pc__benefits" style="--sf-pc-bcols: {{ b_cols }};">
         {%- for b in benefits limit: 4 -%}
           <li {{ b.shopify_attributes }}>
             <span class="sf-pc__bicon">
               {%- if b.settings.image != blank -%}
-                {{ b.settings.image | image_url: width: 64 | image_tag: width: 26, height: 26, loading: 'lazy', alt: '' }}
+                {{ b.settings.image | image_url: width: 72 | image_tag: width: 26, height: 26, loading: 'lazy', alt: '' }}
               {%- else -%}
                 {%- render 'sf-icon', name: b.settings.icon -%}
               {%- endif -%}
@@ -115,7 +159,7 @@
       </ul>
     {%- endif -%}
 
-    <a class="sf-pc__title" href="{{ p.url }}">{{ p.title }}</a>
+    <a class="sf-pc__title" href="{{ p.url }}" title="{{ p.title | escape }}">{{ p.title }}</a>
 
     <div class="sf-pc__price">
       <span class="sf-pc__now" data-sf-pc-price>{{ current.price | money_without_trailing_zeros }}</span>

@@ -98,7 +98,7 @@
       this._ready = true;
       this.track = this.querySelector('[data-sf-car-track]');
       this.viewport = this.querySelector('.sf-car__viewport');
-      this.nav = this.querySelector('[data-sf-car-nav]');
+      this.navEls = [...this.querySelectorAll('[data-sf-car-prev], [data-sf-car-next], [data-sf-car-dots]')];
       this.dotsEl = this.querySelector('[data-sf-car-dots]');
       this.real = [...this.track.children];
       this.n = this.real.length;
@@ -136,6 +136,7 @@
         const per = this.readPer();
         if (per !== this.per) this.build();
         else this.place(false);
+        this.alignArrows();
       });
       this.ro.observe(this.viewport);
     }
@@ -148,14 +149,15 @@
     }
 
     readPer() {
-      return Math.max(1, Math.round(parseFloat(getComputedStyle(this).getPropertyValue('--sf-per')) || 1));
+      // may be fractional (1.5 = one card plus half of the next peeking in)
+      return Math.max(1, parseFloat(getComputedStyle(this).getPropertyValue('--sf-per')) || 1);
     }
 
     build() {
       this.per = this.readPer();
       this.track.querySelectorAll('[data-sf-clone]').forEach((c) => c.remove());
       // with looping on, it can also scroll when the cards exactly fill the row
-      this.canMove = this.n > this.per || (this.wantLoop && this.n > 1 && this.n === this.per);
+      this.canMove = this.n > this.per || (this.wantLoop && this.n > 1 && this.n >= Math.floor(this.per));
       this.loop = this.wantLoop && this.canMove;
       if (this.loop) {
         const mk = (s) => {
@@ -169,12 +171,22 @@
         this.track.append(...this.real.map(mk));
       }
       this.offset = this.loop ? this.n : 0;
-      this.maxIndex = this.loop ? this.n - 1 : Math.max(0, this.n - this.per);
+      this.maxIndex = this.loop ? this.n - 1 : Math.max(0, Math.ceil(this.n - this.per));
       this.index = this.loop ? mod(this.index, this.n) : Math.min(this.index, this.maxIndex);
-      if (this.nav) this.nav.hidden = !this.canMove;
+      this.navEls.forEach((el) => { el.hidden = !this.canMove; });
       this.buildDots();
       this.place(false);
+      this.alignArrows();
       this.schedule();
+    }
+
+    // phones use this to centre the side arrows on the product image (CSS decides)
+    alignArrows() {
+      const stage = this.querySelector('.sf-car__stage');
+      const media = this.track.querySelector('.sf-car__slide:not([data-sf-clone]) .sf-pc__media');
+      if (!stage || !media) return;
+      const s = stage.getBoundingClientRect(), m = media.getBoundingClientRect();
+      this.style.setProperty('--sf-arrow-y', Math.round(m.top - s.top + m.height / 2) + 'px');
     }
 
     buildDots() {
