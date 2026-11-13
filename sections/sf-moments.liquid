@@ -1,0 +1,280 @@
+{%- comment -%}
+  sf-moments — "Tea for every part of your day".
+  Left: eyebrow, heading (+ green highlight), text, button.
+  Right: cup photo (or a drawn cup until one is uploaded) with a drawn sachet dipped
+  in the tea, string and a "Dailydip" tag. Moment blocks orbit the cup slowly; the
+  moment passing the top is highlighted. Feature blocks form the strip underneath.
+  All motion is CSS (assets/sf-moments.css) and stops under prefers-reduced-motion.
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-moments.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+
+{%- if section.settings.load_fonts -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{%- endif -%}
+
+{%- liquid
+  assign moments = section.blocks | where: 'type', 'moment'
+  assign features = section.blocks | where: 'type', 'feature'
+  assign n = moments.size
+  assign dur = section.settings.speed
+  assign ccw = false
+  if section.settings.direction == 'ccw'
+    assign ccw = true
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} .sf-mo {
+    background: {{ section.settings.c_bg }};
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+    --sf-mo-dur: {{ dur }}s;
+    --sf-mo-bg: {{ section.settings.c_bg }};
+    --sf-mo-spin: {% if ccw %}sf-mo-spin-ccw{% else %}sf-mo-spin-cw{% endif %};
+    --sf-mo-unspin: {% if ccw %}sf-mo-spin-cw{% else %}sf-mo-spin-ccw{% endif %};
+  }
+</style>
+
+<div class="sf-pdp sf-mo">
+  <div class="sf-pdp__wrap sf-mo__wrap">
+    <div class="sf-mo__grid">
+      <div class="sf-mo__copy sf-reveal">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sf-mo__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="sf-mo__title">
+          {{- section.settings.heading -}}
+          {%- if section.settings.highlight != blank %} <span class="sf-mo__hl">{{ section.settings.highlight }}</span>{%- endif -%}
+        </h2>
+        {%- if section.settings.text != blank -%}
+          <div class="sf-mo__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <a class="sf-btn sf-mo__btn" href="{{ section.settings.button_link | default: routes.collections_url }}">
+            {{- section.settings.button_label -}}
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="sf-mo__visual sf-reveal" style="--sf-delay: .12s;">
+        <div class="sf-mo__stage">
+          <div class="sf-mo__halo" aria-hidden="true"></div>
+
+          <div class="sf-mo__ring" aria-hidden="true">
+            <span class="sf-mo__dot"></span>
+            <span class="sf-mo__dot sf-mo__dot--b"></span>
+          </div>
+
+          <div class="sf-mo__cup">
+            {%- if section.settings.cup_image != blank -%}
+              {{ section.settings.cup_image | image_url: width: 1100 | image_tag: widths: '400, 600, 800, 1100', sizes: '(min-width: 990px) 320px, 55vw', class: 'sf-mo__cup-img', loading: 'lazy', alt: section.settings.cup_image.alt | default: 'A cup of DailyDip tea' }}
+            {%- else -%}
+              <svg class="sf-mo__cup-svg" viewBox="0 0 400 400" role="img" aria-label="A cup of DailyDip tea">
+                <defs>
+                  <radialGradient id="sfMoTea-{{ section.id }}" cx="45%" cy="42%" r="62%">
+                    <stop offset="0" stop-color="#ffd36b"/>
+                    <stop offset=".55" stop-color="#f4a62a"/>
+                    <stop offset="1" stop-color="#d9790f"/>
+                  </radialGradient>
+                </defs>
+                <rect x="318" y="172" width="74" height="56" rx="26" fill="#1c1c1c" transform="translate(6 8)"/>
+                <circle cx="190" cy="200" r="152" fill="#1c1c1c" transform="translate(8 10)"/>
+                <rect x="318" y="172" width="74" height="56" rx="26" fill="#fff" stroke="#1c1c1c" stroke-width="8"/>
+                <circle cx="190" cy="200" r="152" fill="#fff" stroke="#1c1c1c" stroke-width="8"/>
+                <circle cx="190" cy="200" r="128" fill="#fffaf0" stroke="#efe6cf" stroke-width="5"/>
+                <circle cx="190" cy="200" r="118" fill="url(#sfMoTea-{{ section.id }})"/>
+                <ellipse cx="150" cy="150" rx="46" ry="22" fill="#fff" opacity=".22" transform="rotate(-30 150 150)"/>
+              </svg>
+            {%- endif -%}
+
+            {%- if section.settings.show_sachet -%}
+              <div
+                class="sf-mo__dip"
+                style="--sx: {{ section.settings.sachet_x | minus: 47.5 }}%; --sy: {{ section.settings.sachet_y | minus: 50 }}%; --ss: {{ section.settings.sachet_size | divided_by: 100.0 }};"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 400 400">
+                  <g class="sf-mo__ripples">
+                    <circle class="sf-mo__ripple" cx="190" cy="208" r="58"/>
+                    <circle class="sf-mo__ripple sf-mo__ripple--b" cx="190" cy="208" r="58"/>
+                  </g>
+                  <g class="sf-mo__steam">
+                    <path class="sf-mo__wisp" d="M150 150c-12-14 10-24 0-40s10-26 0-40"/>
+                    <path class="sf-mo__wisp sf-mo__wisp--b" d="M196 140c-12-14 10-24 0-40s10-26 0-40"/>
+                    <path class="sf-mo__wisp sf-mo__wisp--c" d="M240 152c-12-14 10-24 0-40s10-26 0-40"/>
+                  </g>
+                  <path class="sf-mo__string" d="M190 166 C 214 120, 262 96, 300 90 S 328 86, 334 84"/>
+                  <g class="sf-mo__sachet">
+                    <rect x="152" y="166" width="76" height="92" rx="10" fill="#1c1c1c" transform="translate(4 5)"/>
+                    <rect x="152" y="166" width="76" height="92" rx="10" fill="#fff6dc" stroke="#1c1c1c" stroke-width="5"/>
+                    <rect x="155" y="214" width="70" height="41" rx="7" fill="#e58f1a" opacity=".32"/>
+                    <g fill="#5f8a23">
+                      <ellipse cx="174" cy="198" rx="5" ry="2.6" transform="rotate(-30 174 198)"/>
+                      <ellipse cx="203" cy="190" rx="5" ry="2.6" transform="rotate(25 203 190)"/>
+                      <ellipse cx="190" cy="214" rx="5" ry="2.6" transform="rotate(-10 190 214)"/>
+                      <ellipse cx="212" cy="232" rx="5" ry="2.6" transform="rotate(40 212 232)"/>
+                      <ellipse cx="170" cy="236" rx="5" ry="2.6" transform="rotate(15 170 236)"/>
+                    </g>
+                    <g fill="#9a5b1c">
+                      <circle cx="186" cy="200" r="2.4"/><circle cx="214" cy="208" r="2.4"/><circle cx="178" cy="222" r="2.4"/><circle cx="198" cy="242" r="2.4"/>
+                    </g>
+                    <rect x="152" y="166" width="76" height="20" rx="8" fill="#fffdf4" stroke="#1c1c1c" stroke-width="5"/>
+                    <rect x="184" y="169" width="12" height="14" rx="2" fill="#c9c9c9" stroke="#1c1c1c" stroke-width="2.5"/>
+                  </g>
+                  <g class="sf-mo__tag">
+                    <rect x="326" y="62" width="108" height="44" rx="10" fill="#1c1c1c" transform="translate(4 5)"/>
+                    <rect x="326" y="62" width="108" height="44" rx="10" fill="#c8f169" stroke="#1c1c1c" stroke-width="4"/>
+                    <circle cx="337" cy="84" r="4" fill="#fff" stroke="#1c1c1c" stroke-width="2.5"/>
+                    <text x="388" y="92" text-anchor="middle" textLength="78" lengthAdjust="spacingAndGlyphs" class="sf-mo__tagtext">{{ section.settings.tag_text | escape }}</text>
+                  </g>
+                </svg>
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- if n > 0 -%}
+            <ul class="sf-mo__orbit" role="list">
+              {%- for m in moments -%}
+                {%- liquid
+                  assign angle = forloop.index0 | times: 360.0 | divided_by: n
+                  if ccw
+                    assign phase = 360 | minus: angle
+                  else
+                    assign phase = angle
+                  endif
+                -%}
+                <li class="sf-mo__item" style="--a: {{ angle }}deg; --an: {{ phase }};" {{ m.shopify_attributes }}>
+                  <div class="sf-mo__upright">
+                    {%- if m.settings.link != blank -%}<a class="sf-mo__moment" href="{{ m.settings.link }}">{%- else -%}<div class="sf-mo__moment">{%- endif -%}
+                      <span class="sf-mo__icon">{%- render 'sf-icon', name: m.settings.icon -%}</span>
+                      <span class="sf-mo__label">
+                        <strong>{{ m.settings.title }}</strong>
+                        {%- if m.settings.subtitle != blank -%}<span>{{ m.settings.subtitle }}</span>{%- endif -%}
+                      </span>
+                    {%- if m.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+                  </div>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if features.size > 0 -%}
+      <ul class="sf-mo__features sf-reveal" role="list" style="--sf-mo-fcols: {{ features.size | at_most: 4 }};">
+        {%- for f in features limit: 4 -%}
+          <li class="sf-mo__feature" {{ f.shopify_attributes }}>
+            <span class="sf-mo__ficon">{%- render 'sf-icon', name: f.settings.icon -%}</span>
+            <span class="sf-mo__ftext">
+              <strong>{{ f.settings.title }}</strong>
+              {%- if f.settings.text != blank -%}<span>{{ f.settings.text }}</span>{%- endif -%}
+            </span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SF · Moments",
+  "tag": "section",
+  "class": "sf-moments-section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "For every moment" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tea for every part of" },
+    { "type": "text", "id": "highlight", "label": "Heading highlight (green)", "default": "your day" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>From your morning boost to your evening unwind, we're with you.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore moments" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "Cup" },
+    { "type": "image_picker", "id": "cup_image", "label": "Cup photo", "info": "Top-down cup photo without a logo, on a plain or transparent background. Until one is added, a drawn cup is shown." },
+    { "type": "checkbox", "id": "show_sachet", "label": "Show sachet and tag", "default": true },
+    { "type": "text", "id": "tag_text", "label": "Tag text", "default": "Dailydip" },
+    { "type": "range", "id": "sachet_x", "label": "Sachet position: across", "min": 20, "max": 80, "step": 1, "unit": "%", "default": 47, "info": "Centre the sachet on the tea in your photo." },
+    { "type": "range", "id": "sachet_y", "label": "Sachet position: down", "min": 20, "max": 80, "step": 1, "unit": "%", "default": 50 },
+    { "type": "range", "id": "sachet_size", "label": "Sachet size", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 120 },
+    { "type": "header", "content": "Orbit" },
+    { "type": "range", "id": "speed", "label": "One full turn takes", "min": 20, "max": 90, "step": 5, "unit": "s", "default": 40 },
+    {
+      "type": "select", "id": "direction", "label": "Direction", "default": "cw",
+      "options": [{ "value": "cw", "label": "Clockwise" }, { "value": "ccw", "label": "Anticlockwise" }]
+    },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "load_fonts", "label": "Load Fredoka + Poppins", "default": true },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#fffdf6" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "moment",
+      "name": "Moment",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "sun",
+          "options": [
+            { "value": "sun", "label": "Sun" },
+            { "value": "sunrise", "label": "Sunrise" },
+            { "value": "moon", "label": "Moon" },
+            { "value": "moon-star", "label": "Moon and star" },
+            { "value": "cup-steam", "label": "Hot cup" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "star", "label": "Star" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Morning" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Energise" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "cup-steam", "label": "Hot cup" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "globe", "label": "Globe" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" },
+            { "value": "drop", "label": "Drop" },
+            { "value": "sparkle", "label": "Sparkle" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "100% Natural" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Real ingredients, nothing artificial" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Moments",
+      "blocks": [
+        { "type": "moment", "settings": { "icon": "sun", "title": "Morning", "subtitle": "Energise" } },
+        { "type": "moment", "settings": { "icon": "sunrise", "title": "Afternoon", "subtitle": "Refresh" } },
+        { "type": "moment", "settings": { "icon": "moon", "title": "Evening", "subtitle": "Unwind" } },
+        { "type": "moment", "settings": { "icon": "moon-star", "title": "Night", "subtitle": "Relax" } },
+        { "type": "feature", "settings": { "icon": "leaf", "title": "100% Natural", "text": "Real ingredients, nothing artificial" } },
+        { "type": "feature", "settings": { "icon": "cup-steam", "title": "Expertly Blended", "text": "Crafted for taste and wellness" } },
+        { "type": "feature", "settings": { "icon": "heart", "title": "Good for You", "text": "Rich in antioxidants and goodness" } },
+        { "type": "feature", "settings": { "icon": "globe", "title": "Sustainably Sourced", "text": "Better for you, better for the planet" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
