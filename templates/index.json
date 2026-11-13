@@ -170,6 +170,109 @@
         "pb": 11
       }
     },
+    "sf_moments_7ytUUJ": {
+      "type": "sf-moments",
+      "blocks": {
+        "moment_jmjQpJ": {
+          "type": "moment",
+          "settings": {
+            "icon": "sun",
+            "title": "Morning",
+            "subtitle": "Energise",
+            "link": ""
+          }
+        },
+        "moment_WadmNi": {
+          "type": "moment",
+          "settings": {
+            "icon": "sunrise",
+            "title": "Afternoon",
+            "subtitle": "Refresh",
+            "link": ""
+          }
+        },
+        "moment_ggDBJ9": {
+          "type": "moment",
+          "settings": {
+            "icon": "moon",
+            "title": "Evening",
+            "subtitle": "Unwind",
+            "link": ""
+          }
+        },
+        "moment_MMH3KM": {
+          "type": "moment",
+          "settings": {
+            "icon": "moon-star",
+            "title": "Night",
+            "subtitle": "Relax",
+            "link": ""
+          }
+        },
+        "feature_XdNUGq": {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "title": "100% Natural",
+            "text": "Real ingredients, nothing artificial"
+          }
+        },
+        "feature_K4TTRt": {
+          "type": "feature",
+          "settings": {
+            "icon": "cup-steam",
+            "title": "Expertly Blended",
+            "text": "Crafted for taste and wellness"
+          }
+        },
+        "feature_fK7RrK": {
+          "type": "feature",
+          "settings": {
+            "icon": "heart",
+            "title": "Good for You",
+            "text": "Rich in antioxidants and goodness"
+          }
+        },
+        "feature_q99fip": {
+          "type": "feature",
+          "settings": {
+            "icon": "globe",
+            "title": "Sustainably Sourced",
+            "text": "Better for you, better for the planet"
+          }
+        }
+      },
+      "block_order": [
+        "moment_jmjQpJ",
+        "moment_WadmNi",
+        "moment_ggDBJ9",
+        "moment_MMH3KM",
+        "feature_XdNUGq",
+        "feature_K4TTRt",
+        "feature_fK7RrK",
+        "feature_q99fip"
+      ],
+      "name": "SF · Moments",
+      "settings": {
+        "eyebrow": "For every moment",
+        "heading": "Tea for every part of",
+        "highlight": "your day",
+        "text": "<p>From your morning boost to your evening unwind, we're with you.</p>",
+        "button_label": "Explore moments",
+        "button_link": "",
+        "show_sachet": true,
+        "tag_text": "Dailydip",
+        "sachet_x": 47,
+        "sachet_y": 50,
+        "sachet_size": 120,
+        "speed": 40,
+        "direction": "cw",
+        "load_fonts": true,
+        "c_bg": "#FFFFFF",
+        "pt": 48,
+        "pb": 56
+      }
+    },
     "hero_carousel_dJRyzC": {
       "type": "hero-carousel",
       "blocks": {
@@ -695,6 +798,7 @@
     "hero_carousel_CmDneU",
     "sf_product_cards_cM7twj",
     "featured_products_haJFj8",
+    "sf_moments_7ytUUJ",
     "hero_carousel_dJRyzC",
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
