@@ -269,8 +269,8 @@
         "direction": "cw",
         "load_fonts": true,
         "c_bg": "#FFFFFF",
-        "pt": 48,
-        "pb": 56
+        "pt": 4,
+        "pb": 32
       }
     },
     "hero_carousel_dJRyzC": {
