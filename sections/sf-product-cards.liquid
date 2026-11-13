@@ -1,0 +1,197 @@
+{%- comment -%}
+  sf-product-cards — carousel of DailyDip product cards.
+  Arrows + dots, autoplay, infinite loop, swipe/drag. Card markup: snippets/sf-product-card.
+  Products: "Products" list if set, otherwise the chosen collection, otherwise "all".
+  Benefit blocks are shown on every card.
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-cards.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-cards.js' | asset_url }}" defer></script>
+
+{%- if section.settings.load_fonts -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{%- endif -%}
+
+{%- liquid
+  if section.settings.product_list != blank
+    assign products = section.settings.product_list
+  elsif section.settings.collection != blank
+    assign products = section.settings.collection.products
+  else
+    assign products = collections['all'].products
+  endif
+  assign count = products.size | at_most: section.settings.limit
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} .sf-pcs {
+    background: {{ section.settings.c_bg }};
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+  }
+  #shopify-section-{{ section.id }} .sf-car {
+    --sf-per: {{ section.settings.per_mobile }};
+  }
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_tablet }}; }
+  }
+  @media (min-width: 1100px) {
+    #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_desktop }}; }
+  }
+  @media (min-width: 1440px) {
+    #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_wide }}; }
+  }
+</style>
+
+<div class="sf-pdp sf-pcs">
+  <div class="sf-pdp__wrap">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="sf-pcs__head">
+        {%- if section.settings.heading != blank -%}<h2 class="sf-pcs__title">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.subheading != blank -%}<p class="sf-pcs__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if count > 0 -%}
+      <sf-carousel
+        class="sf-car"
+        data-loop="{{ section.settings.loop }}"
+        data-autoplay="{{ section.settings.autoplay }}"
+        data-speed="{{ section.settings.speed | times: 1000 }}"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="{{ section.settings.heading | default: 'Products' | escape }}"
+      >
+        <div class="sf-car__viewport">
+          <div class="sf-car__track" data-sf-car-track>
+            {%- for p in products limit: section.settings.limit -%}
+              <div class="sf-car__slide" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}">
+                {%- liquid
+                  assign eager = false
+                  if forloop.index <= section.settings.per_desktop and section.index <= 2
+                    assign eager = true
+                  endif
+                -%}
+                {%- render 'sf-product-card',
+                  p: p,
+                  benefits: section.blocks,
+                  new_label: section.settings.new_label,
+                  atc_label: section.settings.atc_label,
+                  soldout_label: section.settings.soldout_label,
+                  show_arrows: section.settings.card_arrows,
+                  show_discount: section.settings.show_discount,
+                  ratio: section.settings.ratio,
+                  eager: eager
+                -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- if section.settings.show_arrows or section.settings.show_dots -%}
+          <div class="sf-car__nav" data-sf-car-nav>
+            {%- if section.settings.show_arrows -%}
+              <button type="button" class="sf-car__arrow" data-sf-car-prev aria-label="Previous products">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            {%- endif -%}
+            {%- if section.settings.show_dots -%}
+              <div class="sf-car__dots" data-sf-car-dots></div>
+            {%- endif -%}
+            {%- if section.settings.show_arrows -%}
+              <button type="button" class="sf-car__arrow" data-sf-car-next aria-label="Next products">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </sf-carousel>
+    {%- elsif request.design_mode -%}
+      <p class="sf-pcs__empty">Pick a collection or some products in the section settings.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SF · Product cards",
+  "tag": "section",
+  "class": "sf-product-cards-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pick your dip" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "header", "content": "Products" },
+    { "type": "product_list", "id": "product_list", "label": "Products", "limit": 12, "info": "Used first. Leave empty to use the collection." },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Max products", "min": 2, "max": 12, "step": 1, "default": 8 },
+    { "type": "header", "content": "Carousel" },
+    { "type": "range", "id": "per_mobile", "label": "Cards per view: phone", "min": 1, "max": 2, "step": 1, "default": 1 },
+    { "type": "range", "id": "per_tablet", "label": "Cards per view: tablet", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "per_desktop", "label": "Cards per view: desktop", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "per_wide", "label": "Cards per view: wide", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "loop", "label": "Infinite loop", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-scroll", "default": true },
+    { "type": "range", "id": "speed", "label": "Auto-scroll every", "min": 2, "max": 10, "step": 1, "unit": "s", "default": 4 },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": true },
+    { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": true },
+    { "type": "header", "content": "Card" },
+    {
+      "type": "select", "id": "ratio", "label": "Image shape", "default": "1",
+      "options": [
+        { "value": "1", "label": "Square" },
+        { "value": "0.8", "label": "Portrait (4:5)" },
+        { "value": "1.25", "label": "Landscape (5:4)" }
+      ]
+    },
+    { "type": "checkbox", "id": "card_arrows", "label": "Image arrows on cards", "default": true, "info": "Only shown when a product has 2+ images." },
+    { "type": "checkbox", "id": "show_discount", "label": "Show discount sticker", "default": true },
+    { "type": "text", "id": "new_label", "label": "Tag for products tagged \"new\"", "default": "NEW", "info": "Product metafield custom.card_tag overrides this." },
+    { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
+    { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "load_fonts", "label": "Load Fredoka + Poppins", "default": true },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "drop", "label": "Drop" },
+            { "value": "cup", "label": "Cup" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "gut", "label": "Gut" },
+            { "value": "sun", "label": "Sun" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Custom icon", "info": "Replaces the icon above." },
+        { "type": "text", "id": "text", "label": "Text", "default": "Natural Ingredients" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Product cards",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "leaf", "text": "Natural Ingredients" } },
+        { "type": "benefit", "settings": { "icon": "drop", "text": "Rich & Aromatic" } },
+        { "type": "benefit", "settings": { "icon": "cup", "text": "Perfect for Daily Use" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,180 @@
+{%- comment -%}
+  sf-product-card — DailyDip product card (used by sf-product-cards).
+
+  Renders:
+    - frosted outer frame + white card
+    - image stage with own prev/next arrows (when the product has 2+ images),
+      "NEW"-style tag and a round "-15%" discount sticker
+    - benefits strip (from the section's benefit blocks)
+    - title, price, variant (pack) pills, Add to cart
+
+  Data sources:
+    - Tag: product metafield custom.card_tag; otherwise `new_label` when the product has the tag "new".
+    - Variant badge: variant metafield custom.badge (e.g. "Best seller").
+
+  Params:
+    p             product
+    benefits      array of section blocks of type "benefit" (may be empty)
+    new_label     text for products tagged "new"
+    atc_label     Add to cart text
+    soldout_label Sold out text
+    show_arrows   boolean, per-card image arrows
+    show_discount boolean
+    ratio         image aspect ratio (number)
+    eager         boolean, load the first image eagerly
+{%- endcomment -%}
+{%- liquid
+  assign current = p.selected_or_first_available_variant
+  assign images = p.images
+  assign img_count = images.size | at_most: 6
+
+  assign tag_text = p.metafields.custom.card_tag.value
+  if tag_text == blank
+    assign lower_tags = p.tags | join: ',' | downcase | split: ','
+    if lower_tags contains 'new'
+      assign tag_text = new_label
+    endif
+  endif
+
+  assign show_variants = false
+  if p.has_only_default_variant == false and p.variants.size > 1
+    assign show_variants = true
+  endif
+  assign vcols = p.variants.size | at_most: 3
+
+  assign loading = 'lazy'
+  if eager
+    assign loading = 'eager'
+  endif
+-%}
+<sf-product-card class="sf-pc" data-product-id="{{ p.id }}">
+  <div class="sf-pc__inner">
+    <div class="sf-pc__media">
+      <div class="sf-pc__stage" style="--sf-pc-ratio: {{ ratio | default: 1 }};">
+        {%- if img_count > 0 -%}
+          {%- for img in images limit: 6 -%}
+            <a
+              class="sf-pc__img{% if forloop.first %} is-active{% endif %}"
+              href="{{ p.url }}"
+              data-sf-pc-img="{{ forloop.index0 }}"
+              data-image-id="{{ img.id }}"
+              {%- unless forloop.first %} aria-hidden="true" tabindex="-1"{% endunless %}
+            >
+              {%- liquid
+                assign img_loading = loading
+                unless forloop.first
+                  assign img_loading = 'lazy'
+                endunless
+              -%}
+              {{ img | image_url: width: 800 | image_tag: widths: '360, 480, 640, 800', sizes: '(min-width: 1100px) 360px, (min-width: 768px) 45vw, 90vw', loading: img_loading, alt: img.alt | default: p.title }}
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <a class="sf-pc__img is-active" href="{{ p.url }}">{{ 'product-1' | placeholder_svg_tag: 'sf-pc__ph' }}</a>
+        {%- endif -%}
+
+        {%- if tag_text != blank -%}
+          <span class="sf-pc__tag">{{ tag_text }}</span>
+        {%- endif -%}
+
+        {%- if show_discount -%}
+          {%- liquid
+            assign pct = 0
+            if current.compare_at_price > current.price
+              assign pct = current.compare_at_price | minus: current.price | times: 100.0 | divided_by: current.compare_at_price | round
+            endif
+          -%}
+          <span class="sf-pc__off"{% if pct == 0 %} hidden{% endif %} data-sf-pc-off>-{{ pct }}%</span>
+        {%- endif -%}
+
+        {%- if show_arrows and img_count > 1 -%}
+          <button type="button" class="sf-pc__arrow sf-pc__arrow--prev" data-sf-pc-step="-1" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="sf-pc__arrow sf-pc__arrow--next" data-sf-pc-step="1" aria-label="Next image">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if benefits.size > 0 -%}
+      <ul class="sf-pc__benefits" style="--sf-pc-bcols: {{ benefits.size | at_most: 4 }};">
+        {%- for b in benefits limit: 4 -%}
+          <li {{ b.shopify_attributes }}>
+            <span class="sf-pc__bicon">
+              {%- if b.settings.image != blank -%}
+                {{ b.settings.image | image_url: width: 64 | image_tag: width: 26, height: 26, loading: 'lazy', alt: '' }}
+              {%- else -%}
+                {%- render 'sf-icon', name: b.settings.icon -%}
+              {%- endif -%}
+            </span>
+            <span class="sf-pc__btext">{{ b.settings.text }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <a class="sf-pc__title" href="{{ p.url }}">{{ p.title }}</a>
+
+    <div class="sf-pc__price">
+      <span class="sf-pc__now" data-sf-pc-price>{{ current.price | money_without_trailing_zeros }}</span>
+      <s class="sf-pc__was" data-sf-pc-compare{% unless current.compare_at_price > current.price %} hidden{% endunless %}>
+        {{- current.compare_at_price | money_without_trailing_zeros -}}
+      </s>
+    </div>
+
+    {%- if show_variants -%}
+      <div class="sf-pc__packs" role="radiogroup" aria-label="{{ p.options.first | escape }}" style="--sf-pc-vcols: {{ vcols }};">
+        {%- for v in p.variants -%}
+          {%- liquid
+            assign v_img = ''
+            if v.featured_image
+              for img in images limit: 6
+                if img.id == v.featured_image.id
+                  assign v_img = forloop.index0
+                endif
+              endfor
+            endif
+            assign v_pct = 0
+            if v.compare_at_price > v.price
+              assign v_pct = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+            endif
+            assign v_badge = v.metafields.custom.badge.value
+          -%}
+          <button
+            type="button"
+            class="sf-pc__pack"
+            role="radio"
+            aria-checked="{% if v.id == current.id %}true{% else %}false{% endif %}"
+            data-sf-pc-variant="{{ v.id }}"
+            data-price="{{ v.price | money_without_trailing_zeros | escape }}"
+            data-compare="{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money_without_trailing_zeros | escape }}{% endif %}"
+            data-off="{{ v_pct }}"
+            data-available="{{ v.available }}"
+            data-img="{{ v_img }}"
+            {%- unless v.available %} aria-disabled="true"{% endunless %}
+          >
+            {%- if v_badge != blank -%}<span class="sf-pc__badge">{{ v_badge }}</span>{%- endif -%}
+            <span class="sf-pc__pname">{{ v.title }}</span>
+            <span class="sf-pc__pprice">{{ v.price | money_without_trailing_zeros }}</span>
+            {%- if v.compare_at_price > v.price -%}
+              <s class="sf-pc__pwas">{{ v.compare_at_price | money_without_trailing_zeros }}</s>
+            {%- endif -%}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <button
+      type="button"
+      class="sf-btn sf-pc__atc"
+      data-sf-pc-add="{{ current.id }}"
+      data-label="{{ atc_label | escape }}"
+      data-soldout="{{ soldout_label | escape }}"
+      {%- unless current.available %} disabled{% endunless %}
+    >
+      {%- if current.available -%}{{ atc_label }}{%- else -%}{{ soldout_label }}{%- endif -%}
+    </button>
+  </div>
+</sf-product-card>
