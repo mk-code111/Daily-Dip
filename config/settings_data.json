@@ -1,1 +1,67 @@
-{"current":{"color_primary":"#097134","color_secondary":"#E7F5D7","color_body_bg":"#FFFFFF","color_body_color":"#003841","container_max_width":1400,"favicon":"shopify:\/\/shop_images\/favicon.png","font_body":"archivo_n4","font_headings":"syne_n7","btn_bg_gradient":true,"dialog_header_bg_color":"body-bg","dialog_header_bg_opacity":100,"dialog_header_border_opacity":25,"dialog_header_title_font_size":1.2,"product_card_img_mode":"carousel","product_card_img_ratio":"ratio-3x4","product_card_img_border":"rounded","product_card_carousel_controls_color":"body-color","product_card_atc_btn_color":"btn-secondary","product_card_atc_style":"variant-selector","cart_icon":"cart","cart_taxes_shipping":false,"cart_continue_btn":false,"cart_announcement_description":"<p>10% OFF for your first order. Use code <strong>NEW10<\/strong><\/p>","cart_gift_upsell_product":"gift-wrap","cart_goal_color":"primary","cart_goal_1_value":"USD:100, EUR:90, GBP:80","cart_goal_2_value":"USD:200, EUR:180, GBP:160","cart_goal_3_value":"USD:300, EUR:270, GBP:240","cart_goal_3_icon":"percent","cart_upsells_collection":"best-selling","cart_upsells_limit":8,"cart_upsells_btn_color":"btn-light-primary","social_facebook":"#","social_instagram":"#","social_x":"#","social_tiktok":"#","social_youtube":"#","cart_goal_progress_color":"secondary","cart_goal_bg_color_after":"bg-success","content_for_index":[],"blocks":{"14710238943034738919":{"type":"shopify:\/\/apps\/ag-product-reviews\/blocks\/app-embed\/c4e1e9ca-4d46-4e76-bc39-7e42417cb327","disabled":false,"settings":{"air_reviews_json_ld_v3":""}},"18155451270687726080":{"type":"shopify:\/\/apps\/snap-cart-drawer\/blocks\/sticky_button\/749c3d78-31de-41bb-a321-492d569e1a37","disabled":false,"settings":{}}}}}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "color_primary": "#097134",
+    "color_secondary": "#E7F5D7",
+    "color_body_bg": "#FFFFFF",
+    "color_body_color": "#003841",
+    "container_max_width": 1400,
+    "favicon": "shopify://shop_images/favicon.png",
+    "font_body": "archivo_n4",
+    "font_headings": "syne_n7",
+    "btn_bg_gradient": true,
+    "dialog_header_bg_color": "body-bg",
+    "dialog_header_bg_opacity": 100,
+    "dialog_header_border_opacity": 25,
+    "dialog_header_title_font_size": 1.2,
+    "product_card_img_mode": "carousel",
+    "product_card_img_ratio": "ratio-1x1",
+    "product_card_img_border": "rounded",
+    "product_card_carousel_controls_color": "body-color",
+    "product_card_atc_btn_color": "btn-secondary",
+    "product_card_atc_style": "variant-selector",
+    "cart_icon": "cart",
+    "cart_taxes_shipping": false,
+    "cart_continue_btn": false,
+    "cart_announcement_description": "<p>10% OFF for your first order. Use code <strong>NEW10</strong></p>",
+    "cart_gift_upsell_product": "gift-wrap",
+    "cart_goal_color": "primary",
+    "cart_goal_1_value": "USD:100, EUR:90, GBP:80",
+    "cart_goal_2_value": "USD:200, EUR:180, GBP:160",
+    "cart_goal_3_value": "USD:300, EUR:270, GBP:240",
+    "cart_goal_3_icon": "percent",
+    "cart_upsells_collection": "best-selling",
+    "cart_upsells_limit": 8,
+    "cart_upsells_btn_color": "btn-light-primary",
+    "social_facebook": "#",
+    "social_instagram": "#",
+    "social_x": "#",
+    "social_tiktok": "#",
+    "social_youtube": "#",
+    "cart_goal_progress_color": "secondary",
+    "cart_goal_bg_color_after": "bg-success",
+    "content_for_index": [],
+    "blocks": {
+      "14710238943034738919": {
+        "type": "shopify://apps/ag-product-reviews/blocks/app-embed/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
+        "disabled": false,
+        "settings": {
+          "air_reviews_json_ld_v3": ""
+        }
+      },
+      "18155451270687726080": {
+        "type": "shopify://apps/snap-cart-drawer/blocks/sticky_button/749c3d78-31de-41bb-a321-492d569e1a37",
+        "disabled": false,
+        "settings": {}
+      }
+    }
+  }
+}
