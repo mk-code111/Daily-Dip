@@ -168,6 +168,64 @@
         "pb": 0
       }
     },
+    "sf_product_cards_cM7twj": {
+      "type": "sf-product-cards",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "name": "SF · Product cards",
+      "settings": {
+        "heading": "Pick your dip",
+        "subheading": "",
+        "product_list": [],
+        "collection": "bestsellers",
+        "limit": 8,
+        "per_mobile": "2",
+        "per_tablet": 2,
+        "per_desktop": 4,
+        "per_wide": 3,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "load_fonts": true,
+        "c_bg": "#ffffff",
+        "pt": 32,
+        "pb": 40
+      }
+    },
     "marquee_FFm8CP": {
       "type": "marquee",
       "blocks": {
@@ -814,6 +872,7 @@
     "hero_carousel_CmDneU",
     "featured_products_haJFj8",
     "hero_carousel_dJRyzC",
+    "sf_product_cards_cM7twj",
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
     "shoppable_videos_fyjcgm",
