@@ -273,63 +273,6 @@
         "pb": 32
       }
     },
-    "hero_carousel_dJRyzC": {
-      "type": "hero-carousel",
-      "blocks": {
-        "slide_EQM3xm": {
-          "type": "slide",
-          "settings": {
-            "img_mobile": "shopify://shop_images/ChatGPT_Image_Sep_16_2026_12_11_15_PM.png",
-            "img_desktop": "shopify://shop_images/ChatGPT_Image_Sep_16_2026_12_09_08_PM.png",
-            "overlay_color": "bs-body-color-rgb",
-            "overlay_opacity": 0,
-            "overlay_blur": 0,
-            "caption_position_mobile": "carousel-caption-mobile-center",
-            "caption_text_align_mobile": "text-center",
-            "caption_position_desktop": "carousel-caption-desktop-center",
-            "caption_text_align_desktop": "text-desktop-center",
-            "caption_max_width": "900",
-            "caption_animation": "animate__fadeInUp",
-            "subtitle": "",
-            "subtitle_font_size": "fs-md",
-            "title": "",
-            "title_font_size": "h2",
-            "description": "",
-            "description_font_size": "fs-lg",
-            "btn_primary_text": "",
-            "btn_primary_color": "btn-primary",
-            "btn_primary_font_size": "fs-md",
-            "btn_primary_url": "",
-            "btn_secondary_text": "",
-            "btn_secondary_color": "btn-secondary",
-            "btn_secondary_font_size": "fs-md",
-            "btn_secondary_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "slide_EQM3xm"
-      ],
-      "settings": {
-        "border_top_width": 0,
-        "border_bottom_width": 0,
-        "border_color": "border-body",
-        "border_opacity": 100,
-        "text_color": "text-white",
-        "carousel_controls": true,
-        "carousel_indicators": true,
-        "carousel_transition": "slide",
-        "carousel_transition_duration": 500,
-        "carousel_autoplay": 5,
-        "carousel_effect": "",
-        "media_mobile_height": 460,
-        "media_desktop_height": 700,
-        "media_adapt": false,
-        "media_full": false,
-        "pt": 0,
-        "pb": 0
-      }
-    },
     "marquee_FFm8CP": {
       "type": "marquee",
       "blocks": {
@@ -799,7 +742,6 @@
     "sf_product_cards_cM7twj",
     "featured_products_haJFj8",
     "sf_moments_7ytUUJ",
-    "hero_carousel_dJRyzC",
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
     "shoppable_videos_fyjcgm",
