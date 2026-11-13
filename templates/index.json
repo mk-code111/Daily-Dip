@@ -82,6 +82,7 @@
       "block_order": [
         "block_XGMYTG"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -870,9 +871,9 @@
   },
   "order": [
     "hero_carousel_CmDneU",
+    "sf_product_cards_cM7twj",
     "featured_products_haJFj8",
     "hero_carousel_dJRyzC",
-    "sf_product_cards_cM7twj",
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
     "shoppable_videos_fyjcgm",
