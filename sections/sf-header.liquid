@@ -1,0 +1,296 @@
+{%- comment -%}
+  sf-header — floating pill header in the DailyDip style.
+  Desktop: logo · menu (with dropdowns) · search · account · wishlist · cart · CTA.
+  Phone:   menu button · logo · search · cart, plus a slide-in drawer with the menu,
+           account, wishlist and CTA.
+  Search, wishlist and cart open the theme's own drawers (rendered in layout/theme.liquid),
+  and the badges keep the theme's classes so the theme and SfCart keep them up to date.
+  Styles: assets/sf-header.css · Script: assets/sf-header.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-header.js' | asset_url }}" defer></script>
+
+{%- if section.settings.load_fonts -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{%- endif -%}
+
+{%- liquid
+  assign menu = section.settings.menu
+  assign drawer_id = 'sf-hd-drawer-' | append: section.id
+  assign show_account = false
+  if shop.customer_accounts_enabled and section.settings.show_account
+    assign show_account = true
+  endif
+  assign show_wishlist = false
+  if settings.wishlist and section.settings.show_wishlist
+    assign show_wishlist = true
+  endif
+  assign account_label = 'general.accessibility.account' | t
+  assign account_text = 'Log in'
+  if customer
+    assign account_text = 'My account'
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-hd-logo-w: {{ section.settings.logo_width_mobile }}px;
+    --sf-hd-bar: {{ section.settings.c_bar }};
+    --sf-hd-ring: {{ section.settings.c_ring }};
+    --sf-hd-text: {{ section.settings.c_text }};
+  }
+  @media (min-width: 990px) {
+    #shopify-section-{{ section.id }} { --sf-hd-logo-w: {{ section.settings.logo_width }}px; }
+  }
+</style>
+
+<sf-header class="sf-pdp sf-hd" data-drawer="{{ drawer_id }}">
+  <div class="sf-hd__wrap">
+    <div class="sf-hd__ring">
+      <div class="sf-hd__bar">
+        {%- if menu != blank -%}
+          <button
+            type="button"
+            class="sf-hd__btn sf-hd__burger"
+            aria-controls="{{ drawer_id }}"
+            aria-expanded="false"
+            aria-label="{{ 'general.accessibility.menu' | t | default: 'Menu' }}"
+            data-sf-hd-open
+          >
+            {%- render 'sf-icon', name: 'menu' -%}
+          </button>
+        {%- endif -%}
+
+        <a class="sf-hd__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_w2 = section.settings.logo_width | times: 2 -%}
+            {{ section.settings.logo | image_url: width: logo_w2 | image_tag: width: section.settings.logo_width, alt: shop.name, loading: 'eager', fetchpriority: 'high' }}
+          {%- else -%}
+            <span class="sf-hd__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+
+        {%- if menu != blank -%}
+          <nav class="sf-hd__nav" aria-label="Main">
+            <ul class="sf-hd__menu" role="list">
+              {%- for link in menu.links -%}
+                {%- liquid
+                  assign is_active = false
+                  if link.active or link.child_active
+                    assign is_active = true
+                  endif
+                -%}
+                <li class="sf-hd__item{% if link.links.size > 0 %} sf-hd__item--parent{% endif %}">
+                  <a
+                    class="sf-hd__link{% if is_active %} is-active{% endif %}"
+                    href="{{ link.url }}"
+                    {%- if link.current %} aria-current="page"{% endif -%}
+                    {%- if link.links.size > 0 %} aria-haspopup="true" aria-expanded="false" data-sf-hd-parent{% endif -%}
+                  >
+                    {{- link.title -}}
+                    {%- if link.links.size > 0 -%}{%- render 'sf-icon', name: 'chevron-down' -%}{%- endif -%}
+                  </a>
+                  {%- if link.links.size > 0 -%}
+                    {%- liquid
+                      assign has_groups = false
+                      for child in link.links
+                        if child.links.size > 0
+                          assign has_groups = true
+                        endif
+                      endfor
+                    -%}
+                    <div class="sf-hd__drop{% if has_groups %} sf-hd__drop--mega{% endif %}">
+                      {%- if has_groups -%}
+                        <div class="sf-hd__groups">
+                          {%- for child in link.links -%}
+                            <div class="sf-hd__group">
+                              <a class="sf-hd__gtitle" href="{{ child.url }}">{{ child.title }}</a>
+                              {%- if child.links.size > 0 -%}
+                                <ul role="list">
+                                  {%- for grand in child.links -%}
+                                    <li><a class="sf-hd__sublink" href="{{ grand.url }}"{% if grand.current %} aria-current="page"{% endif %}>{{ grand.title }}</a></li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif -%}
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                      {%- else -%}
+                        <ul role="list">
+                          {%- for child in link.links -%}
+                            <li><a class="sf-hd__sublink" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        <div class="sf-hd__icons">
+          {%- if section.settings.show_search -%}
+            <a
+              class="sf-hd__btn"
+              href="{% if settings.search %}#offcanvas-search{% else %}{{ routes.search_url }}{% endif %}"
+              {%- if settings.search %} data-bs-toggle="offcanvas" aria-controls="offcanvas-search" role="button"{% endif %}
+              aria-label="{{ 'general.accessibility.search' | t | default: 'Search' }}"
+            >
+              {%- render 'sf-icon', name: 'search' -%}
+            </a>
+          {%- endif -%}
+
+          {%- if show_account -%}
+            <a
+              class="sf-hd__btn sf-hd__desk{% if template.name == 'login' or template.name contains 'account' %} is-active{% endif %}"
+              href="{{ routes.account_url }}"
+              aria-label="{{ account_label | default: 'Account' }}"
+            >
+              {%- render 'sf-icon', name: 'user' -%}
+            </a>
+          {%- endif -%}
+
+          {%- if show_wishlist -%}
+            <a
+              class="sf-hd__btn sf-hd__desk"
+              href="#offcanvas-wishlist"
+              data-bs-toggle="offcanvas"
+              aria-controls="offcanvas-wishlist"
+              role="button"
+              aria-label="{{ 'general.accessibility.wishlist' | t | default: 'Wishlist' }}"
+            >
+              {%- render 'sf-icon', name: 'heart' -%}
+              <span class="wishlist-count-badge badge badge-circle"></span>
+            </a>
+          {%- endif -%}
+
+          <a
+            class="sf-hd__btn"
+            href="#offcanvas-cart"
+            data-bs-toggle="offcanvas"
+            aria-controls="offcanvas-cart"
+            role="button"
+            aria-label="{{ 'general.accessibility.cart' | t | default: 'Cart' }}"
+          >
+            {%- render 'sf-icon', name: section.settings.cart_icon -%}
+            {%- render 'cart-count-badge' -%}
+          </a>
+        </div>
+
+        {%- if section.settings.cta_label != blank -%}
+          <a class="sf-btn sf-hd__cta" href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}">
+            {%- render 'sf-icon', name: 'bag' -%}
+            <span>{{ section.settings.cta_label }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Phone menu drawer {%- endcomment -%}
+  {%- if menu != blank -%}
+    <div class="sf-hd__drawer" id="{{ drawer_id }}" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+      <div class="sf-hd__overlay" data-sf-hd-close></div>
+      <div class="sf-hd__panel">
+        <div class="sf-hd__phead">
+          <a class="sf-hd__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+            {%- if section.settings.logo != blank -%}
+              {{ section.settings.logo | image_url: width: 300 | image_tag: width: section.settings.logo_width_mobile, alt: shop.name, loading: 'lazy' }}
+            {%- else -%}
+              <span class="sf-hd__logo-text">{{ shop.name }}</span>
+            {%- endif -%}
+          </a>
+          <button type="button" class="sf-hd__btn sf-hd__close" aria-label="Close menu" data-sf-hd-close>
+            {%- render 'sf-icon', name: 'close' -%}
+          </button>
+        </div>
+
+        <nav class="sf-hd__mnav" aria-label="Main">
+          <ul role="list">
+            {%- for link in menu.links -%}
+              <li>
+                {%- if link.links.size > 0 -%}
+                  <details class="sf-hd__acc"{% if link.child_active %} open{% endif %}>
+                    <summary class="sf-hd__mlink{% if link.active or link.child_active %} is-active{% endif %}">
+                      {{- link.title -}}
+                      {%- render 'sf-icon', name: 'chevron-down' -%}
+                    </summary>
+                    <ul role="list" class="sf-hd__msub">
+                      <li><a href="{{ link.url }}">All {{ link.title }}</a></li>
+                      {%- for child in link.links -%}
+                        <li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title }}</a></li>
+                        {%- for grand in child.links -%}
+                          <li class="sf-hd__msub-grand"><a href="{{ grand.url }}"{% if grand.current %} aria-current="page"{% endif %}>{{ grand.title }}</a></li>
+                        {%- endfor -%}
+                      {%- endfor -%}
+                    </ul>
+                  </details>
+                {%- else -%}
+                  <a class="sf-hd__mlink{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+
+        <div class="sf-hd__pfoot">
+          {%- if show_account -%}
+            <a class="sf-hd__mrow" href="{{ routes.account_url }}">
+              <span class="sf-hd__mrow-icon">{%- render 'sf-icon', name: 'user' -%}</span>
+              <span>{{ account_text }}</span>
+            </a>
+          {%- endif -%}
+          {%- if show_wishlist -%}
+            <a class="sf-hd__mrow" href="#offcanvas-wishlist" data-bs-toggle="offcanvas" aria-controls="offcanvas-wishlist" role="button" data-sf-hd-close>
+              <span class="sf-hd__mrow-icon">{%- render 'sf-icon', name: 'heart' -%}<span class="wishlist-count-badge badge badge-circle"></span></span>
+              <span>Wishlist</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.cta_label != blank -%}
+            <a class="sf-btn sf-hd__mcta" href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}">
+              {%- render 'sf-icon', name: 'bag' -%}
+              <span>{{ section.settings.cta_label }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</sf-header>
+
+{% schema %}
+{
+  "name": "SF · Header",
+  "tag": "header",
+  "class": "sf-header-section",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width: desktop", "min": 60, "max": 240, "step": 4, "unit": "px", "default": 120 },
+    { "type": "range", "id": "logo_width_mobile", "label": "Logo width: phone", "min": 50, "max": 180, "step": 2, "unit": "px", "default": 96 },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu", "info": "Sub-links show as dropdowns. Sub-sub-links show as grouped columns." },
+    { "type": "header", "content": "Icons" },
+    { "type": "checkbox", "id": "show_search", "label": "Search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Customer account", "default": true },
+    { "type": "checkbox", "id": "show_wishlist", "label": "Wishlist", "default": true, "info": "Needs the theme's wishlist turned on in Theme settings." },
+    {
+      "type": "select", "id": "cart_icon", "label": "Cart icon", "default": "cart",
+      "options": [{ "value": "cart", "label": "Trolley" }, { "value": "bag", "label": "Bag" }]
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop", "info": "Leave empty to hide the button." },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "load_fonts", "label": "Load Fredoka + Poppins", "default": true },
+    { "type": "color", "id": "c_bar", "label": "Bar", "default": "#ffffff" },
+    { "type": "color", "id": "c_ring", "label": "Frame tint", "default": "#ece7d8", "info": "The soft frame around the bar." },
+    { "type": "color", "id": "c_text", "label": "Menu text", "default": "#3d3a33" }
+  ],
+  "presets": [{ "name": "SF · Header" }]
+}
+{% endschema %}
