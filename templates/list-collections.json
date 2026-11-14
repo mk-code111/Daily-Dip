@@ -1,5 +1,140 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "sf_collections_list": {
+      "type": "sf-collections-list",
+      "blocks": {
+        "collection_gAbGN4": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers",
+            "title": "",
+            "text": "",
+            "tint": ""
+          }
+        },
+        "collection_q9CfLb": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers",
+            "title": "",
+            "text": "",
+            "tint": ""
+          }
+        },
+        "collection_UURyQP": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "title": "",
+            "text": "",
+            "tint": ""
+          }
+        },
+        "collection_PUmciy": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers",
+            "title": "",
+            "text": "",
+            "tint": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_gAbGN4",
+        "collection_q9CfLb",
+        "collection_UURyQP",
+        "collection_PUmciy"
+      ],
+      "settings": {
+        "eyebrow": "Find your ritual",
+        "title": "Shop by <em>blend</em>",
+        "text": "<p>Pick a collection to find the cup that fits your day.</p>",
+        "collections": [],
+        "limit": 12,
+        "hide_empty": true,
+        "cols_mobile": "1",
+        "cols_tablet": "2",
+        "cols_desktop": 4,
+        "ratio": "square",
+        "show_count": true,
+        "count_one": "blend",
+        "count_many": "blends",
+        "show_desc": true,
+        "desc_words": 14,
+        "button_label": "Explore",
+        "palette": "#c8f169,#ffd23f,#bfe6ff,#ffc2b8",
+        "c_bg": "#fbf8ef",
+        "pt": 40,
+        "pb": 64
+      }
+    },
+    "sf_bestsellers": {
+      "type": "sf-product-cards",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "heading": "Our bestsellers",
+        "subheading": "",
+        "product_list": [],
+        "collection": "bestsellers",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "load_fonts": true,
+        "c_bg": "#ffffff",
+        "pt": 48,
+        "pb": 56
+      }
+    },
     "featured_collections_mM4ajz": {
       "type": "featured-collections",
       "blocks": {
@@ -69,6 +204,7 @@
         "collection_LCmzVA",
         "collection_aKHbyx"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -103,8 +239,7 @@
         "breakpoint_desktop": 4,
         "pt": 11,
         "pb": 11
-      },
-      "disabled": true
+      }
     },
     "featured_products_M8rk9w": {
       "type": "featured-products",
@@ -122,6 +257,7 @@
       "block_order": [
         "block_QBntMM"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -149,69 +285,6 @@
         "breakpoint_desktop": 4,
         "pt": 11,
         "pb": 11
-      },
-      "disabled": true
-    },
-    "sf_collections_list": {
-      "type": "sf-collections-list",
-      "settings": {
-        "cols_tablet": "2"
-      }
-    },
-    "sf_bestsellers": {
-      "type": "sf-product-cards",
-      "blocks": {
-        "benefit_qiXfqC": {
-          "type": "benefit",
-          "settings": {
-            "icon": "leaf",
-            "text": "Natural Ingredients"
-          }
-        },
-        "benefit_HqqpFN": {
-          "type": "benefit",
-          "settings": {
-            "icon": "drop",
-            "text": "Rich & Aromatic"
-          }
-        },
-        "benefit_y4y34L": {
-          "type": "benefit",
-          "settings": {
-            "icon": "cup",
-            "text": "Perfect for Daily Use"
-          }
-        }
-      },
-      "block_order": [
-        "benefit_qiXfqC",
-        "benefit_HqqpFN",
-        "benefit_y4y34L"
-      ],
-      "settings": {
-        "heading": "Our bestsellers",
-        "subheading": "",
-        "collection": "bestsellers",
-        "limit": 8,
-        "per_mobile": "1.5",
-        "per_tablet": 2.5,
-        "per_desktop": 4,
-        "per_wide": 4,
-        "loop": true,
-        "autoplay": true,
-        "speed": 3,
-        "show_arrows": true,
-        "show_dots": true,
-        "ratio": "1",
-        "card_arrows": true,
-        "show_discount": true,
-        "new_label": "NEW",
-        "atc_label": "Add to cart",
-        "soldout_label": "Sold out",
-        "load_fonts": true,
-        "c_bg": "#ffffff",
-        "pt": 48,
-        "pb": 56
       }
     }
   },
