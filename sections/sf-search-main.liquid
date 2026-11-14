@@ -84,9 +84,9 @@
           <span class="sf-sr__pop-lbl">{{ s.popular_label | escape }}</span>
           <ul role="list">
             {%- for c in chips -%}
-              {%- assign t = c | strip -%}
+              {%- assign t = c | strip -%}{%- assign t_low = t | downcase -%}{%- assign q_low = search.terms | strip | downcase -%}
               {%- if t != blank -%}
-                <li><a class="sf-sr__chip{% if t == search.terms %} is-active{% endif %}" href="{{ routes.search_url }}?q={{ t | url_encode }}{% if s.products_only %}&type=product{% endif %}">{{ t | escape }}</a></li>
+                <li><a class="sf-sr__chip{% if t_low == q_low %} is-active{% endif %}" href="{{ routes.search_url }}?q={{ t | url_encode }}{% if s.products_only %}&type=product{% endif %}">{{ t | escape }}</a></li>
               {%- endif -%}
             {%- endfor -%}
           </ul>
