@@ -64,10 +64,25 @@
     const t = setInterval(run, 1000);
   };
 
+
+  /* ---------- contact: message counter, focus the result after posting ---------- */
+  const contact = (ta) => {
+    if (ta.dataset.sfReady) return;
+    ta.dataset.sfReady = '1';
+    const out = ta.closest('form')?.querySelector('[data-sf-ct-count]');
+    const max = Number(ta.getAttribute('maxlength')) || 0;
+    if (!out || !max) return;
+    const upd = () => { const n = ta.value.length; out.textContent = `${n}/${max}`; out.classList.toggle('is-near', n > max * 0.9); };
+    ta.addEventListener('input', upd); upd();
+  };
+
   const init = () => {
     document.querySelectorAll('.sf-sr__input[data-sf-type]').forEach(typing);
     document.querySelectorAll('[data-sf-nf-cup]').forEach(cup);
     document.querySelectorAll('[data-sf-pw-count]').forEach(countdown);
+    document.querySelectorAll('[data-sf-ct-msg]').forEach(contact);
+    const done = document.querySelector('[data-sf-ct-focus]');
+    if (done && /contact_posted|form_type=contact|#SfContactForm/.test(location.href + location.hash)) { done.scrollIntoView({ block: 'center' }); done.focus({ preventScroll: true }); }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   document.addEventListener('shopify:section:load', init);

@@ -1,0 +1,310 @@
+{%- comment -%}
+  sf-contact — DailyDip contact page.
+  Banner with reply-time sticker → form card (topic pills, order number, counter,
+  steaming-cup thank-you) beside contact cards (blocks: call, WhatsApp, email,
+  visit…), hours, socials and an optional map → FAQ strip.
+  Styles: assets/sf-pages.css · Script: assets/sf-pages.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-pages.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pages.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign topics = s.topics | split: ','
+  assign socials = 'instagram,facebook,youtube,linkedin,x,whatsapp' | split: ','
+  assign has_social = false
+  for n in socials
+    assign key = 'social_' | append: n
+    if s[key] != blank
+      assign has_social = true
+    endif
+  endfor
+-%}
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-ct-bg: {{ s.c_bg }};
+    --sf-ct-banner: {{ s.c_banner }};
+    --sf-ct-pt: {{ s.pt }}px;
+    --sf-ct-pb: {{ s.pb }}px;
+  }
+</style>
+
+<section class="sf-pdp sf-ct">
+  <div class="sf-pdp__wrap">
+
+    {%- comment -%} banner {%- endcomment -%}
+    <div class="sf-ct__banner">
+      <svg class="sf-ct__leaf sf-ct__leaf--a" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/></svg>
+      <svg class="sf-ct__leaf sf-ct__leaf--b" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/></svg>
+      {%- if s.eyebrow != blank -%}<p class="sf-ct__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      <h1 class="sf-ct__title">{{ s.title }}</h1>
+      {%- if s.text != blank -%}<div class="sf-ct__text">{{ s.text }}</div>{%- endif -%}
+      {%- if s.show_page_content and page.content != blank -%}<div class="sf-ct__text rte">{{ page.content }}</div>{%- endif -%}
+      {%- if s.reply_sticker != blank -%}
+        <p class="sf-ct__reply">{% render 'sf-icon', name: 'clock' %}<span>{{ s.reply_sticker | escape }}</span></p>
+      {%- endif -%}
+    </div>
+
+    <div class="sf-ct__grid{% if s.show_form == false %} sf-ct__grid--noform{% endif %}{% if section.blocks.size == 0 and s.hours == blank and has_social == false and s.map_address == blank %} sf-ct__grid--noside{% endif %}">
+
+      {%- comment -%} form {%- endcomment -%}
+      {%- if s.show_form -%}
+        <div class="sf-ct__formcard">
+          {%- if s.form_title != blank -%}<h2 class="sf-ct__ftitle">{{ s.form_title | escape }}</h2>{%- endif -%}
+
+          {%- form 'contact', id: 'SfContactForm', class: 'sf-ct__form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="sf-ct__thanks" role="status" tabindex="-1" data-sf-ct-focus>
+                <svg viewBox="0 0 120 100" aria-hidden="true">
+                  <g class="st"><path d="M46 34c-5-7 5-12 0-20"/><path d="M60 30c-5-7 5-12 0-20"/><path d="M74 34c-5-7 5-12 0-20"/></g>
+                  <path class="cup" d="M26 42h66v20a26 26 0 0 1-26 26h-14a26 26 0 0 1-26-26z"/>
+                  <path class="st2" d="M92 48h5a10 10 0 0 1 0 20h-6"/>
+                </svg>
+                <p class="sf-ct__thanks-title">{{ s.success_title | escape }}</p>
+                <p class="sf-ct__thanks-text">{{ s.success_text | escape }}</p>
+              </div>
+            {%- else -%}
+              {%- if form.errors -%}
+                <div class="sf-ct__errors" role="alert" tabindex="-1" data-sf-ct-focus>
+                  <b>{{ s.error_title | escape }}</b>
+                  <ul>
+                    {%- for field in form.errors -%}
+                      <li>{% if field == 'form' %}{{ form.errors.messages[field] }}{% else %}{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}{% endif %}</li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+
+              {%- if topics.size > 0 and s.topics != blank -%}
+                <fieldset class="sf-ct__topics">
+                  <legend>{{ s.topic_label | escape }}</legend>
+                  <div class="sf-ct__pills">
+                    {%- for t in topics -%}
+                      {%- assign tt = t | strip -%}
+                      {%- if tt != blank -%}
+                        <label class="sf-ct__pill">
+                          <input type="radio" name="contact[Topic]" value="{{ tt | escape }}"{% if forloop.first %} checked{% endif %}>
+                          <span>{{ tt | escape }}</span>
+                        </label>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endif -%}
+
+              <div class="sf-ct__row">
+                <label class="sf-ct__field">
+                  <span class="sf-ct__lbl">{{ s.l_name | escape }}</span>
+                  <input type="text" name="contact[name]" autocomplete="name" value="{{ form.name | default: customer.name }}" placeholder="{{ s.p_name | escape }}">
+                </label>
+                <label class="sf-ct__field">
+                  <span class="sf-ct__lbl">{{ s.l_email | escape }} <i aria-hidden="true">*</i></span>
+                  <input type="email" name="contact[email]" required autocomplete="email" autocapitalize="off" value="{{ form.email | default: customer.email }}" placeholder="{{ s.p_email | escape }}"{% if form.errors contains 'email' %} aria-invalid="true"{% endif %}>
+                </label>
+              </div>
+              {%- if s.show_phone or s.show_order -%}
+                <div class="sf-ct__row">
+                  {%- if s.show_phone -%}
+                    <label class="sf-ct__field">
+                      <span class="sf-ct__lbl">{{ s.l_phone | escape }}</span>
+                      <input type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}" placeholder="{{ s.p_phone | escape }}">
+                    </label>
+                  {%- endif -%}
+                  {%- if s.show_order -%}
+                    <label class="sf-ct__field">
+                      <span class="sf-ct__lbl">{{ s.l_order | escape }}</span>
+                      <input type="text" name="contact[Order number]" placeholder="{{ s.p_order | escape }}">
+                    </label>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              <label class="sf-ct__field">
+                <span class="sf-ct__lbl">{{ s.l_message | escape }} <i aria-hidden="true">*</i><em class="sf-ct__counter" data-sf-ct-count aria-hidden="true"></em></span>
+                <textarea name="contact[body]" rows="5" required maxlength="{{ s.max_chars }}" placeholder="{{ s.p_message | escape }}" data-sf-ct-msg>{{ form.body }}</textarea>
+              </label>
+
+              <div class="sf-ct__submitrow">
+                <button type="submit" class="sf-ct__submit">
+                  <span>{{ s.button | escape }}</span>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg>
+                </button>
+                {%- if s.privacy_note != blank -%}<p class="sf-ct__privacy">{{ s.privacy_note | escape }}</p>{%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} side: contact cards, hours, socials, map {%- endcomment -%}
+      <div class="sf-ct__side">
+        {%- if section.blocks.size > 0 -%}
+          <ul class="sf-ct__cards" role="list">
+            {%- for block in section.blocks -%}
+              {%- assign b = block.settings -%}
+              <li style="--tint: {{ b.tint }};" {{ block.shopify_attributes }}>
+                {%- if b.link != blank -%}<a class="sf-ct__card" href="{{ b.link }}"{% if b.new_tab %} target="_blank" rel="noopener"{% endif %}>{%- else -%}<div class="sf-ct__card">{%- endif -%}
+                  <span class="sf-ct__ico">
+                    {%- if b.icon == 'whatsapp' or b.icon == 'instagram' -%}{% render 'sf-social-icon', name: b.icon %}{%- else -%}{% render 'sf-icon', name: b.icon %}{%- endif -%}
+                  </span>
+                  <span class="sf-ct__cbody">
+                    <span class="sf-ct__ctitle">{{ b.title | escape }}</span>
+                    {%- if b.value != blank -%}<span class="sf-ct__cval">{{ b.value | escape | newline_to_br }}</span>{%- endif -%}
+                    {%- if b.note != blank -%}<span class="sf-ct__cnote">{{ b.note | escape }}</span>{%- endif -%}
+                  </span>
+                  {%- if b.link != blank -%}<span class="sf-ct__carrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>{%- endif -%}
+                {%- if b.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if s.hours != blank or has_social -%}
+          <div class="sf-ct__extra">
+            {%- if s.hours != blank -%}
+              <div class="sf-ct__hours">
+                <p class="sf-ct__htitle">{% render 'sf-icon', name: 'cup-steam' %}{{ s.hours_title | escape }}</p>
+                <div class="sf-ct__hlist">{{ s.hours }}</div>
+              </div>
+            {%- endif -%}
+            {%- if has_social -%}
+              <div class="sf-ct__social">
+                {%- if s.social_title != blank -%}<p class="sf-ct__htitle">{{ s.social_title | escape }}</p>{%- endif -%}
+                <ul role="list">
+                  {%- for n in socials -%}
+                    {%- assign key = 'social_' | append: n -%}
+                    {%- if s[key] != blank -%}<li><a href="{{ s[key] }}" target="_blank" rel="noopener" aria-label="{{ n | capitalize }}">{% render 'sf-social-icon', name: n %}</a></li>{%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if s.map_address != blank -%}
+          <div class="sf-ct__map">
+            <iframe title="{{ s.map_address | escape }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q={{ s.map_address | url_encode }}&z=15&output=embed"></iframe>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if s.faq_title != blank -%}
+      <div class="sf-ct__faq">
+        <span class="sf-ct__faq-ico" aria-hidden="true">?</span>
+        <div>
+          <p class="sf-ct__faq-title">{{ s.faq_title | escape }}</p>
+          {%- if s.faq_text != blank -%}<p class="sf-ct__faq-text">{{ s.faq_text | escape }}</p>{%- endif -%}
+        </div>
+        {%- if s.faq_button != blank -%}<a class="sf-ct__faq-btn" href="{{ s.faq_link | default: '/pages/faq' }}">{{ s.faq_button | escape }} <span aria-hidden="true">&rarr;</span></a>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF · Contact",
+  "tag": "div",
+  "class": "sf-ct-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "header", "content": "Banner" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Contact us" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Let's talk over <em>tea</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Questions about a blend, an order or a bulk gift? Drop us a line. A real human (with a cup in hand) will get back to you.</p>" },
+    { "type": "checkbox", "id": "show_page_content", "label": "Also show the page's own text", "default": false, "info": "From Online Store → Pages → Contact." },
+    { "type": "text", "id": "reply_sticker", "label": "Reply-time sticker", "default": "We usually reply within 24 hrs" },
+
+    { "type": "header", "content": "Form" },
+    { "type": "checkbox", "id": "show_form", "label": "Show form", "default": true },
+    { "type": "text", "id": "form_title", "label": "Form title", "default": "Send us a note" },
+    { "type": "text", "id": "topic_label", "label": "Topic question", "default": "What's it about?" },
+    { "type": "text", "id": "topics", "label": "Topics", "default": "Order help,Product question,Wholesale & gifting,Feedback", "info": "Comma-separated. Leave empty to hide." },
+    { "type": "text", "id": "l_name", "label": "Name label", "default": "Your name" },
+    { "type": "text", "id": "p_name", "label": "Name placeholder", "default": "Priya Sharma" },
+    { "type": "text", "id": "l_email", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "p_email", "label": "Email placeholder", "default": "you@example.com" },
+    { "type": "checkbox", "id": "show_phone", "label": "Phone field", "default": true },
+    { "type": "text", "id": "l_phone", "label": "Phone label", "default": "Phone (optional)" },
+    { "type": "text", "id": "p_phone", "label": "Phone placeholder", "default": "+91" },
+    { "type": "checkbox", "id": "show_order", "label": "Order number field", "default": true },
+    { "type": "text", "id": "l_order", "label": "Order label", "default": "Order number (optional)" },
+    { "type": "text", "id": "p_order", "label": "Order placeholder", "default": "#1001" },
+    { "type": "text", "id": "l_message", "label": "Message label", "default": "Message" },
+    { "type": "text", "id": "p_message", "label": "Message placeholder", "default": "Tell us what's brewing…" },
+    { "type": "range", "id": "max_chars", "label": "Message limit", "min": 300, "max": 3000, "step": 100, "default": 1000 },
+    { "type": "text", "id": "button", "label": "Button", "default": "Send message" },
+    { "type": "text", "id": "privacy_note", "label": "Small print", "default": "We'll only use your details to reply to you." },
+    { "type": "text", "id": "error_title", "label": "Error title", "default": "Almost there, please check:" },
+    { "type": "text", "id": "success_title", "label": "Thank-you title", "default": "Message steeping!" },
+    { "type": "text", "id": "success_text", "label": "Thank-you text", "default": "Thanks for writing in. We'll get back to you soon." },
+
+    { "type": "header", "content": "Hours & socials" },
+    { "type": "text", "id": "hours_title", "label": "Hours title", "default": "We're around" },
+    { "type": "richtext", "id": "hours", "label": "Hours", "default": "<p><strong>Mon – Sat</strong> 10am – 7pm</p><p><strong>Sunday</strong> Taking a tea break</p>" },
+    { "type": "text", "id": "social_title", "label": "Social title", "default": "Follow the steam" },
+    { "type": "url", "id": "social_instagram", "label": "Instagram" },
+    { "type": "url", "id": "social_facebook", "label": "Facebook" },
+    { "type": "url", "id": "social_youtube", "label": "YouTube" },
+    { "type": "url", "id": "social_linkedin", "label": "LinkedIn" },
+    { "type": "url", "id": "social_x", "label": "X (Twitter)" },
+    { "type": "url", "id": "social_whatsapp", "label": "WhatsApp" },
+
+    { "type": "header", "content": "Map" },
+    { "type": "text", "id": "map_address", "label": "Map address", "info": "Shows a Google map. Leave empty to hide." },
+
+    { "type": "header", "content": "FAQ strip" },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "Looking for quick answers?", "info": "Leave empty to hide the strip." },
+    { "type": "text", "id": "faq_text", "label": "Text", "default": "Shipping, brewing, returns. Most questions are already answered." },
+    { "type": "text", "id": "faq_button", "label": "Button", "default": "Read FAQs" },
+    { "type": "url", "id": "faq_link", "label": "Link" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "c_banner", "label": "Banner", "default": "#e9f7d0" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "channel",
+      "name": "Contact card",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "phone",
+          "options": [
+            { "value": "phone", "label": "Phone" },
+            { "value": "whatsapp", "label": "WhatsApp" },
+            { "value": "mail", "label": "Email" },
+            { "value": "pin", "label": "Location" },
+            { "value": "chat", "label": "Chat" },
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "truck", "label": "Delivery" },
+            { "value": "clock", "label": "Clock" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Call us" },
+        { "type": "textarea", "id": "value", "label": "Detail", "default": "+91 8369487891" },
+        { "type": "text", "id": "note", "label": "Small note" },
+        { "type": "url", "id": "link", "label": "Link", "info": "e.g. tel:+918369487891, mailto:…, https://wa.me/…" },
+        { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": false },
+        { "type": "color", "id": "tint", "label": "Colour", "default": "#c8f169" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Contact",
+      "blocks": [
+        { "type": "channel", "settings": { "icon": "phone", "title": "Call us", "value": "+91 8369487891", "note": "Mon–Sat, 10am–7pm", "link": "tel:+918369487891", "tint": "#c8f169" } },
+        { "type": "channel", "settings": { "icon": "whatsapp", "title": "WhatsApp", "value": "Chat with us", "note": "Fastest reply", "link": "https://wa.me/918369487891", "new_tab": true, "tint": "#bff0c9" } },
+        { "type": "channel", "settings": { "icon": "mail", "title": "Email", "value": "Drop us a line", "tint": "#ffd23f" } },
+        { "type": "channel", "settings": { "icon": "pin", "title": "Visit us", "value": "WeWork Enam Sambhav, BKC, Mumbai 400051", "tint": "#ffc2b8" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
