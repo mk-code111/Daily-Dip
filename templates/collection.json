@@ -222,7 +222,13 @@
     },
     "sf_collection_hero": {
       "type": "sf-collection-hero",
-      "settings": {}
+      "settings": {
+        "show_breadcrumb": true,
+        "show_desc": true,
+        "show_count": true,
+        "show_image": true,
+        "show_pills": true
+      }
     },
     "sf_collection_grid": {
       "type": "sf-collection-grid",
@@ -254,7 +260,15 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "settings": {}
+      "settings": {
+        "per_page": 16,
+        "cols_mobile": "1",
+        "cols_tablet": 2,
+        "cols_desktop": 4,
+        "paging": "more",
+        "show_filters": true,
+        "show_sort": true
+      }
     }
   },
   "order": [
