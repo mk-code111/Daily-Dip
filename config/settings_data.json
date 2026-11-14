@@ -29,6 +29,7 @@
     "product_card_atc_btn_color": "btn-secondary",
     "product_card_atc_style": "variant-selector",
     "cart_icon": "cart",
+    "cart_shipping_calculator": false,
     "cart_taxes_shipping": false,
     "cart_continue_btn": false,
     "cart_announcement_description": "<p>10% OFF for your first order. Use code <strong>NEW10</strong></p>",
@@ -38,9 +39,11 @@
     "cart_goal_2_value": "USD:200, EUR:180, GBP:160",
     "cart_goal_3_value": "USD:300, EUR:270, GBP:240",
     "cart_goal_3_icon": "percent",
+    "sf_timer_minutes": 3,
     "sf_rw_collections": [
       "bestsellers"
     ],
+    "sf_rw_mode": "highest",
     "cart_upsells_collection": "best-selling",
     "cart_upsells_limit": 8,
     "cart_upsells_btn_color": "btn-light-primary",
@@ -65,8 +68,6 @@
         "disabled": true,
         "settings": {}
       }
-    },
-    "cart_shipping_calculator": false,
-    "sf_rw_mode": "highest"
+    }
   }
 }
