@@ -154,7 +154,9 @@
     },
     "sf_collections_list": {
       "type": "sf-collections-list",
-      "settings": {}
+      "settings": {
+        "cols_tablet": "2"
+      }
     },
     "sf_bestsellers": {
       "type": "sf-product-cards",

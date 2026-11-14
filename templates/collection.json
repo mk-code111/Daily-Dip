@@ -263,7 +263,7 @@
       "settings": {
         "per_page": 16,
         "cols_mobile": "1",
-        "cols_tablet": 2,
+        "cols_tablet": "2",
         "cols_desktop": 4,
         "paging": "more",
         "show_filters": true,
