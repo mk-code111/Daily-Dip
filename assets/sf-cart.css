@@ -217,12 +217,13 @@
   background: #fff; border: 2px solid var(--sf-ink); border-radius: 11px; overflow: hidden;
 }
 #offcanvas-cart .qty-input-wrapper .btn {
+  position: static !important; inset: auto !important; transform: none !important; flex: none;
   width: 32px; height: 100%; padding: 0; display: grid; place-items: center;
   color: var(--sf-ink); background: var(--sf-chip); border: 0; border-radius: 0;
 }
 #offcanvas-cart .qty-input-wrapper .btn:hover { background: var(--sf-lime); }
 #offcanvas-cart .qty-input-wrapper .form-control {
-  width: 36px; height: 100%; padding: 0; text-align: center; border: 0; border-left: 2px solid var(--sf-ink); border-right: 2px solid var(--sf-ink); border-radius: 0;
+  flex: none; width: 38px; margin: 0; height: 100%; padding: 0; text-align: center; border: 0; border-left: 2px solid var(--sf-ink); border-right: 2px solid var(--sf-ink); border-radius: 0;
   font: 700 15px var(--sf-font-head); -moz-appearance: textfield; box-shadow: none;
 }
 #offcanvas-cart .qty-input-wrapper .form-control::-webkit-inner-spin-button,

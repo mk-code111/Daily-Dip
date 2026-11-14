@@ -9,7 +9,7 @@
   <cart-container class="cart-container">
     <div class="offcanvas-header">
       <h2 id="offcanvas-cart-label" class="offcanvas-title">
-        {{ 'cart.title' | t }} (<span>{{ cart.item_count }}</span>)
+        {{ 'cart.title' | t }} <span>{{ cart.item_count }}</span>
       </h2>
       <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="{{ 'general.accessibility.close' | t }}">
         {% render 'svg-icons', icon: 'x', stroke_width: 1.5 %}
