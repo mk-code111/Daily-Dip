@@ -1,0 +1,247 @@
+/* ==========================================================================
+   SF Footer (sections/sf-footer.liquid)
+   ========================================================================== */
+.sf-ft-section { position: relative; }
+
+.sf-pdp.sf-ft {
+  position: relative; isolation: isolate;
+  margin-top: 56px;
+  background:
+    radial-gradient(ellipse 60% 50% at 12% 0%, color-mix(in srgb, var(--sf-ft-accent) 16%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, var(--sf-ft-bg-2), transparent 70%),
+    var(--sf-ft-bg, #1f7a35);
+  color: var(--sf-ft-text, #fff);
+  font-family: var(--sf-font-body);
+  padding-top: 56px;
+}
+.sf-ft--has-news { padding-top: 0; }
+.sf-ft--has-news:not(.sf-ft--wave) .sf-ft__news { margin-top: -34px; }
+.sf-ft a { color: inherit; text-decoration: none; }
+
+.sf-ft__wrap { position: relative; z-index: 1; max-width: var(--sf-ft-max, 1320px); margin: 0 auto; padding: 0 16px; }
+@media (min-width: 990px) { .sf-ft__wrap { padding: 0 32px; } }
+
+/* ---------- tea-surface top edge ---------- */
+.sf-ft__wave { position: absolute; left: 0; right: 0; bottom: calc(100% - 1px); height: 44px; overflow: hidden; pointer-events: none; }
+.sf-ft__wave svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
+.sf-ft__wave-back { fill: var(--sf-ft-accent); opacity: .55; animation: sf-ft-drift 16s linear infinite; }
+.sf-ft__wave-front { fill: var(--sf-ft-bg); animation: sf-ft-drift 11s linear infinite reverse; }
+@keyframes sf-ft-drift { to { transform: translateX(-50%); } }
+.sf-ft--wave { margin-top: 84px; }
+
+/* ---------- floating leaves ---------- */
+.sf-ft__leaves { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.sf-ft__leaf { position: absolute; width: 46px; height: 46px; fill: var(--sf-ft-accent); stroke: var(--sf-ft-bg); stroke-width: 1.2; opacity: .14; animation: sf-ft-float 12s ease-in-out infinite; }
+.sf-ft__leaf--1 { top: 22%; left: 4%; width: 54px; height: 54px; }
+.sf-ft__leaf--2 { top: 48%; right: 6%; width: 70px; height: 70px; animation-duration: 15s; animation-delay: -4s; }
+.sf-ft__leaf--3 { top: 70%; left: 38%; width: 34px; height: 34px; animation-duration: 10s; animation-delay: -7s; }
+.sf-ft__leaf--4 { top: 14%; right: 30%; width: 28px; height: 28px; animation-duration: 13s; animation-delay: -2s; }
+@keyframes sf-ft-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(14px, -18px) rotate(24deg); }
+}
+
+/* ---------- newsletter card, floating on the surface ---------- */
+.sf-ft__news {
+  position: relative; z-index: 2; margin: -52px 0 40px;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: center;
+  padding: 24px 20px;
+  background: var(--sf-ft-card, #ffd23f); color: var(--sf-ink, #1c1c1c);
+  border: 2.5px solid var(--sf-ink, #1c1c1c); border-radius: 26px;
+  box-shadow: 6px 6px 0 var(--sf-ink, #1c1c1c);
+}
+@media (min-width: 750px) { .sf-ft__news { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; padding: 30px 36px; margin-top: -64px; } }
+.sf-ft__news > * { min-width: 0; }
+.sf-ft__news-badge {
+  display: inline-block; margin-bottom: 10px; padding: 3px 12px;
+  background: var(--sf-ft-accent); border: 1.5px solid var(--sf-ink, #1c1c1c); border-radius: 99px;
+  box-shadow: 2px 2px 0 var(--sf-ink, #1c1c1c);
+  font: 700 12px/1.3 var(--sf-font-head); letter-spacing: 1px; text-transform: uppercase;
+  transform: rotate(-3deg);
+}
+.sf-ft__news-title { margin: 0; color: inherit; font: 700 clamp(22px, 3vw, 30px)/1.15 var(--sf-font-head); letter-spacing: -.2px; }
+.sf-ft__news-title em { font-style: normal; background: linear-gradient(transparent 58%, rgba(255, 255, 255, .85) 58% 92%, transparent 92%); padding: 0 .1em; }
+.sf-ft__news-text { margin-top: 8px; font-size: 14px; line-height: 1.55; opacity: .82; }
+.sf-ft__news-text p { margin: 0; }
+
+.sf-ft__field {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 5px 5px 18px;
+  background: #fff; border: 2px solid var(--sf-ink, #1c1c1c); border-radius: 99px;
+  transition: box-shadow .2s ease;
+}
+.sf-ft__field:focus-within { box-shadow: 0 0 0 4px rgba(255, 255, 255, .7); }
+.sf-ft__field input {
+  flex: 1; min-width: 0; height: 40px; padding: 0; border: 0; outline: 0; background: transparent;
+  font: 500 14.5px var(--sf-font-body); color: var(--sf-ink, #1c1c1c);
+}
+.sf-ft__field input::placeholder { color: #8a8a7a; }
+.sf-ft__submit {
+  flex: none; display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 20px; cursor: pointer;
+  background: var(--sf-ft-bg, #1f7a35); color: #fff;
+  border: 2px solid var(--sf-ink, #1c1c1c); border-radius: 99px;
+  box-shadow: 2px 2px 0 var(--sf-ink, #1c1c1c);
+  font: 600 15px/1 var(--sf-font-head);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.sf-ft__submit:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--sf-ink, #1c1c1c); }
+.sf-ft__submit:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--sf-ink, #1c1c1c); }
+.sf-ft__submit svg { transition: transform .2s ease; }
+.sf-ft__submit:hover svg { transform: translateX(3px); }
+.sf-ft__form-err { margin: 8px 0 0 16px; font-size: 13px; font-weight: 600; color: #b3261e; }
+.sf-ft__form-ok { display: flex; align-items: center; gap: 10px; margin: 0; font: 600 16px/1.3 var(--sf-font-head); }
+.sf-ft__form-ok-ico { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--sf-ft-accent); border: 2px solid var(--sf-ink, #1c1c1c); }
+.sf-ft__form-ok-ico .sf-icon { width: 18px; height: 18px; }
+
+/* ---------- columns ---------- */
+.sf-ft__cols { display: flex; flex-wrap: wrap; gap: 8px 40px; padding-top: 8px; }
+.sf-ft__col { flex: 1 1 100%; min-width: 0; }
+@media (min-width: 750px) {
+  .sf-ft__cols { gap: 36px 40px; }
+  .sf-ft__col { flex: 1 1 160px; }
+  .sf-ft__brand { flex: 1 1 100%; max-width: none; }
+  .sf-ft__contact { flex: 1.3 1 240px; }
+}
+/* desktop: columns keep their natural width and spread edge to edge,
+   so 2 columns or 5 columns both look balanced */
+@media (min-width: 990px) {
+  .sf-ft__cols { flex-wrap: nowrap; justify-content: space-between; gap: 40px; }
+  .sf-ft__col { flex: 0 1 auto; min-width: 140px; max-width: 220px; }
+  .sf-ft__brand { flex: 0 1 380px; max-width: 380px; }
+  .sf-ft__contact { flex: 0 1 290px; max-width: 290px; }
+}
+
+/* brand */
+.sf-ft__brand { padding-bottom: 18px; }
+.sf-ft__logo { display: inline-block; margin-bottom: 14px; }
+.sf-ft__logo img { display: block; width: var(--sf-ft-logo-w, 150px); max-width: 100%; height: auto; }
+.sf-ft__logo--text { font: 700 32px/1 var(--sf-font-head); letter-spacing: -.5px; }
+.sf-ft__tagline { max-width: 340px; font-size: 14.5px; line-height: 1.6; opacity: .86; }
+.sf-ft__tagline p { margin: 0; }
+.sf-ft__social { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; padding: 0; }
+.sf-ft__soc {
+  display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255, 255, 255, .1); border: 1.5px solid rgba(255, 255, 255, .35);
+  transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.sf-ft .sf-ft__soc:hover, .sf-ft .sf-ft__soc:focus-visible {
+  background: var(--sf-ft-accent); color: var(--sf-ink, #1c1c1c); border-color: var(--sf-ink, #1c1c1c);
+  transform: translate(-2px, -2px) rotate(-6deg); box-shadow: 3px 3px 0 var(--sf-ink, #1c1c1c);
+}
+.sf-ft__soc .sf-soc { width: 19px; height: 19px; }
+
+/* headings (menus are accordions on phones) */
+.sf-ft__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 0 0 14px; list-style: none; cursor: default;
+  font: 600 17px/1.2 var(--sf-font-head); color: var(--sf-ft-accent);
+}
+.sf-ft__head::-webkit-details-marker { display: none; }
+.sf-ft__head > span:first-child { position: relative; padding-bottom: 8px; }
+.sf-ft__head > span:first-child::after, .sf-ft__head--static::after {
+  content: ""; position: absolute; left: 0; bottom: 0; width: 26px; height: 3px; border-radius: 3px; background: currentColor; opacity: .7;
+}
+.sf-ft__head--static { position: relative; padding-bottom: 8px; display: block; }
+.sf-ft__plus { display: none; position: relative; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .4); flex: none; }
+.sf-ft__plus::before, .sf-ft__plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; margin: -1px 0 0 -5px; background: var(--sf-ft-text); border-radius: 2px; transition: transform .25s ease; }
+.sf-ft__plus::after { transform: rotate(90deg); }
+.sf-ft__menu[open] .sf-ft__plus::after { transform: rotate(0deg); }
+
+.sf-ft__links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.sf-ft__links a {
+  display: inline-flex; align-items: center; gap: 0;
+  font-size: 14.5px; line-height: 1.4; opacity: .84;
+  transition: opacity .2s ease, color .2s ease, gap .2s ease;
+}
+.sf-ft__links a::before {
+  content: ""; width: 0; height: 9px; flex: none;
+  background: var(--sf-ft-accent); border-radius: 0 70% 0 70%;
+  transition: width .2s ease;
+}
+.sf-ft .sf-ft__links a:hover, .sf-ft .sf-ft__links a[aria-current] { opacity: 1; color: var(--sf-ft-accent); gap: 8px; }
+.sf-ft .sf-ft__links a:hover::before, .sf-ft .sf-ft__links a[aria-current]::before { width: 9px; }
+
+@media (max-width: 749px) {
+  .sf-ft__brand { text-align: center; padding-bottom: 22px; }
+  .sf-ft__tagline { margin: 0 auto; }
+  .sf-ft__social { justify-content: center; }
+  .sf-ft__menu { border-top: 1.5px dashed rgba(255, 255, 255, .25); }
+  .sf-ft__menu .sf-ft__head { margin: 0; padding: 16px 0; cursor: pointer; }
+  .sf-ft__menu .sf-ft__head > span:first-child { padding-bottom: 0; }
+  .sf-ft__menu .sf-ft__head > span:first-child::after { display: none; }
+  .sf-ft__plus { display: block; }
+  .sf-ft__menu .sf-ft__links { padding-bottom: 18px; }
+  .sf-ft__contact { border-top: 1.5px dashed rgba(255, 255, 255, .25); padding-top: 18px; }
+  .sf-ft__brand + .sf-ft__contact, .sf-ft__cols > .sf-ft__contact:first-child { border-top: 0; }
+}
+
+/* contact */
+.sf-ft__cinfo { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.sf-ft__crow { display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; line-height: 1.45; }
+.sf-ft__crow small { display: block; margin-bottom: 1px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; opacity: .62; }
+.sf-ft__cico {
+  flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255, 255, 255, .1); color: var(--sf-ft-accent); border: 1.5px solid rgba(255, 255, 255, .28);
+  transition: background .2s ease, color .2s ease, transform .3s cubic-bezier(.3, 1.6, .5, 1);
+}
+.sf-ft__cico .sf-icon { width: 18px; height: 18px; }
+a.sf-ft__crow:hover .sf-ft__cico { background: var(--sf-ft-accent); color: var(--sf-ink, #1c1c1c); transform: rotate(-10deg) scale(1.06); }
+a.sf-ft__crow:hover > span:last-child { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- big wordmark: fills with tea when in view ---------- */
+.sf-ft__mark {
+  position: relative; margin: 44px 0 -.06em; overflow: hidden;
+  font: 700 clamp(64px, 17vw, 250px)/.9 var(--sf-font-head); letter-spacing: -.02em;
+  text-align: center; white-space: nowrap; user-select: none;
+}
+.sf-ft__mark-out { display: block; color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--sf-ft-text) 32%, transparent); }
+.sf-ft__mark-fill {
+  position: absolute; inset: 0; color: var(--sf-ft-accent); opacity: .9;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 2.4s cubic-bezier(.3, .7, .2, 1);
+}
+.sf-ft__mark.is-in .sf-ft__mark-fill { clip-path: inset(46% 0 0 0); }
+.sf-ft__mark:hover .sf-ft__mark-fill { clip-path: inset(8% 0 0 0); transition-duration: 1s; }
+@media (max-width: 749px) { .sf-ft__mark { margin-top: 32px; } }
+
+/* ---------- bottom bar ---------- */
+.sf-ft__bar {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+  margin-top: 36px; padding: 18px 0 22px;
+  border-top: 1.5px dashed color-mix(in srgb, var(--sf-ft-text) 30%, transparent);
+  font-size: 13px;
+}
+.sf-ft__mark + .sf-ft__bar { margin-top: 0; }
+.sf-ft__copy { margin: 0; opacity: .78; }
+.sf-ft__copy:empty { display: none; }
+.sf-ft__policies { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; padding: 0; }
+.sf-ft__policies a { opacity: .78; transition: opacity .2s ease, color .2s ease; }
+.sf-ft .sf-ft__policies a:hover { opacity: 1; color: var(--sf-ft-accent); }
+.sf-ft__pay { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 0 auto; padding: 0; }
+.sf-ft__pay-ico { display: block; width: 38px; height: 24px; border-radius: 5px; background: #fff; }
+.sf-ft__top {
+  flex: none; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; cursor: pointer;
+  background: var(--sf-ft-accent); color: var(--sf-ink, #1c1c1c);
+  border: 2px solid var(--sf-ink, #1c1c1c); border-radius: 50%;
+  box-shadow: 3px 3px 0 var(--sf-ink, #1c1c1c);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.sf-ft__top .sf-icon { width: 18px; height: 18px; stroke-width: 2.6; }
+.sf-ft__top:hover { transform: translateY(-3px); box-shadow: 3px 6px 0 var(--sf-ink, #1c1c1c); }
+.sf-ft__top:hover .sf-icon { animation: sf-ft-up .6s ease infinite; }
+@keyframes sf-ft-up { 50% { transform: translateY(-3px); } }
+.sf-ft__pay + .sf-ft__top { margin-left: 0; }
+.sf-ft__bar > .sf-ft__top:only-child, .sf-ft__copy:empty ~ .sf-ft__top { margin-left: auto; }
+
+@media (max-width: 749px) {
+  .sf-ft__bar { flex-direction: column; text-align: center; gap: 14px; padding-bottom: 26px; }
+  .sf-ft__policies, .sf-ft__pay { justify-content: center; margin: 0; }
+  .sf-ft__top { order: -1; margin: -40px 0 0; }
+  .sf-ft__mark + .sf-ft__bar .sf-ft__top { margin-top: -38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-ft__wave svg, .sf-ft__leaf, .sf-ft__top:hover .sf-icon { animation: none; }
+  .sf-ft__mark-fill { transition: none; }
+}

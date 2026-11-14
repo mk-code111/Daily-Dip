@@ -1,0 +1,337 @@
+{%- comment -%}
+  sf-footer — DailyDip footer.
+  A green "cup" with a rippling tea-surface top edge, an optional "Dip Club" newsletter
+  card floating on the surface, then brand · menus · contact columns, a big outlined
+  wordmark that fills with tea when it scrolls into view, and a bottom bar.
+  Every part is optional; columns re-flow so it stays neat whatever is turned off.
+  Styles: assets/sf-footer.css · Script: assets/sf-footer.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-footer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-footer.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+
+  assign socials = 'instagram,facebook,youtube,linkedin,x,pinterest,whatsapp,tiktok,threads' | split: ','
+  assign social_labels = 'Instagram,Facebook,YouTube,LinkedIn,X,Pinterest,WhatsApp,TikTok,Threads' | split: ','
+  assign has_social = false
+  for n in socials
+    assign key = 'social_' | append: n
+    assign u = s[key] | strip
+    if u != blank and u != '#'
+      assign has_social = true
+    endif
+  endfor
+  unless s.show_social
+    assign has_social = false
+  endunless
+
+  assign has_brand = false
+  if s.logo != blank or s.brand_text != blank or s.tagline != blank or has_social
+    assign has_brand = true
+  endif
+
+  assign menu_count = 0
+  if s.menu_1 != blank
+    assign menu_count = menu_count | plus: 1
+  endif
+  if s.menu_2 != blank
+    assign menu_count = menu_count | plus: 1
+  endif
+  if s.menu_3 != blank
+    assign menu_count = menu_count | plus: 1
+  endif
+
+  assign phone_digits = s.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+  assign has_contact = false
+  if s.phone != blank or s.email != blank or s.address != blank or s.hours != blank
+    assign has_contact = true
+  endif
+
+  assign wordmark = s.wordmark_text | default: shop.name
+  assign cols = 0
+  if has_brand
+    assign cols = cols | plus: 1
+  endif
+  assign cols = cols | plus: menu_count
+  if has_contact
+    assign cols = cols | plus: 1
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-ft-bg: {{ s.c_bg }};
+    --sf-ft-bg-2: {{ s.c_bg | color_darken: 7 }};
+    --sf-ft-text: {{ s.c_text }};
+    --sf-ft-accent: {{ s.c_accent }};
+    --sf-ft-card: {{ s.c_card }};
+    --sf-ft-logo-w: {{ s.logo_width }}px;
+    --sf-ft-max: {{ s.max_width | default: 1320 }}px;
+  }
+</style>
+
+<footer
+  class="sf-pdp sf-ft{% if s.wave %} sf-ft--wave{% endif %}{% if s.leaves %} sf-ft--leaves{% endif %}{% if s.newsletter %} sf-ft--has-news{% endif %}"
+  data-cols="{{ cols }}"
+>
+  {%- if s.wave -%}
+    <div class="sf-ft__wave" aria-hidden="true">
+      <svg class="sf-ft__wave-back" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0 34 C120 14 240 14 360 30 S600 50 720 32 960 12 1080 28 1320 48 1440 30 V60 H0Z"/><path d="M1440 34 C1560 14 1680 14 1800 30 S2040 50 2160 32 2400 12 2520 28 2760 48 2880 30 V60 H1440Z"/></svg>
+      <svg class="sf-ft__wave-front" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0 40 C160 22 300 24 440 38 S720 54 860 40 1120 22 1260 36 1380 46 1440 40 V60 H0Z"/><path d="M1440 40 C1600 22 1740 24 1880 38 S2160 54 2300 40 2560 22 2700 36 2820 46 2880 40 V60 H1440Z"/></svg>
+    </div>
+  {%- endif -%}
+
+  {%- if s.leaves -%}
+    <div class="sf-ft__leaves" aria-hidden="true">
+      {%- for i in (1..4) -%}
+        <svg class="sf-ft__leaf sf-ft__leaf--{{ i }}" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7" fill="none"/></svg>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="sf-ft__wrap">
+    {%- if s.newsletter -%}
+      <div class="sf-ft__news">
+        <div class="sf-ft__news-copy">
+          {%- if s.news_badge != blank -%}<span class="sf-ft__news-badge">{{ s.news_badge | escape }}</span>{%- endif -%}
+          {%- if s.news_title != blank -%}<h2 class="sf-ft__news-title">{{ s.news_title }}</h2>{%- endif -%}
+          {%- if s.news_text != blank -%}<div class="sf-ft__news-text">{{ s.news_text }}</div>{%- endif -%}
+        </div>
+        {%- form 'customer', id: 'SfFooterNews', class: 'sf-ft__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="sf-ft__form-ok" role="status">
+              <span class="sf-ft__form-ok-ico">{% render 'sf-icon', name: 'check' %}</span>
+              {{ s.news_success | escape }}
+            </p>
+          {%- else -%}
+            <div class="sf-ft__field">
+              <label class="visually-hidden" for="SfFooterNews-email">{{ s.news_placeholder | escape }}</label>
+              <input
+                id="SfFooterNews-email" type="email" name="contact[email]" required
+                autocomplete="email" autocapitalize="off" spellcheck="false"
+                placeholder="{{ s.news_placeholder | escape }}"
+                {% if form.errors %}aria-invalid="true" aria-describedby="SfFooterNews-error"{% endif %}
+              >
+              <button type="submit" class="sf-ft__submit">
+                <span>{{ s.news_button | escape }}</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="sf-ft__form-err" id="SfFooterNews-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+
+    {%- if cols > 0 -%}
+      <div class="sf-ft__cols">
+        {%- if has_brand -%}
+          <div class="sf-ft__col sf-ft__brand">
+            {%- if s.logo != blank -%}
+              <a href="{{ routes.root_url }}" class="sf-ft__logo">
+                {{ s.logo | image_url: width: 600 | image_tag: loading: 'lazy', alt: shop.name, sizes: '(min-width: 990px) 240px, 50vw' }}
+              </a>
+            {%- elsif s.brand_text != blank -%}
+              <a href="{{ routes.root_url }}" class="sf-ft__logo sf-ft__logo--text">{{ s.brand_text | escape }}</a>
+            {%- endif -%}
+            {%- if s.tagline != blank -%}<div class="sf-ft__tagline">{{ s.tagline }}</div>{%- endif -%}
+            {%- if has_social -%}
+              <ul class="sf-ft__social" role="list" aria-label="Follow us">
+                {%- for n in socials -%}
+                  {%- liquid
+                    assign key = 'social_' | append: n
+                    assign u = s[key] | strip
+                  -%}
+                  {%- if u != blank and u != '#' -%}
+                    <li>
+                      <a href="{{ u }}" class="sf-ft__soc" target="_blank" rel="noopener" aria-label="{{ social_labels[forloop.index0] }}">
+                        {% render 'sf-social-icon', name: n %}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- for i in (1..3) -%}
+          {%- liquid
+            assign mk = 'menu_' | append: i
+            assign tk = 'menu_' | append: i | append: '_title'
+            assign m = s[mk]
+          -%}
+          {%- if m != blank -%}
+            {%- assign heading = s[tk] | default: linklists[m].title -%}
+            <details class="sf-ft__col sf-ft__menu" data-sf-ft-acc open>
+              <summary class="sf-ft__head">
+                <span>{{ heading | escape }}</span>
+                <span class="sf-ft__plus" aria-hidden="true"></span>
+              </summary>
+              <ul class="sf-ft__links" role="list">
+                {%- for link in linklists[m].links -%}
+                  <li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if has_contact -%}
+          <div class="sf-ft__col sf-ft__contact">
+            {%- if s.contact_title != blank -%}<p class="sf-ft__head sf-ft__head--static">{{ s.contact_title | escape }}</p>{%- endif -%}
+            <ul class="sf-ft__cinfo" role="list">
+              {%- if s.phone != blank -%}
+                <li><a href="tel:{{ phone_digits }}" class="sf-ft__crow">
+                  <span class="sf-ft__cico">{% render 'sf-icon', name: 'phone' %}</span>
+                  <span><small>{{ s.phone_label | escape }}</small>{{ s.phone | escape }}</span>
+                </a></li>
+              {%- endif -%}
+              {%- if s.email != blank -%}
+                <li><a href="mailto:{{ s.email | strip }}" class="sf-ft__crow">
+                  <span class="sf-ft__cico">{% render 'sf-icon', name: 'mail' %}</span>
+                  <span><small>{{ s.email_label | escape }}</small>{{ s.email | escape }}</span>
+                </a></li>
+              {%- endif -%}
+              {%- if s.address != blank -%}
+                <li>
+                  {%- if s.address_map -%}
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ s.address | strip_newlines | url_encode }}" class="sf-ft__crow" target="_blank" rel="noopener">
+                  {%- else -%}
+                    <div class="sf-ft__crow">
+                  {%- endif -%}
+                    <span class="sf-ft__cico">{% render 'sf-icon', name: 'pin' %}</span>
+                    <span><small>{{ s.address_label | escape }}</small>{{ s.address | escape | newline_to_br }}</span>
+                  {%- if s.address_map -%}</a>{%- else -%}</div>{%- endif -%}
+                </li>
+              {%- endif -%}
+              {%- if s.hours != blank -%}
+                <li><div class="sf-ft__crow">
+                  <span class="sf-ft__cico">{% render 'sf-icon', name: 'clock' %}</span>
+                  <span><small>{{ s.hours_label | escape }}</small>{{ s.hours | escape }}</span>
+                </div></li>
+              {%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if s.show_wordmark and wordmark != blank -%}
+      <div class="sf-ft__mark" aria-hidden="true" data-sf-ft-mark>
+        <span class="sf-ft__mark-out">{{ wordmark | escape }}</span>
+        <span class="sf-ft__mark-fill">{{ wordmark | escape }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="sf-ft__bar">
+      <p class="sf-ft__copy">
+        {%- if s.copyright != blank -%}
+          {%- assign year = 'now' | date: '%Y' -%}
+          {{ s.copyright | replace: '[year]', year | escape }}
+        {%- endif -%}
+      </p>
+      {%- if s.show_policies and shop.policies.size > 0 -%}
+        <ul class="sf-ft__policies" role="list">
+          {%- for policy in shop.policies -%}
+            <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if s.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="sf-ft__pay" role="list" aria-label="Payment methods">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'sf-ft__pay-ico' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if s.show_scroll_top_btn -%}
+        <button type="button" class="sf-ft__top" data-sf-ft-top aria-label="Back to top">
+          {% render 'sf-icon', name: 'arrow-up' %}
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "SF · Footer",
+  "tag": "div",
+  "class": "sf-ft-section",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    { "type": "header", "content": "Brand" },
+    { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Leave empty to show the brand name as text instead." },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 260, "step": 10, "unit": "px", "default": 150 },
+    { "type": "text", "id": "brand_text", "label": "Brand name (when no logo)", "default": "DailyDip" },
+    { "type": "richtext", "id": "tagline", "label": "Tagline", "default": "<p>Small sips, a healthier you. Thoughtfully crafted tea blends for your daily wellness.</p>" },
+
+    { "type": "header", "content": "Social links" },
+    { "type": "checkbox", "id": "show_social", "label": "Show social links", "default": true },
+    { "type": "paragraph", "content": "Only the links you fill in are shown." },
+    { "type": "url", "id": "social_instagram", "label": "Instagram" },
+    { "type": "url", "id": "social_facebook", "label": "Facebook" },
+    { "type": "url", "id": "social_youtube", "label": "YouTube" },
+    { "type": "url", "id": "social_linkedin", "label": "LinkedIn" },
+    { "type": "url", "id": "social_x", "label": "X (Twitter)" },
+    { "type": "url", "id": "social_pinterest", "label": "Pinterest" },
+    { "type": "url", "id": "social_whatsapp", "label": "WhatsApp", "info": "e.g. https://wa.me/918369487891" },
+    { "type": "url", "id": "social_tiktok", "label": "TikTok" },
+    { "type": "url", "id": "social_threads", "label": "Threads" },
+
+    { "type": "header", "content": "Menus" },
+    { "type": "paragraph", "content": "Pick up to three menus. Empty ones are skipped and the columns re-flow." },
+    { "type": "link_list", "id": "menu_1", "label": "Menu 1" },
+    { "type": "text", "id": "menu_1_title", "label": "Menu 1 heading", "info": "Leave empty to use the menu's name." },
+    { "type": "link_list", "id": "menu_2", "label": "Menu 2" },
+    { "type": "text", "id": "menu_2_title", "label": "Menu 2 heading" },
+    { "type": "link_list", "id": "menu_3", "label": "Menu 3" },
+    { "type": "text", "id": "menu_3_title", "label": "Menu 3 heading" },
+
+    { "type": "header", "content": "Contact" },
+    { "type": "text", "id": "contact_title", "label": "Heading", "default": "Say hello" },
+    { "type": "text", "id": "phone", "label": "Phone number" },
+    { "type": "text", "id": "phone_label", "label": "Phone label", "default": "Call us" },
+    { "type": "text", "id": "email", "label": "Email" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Write to us" },
+    { "type": "textarea", "id": "address", "label": "Address" },
+    { "type": "text", "id": "address_label", "label": "Address label", "default": "Visit us" },
+    { "type": "checkbox", "id": "address_map", "label": "Open address in Google Maps", "default": true },
+    { "type": "text", "id": "hours", "label": "Opening hours", "placeholder": "Mon–Sat, 10am–7pm" },
+    { "type": "text", "id": "hours_label", "label": "Hours label", "default": "We're around" },
+
+    { "type": "header", "content": "Newsletter" },
+    { "type": "checkbox", "id": "newsletter", "label": "Show newsletter card", "default": true },
+    { "type": "text", "id": "news_badge", "label": "Sticker", "default": "Dip Club" },
+    { "type": "inline_richtext", "id": "news_title", "label": "Title", "default": "Fresh brews, <em>straight to your inbox</em>" },
+    { "type": "richtext", "id": "news_text", "label": "Text", "default": "<p>New blends, tea rituals and members-only offers. No spam, just good sips.</p>" },
+    { "type": "text", "id": "news_placeholder", "label": "Email placeholder", "default": "Your email address" },
+    { "type": "text", "id": "news_button", "label": "Button", "default": "Join" },
+    { "type": "text", "id": "news_success", "label": "Thank-you message", "default": "You're in! Welcome to the Dip Club." },
+
+    { "type": "header", "content": "Bottom" },
+    { "type": "checkbox", "id": "show_wordmark", "label": "Big wordmark", "default": true, "info": "Large outlined brand name that fills with tea as it scrolls into view." },
+    { "type": "text", "id": "wordmark_text", "label": "Wordmark text", "info": "Leave empty to use the store name." },
+    { "type": "text", "id": "copyright", "label": "Copyright", "default": "© [year] DailyDip. Brewed with care in India.", "info": "[year] becomes the current year." },
+    { "type": "checkbox", "id": "show_policies", "label": "Policy links", "default": true },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Payment icons", "default": true },
+    { "type": "checkbox", "id": "show_scroll_top_btn", "label": "Back to top button", "default": true },
+
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "wave", "label": "Tea-wave top edge", "default": true },
+    { "type": "checkbox", "id": "leaves", "label": "Floating leaves", "default": true },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#1f7a35" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "c_accent", "label": "Accent", "default": "#c8f169" },
+    { "type": "color", "id": "c_card", "label": "Newsletter card", "default": "#ffd23f" },
+    { "type": "text", "id": "max_width", "label": "Max width (px)", "placeholder": "1320" }
+  ],
+  "presets": [{ "name": "SF · Footer" }]
+}
+{% endschema %}
