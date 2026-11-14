@@ -38,6 +38,9 @@
     "cart_goal_2_value": "USD:200, EUR:180, GBP:160",
     "cart_goal_3_value": "USD:300, EUR:270, GBP:240",
     "cart_goal_3_icon": "percent",
+    "sf_rw_collections": [
+      "bestsellers"
+    ],
     "cart_upsells_collection": "best-selling",
     "cart_upsells_limit": 8,
     "cart_upsells_btn_color": "btn-light-primary",
