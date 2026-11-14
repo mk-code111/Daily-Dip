@@ -71,6 +71,24 @@
                       </option>
                     {% endfor %}
                   </select>
+                  {%- comment -%} SF: pack buttons that drive the theme's select above {%- endcomment -%}
+                  <div class="sf-vpills" role="radiogroup" aria-label="{{ 'product.select_variant' | t }}">
+                    {%- for variant in line_item.product.variants -%}
+                      <button
+                        type="button"
+                        class="sf-vpill"
+                        role="radio"
+                        data-sf-vpick="{{ variant.id }}"
+                        aria-checked="{% if line_item.variant.id == variant.id %}true{% else %}false{% endif %}"
+                        {%- unless variant.available %} disabled{% endunless %}
+                      >
+                        <span class="sf-vpill__name">{{ variant.title }}</span>
+                        <span class="sf-vpill__price">
+                          {%- if variant.available -%}{{ variant.price | money_without_trailing_zeros }}{%- else -%}{{ 'product.sold_out' | t }}{%- endif -%}
+                        </span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
                 </div>
               </div>
               {% unless line_item.selling_plan_allocation == nil %}

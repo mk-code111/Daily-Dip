@@ -65,6 +65,7 @@
         "disabled": true,
         "settings": {}
       }
-    }
+    },
+    "cart_shipping_calculator": false
   }
 }

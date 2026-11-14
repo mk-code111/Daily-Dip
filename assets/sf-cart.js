@@ -70,7 +70,8 @@
       const ss = String(s % 60).padStart(2, '0');
       this.time.textContent = `${mm}:${ss}`;
       this.fill.style.width = `${(left / this.state.ms) * 100}%`;
-      this.classList.toggle('is-urgent', left <= 60000);
+      const f = left / this.state.ms;
+      this.dataset.stage = left <= 60000 || f <= 0.2 ? 'end' : f <= 0.5 ? 'mid' : 'start';
       if (left <= 0) this.finish();
     }
 
@@ -174,4 +175,17 @@
     }
   }
   customElements.define('sf-cart-rewards', SfCartRewards);
+
+  /* Cart variant pills: set the theme's hidden <select> and let the theme do the swap */
+  document.addEventListener('click', (e) => {
+    const pill = e.target.closest('[data-sf-vpick]');
+    if (!pill || pill.disabled || pill.getAttribute('aria-checked') === 'true') return;
+    const wrap = pill.closest('.collapse-inner');
+    const select = wrap && wrap.querySelector('.select-line-item-change');
+    if (!select) return;
+    wrap.querySelectorAll('[data-sf-vpick]').forEach((b) => b.setAttribute('aria-checked', String(b === pill)));
+    pill.classList.add('is-loading');
+    select.value = pill.dataset.sfVpick;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  });
 })();
