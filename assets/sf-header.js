@@ -99,7 +99,8 @@
 
     publishHeight() {
       if (!this.wrap) return;
-      document.documentElement.style.setProperty('--sf-hd-bar-h', this.wrap.offsetHeight + 'px');
+      const h = this.classList.contains('is-hidden') ? 0 : this.wrap.offsetHeight;
+      document.documentElement.style.setProperty('--sf-hd-bar-h', h + 'px');
     }
 
     busy() {
@@ -124,6 +125,8 @@
         else if (dy < -6) this.show();
       }
       if (Math.abs(dy) > 6 || y < 8) this.lastY = y;
+      const hidden = this.classList.contains('is-hidden');
+      if (hidden !== this._wasHidden) { this._wasHidden = hidden; this.publishHeight(); }
     }
 
     disconnectedCallback() {
