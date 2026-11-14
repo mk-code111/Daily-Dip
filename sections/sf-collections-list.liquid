@@ -1,0 +1,195 @@
+{%- comment -%}
+  sf-collections-list — DailyDip "all collections" page.
+  A heading, then each collection as a tea-packet card: coloured top with a crimped
+  seal, the collection image rising out of it, title, count sticker and an
+  "Explore" button. Colours cycle through a palette (or set per block).
+  Styles: assets/sf-collection.css
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-collection.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign palette = s.palette | remove: ' ' | split: ','
+  assign pcount = palette.size
+  if pcount == 0
+    assign palette = '#c8f169,#ffd23f,#bfe6ff,#ffc2b8' | split: ','
+    assign pcount = 4
+  endif
+
+  if section.blocks.size > 0
+    assign use_blocks = true
+  else
+    assign use_blocks = false
+    if s.collections != blank
+      assign list = s.collections
+    else
+      assign list = collections
+    endif
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-cl-bg: {{ s.c_bg }};
+    --sf-cl-cols-m: {{ s.cols_mobile }};
+    --sf-cl-cols-t: {{ s.cols_tablet }};
+    --sf-cl-cols-d: {{ s.cols_desktop }};
+    --sf-cl-pt: {{ s.pt }}px;
+    --sf-cl-pb: {{ s.pb }}px;
+  }
+</style>
+
+<section class="sf-pdp sf-cl sf-cl--{{ s.ratio }}">
+  <div class="sf-pdp__wrap">
+    {%- if s.eyebrow != blank or s.title != blank or s.text != blank -%}
+      <div class="sf-cl__head">
+        {%- if s.eyebrow != blank -%}<p class="sf-cl__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        {%- if s.title != blank -%}<h1 class="sf-cl__title">{{ s.title }}</h1>{%- endif -%}
+        {%- if s.text != blank -%}<div class="sf-cl__text">{{ s.text }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul class="sf-cl__grid" role="list">
+      {%- liquid
+        assign n = 0
+        if use_blocks
+          assign items = section.blocks
+        else
+          assign items = list
+        endif
+      -%}
+      {%- for item in items limit: s.limit -%}
+        {%- liquid
+          if use_blocks
+            assign c = item.settings.collection
+            assign tint = item.settings.tint
+            assign custom_img = item.settings.image
+            assign custom_title = item.settings.title
+            assign blurb = item.settings.text
+          else
+            assign c = item
+            assign tint = blank
+            assign custom_img = blank
+            assign custom_title = blank
+            assign blurb = blank
+          endif
+          assign skip = false
+          if c == blank
+            assign skip = true
+          elsif c.handle == 'all' and use_blocks == false
+            assign skip = true
+          elsif s.hide_empty and c.all_products_count == 0
+            assign skip = true
+          endif
+        -%}
+        {%- unless skip -%}
+          {%- liquid
+            if tint == blank
+              assign pi = n | modulo: pcount
+              assign tint = palette[pi]
+            endif
+            assign n = n | plus: 1
+            assign img = custom_img | default: c.image
+            if img == blank and c.products.first.featured_image
+              assign img = c.products.first.featured_image
+            endif
+            assign ctitle = custom_title | default: c.title
+            if c.all_products_count == 1
+              assign clabel = s.count_one
+            else
+              assign clabel = s.count_many
+            endif
+          -%}
+          <li class="sf-cl__item" style="--tint: {{ tint }}; --i: {{ forloop.index0 | modulo: 8 }};" {% if use_blocks %}{{ item.shopify_attributes }}{% endif %}>
+            <a class="sf-cl__card" href="{{ c.url }}">
+              <span class="sf-cl__top">
+                <span class="sf-cl__crimp" aria-hidden="true"></span>
+                <span class="sf-cl__steam" aria-hidden="true"><i></i><i></i><i></i></span>
+                {%- if img != blank -%}
+                  {{ img | image_url: width: 700 | image_tag: widths: '300, 450, 600, 700', sizes: '(min-width: 990px) 300px, (min-width: 600px) 45vw, 90vw', loading: 'lazy', alt: '', class: 'sf-cl__img' }}
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'sf-cl__img sf-cl__ph' }}
+                {%- endif -%}
+                {%- if s.show_count -%}<span class="sf-cl__count"><b>{{ c.all_products_count }}</b> {{ clabel | escape }}</span>{%- endif -%}
+              </span>
+              <span class="sf-cl__body">
+                <span class="sf-cl__name">{{ ctitle | escape }}</span>
+                {%- if blurb != blank -%}
+                  <span class="sf-cl__blurb">{{ blurb | escape }}</span>
+                {%- elsif s.show_desc and c.description != blank -%}
+                  <span class="sf-cl__blurb">{{ c.description | strip_html | truncatewords: s.desc_words }}</span>
+                {%- endif -%}
+                <span class="sf-cl__go">
+                  <span>{{ s.button_label | escape }}</span>
+                  <span class="sf-cl__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                </span>
+              </span>
+            </a>
+          </li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF · Collections list",
+  "tag": "div",
+  "class": "sf-cl-section",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Find your ritual" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Shop by <em>blend</em>", "info": "Italic words get a lime highlight." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pick a collection to find the cup that fits your day.</p>" },
+
+    { "type": "header", "content": "Collections" },
+    { "type": "paragraph", "content": "Add Collection blocks to hand-pick the order, image, colour and text. With no blocks, the list below is used." },
+    { "type": "collection_list", "id": "collections", "label": "Collections", "limit": 24, "info": "Leave empty to show every collection." },
+    { "type": "range", "id": "limit", "label": "Max collections", "min": 2, "max": 24, "step": 1, "default": 12 },
+    { "type": "checkbox", "id": "hide_empty", "label": "Hide empty collections", "default": true },
+
+    { "type": "header", "content": "Cards" },
+    { "type": "select", "id": "cols_mobile", "label": "Columns: phone", "default": "1", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }] },
+    { "type": "range", "id": "cols_tablet", "label": "Columns: tablet", "min": 2, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "cols_desktop", "label": "Columns: desktop", "min": 2, "max": 5, "step": 1, "default": 3 },
+    {
+      "type": "select", "id": "ratio", "label": "Image area", "default": "square",
+      "options": [
+        { "value": "square", "label": "Square" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "tall", "label": "Tall" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_count", "label": "Product count sticker", "default": true },
+    { "type": "text", "id": "count_one", "label": "Count label (one)", "default": "blend" },
+    { "type": "text", "id": "count_many", "label": "Count label (many)", "default": "blends" },
+    { "type": "checkbox", "id": "show_desc", "label": "Collection description", "default": true },
+    { "type": "range", "id": "desc_words", "label": "Description length", "min": 6, "max": 30, "step": 2, "unit": "w", "default": 14 },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Explore" },
+    { "type": "text", "id": "palette", "label": "Card colours", "default": "#c8f169,#ffd23f,#bfe6ff,#ffc2b8", "info": "Comma-separated colours, used in turn." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#fbf8ef" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the collection's name." },
+        { "type": "text", "id": "text", "label": "Short text" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use the collection's image." },
+        { "type": "color", "id": "tint", "label": "Colour" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "SF · Collections list" }]
+}
+{% endschema %}

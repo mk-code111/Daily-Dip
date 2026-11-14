@@ -1,0 +1,191 @@
+{%- comment -%}
+  sf-collection-hero — DailyDip collection banner.
+  Breadcrumb pill, big title with a lime swash, description (folds after a few lines),
+  product-count sticker, the collection image hung like a tea-bag tag, and a row of
+  pills to hop between collections.
+  Styles: assets/sf-collection.css · Script: assets/sf-collection.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-collection.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign c = collection
+  assign img = s.fallback_image
+  if s.use_collection_image and c.image != blank
+    assign img = c.image
+  endif
+  if c.handle == 'all' and s.all_image != blank
+    assign img = s.all_image
+  endif
+
+  assign title = c.title
+  if c.handle == 'all' and s.all_title != blank
+    assign title = s.all_title
+  endif
+
+  assign count = c.all_products_count
+  if count == 1
+    assign count_label = s.count_one
+  else
+    assign count_label = s.count_many
+  endif
+
+  if s.pills_list != blank
+    assign pill_cols = s.pills_list
+  else
+    assign pill_cols = collections
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-ch-bg: {{ s.c_bg }};
+    --sf-ch-card: {{ s.c_card }};
+    --sf-ch-text: {{ s.c_text }};
+    --sf-ch-accent: {{ s.c_accent }};
+    --sf-ch-pt: {{ s.pt }}px;
+    --sf-ch-pb: {{ s.pb }}px;
+  }
+</style>
+
+<section class="sf-pdp sf-ch{% unless img != blank and s.show_image %} sf-ch--noimg{% endunless %}">
+  <div class="sf-pdp__wrap">
+    <div class="sf-ch__card">
+      <svg class="sf-ch__leaf sf-ch__leaf--a" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7" fill="none"/></svg>
+      <svg class="sf-ch__leaf sf-ch__leaf--b" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7" fill="none"/></svg>
+
+      <div class="sf-ch__copy">
+        {%- if s.show_breadcrumb -%}
+          <nav class="sf-ch__crumbs" aria-label="Breadcrumb">
+            <a href="{{ routes.root_url }}">{{ s.crumb_home | escape }}</a>
+            <span aria-hidden="true">›</span>
+            <a href="{{ routes.collections_url }}">{{ s.crumb_collections | escape }}</a>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">{{ title | escape }}</span>
+          </nav>
+        {%- endif -%}
+
+        <h1 class="sf-ch__title">
+          <span>{{ title | escape }}</span>
+          <svg class="sf-ch__swash" viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12 C70 3 150 3 297 9"/></svg>
+        </h1>
+
+        {%- if s.show_desc and c.description != blank -%}
+          <div class="sf-ch__desc rte" data-sf-ch-desc style="--sf-ch-lines: {{ s.desc_lines }};">{{ c.description }}</div>
+          <button type="button" class="sf-ch__more" data-sf-ch-more hidden aria-expanded="false">
+            <span class="sf-ch__more-open">{{ s.more_label | escape }}</span>
+            <span class="sf-ch__more-close">{{ s.less_label | escape }}</span>
+          </button>
+        {%- elsif s.show_desc and s.fallback_text != blank -%}
+          <div class="sf-ch__desc rte">{{ s.fallback_text }}</div>
+        {%- endif -%}
+
+        {%- if s.show_count or s.chip_1 != blank or s.chip_2 != blank -%}
+          <ul class="sf-ch__meta" role="list">
+            {%- if s.show_count -%}
+              <li class="sf-ch__count"><b>{{ count }}</b> {{ count_label | escape }}</li>
+            {%- endif -%}
+            {%- if s.chip_1 != blank -%}<li class="sf-ch__chip">{% render 'sf-icon', name: s.chip_1_icon %}{{ s.chip_1 | escape }}</li>{%- endif -%}
+            {%- if s.chip_2 != blank -%}<li class="sf-ch__chip">{% render 'sf-icon', name: s.chip_2_icon %}{{ s.chip_2 | escape }}</li>{%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- if s.show_image -%}
+        {%- if img != blank -%}
+          <div class="sf-ch__media" aria-hidden="true">
+            <span class="sf-ch__string"></span>
+            <div class="sf-ch__tag">
+              <span class="sf-ch__hole"></span>
+              {{ img | image_url: width: 900 | image_tag: widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 420px, 70vw', loading: 'eager', fetchpriority: 'high', alt: '' }}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if s.show_pills -%}
+      <nav class="sf-ch__pills" aria-label="{{ s.pills_label | escape }}">
+        <ul role="list" data-sf-ch-pills>
+          {%- if s.all_label != blank -%}
+            <li><a href="{{ routes.all_products_collection_url }}" class="sf-ch__pill{% if c.handle == 'all' %} is-active{% endif %}"{% if c.handle == 'all' %} aria-current="page"{% endif %}>{{ s.all_label | escape }}</a></li>
+          {%- endif -%}
+          {%- for pc in pill_cols limit: 16 -%}
+            {%- if pc.handle != 'all' and pc.all_products_count > 0 -%}
+              <li><a href="{{ pc.url }}" class="sf-ch__pill{% if pc.handle == c.handle %} is-active{% endif %}"{% if pc.handle == c.handle %} aria-current="page"{% endif %}>
+                {%- if s.pill_images and pc.image != blank -%}{{ pc.image | image_url: width: 64, height: 64, crop: 'center' | image_tag: alt: '', loading: 'lazy', class: 'sf-ch__pill-img' }}{%- endif -%}
+                {{ pc.title | escape }}
+              </a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF · Collection hero",
+  "tag": "div",
+  "class": "sf-ch-section",
+  "enabled_on": { "templates": ["collection"] },
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Breadcrumb", "default": true },
+    { "type": "text", "id": "crumb_home", "label": "Breadcrumb: home", "default": "Home" },
+    { "type": "text", "id": "crumb_collections", "label": "Breadcrumb: collections", "default": "Collections" },
+    { "type": "text", "id": "all_title", "label": "Title on the All products page", "default": "All our blends" },
+    { "type": "checkbox", "id": "show_desc", "label": "Description", "default": true },
+    { "type": "range", "id": "desc_lines", "label": "Fold description after", "min": 2, "max": 8, "step": 1, "unit": "ln", "default": 3 },
+    { "type": "text", "id": "more_label", "label": "Read more text", "default": "Read more" },
+    { "type": "text", "id": "less_label", "label": "Read less text", "default": "Show less" },
+    { "type": "richtext", "id": "fallback_text", "label": "Text when a collection has no description", "default": "<p>Thoughtfully crafted tea blends for your daily wellness.</p>" },
+    { "type": "checkbox", "id": "show_count", "label": "Product count sticker", "default": true },
+    { "type": "text", "id": "count_one", "label": "Count label (one)", "default": "blend" },
+    { "type": "text", "id": "count_many", "label": "Count label (many)", "default": "blends" },
+    { "type": "text", "id": "chip_1", "label": "Extra chip 1", "default": "Free delivery over ₹399" },
+    {
+      "type": "select", "id": "chip_1_icon", "label": "Chip 1 icon", "default": "truck",
+      "options": [
+        { "value": "truck", "label": "Delivery" }, { "value": "leaf", "label": "Leaf" }, { "value": "cup-steam", "label": "Tea cup" },
+        { "value": "shield", "label": "Shield" }, { "value": "star", "label": "Star" }, { "value": "heart", "label": "Heart" },
+        { "value": "gift", "label": "Gift" }, { "value": "sparkle", "label": "Sparkle" }
+      ]
+    },
+    { "type": "text", "id": "chip_2", "label": "Extra chip 2", "default": "100% natural" },
+    {
+      "type": "select", "id": "chip_2_icon", "label": "Chip 2 icon", "default": "leaf",
+      "options": [
+        { "value": "truck", "label": "Delivery" }, { "value": "leaf", "label": "Leaf" }, { "value": "cup-steam", "label": "Tea cup" },
+        { "value": "shield", "label": "Shield" }, { "value": "star", "label": "Star" }, { "value": "heart", "label": "Heart" },
+        { "value": "gift", "label": "Gift" }, { "value": "sparkle", "label": "Sparkle" }
+      ]
+    },
+
+    { "type": "header", "content": "Image" },
+    { "type": "checkbox", "id": "show_image", "label": "Show image", "default": true, "info": "Hangs like a tea-bag tag and swings on hover." },
+    { "type": "checkbox", "id": "use_collection_image", "label": "Use the collection's own image", "default": true },
+    { "type": "image_picker", "id": "fallback_image", "label": "Fallback image", "info": "Used when a collection has no image." },
+    { "type": "image_picker", "id": "all_image", "label": "Image on the All products page" },
+
+    { "type": "header", "content": "Collection pills" },
+    { "type": "checkbox", "id": "show_pills", "label": "Show pills", "default": true },
+    { "type": "collection_list", "id": "pills_list", "label": "Collections", "limit": 16, "info": "Leave empty to list every collection that has products." },
+    { "type": "text", "id": "all_label", "label": "\"All\" pill", "default": "All blends", "info": "Leave empty to hide." },
+    { "type": "checkbox", "id": "pill_images", "label": "Small image in each pill", "default": true },
+    { "type": "text", "id": "pills_label", "label": "Pills label (screen readers)", "default": "Browse collections" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "c_card", "label": "Banner colour", "default": "#e9f7d0" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1c1c" },
+    { "type": "color", "id": "c_accent", "label": "Accent", "default": "#1f7a35" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 8 }
+  ],
+  "presets": [{ "name": "SF · Collection hero" }]
+}
+{% endschema %}

@@ -1,0 +1,351 @@
+{%- comment -%}
+  sf-collection-grid — DailyDip collection products.
+  Toolbar (filter button, count, sort), removable filter chips, a grid of DailyDip
+  product cards (snippets/sf-product-card) and "Load more" or numbered pages.
+  Filters open in a drawer and apply instantly (Section Rendering API, no reload).
+  Styles: assets/sf-collection.css + sf-cards.css · Script: assets/sf-collection.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-cards.css' | asset_url | stylesheet_tag }}
+{{ 'sf-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-cards.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-collection.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_count = 0
+  for filter in collection.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
+  assign has_filters = false
+  if s.show_filters and collection.filters.size > 0
+    assign has_filters = true
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-cg-bg: {{ s.c_bg }};
+    --sf-cg-cols-m: {{ s.cols_mobile }};
+    --sf-cg-cols-t: {{ s.cols_tablet }};
+    --sf-cg-cols-d: {{ s.cols_desktop }};
+    --sf-cg-pt: {{ s.pt }}px;
+    --sf-cg-pb: {{ s.pb }}px;
+  }
+</style>
+
+<sf-collection class="sf-pdp sf-cg" data-section="{{ section.id }}" data-base="{{ collection.url }}">
+  <div class="sf-pdp__wrap" data-sf-cg-results>
+    {%- paginate collection.products by s.per_page -%}
+      {%- liquid
+        assign total = collection.products_count
+        if total == 1
+          assign label = s.count_one
+        else
+          assign label = s.count_many
+        endif
+      -%}
+
+      {%- comment -%} toolbar {%- endcomment -%}
+      <div class="sf-cg__bar">
+        {%- if has_filters -%}
+          <button type="button" class="sf-cg__filter-btn" data-sf-cg-open aria-controls="SfFilters-{{ section.id }}" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+            <span>{{ s.filter_label | escape }}</span>
+            {%- if active_count > 0 -%}<span class="sf-cg__badge">{{ active_count }}</span>{%- endif -%}
+          </button>
+        {%- endif -%}
+
+        {%- if s.show_count -%}
+          <p class="sf-cg__count" role="status"><b>{{ total }}</b> {{ label | escape }}</p>
+        {%- endif -%}
+
+        {%- if s.show_sort -%}
+          <label class="sf-cg__sort">
+            <span class="sf-cg__sort-lbl">{{ s.sort_label | escape }}</span>
+            <select name="sort_by" data-sf-cg-sort>
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+              {%- endfor -%}
+            </select>
+            <svg class="sf-cg__sort-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </label>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} active filter chips {%- endcomment -%}
+      {%- if active_count > 0 -%}
+        <ul class="sf-cg__chips" role="list">
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                <li><a class="sf-cg__chip" href="{{ filter.url_to_remove }}" data-sf-cg-link>
+                  {{ filter.min_value.value | default: 0 | money_without_trailing_zeros }} – {{ filter.max_value.value | default: filter.range_max | money_without_trailing_zeros }}
+                  <span class="sf-cg__chip-x" aria-hidden="true">×</span><span class="visually-hidden">Remove</span>
+                </a></li>
+              {%- endif -%}
+            {%- else -%}
+              {%- for v in filter.active_values -%}
+                <li><a class="sf-cg__chip" href="{{ v.url_to_remove }}" data-sf-cg-link>
+                  {{ v.label | escape }}
+                  <span class="sf-cg__chip-x" aria-hidden="true">×</span><span class="visually-hidden">Remove</span>
+                </a></li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <li><a class="sf-cg__clear" href="{{ collection.url }}?sort_by={{ sort_by }}" data-sf-cg-link>{{ s.clear_label | escape }}</a></li>
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%} grid {%- endcomment -%}
+      {%- if collection.products.size > 0 -%}
+        <ul class="sf-cg__grid" role="list" data-sf-cg-grid>
+          {%- for p in collection.products -%}
+            {%- liquid
+              assign eager = false
+              if forloop.index <= 4 and paginate.current_page == 1
+                assign eager = true
+              endif
+            -%}
+            <li class="sf-cg__item" style="--i: {{ forloop.index0 | modulo: 8 }};">
+              {%- render 'sf-product-card',
+                p: p,
+                benefits: section.blocks,
+                new_label: s.new_label,
+                atc_label: s.atc_label,
+                soldout_label: s.soldout_label,
+                show_arrows: s.card_arrows,
+                show_discount: s.show_discount,
+                ratio: s.ratio,
+                eager: eager
+              -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <div class="sf-cg__empty">
+          <svg class="sf-cg__empty-cup" viewBox="0 0 120 100" aria-hidden="true">
+            <path class="st" d="M44 30c-4-6 4-10 0-16M60 28c-4-6 4-10 0-16M76 30c-4-6 4-10 0-16"/>
+            <path class="cup" d="M24 40h64v22a26 26 0 0 1-26 26h-12a26 26 0 0 1-26-26z"/>
+            <path class="st" d="M88 46h6a10 10 0 0 1 0 20h-7"/>
+            <path class="st" d="M14 92h92"/>
+          </svg>
+          <p class="sf-cg__empty-title">{{ s.empty_title | escape }}</p>
+          <p class="sf-cg__empty-text">{{ s.empty_text | escape }}</p>
+          {%- if active_count > 0 -%}
+            <a class="sf-btn sf-cg__empty-btn" href="{{ collection.url }}" data-sf-cg-link>{{ s.clear_label | escape }}</a>
+          {%- else -%}
+            <a class="sf-btn sf-cg__empty-btn" href="{{ routes.all_products_collection_url }}">{{ s.empty_button | escape }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} pagination {%- endcomment -%}
+      {%- if paginate.pages > 1 -%}
+        {%- if s.paging == 'more' -%}
+          <div class="sf-cg__more" data-sf-cg-more-wrap>
+            <p class="sf-cg__progress">
+              {%- assign shown = paginate.current_offset | plus: collection.products.size -%}
+              {{ s.progress_text | replace: '[shown]', shown | replace: '[total]', paginate.items }}
+              <span class="sf-cg__progress-bar" style="--p: {{ shown | times: 100 | divided_by: paginate.items }}%;"></span>
+            </p>
+            {%- if paginate.next -%}
+              <a class="sf-cg__more-btn" href="{{ paginate.next.url }}" data-sf-cg-more>
+                <span>{{ s.more_label | escape }}</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <nav class="sf-cg__pages" aria-label="Pages">
+            {%- if paginate.previous -%}
+              <a class="sf-cg__page sf-cg__page--arrow" href="{{ paginate.previous.url }}" data-sf-cg-link aria-label="Previous page">‹</a>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a class="sf-cg__page" href="{{ part.url }}" data-sf-cg-link>{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="sf-cg__page is-current" aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span class="sf-cg__page sf-cg__page--gap">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a class="sf-cg__page sf-cg__page--arrow" href="{{ paginate.next.url }}" data-sf-cg-link aria-label="Next page">›</a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+
+  {%- comment -%} filter drawer {%- endcomment -%}
+  {%- if has_filters -%}
+    <div class="sf-cg__overlay" data-sf-cg-close hidden></div>
+    <aside class="sf-cg__drawer" id="SfFilters-{{ section.id }}" role="dialog" aria-modal="true" aria-label="{{ s.filter_label | escape }}" hidden data-sf-cg-drawer>
+      <div class="sf-cg__dhead">
+        <p class="sf-cg__dtitle">{{ s.filter_label | escape }}</p>
+        <button type="button" class="sf-cg__x" data-sf-cg-close aria-label="Close">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <form class="sf-cg__form" data-sf-cg-form data-sf-cg-filters>
+        {%- for filter in collection.filters -%}
+          {%- liquid
+            assign f_active = 0
+            if filter.type == 'price_range'
+              if filter.min_value.value != nil or filter.max_value.value != nil
+                assign f_active = 1
+              endif
+            else
+              assign f_active = filter.active_values.size
+            endif
+          -%}
+          <details class="sf-cg__group" data-key="{{ filter.param_name | default: filter.label | handle }}"{% if forloop.index <= s.open_groups or f_active > 0 %} open{% endif %}>
+            <summary class="sf-cg__gsum">
+              <span>{{ filter.label | escape }}{% if f_active > 0 %} <i class="sf-cg__gcount">{{ f_active }}</i>{% endif %}</span>
+              <span class="sf-cg__plus" aria-hidden="true"></span>
+            </summary>
+            <div class="sf-cg__gbody">
+              {%- case filter.type -%}
+                {%- when 'price_range' -%}
+                  {%- assign cur = cart.currency.symbol | default: '₹' -%}
+                  <div class="sf-cg__price">
+                    <label>
+                      <span>From</span>
+                      <span class="sf-cg__money"><i>{{ cur }}</i><input type="number" inputmode="numeric" min="0" max="{{ filter.range_max | money_without_currency | remove: ',' }}" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="0"></span>
+                    </label>
+                    <span class="sf-cg__dash" aria-hidden="true">–</span>
+                    <label>
+                      <span>To</span>
+                      <span class="sf-cg__money"><i>{{ cur }}</i><input type="number" inputmode="numeric" min="0" max="{{ filter.range_max | money_without_currency | remove: ',' }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}"></span>
+                    </label>
+                  </div>
+                {%- else -%}
+                  <ul class="sf-cg__opts" role="list">
+                    {%- for v in filter.values -%}
+                      <li>
+                        <label class="sf-cg__opt{% if v.count == 0 and v.active == false %} is-off{% endif %}">
+                          <input type="checkbox" name="{{ v.param_name }}" value="{{ v.value }}"{% if v.active %} checked{% endif %}{% if v.count == 0 and v.active == false %} disabled{% endif %}>
+                          <span class="sf-cg__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                          <span class="sf-cg__opt-lbl">{{ v.label | escape }}</span>
+                          {%- if s.show_value_counts -%}<span class="sf-cg__opt-n">{{ v.count }}</span>{%- endif -%}
+                        </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+              {%- endcase -%}
+            </div>
+          </details>
+        {%- endfor -%}
+      </form>
+      <div class="sf-cg__dfoot">
+        <a class="sf-cg__dclear" href="{{ collection.url }}?sort_by={{ sort_by }}" data-sf-cg-link>{{ s.clear_label | escape }}</a>
+        <button type="button" class="sf-btn sf-cg__dshow" data-sf-cg-close>
+          {{ s.show_label | replace: '[count]', collection.products_count | escape }}
+        </button>
+      </div>
+    </aside>
+  {%- endif -%}
+</sf-collection>
+
+{% schema %}
+{
+  "name": "SF · Collection grid",
+  "tag": "div",
+  "class": "sf-cg-section",
+  "max_blocks": 4,
+  "enabled_on": { "templates": ["collection"] },
+  "settings": [
+    { "type": "header", "content": "Grid" },
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 16 },
+    { "type": "select", "id": "cols_mobile", "label": "Columns: phone", "default": "1", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }] },
+    { "type": "range", "id": "cols_tablet", "label": "Columns: tablet", "min": 2, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "cols_desktop", "label": "Columns: desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
+    {
+      "type": "select", "id": "paging", "label": "More products", "default": "more",
+      "options": [
+        { "value": "more", "label": "\"Load more\" button" },
+        { "value": "pages", "label": "Page numbers" }
+      ]
+    },
+    { "type": "text", "id": "more_label", "label": "Load more text", "default": "Load more blends" },
+    { "type": "text", "id": "progress_text", "label": "Progress text", "default": "You've seen [shown] of [total]" },
+
+    { "type": "header", "content": "Toolbar & filters" },
+    { "type": "checkbox", "id": "show_count", "label": "Product count", "default": true },
+    { "type": "text", "id": "count_one", "label": "Count label (one)", "default": "blend" },
+    { "type": "text", "id": "count_many", "label": "Count label (many)", "default": "blends" },
+    { "type": "checkbox", "id": "show_sort", "label": "Sorting", "default": true },
+    { "type": "text", "id": "sort_label", "label": "Sort label", "default": "Sort" },
+    { "type": "checkbox", "id": "show_filters", "label": "Filters", "default": true, "info": "Filters come from Search & Discovery → Filters." },
+    { "type": "text", "id": "filter_label", "label": "Filter button text", "default": "Filter" },
+    { "type": "range", "id": "open_groups", "label": "Filter groups open at start", "min": 0, "max": 6, "step": 1, "default": 2 },
+    { "type": "checkbox", "id": "show_value_counts", "label": "Counts next to filter options", "default": true },
+    { "type": "text", "id": "clear_label", "label": "Clear text", "default": "Clear all" },
+    { "type": "text", "id": "show_label", "label": "Drawer button", "default": "Show [count] blends", "info": "[count] becomes the number of results." },
+
+    { "type": "header", "content": "Card" },
+    {
+      "type": "select", "id": "ratio", "label": "Image shape", "default": "1",
+      "options": [
+        { "value": "1", "label": "Square" },
+        { "value": "0.8", "label": "Portrait (4:5)" },
+        { "value": "1.25", "label": "Landscape (5:4)" }
+      ]
+    },
+    { "type": "checkbox", "id": "card_arrows", "label": "Image arrows on cards", "default": true },
+    { "type": "checkbox", "id": "show_discount", "label": "Show discount sticker", "default": true },
+    { "type": "text", "id": "new_label", "label": "Tag for products tagged \"new\"", "default": "NEW" },
+    { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
+    { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
+
+    { "type": "header", "content": "When nothing matches" },
+    { "type": "text", "id": "empty_title", "label": "Title", "default": "This cup is empty" },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "No blends match right now. Try removing a filter." },
+    { "type": "text", "id": "empty_button", "label": "Button", "default": "See all blends" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Leaf" }, { "value": "drop", "label": "Drop" }, { "value": "cup", "label": "Cup" },
+            { "value": "heart", "label": "Heart" }, { "value": "shield", "label": "Shield" }, { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" }, { "value": "sparkle", "label": "Sparkle" }, { "value": "gut", "label": "Gut" },
+            { "value": "sun", "label": "Sun" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Custom icon", "info": "Replaces the icon above." },
+        { "type": "text", "id": "text", "label": "Text", "default": "Natural Ingredients" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Collection grid",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "leaf", "text": "Natural Ingredients" } },
+        { "type": "benefit", "settings": { "icon": "drop", "text": "Rich & Aromatic" } },
+        { "type": "benefit", "settings": { "icon": "cup", "text": "Perfect for Daily Use" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
