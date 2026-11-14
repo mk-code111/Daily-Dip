@@ -221,12 +221,12 @@
                   <div class="sf-cg__price">
                     <label>
                       <span>From</span>
-                      <span class="sf-cg__money"><i>{{ cur }}</i><input type="number" inputmode="numeric" min="0" max="{{ filter.range_max | money_without_currency | remove: ',' }}" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="0"></span>
+                      <span class="sf-cg__money"><i>{{ cur }}</i><input type="number" inputmode="numeric" min="0" max="{{ filter.range_max | divided_by: 100 }}" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% endif %}" placeholder="0"></span>
                     </label>
                     <span class="sf-cg__dash" aria-hidden="true">–</span>
                     <label>
                       <span>To</span>
-                      <span class="sf-cg__money"><i>{{ cur }}</i><input type="number" inputmode="numeric" min="0" max="{{ filter.range_max | money_without_currency | remove: ',' }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}"></span>
+                      <span class="sf-cg__money"><i>{{ cur }}</i><input type="number" inputmode="numeric" min="0" max="{{ filter.range_max | divided_by: 100 }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% endif %}" placeholder="{{ filter.range_max | divided_by: 100 }}"></span>
                     </label>
                   </div>
                 {%- else -%}
