@@ -1,0 +1,247 @@
+/* ==========================================================================
+   SF Shoppable videos (sections/sf-shoppable-videos.liquid)
+   Video cards drawn like tea bags: crimped seam, string + swinging tag,
+   steaming play button, sticker caption; product card clipped underneath.
+   Uses sf-pdp.css (colours, .sf-btn) and sf-cards.css (carousel).
+   ========================================================================== */
+
+.sf-sv { position: relative; overflow: hidden; }
+.sf-sv::before { /* faint tea-leaf texture */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M20 40c0-14 9-22 26-24-1 17-10 24-26 24zM20 40l14-14'/%3E%3Cpath d='M78 96c0-12 8-19 22-21-1 15-8 21-22 21zM78 96l12-12'/%3E%3C/g%3E%3C/svg%3E");
+}
+.sf-sv .sf-pdp__wrap { position: relative; }
+
+/* ---------- Head ---------- */
+.sf-sv__head { margin: 0 0 26px; max-width: 760px; }
+.sf-sv__eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; margin: 0 0 6px;
+  font: 600 16px/1.2 var(--sf-font-head); letter-spacing: 1px; color: var(--sf-yellow);
+  transform: rotate(-2deg); transform-origin: left;
+}
+.sf-sv__eyebrow svg { animation: sf-sv-dunk 2.6s ease-in-out infinite; }
+.sf-pdp .sf-sv__title { margin: 0; font: 700 40px/1 var(--sf-font-head); color: var(--sv-text); letter-spacing: -.5px; }
+.sf-pdp .sf-sv__title--sm { font-size: 30px; }
+.sf-pdp .sf-sv__title--md { font-size: 36px; }
+.sf-pdp .sf-sv__title--xl { font-size: 48px; }
+@media (min-width: 990px) {
+  .sf-pdp .sf-sv__title--sm { font-size: 36px; }
+  .sf-pdp .sf-sv__title--md { font-size: 46px; }
+  .sf-pdp .sf-sv__title--lg { font-size: 58px; }
+  .sf-pdp .sf-sv__title--xl { font-size: 72px; }
+}
+.sf-sv__hl {
+  color: var(--sv-accent); position: relative; white-space: nowrap;
+}
+.sf-sv__hl::after { /* wavy steam underline */
+  content: ""; position: absolute; left: 0; right: 0; bottom: -.12em; height: .2em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 5c5-5 10-5 15 0s10 5 15 0 10-5 10 0' fill='none' stroke='%23ffd23f' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
+}
+.sf-sv__desc { margin-top: 12px; opacity: .85; font: 400 16px/1.6 var(--sf-font-body); }
+.sf-sv__desc--sm { font-size: 14px; } .sf-sv__desc--lg { font-size: 19px; }
+.sf-sv__desc p { margin: 0; }
+.sf-sv__empty { text-align: center; padding: 40px 0; opacity: .7; }
+
+/* carousel arrows/dots on the dark background */
+.sf-sv .sf-car__dots { color: var(--sv-text); }
+.sf-sv .sf-car__dot { border-color: var(--sv-text); background: transparent; }
+.sf-sv .sf-car__dot[aria-current="true"] { background: var(--sv-accent); border-color: var(--sv-accent); }
+.sf-sv .sf-car__viewport { padding-top: 26px; margin-top: -26px; }
+
+/* ---------- Item ---------- */
+.sf-sv__item { width: 100%; display: flex; flex-direction: column; }
+
+/* the tea bag (video frame) */
+.sf-sv__bag {
+  position: relative; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden;
+  background: #0d1f14;
+  border: var(--sv-border, 3px) solid var(--sv-text);
+  transform: rotate(var(--sv-tilt, 0deg));
+  transition: transform .35s cubic-bezier(.3, 1.4, .5, 1), box-shadow .3s;
+}
+.sf-sv--shadow-hard .sf-sv__bag { box-shadow: 5px 6px 0 var(--sv-accent); }
+.sf-sv--shadow-soft .sf-sv__bag { box-shadow: 0 18px 30px -12px rgba(0, 0, 0, .55); }
+.sf-sv__item:hover .sf-sv__bag { transform: rotate(0deg) translateY(-4px); }
+.sf-sv--shadow-hard .sf-sv__item:hover .sf-sv__bag { box-shadow: 7px 9px 0 var(--sv-accent); }
+
+.sf-sv__video, .sf-sv__video video, video.sf-sv__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.sf-sv__video--empty svg { width: 100%; height: 100%; background: #24402d; fill: rgba(255, 255, 255, .25); }
+.sf-sv__bag::after { /* gentle bottom shade so the caption reads */
+  content: ""; position: absolute; inset: auto 0 0; height: 38%; pointer-events: none;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .45));
+}
+
+/* crimped tea-bag seam along the top */
+.sf-sv__seam {
+  position: absolute; z-index: 2; left: 0; right: 0; top: 0; height: 16px; pointer-events: none;
+  background:
+    linear-gradient(135deg, var(--sv-text) 25%, transparent 25%) -6px 0 / 12px 12px repeat-x,
+    linear-gradient(225deg, var(--sv-text) 25%, transparent 25%) -6px 0 / 12px 12px repeat-x;
+  opacity: .9;
+}
+.sf-sv__seam::after {
+  content: ""; position: absolute; left: 10px; right: 10px; top: 13px;
+  border-top: 2px dashed color-mix(in srgb, var(--sv-text) 70%, transparent);
+}
+
+/* string + swinging tag (custom badge) */
+.sf-sv__tag {
+  position: absolute; z-index: 3; top: 6px; left: 50%;
+  display: flex; flex-direction: column; align-items: center;
+  transform-origin: 50% 0; animation: sf-sv-swing 3.2s ease-in-out infinite;
+}
+.sf-sv__tag-string { width: 2px; height: 26px; background: var(--sv-text); }
+.sf-sv__tag-card {
+  position: relative; padding: 5px 11px 4px; margin-top: -1px;
+  font: 700 12px/1.2 var(--sf-font-head); letter-spacing: .6px; text-transform: uppercase; color: var(--sf-ink);
+  background: var(--tag-bg, var(--sf-lime)); border: 2.5px solid var(--sf-ink); border-radius: 6px 6px 9px 9px;
+  box-shadow: 2px 2px 0 var(--sf-ink);
+}
+.sf-sv__tag-card::before { /* staple hole */
+  content: ""; position: absolute; top: -6px; left: 50%; width: 8px; height: 8px; margin-left: -4px;
+  background: var(--sv-text); border: 2px solid var(--sf-ink); border-radius: 50%;
+}
+
+.sf-sv__views {
+  position: absolute; z-index: 3; left: 10px; top: 22px;
+  display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px;
+  font: 600 12px/1 var(--sf-font-head); color: #fff;
+  background: color-mix(in srgb, var(--views-bg, #1c1c1c) 72%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border-radius: 99px; border: 1.5px solid rgba(255, 255, 255, .35);
+}
+.sf-sv__sound {
+  position: absolute; z-index: 3; right: 10px; top: 20px;
+  width: 36px; height: 36px; padding: 0; display: grid; place-items: center; cursor: pointer;
+  color: var(--sf-ink); background: var(--sv-text);
+  border: 2px solid var(--sf-ink); border-radius: 50%;
+  transition: transform .15s, background .15s;
+}
+.sf-sv__sound:hover { transform: scale(1.08); background: var(--sf-yellow); }
+.sf-sv__ico-on { display: none; }
+[aria-pressed="true"] > .sf-sv__ico-on { display: block; }
+[aria-pressed="true"] > .sf-sv__ico-off { display: none; }
+
+/* steaming play button (opens the story player) */
+.sf-sv__play {
+  position: absolute; inset: 0; z-index: 2; padding: 0; border: 0; cursor: pointer;
+  background: transparent; display: grid; place-items: center;
+}
+.sf-sv__play-btn {
+  position: relative; width: 66px; height: 66px; display: grid; place-items: center;
+  color: var(--sf-ink); background: var(--sv-accent);
+  border: 3px solid var(--sf-ink); border-radius: 50%;
+  box-shadow: 3px 4px 0 var(--sf-ink);
+  transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), opacity .3s;
+}
+.sf-sv__play-btn svg { margin-left: 4px; }
+.sf-sv__steam {
+  position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -78px 0 0 -20px;
+  display: flex; justify-content: space-between; pointer-events: none;
+}
+.sf-sv__steam i {
+  display: block; width: 5px; height: 26px; border-radius: 4px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, .85));
+  opacity: 0; animation: sf-sv-steam 2.4s ease-in-out infinite;
+}
+.sf-sv__steam i:nth-child(2) { animation-delay: .5s; height: 32px; }
+.sf-sv__steam i:nth-child(3) { animation-delay: 1s; }
+.sf-sv__play:hover .sf-sv__play-btn, .sf-sv__play:focus-visible .sf-sv__play-btn { transform: scale(1.12) rotate(-6deg); }
+.sf-sv__play:focus-visible { outline: none; }
+.sf-sv__play:focus-visible .sf-sv__play-btn { outline: 3px solid var(--sf-yellow); outline-offset: 3px; }
+/* while the preview is playing, the button steps back until hover */
+.sf-sv__item.is-playing .sf-sv__play-btn { transform: scale(.78); opacity: .75; }
+.sf-sv__item.is-playing .sf-sv__steam { opacity: 0; }
+.sf-sv__item.is-playing:hover .sf-sv__play-btn { transform: scale(1.05); opacity: 1; }
+
+/* sticker caption */
+.sf-sv__caption {
+  position: absolute; z-index: 3; left: 12px; bottom: 22px; max-width: calc(100% - 24px);
+  padding: 5px 11px; pointer-events: none;
+  font: 600 14px/1.2 var(--sf-font-head); color: var(--sf-ink);
+  background: #fff; border: 2px solid var(--sf-ink); border-radius: 8px;
+  box-shadow: 2px 2px 0 var(--sf-ink);
+  transform: rotate(var(--cap-tilt, -3deg));
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ---------- Product card clipped under the bag ---------- */
+.sf-sv__product {
+  position: relative; z-index: 4; margin: -16px 8px 0; padding: 14px 12px 12px;
+  color: var(--pc-text, var(--sf-ink)); background: var(--pc-bg, #fff8e6);
+  border: var(--sv-border, 3px) solid var(--sf-ink); border-radius: 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.sf-sv--shadow-hard .sf-sv__product { box-shadow: 4px 5px 0 var(--sf-ink); }
+.sf-sv--shadow-soft .sf-sv__product { box-shadow: 0 12px 24px -10px rgba(0, 0, 0, .5); }
+.sf-sv__clip { /* little peg holding the card on the bag */
+  position: absolute; top: -12px; left: 50%; width: 34px; height: 18px; margin-left: -17px;
+  background: var(--sf-yellow); border: 2.5px solid var(--sf-ink); border-radius: 6px;
+}
+.sf-sv__clip::after { content: ""; position: absolute; left: 6px; right: 6px; top: 6px; border-top: 2px solid var(--sf-ink); }
+.sf-sv__prow { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.sf-sv__thumb { flex: none; width: 52px; height: 52px; border-radius: 12px; overflow: hidden; border: 2px solid var(--sf-ink); background: #fff; }
+.sf-sv__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sf-sv__pinfo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.sf-sv__pname {
+  font: 700 15px/1.2 var(--sf-font-head); color: inherit; text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sf-sv--title-sm .sf-sv__pname { font-size: 13.5px; }
+.sf-sv--title-lg .sf-sv__pname { font-size: 17px; }
+.sf-sv__pname:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.sf-sv__pmeta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.sf-sv__chip {
+  padding: 2px 9px; font: 600 12px/1.4 var(--sf-font-head); color: var(--sf-ink);
+  background: var(--sf-yellow); border: 2px solid var(--sf-ink); border-radius: 99px; white-space: nowrap;
+}
+.sf-sv__was { font: 600 12px var(--sf-font-head); color: var(--sf-red); }
+.sf-pdp .sf-sv__btn { flex: none; width: 100%; padding: 11px 12px; font-size: 16px; border-radius: 14px; box-shadow: 0 4px 0 var(--sf-ink); text-decoration: none; }
+.sf-sv__btn.is-added { animation: sf-sv-pop .45s ease; }
+
+/* ---------- Story player ---------- */
+.sf-sv__story { position: fixed; inset: 0; z-index: 1070; display: grid; place-items: center; }
+.sf-sv__story[hidden] { display: none; }
+.sf-sv__story-bg { position: absolute; inset: 0; background: rgba(12, 22, 15, .82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.sf-sv__story-frame {
+  position: relative; height: min(88vh, 780px); aspect-ratio: 9 / 16; max-width: calc(100vw - 24px);
+  border: 3px solid #fff8e6; border-radius: 26px; overflow: hidden; background: #000;
+  box-shadow: 8px 10px 0 var(--sv-accent, #c8f169);
+  animation: sf-sv-in .35s cubic-bezier(.3, 1.3, .5, 1);
+}
+.sf-sv__story-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sf-sv__story-progress { position: absolute; z-index: 3; left: 12px; right: 12px; top: 12px; height: 5px; border-radius: 99px; background: rgba(255, 255, 255, .35); overflow: hidden; }
+.sf-sv__story-progress span { display: block; height: 100%; width: 0; background: var(--sv-accent, #c8f169); }
+.sf-sv__story-btn {
+  position: absolute; z-index: 4; top: 26px; width: 40px; height: 40px; padding: 0; cursor: pointer;
+  display: grid; place-items: center; color: var(--sf-ink); background: #fff8e6;
+  border: 2.5px solid var(--sf-ink); border-radius: 50%; box-shadow: 2px 2px 0 var(--sf-ink);
+}
+.sf-sv__story-close { right: 12px; }
+.sf-sv__story-sound { right: 60px; }
+.sf-sv__story-tap { position: absolute; z-index: 2; top: 80px; bottom: 140px; width: 30%; background: transparent; border: 0; cursor: pointer; }
+.sf-sv__story-tap--prev { left: 0; } .sf-sv__story-tap--next { right: 0; }
+.sf-sv__story-product { position: absolute; z-index: 4; left: 10px; right: 10px; bottom: 10px; }
+.sf-sv__story-product .sf-sv__product { margin: 0; }
+.sf-sv__story-product .sf-sv__clip { display: none; }
+.sf-sv__story-arrow { position: absolute; top: 50%; z-index: 2; display: none; }
+.sf-sv__story-arrow--prev { left: calc(50% - min(88vh, 780px) * 9 / 32 - 74px); }
+.sf-sv__story-arrow--next { right: calc(50% - min(88vh, 780px) * 9 / 32 - 74px); }
+@media (min-width: 768px) { .sf-sv__story-arrow { display: grid; } }
+html.sf-sv-locked, html.sf-sv-locked body { overflow: hidden; }
+
+@keyframes sf-sv-swing { 0%, 100% { transform: translateX(-50%) rotate(-7deg); } 50% { transform: translateX(-50%) rotate(7deg); } }
+@keyframes sf-sv-steam { 0% { opacity: 0; transform: translateY(10px) scaleY(.6); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-16px) scaleY(1.1); } }
+@keyframes sf-sv-dunk { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+@keyframes sf-sv-pop { 50% { transform: scale(1.05); } }
+@keyframes sf-sv-in { from { transform: scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-sv__tag, .sf-sv__steam i, .sf-sv__eyebrow svg, .sf-sv__story-frame { animation: none !important; }
+  .sf-sv__tag { transform: translateX(-50%); }
+  .sf-sv__bag, .sf-sv__item:hover .sf-sv__bag { transition: none; }
+}
+@media (max-width: 599px) {
+  .sf-sv__play-btn { width: 56px; height: 56px; }
+  .sf-sv__story-frame { height: auto; width: calc(100vw - 20px); max-height: 86vh; }
+}

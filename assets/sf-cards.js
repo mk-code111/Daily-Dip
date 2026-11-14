@@ -198,11 +198,18 @@
       if (!this.dotsEl) return;
       const count = this.canMove ? this.maxIndex + 1 : 0;
       this.dotsEl.innerHTML = '';
+      // optional "2 / 8" counter instead of dots
+      if (this.dotsEl.dataset.type === 'fraction') {
+        this.fractionTotal = count;
+        this.dotsEl.classList.add('is-fraction');
+        this.updateDots();
+        return;
+      }
       for (let i = 0; i < count; i++) {
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'sf-car__dot';
-        b.setAttribute('aria-label', `Go to product ${i + 1}`);
+        b.setAttribute('aria-label', `Go to slide ${i + 1}`);
         b.addEventListener('click', () => this.go(i + (this.index - mod(this.index, this.n)), true));
         this.dotsEl.appendChild(b);
       }
@@ -211,6 +218,11 @@
 
     updateDots() {
       if (!this.dotsEl) return;
+      if (this.dotsEl.dataset.type === 'fraction') {
+        const cur = (this.loop ? mod(this.index, this.n) : this.index) + 1;
+        this.dotsEl.textContent = this.fractionTotal ? `${cur} / ${this.fractionTotal}` : '';
+        return;
+      }
       const active = this.loop ? mod(this.index, this.n) : this.index;
       [...this.dotsEl.children].forEach((d, i) => d.setAttribute('aria-current', String(i === active)));
     }

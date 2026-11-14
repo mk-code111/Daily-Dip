@@ -1,0 +1,331 @@
+{%- comment -%}
+  sf-shoppable-videos — DailyDip shoppable video carousel.
+  Each video card is drawn like a tea bag: crimped seam at the top, a string with a
+  swinging tag (the custom badge), a steaming play button and a sticker caption.
+  The product card hangs under the video with one-tap add to cart.
+  Tapping a video opens a full-screen story player (sound on, product, next / previous).
+  Carousel: <sf-carousel> from assets/sf-cards.js. Player + video logic: assets/sf-videos.js.
+  Same options as the theme's "Shoppable Videos" section, in DailyDip style.
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-cards.css' | asset_url | stylesheet_tag }}
+{{ 'sf-videos.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-cards.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-videos.js' | asset_url }}" defer></script>
+
+{%- if section.settings.load_fonts -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{%- endif -%}
+
+{%- liquid
+  assign per_mobile = section.settings.breakpoint_mobile
+  if section.settings.slider_partial_slides_mobile
+    assign per_mobile = per_mobile | plus: 0.4
+  endif
+  assign per_tablet = section.settings.breakpoint_tablet
+  if section.settings.slider_partial_slides_mobile and per_tablet < 4
+    assign per_tablet = per_tablet | plus: 0.4
+  endif
+  assign autoplay = false
+  if section.settings.slider_autoplay > 0
+    assign autoplay = true
+  endif
+  assign count = section.blocks.size
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} .sf-sv {
+    --sv-bg: {{ section.settings.c_bg }};
+    --sv-text: {{ section.settings.c_text }};
+    --sv-accent: {{ section.settings.c_accent }};
+    --sv-border: {{ section.settings.item_border_width }}px;
+    background: var(--sv-bg);
+    color: var(--sv-text);
+    padding-top: {{ section.settings.pt }}px;
+    padding-bottom: {{ section.settings.pb }}px;
+    border-top: {{ section.settings.border_top_width }}px solid {{ section.settings.border_color }};
+    border-bottom: {{ section.settings.border_bottom_width }}px solid {{ section.settings.border_color }};
+  }
+  {%- if section.settings.container_max_width != blank -%}
+    #shopify-section-{{ section.id }} .sf-sv .sf-pdp__wrap { max-width: {{ section.settings.container_max_width | plus: 0 }}px; }
+  {%- endif -%}
+  #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ per_mobile }}; --sf-car-speed: {{ section.settings.slider_speed | divided_by: 1000.0 }}s; }
+  @media (min-width: 600px) { #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ per_tablet }}; } }
+  @media (min-width: 1200px) { #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.breakpoint_desktop }}; } }
+</style>
+
+<div class="sf-pdp sf-sv sf-sv--shadow-{{ section.settings.item_shadow }} sf-sv--title-{{ section.settings.item_title_font_size }}">
+  <div class="sf-pdp__wrap">
+    {%- if section.settings.header_title != blank or section.settings.eyebrow != blank -%}
+      <div class="sf-sv__head sf-reveal">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sf-sv__eyebrow">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="7" y="7" width="10" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 11h10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor"/></svg>
+            {{ section.settings.eyebrow }}
+          </p>
+        {%- endif -%}
+        <h2 class="sf-sv__title sf-sv__title--{{ section.settings.header_title_font_size }}">
+          {{- section.settings.header_title -}}
+          {%- if section.settings.header_highlight != blank %} <span class="sf-sv__hl">{{ section.settings.header_highlight }}</span>{%- endif -%}
+        </h2>
+        {%- if section.settings.header_description != blank -%}
+          <div class="sf-sv__desc sf-sv__desc--{{ section.settings.header_description_font_size }}">{{ section.settings.header_description }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if count > 0 -%}
+      <sf-videos class="sf-sv__root" data-section="{{ section.id }}">
+        <sf-carousel
+          class="sf-car"
+          data-loop="{{ section.settings.slider_loop }}"
+          data-autoplay="{{ autoplay }}"
+          data-speed="{{ section.settings.slider_autoplay | times: 1000 }}"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="{{ section.settings.header_title | default: 'Videos' | escape }}"
+        >
+          <div class="sf-car__stage">
+            <div class="sf-car__viewport">
+              <div class="sf-car__track" data-sf-car-track>
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign p = block.settings.product
+                    assign v = p.selected_or_first_available_variant
+                    assign tilt = forloop.index0 | modulo: 3 | minus: 1 | times: 2
+                  -%}
+                  <div class="sf-car__slide" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}" {{ block.shopify_attributes }}>
+                    <article class="sf-sv__item" data-sf-sv-item="{{ forloop.index0 }}" style="--sv-tilt: {{ tilt }}deg;">
+                      <div class="sf-sv__bag">
+                        <span class="sf-sv__seam" aria-hidden="true"></span>
+
+                        {%- if block.settings.video != blank -%}
+                          {{ block.settings.video | video_tag:
+                              image_size: '540x',
+                              autoplay: false,
+                              loop: true,
+                              muted: true,
+                              controls: false,
+                              playsinline: true,
+                              preload: 'metadata',
+                              class: 'sf-sv__video',
+                              data-autoplay: block.settings.video_autoplay
+                          }}
+                        {%- else -%}
+                          <div class="sf-sv__video sf-sv__video--empty">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+                        {%- endif -%}
+
+                        {%- if block.settings.custom_badge != blank -%}
+                          <span class="sf-sv__tag" style="--tag-bg: {{ block.settings.custom_badge_bg_color }};">
+                            <span class="sf-sv__tag-string" aria-hidden="true"></span>
+                            <span class="sf-sv__tag-card">{{ block.settings.custom_badge }}</span>
+                          </span>
+                        {%- endif -%}
+
+                        {%- if block.settings.views_badge != blank -%}
+                          <span class="sf-sv__views" style="--views-bg: {{ block.settings.views_badge_bg_color }};">
+                            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.8" fill="currentColor"/></svg>
+                            {{ block.settings.views_badge }} {{ section.settings.views_suffix }}
+                          </span>
+                        {%- endif -%}
+
+                        <button type="button" class="sf-sv__sound" data-sf-sv-sound aria-label="Turn sound on" aria-pressed="false">
+                          <svg class="sf-sv__ico-off" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                          <svg class="sf-sv__ico-on" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </button>
+
+                        <button type="button" class="sf-sv__play" data-sf-sv-open="{{ forloop.index0 }}" aria-label="Watch {{ block.settings.caption | default: p.title | escape }}">
+                          <span class="sf-sv__steam" aria-hidden="true"><i></i><i></i><i></i></span>
+                          <span class="sf-sv__play-btn" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+                          </span>
+                        </button>
+
+                        {%- if block.settings.caption != blank -%}
+                          <span class="sf-sv__caption" style="--cap-tilt: {{ tilt | times: -1 | minus: 2 }}deg;">{{ block.settings.caption }}</span>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if p != blank -%}
+                        <div class="sf-sv__product" style="--pc-bg: {{ block.settings.product_bg_color }}; --pc-text: {{ block.settings.product_text_color }};">
+                          <span class="sf-sv__clip" aria-hidden="true"></span>
+                          <div class="sf-sv__prow">
+                            <a class="sf-sv__thumb" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+                              {%- if p.featured_image -%}
+                                {{ p.featured_image | image_url: width: 160 | image_tag: width: 56, height: 56, loading: 'lazy', alt: '' }}
+                              {%- endif -%}
+                            </a>
+                            <div class="sf-sv__pinfo">
+                              <a class="sf-sv__pname" href="{{ p.url }}">{{ p.title }}</a>
+                              <span class="sf-sv__pmeta">
+                                <span class="sf-sv__chip">
+                                  {%- unless p.has_only_default_variant -%}{{ v.title }} · {% endunless -%}
+                                  {{- v.price | money_without_trailing_zeros -}}
+                                </span>
+                                {%- if v.compare_at_price > v.price -%}
+                                  <s class="sf-sv__was">{{ v.compare_at_price | money_without_trailing_zeros }}</s>
+                                {%- endif -%}
+                              </span>
+                            </div>
+                          </div>
+                          {%- if block.settings.button_action == 'view' -%}
+                            <a class="sf-btn sf-sv__btn" href="{{ p.url }}">{{ section.settings.view_label }}</a>
+                          {%- else -%}
+                            <button type="button" class="sf-btn sf-sv__btn" data-sf-sv-add="{{ v.id }}" data-label="{{ section.settings.atc_label | escape }}"{% unless v.available %} disabled{% endunless %}>
+                              {%- if v.available -%}{{ section.settings.atc_label }}{%- else -%}Sold out{%- endif -%}
+                            </button>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                    </article>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+            {%- if section.settings.slider_navigation -%}
+              <button type="button" class="sf-car__arrow sf-car__arrow--prev" data-sf-car-prev aria-label="Previous videos">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button type="button" class="sf-car__arrow sf-car__arrow--next" data-sf-car-next aria-label="Next videos">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.slider_pagination -%}
+            <div class="sf-car__dots" data-sf-car-dots data-type="{{ section.settings.slider_pagination_type }}"></div>
+          {%- endif -%}
+        </sf-carousel>
+
+        {%- comment -%} Full-screen story player (filled by sf-videos.js) {%- endcomment -%}
+        <div class="sf-sv__story" role="dialog" aria-modal="true" aria-label="Video player" hidden data-sf-sv-story>
+          <div class="sf-sv__story-bg" data-sf-sv-close></div>
+          <div class="sf-sv__story-frame">
+            <div class="sf-sv__story-progress"><span data-sf-sv-progress></span></div>
+            <video class="sf-sv__story-video" playsinline loop data-sf-sv-player></video>
+            <button type="button" class="sf-sv__story-btn sf-sv__story-close" data-sf-sv-close aria-label="Close video">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+            </button>
+            <button type="button" class="sf-sv__story-btn sf-sv__story-sound" data-sf-sv-story-sound aria-label="Mute" aria-pressed="true">
+              <svg class="sf-sv__ico-off" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg class="sf-sv__ico-on" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button type="button" class="sf-sv__story-tap sf-sv__story-tap--prev" data-sf-sv-step="-1" aria-label="Previous video"></button>
+            <button type="button" class="sf-sv__story-tap sf-sv__story-tap--next" data-sf-sv-step="1" aria-label="Next video"></button>
+            <div class="sf-sv__story-product" data-sf-sv-story-product></div>
+          </div>
+          <button type="button" class="sf-car__arrow sf-sv__story-arrow sf-sv__story-arrow--prev" data-sf-sv-step="-1" aria-label="Previous video">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="sf-car__arrow sf-sv__story-arrow sf-sv__story-arrow--next" data-sf-sv-step="1" aria-label="Next video">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </sf-videos>
+    {%- elsif request.design_mode -%}
+      <p class="sf-sv__empty">Add some video blocks to this section.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SF · Shoppable videos",
+  "tag": "section",
+  "class": "sf-shoppable-videos-section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 16,
+  "settings": [
+    { "type": "header", "content": "Styling" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#17301f" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#fff8e6" },
+    { "type": "color", "id": "c_accent", "label": "Accent (shadows, highlight)", "default": "#c8f169" },
+    { "type": "range", "id": "border_top_width", "label": "Border top width", "min": 0, "max": 16, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "border_bottom_width", "label": "Border bottom width", "min": 0, "max": 16, "step": 1, "unit": "px", "default": 0 },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#1c1c1c" },
+    { "type": "text", "id": "container_max_width", "label": "Container max-width (px)", "info": "Leave empty to use the normal width" },
+    { "type": "checkbox", "id": "load_fonts", "label": "Load Fredoka + Poppins", "default": true },
+
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "eyebrow", "label": "Small text above title", "default": "steep · sip · see" },
+    { "type": "text", "id": "header_title", "label": "Title", "default": "Watch before" },
+    { "type": "text", "id": "header_highlight", "label": "Title highlight", "default": "you dip." },
+    {
+      "type": "select", "id": "header_title_font_size", "label": "Title size", "default": "lg",
+      "options": [{ "value": "sm", "label": "Small" }, { "value": "md", "label": "Medium" }, { "value": "lg", "label": "Large" }, { "value": "xl", "label": "Extra large" }]
+    },
+    { "type": "richtext", "id": "header_description", "label": "Description (optional)" },
+    {
+      "type": "select", "id": "header_description_font_size", "label": "Description size", "default": "md",
+      "options": [{ "value": "sm", "label": "Small" }, { "value": "md", "label": "Medium" }, { "value": "lg", "label": "Large" }]
+    },
+
+    { "type": "header", "content": "Slider" },
+    { "type": "range", "id": "slider_speed", "label": "Speed", "min": 100, "max": 2000, "step": 100, "unit": "ms", "default": 500 },
+    { "type": "checkbox", "id": "slider_navigation", "label": "Show navigation (arrows)", "default": true },
+    { "type": "checkbox", "id": "slider_pagination", "label": "Show pagination", "default": true },
+    {
+      "type": "select", "id": "slider_pagination_type", "label": "Pagination type", "default": "bullets",
+      "options": [{ "value": "bullets", "label": "Bullets" }, { "value": "fraction", "label": "Fraction" }]
+    },
+    { "type": "checkbox", "id": "slider_loop", "label": "Infinite loop", "default": true },
+    { "type": "checkbox", "id": "slider_partial_slides_mobile", "label": "Partial slides on mobile / tablet", "default": true, "info": "Shows part of the next video so customers know they can swipe." },
+    { "type": "range", "id": "slider_autoplay", "label": "Autoplay", "min": 0, "max": 10, "step": 1, "unit": "sec", "default": 0, "info": "0 turns autoplay off." },
+
+    { "type": "header", "content": "Item" },
+    { "type": "range", "id": "item_border_width", "label": "Border width", "min": 0, "max": 6, "step": 1, "unit": "px", "default": 3 },
+    {
+      "type": "select", "id": "item_shadow", "label": "Shadow", "default": "hard",
+      "options": [{ "value": "none", "label": "None" }, { "value": "soft", "label": "Soft" }, { "value": "hard", "label": "Hard (DailyDip)" }]
+    },
+    {
+      "type": "select", "id": "item_title_font_size", "label": "Product title size", "default": "md",
+      "options": [{ "value": "sm", "label": "Small" }, { "value": "md", "label": "Medium" }, { "value": "lg", "label": "Large" }]
+    },
+    { "type": "text", "id": "atc_label", "label": "Add to cart button", "default": "Dip in +" },
+    { "type": "text", "id": "view_label", "label": "View product button", "default": "Take a sip →" },
+    { "type": "text", "id": "views_suffix", "label": "Text after view count", "default": "sips" },
+
+    { "type": "header", "content": "Breakpoints", "info": "Videos per view at each screen size" },
+    { "type": "range", "id": "breakpoint_mobile", "label": "Mobile (<600px)", "min": 1, "max": 3, "step": 1, "default": 1 },
+    { "type": "range", "id": "breakpoint_tablet", "label": "Tablet (≥600px)", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "range", "id": "breakpoint_desktop", "label": "Desktop (≥1200px)", "min": 1, "max": 6, "step": 1, "default": 4 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pb", "label": "Bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Video",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video", "info": "Upright (9:16) videos work best." },
+        { "type": "checkbox", "id": "video_autoplay", "label": "Autoplay video", "default": true, "info": "Plays muted while on screen. Customers can tap the speaker for sound." },
+        { "type": "text", "id": "caption", "label": "Sticker caption", "default": "the morning dip", "info": "Small handwritten-style sticker on the video. Leave empty to hide." },
+        { "type": "header", "content": "Product" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "color", "id": "product_bg_color", "label": "Card background", "default": "#fff8e6" },
+        { "type": "color", "id": "product_text_color", "label": "Card text", "default": "#1c1c1c" },
+        {
+          "type": "select", "id": "button_action", "label": "Button", "default": "add",
+          "options": [{ "value": "add", "label": "Add to cart" }, { "value": "view", "label": "Open product page" }]
+        },
+        { "type": "header", "content": "Top area" },
+        { "type": "text", "id": "custom_badge", "label": "Tea-bag tag badge", "default": "NEW", "info": "Leave empty to hide" },
+        { "type": "color", "id": "custom_badge_bg_color", "label": "Tag color", "default": "#c8f169" },
+        { "type": "text", "id": "views_badge", "label": "Views badge", "default": "3.8k", "info": "Leave empty to hide" },
+        { "type": "color", "id": "views_badge_bg_color", "label": "Views badge color", "default": "#1c1c1c" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Shoppable videos",
+      "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" }]
+    }
+  ]
+}
+{% endschema %}
