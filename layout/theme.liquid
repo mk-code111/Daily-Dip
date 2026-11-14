@@ -56,6 +56,8 @@
     {% sections 'footer-group' %}
   </div>
 
+  {{ 'sf-cart.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'sf-cart.js' | asset_url }}" defer></script>
   {% liquid
     render 'offcanvas-cart'
     render 'offcanvas-search'

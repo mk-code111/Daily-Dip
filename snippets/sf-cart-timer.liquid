@@ -1,0 +1,30 @@
+{%- comment -%}
+  sf-cart-timer — countdown with progress bar for the cart drawer
+  (Theme settings → SF Cart · Timer). The countdown itself runs in assets/sf-cart.js
+  and is stored in the browser, so it keeps counting across pages and re-renders.
+{%- endcomment -%}
+{%- if settings.sf_timer_enable -%}
+  {%- liquid
+    assign t_min = settings.sf_timer_minutes | default: 0 | at_least: 0
+    assign t_sec = settings.sf_timer_seconds | default: 0 | at_least: 0
+    assign t_ms = t_min | times: 60 | plus: t_sec | times: 1000
+  -%}
+  {%- if t_ms > 0 -%}
+    <sf-cart-timer
+      class="sf-tm"
+      data-ms="{{ t_ms }}"
+      data-count="{{ cart.item_count }}"
+      data-end="{{ settings.sf_timer_end }}"
+      data-message="{{ settings.sf_timer_message | escape }}"
+      hidden
+    >
+      <div class="sf-tm__row">
+        <span class="sf-tm__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>
+        </span>
+        <p class="sf-tm__msg" data-sf-tm-msg role="timer" aria-live="off"></p>
+      </div>
+      <div class="sf-tm__track" aria-hidden="true"><div class="sf-tm__fill" data-sf-tm-fill></div></div>
+    </sf-cart-timer>
+  {%- endif -%}
+{%- endif -%}

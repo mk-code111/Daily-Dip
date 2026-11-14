@@ -27,6 +27,9 @@
                   {{ line_item.product.title }}
                 </a>
               </h3>
+              {%- if line_item.properties['_sf_gift'] != blank -%}
+                <span class="sf-gift-tag">🎁 Free gift</span>
+              {%- endif -%}
               {% unless line_item.product.has_only_default_variant %}
                 <p class="cart-item-variant-title d-block opacity-70 mb-1 small">
                   {{ line_item.variant.title }}

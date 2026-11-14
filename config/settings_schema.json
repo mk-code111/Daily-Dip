@@ -4,8 +4,8 @@
     "theme_name": "Jhango",
     "theme_version": "1.2.0",
     "theme_author": "Jhango",
-    "theme_documentation_url": "https:\/\/www.jhango.com",
-    "theme_support_url": "https:\/\/www.jhango.com"
+    "theme_documentation_url": "https://www.jhango.com",
+    "theme_support_url": "https://www.jhango.com"
   },
   {
     "name": "Colors",
@@ -74,7 +74,7 @@
         "type": "image_picker",
         "id": "logo",
         "label": "Logo",
-        "info": "Can be used in structured data markup [Learn more](https:\/\/developers.google.com\/search\/docs\/appearance\/structured-data\/intro-structured-data)"
+        "info": "Can be used in structured data markup [Learn more](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)"
       },
       {
         "type": "image_picker",
@@ -120,10 +120,22 @@
         "label": "Text transform",
         "default": "",
         "options": [
-          { "value": "",  "label": "None" },
-          { "value": "capitalize", "label": "Capitalize" },
-          { "value": "lowercase", "label": "Lowercase" },
-          { "value": "uppercase", "label": "Uppercase" }
+          {
+            "value": "",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
         ]
       },
       {
@@ -132,8 +144,14 @@
         "label": "Font family",
         "default": "var(--bs-body-font-family)",
         "options": [
-          { "value": "var(--bs-body-font-family)", "label": "Body (default)" },
-          { "value": "var(--bs-headings-font-family)", "label": "Headings" }
+          {
+            "value": "var(--bs-body-font-family)",
+            "label": "Body (default)"
+          },
+          {
+            "value": "var(--bs-headings-font-family)",
+            "label": "Headings"
+          }
         ]
       },
       {
@@ -142,10 +160,22 @@
         "label": "Font weight",
         "default": "500",
         "options": [
-          { "value": "400", "label": "Normal" },
-          { "value": "500", "label": "Medium" },
-          { "value": "600", "label": "Semi-bold" },
-          { "value": "700", "label": "Bold" }
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi-bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
         ],
         "info": "Note: Some fonts might not have all font-weight variants."
       },
@@ -186,7 +216,7 @@
     ]
   },
   {
-    "name": "Modal\/Offcanvas",
+    "name": "Modal/Offcanvas",
     "settings": [
       {
         "type": "header",
@@ -198,10 +228,22 @@
         "label": "Backdrop color",
         "default": "bs-body-color-rgb",
         "options": [
-          { "value": "bs-primary-rgb", "label": "Primary" },
-          { "value": "bs-secondary-rgb", "label": "Secondary" },
-          { "value": "bs-body-color-rgb", "label": "Body" },
-          { "value": "bs-white-rgb", "label": "White" }
+          {
+            "value": "bs-primary-rgb",
+            "label": "Primary"
+          },
+          {
+            "value": "bs-secondary-rgb",
+            "label": "Secondary"
+          },
+          {
+            "value": "bs-body-color-rgb",
+            "label": "Body"
+          },
+          {
+            "value": "bs-white-rgb",
+            "label": "White"
+          }
         ]
       },
       {
@@ -233,10 +275,22 @@
         "label": "Background color",
         "default": "body-bg",
         "options": [
-          { "value": "primary", "label": "Primary" },
-          { "value": "secondary", "label": "Secondary" },
-          { "value": "body-bg", "label": "Body" },
-          { "value": "white",  "label": "White" }
+          {
+            "value": "primary",
+            "label": "Primary"
+          },
+          {
+            "value": "secondary",
+            "label": "Secondary"
+          },
+          {
+            "value": "body-bg",
+            "label": "Body"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          }
         ]
       },
       {
@@ -255,10 +309,22 @@
         "label": "Text color",
         "default": "body-color",
         "options": [
-          { "value": "primary", "label": "Primary" },
-          { "value": "secondary", "label": "Secondary" },
-          { "value": "body-color", "label": "Body" },
-          { "value": "white",  "label": "White" }
+          {
+            "value": "primary",
+            "label": "Primary"
+          },
+          {
+            "value": "secondary",
+            "label": "Secondary"
+          },
+          {
+            "value": "body-color",
+            "label": "Body"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          }
         ]
       },
       {
@@ -277,10 +343,22 @@
         "label": "Border color",
         "default": "body-color",
         "options": [
-          { "value": "primary", "label": "Primary" },
-          { "value": "secondary", "label": "Secondary" },
-          { "value": "body-color", "label": "Body" },
-          { "value": "white",  "label": "White" }
+          {
+            "value": "primary",
+            "label": "Primary"
+          },
+          {
+            "value": "secondary",
+            "label": "Secondary"
+          },
+          {
+            "value": "body-color",
+            "label": "Body"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          }
         ]
       },
       {
@@ -314,8 +392,14 @@
         "label": "Text align",
         "default": "text-center",
         "options": [
-          { "value": "text-start", "label": "Left" },
-          { "value": "text-center", "label": "Center" }
+          {
+            "value": "text-start",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          }
         ]
       },
       {
@@ -323,8 +407,14 @@
         "id": "product_card_img_mode",
         "label": "Image mode",
         "options": [
-          { "value": "image", "label": "Image" },
-          { "value": "carousel", "label": "Carousel" }
+          {
+            "value": "image",
+            "label": "Image"
+          },
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          }
         ],
         "default": "carousel"
       },
@@ -334,14 +424,46 @@
         "label": "Image ratio",
         "default": "ratio-1x1",
         "options": [
-          { "group": "Adapt", "value": "adapt", "label": "Adapt" },
-          { "group": "Square", "value": "ratio-1x1", "label": "1x1" },
-          { "group": "Horizontal", "value": "ratio-4x3", "label": "4x3" },
-          { "group": "Horizontal", "value": "ratio-16x9", "label": "16x9" },
-          { "group": "Horizontal", "value": "ratio-21x9", "label": "21x9" },
-          { "group": "Vertical", "value": "ratio-3x4", "label": "3x4" },
-          { "group": "Vertical", "value": "ratio-9x16", "label": "9x16" },
-          { "group": "Vertical", "value": "ratio-9x21", "label": "9x21" }
+          {
+            "group": "Adapt",
+            "value": "adapt",
+            "label": "Adapt"
+          },
+          {
+            "group": "Square",
+            "value": "ratio-1x1",
+            "label": "1x1"
+          },
+          {
+            "group": "Horizontal",
+            "value": "ratio-4x3",
+            "label": "4x3"
+          },
+          {
+            "group": "Horizontal",
+            "value": "ratio-16x9",
+            "label": "16x9"
+          },
+          {
+            "group": "Horizontal",
+            "value": "ratio-21x9",
+            "label": "21x9"
+          },
+          {
+            "group": "Vertical",
+            "value": "ratio-3x4",
+            "label": "3x4"
+          },
+          {
+            "group": "Vertical",
+            "value": "ratio-9x16",
+            "label": "9x16"
+          },
+          {
+            "group": "Vertical",
+            "value": "ratio-9x21",
+            "label": "9x21"
+          }
         ]
       },
       {
@@ -350,9 +472,18 @@
         "label": "Image border",
         "default": "img-thumbnail",
         "options": [
-          { "value": "", "label": "None" },
-          { "value": "rounded", "label": "Rounded" },
-          { "value": "img-thumbnail", "label": "Thumbnail" }
+          {
+            "value": "",
+            "label": "None"
+          },
+          {
+            "value": "rounded",
+            "label": "Rounded"
+          },
+          {
+            "value": "img-thumbnail",
+            "label": "Thumbnail"
+          }
         ]
       },
       {
@@ -360,10 +491,22 @@
         "id": "product_card_carousel_controls_color",
         "label": "Carousel controls color",
         "options": [
-          { "value": "primary", "label": "Primary" },
-          { "value": "secondary", "label": "Secondary" },
-          { "value": "body-color", "label": "Body" },
-          { "value": "white",  "label": "White" }
+          {
+            "value": "primary",
+            "label": "Primary"
+          },
+          {
+            "value": "secondary",
+            "label": "Secondary"
+          },
+          {
+            "value": "body-color",
+            "label": "Body"
+          },
+          {
+            "value": "white",
+            "label": "White"
+          }
         ],
         "default": "white"
       },
@@ -372,8 +515,14 @@
         "id": "product_card_carousel_transition",
         "label": "Carousel transition",
         "options": [
-          { "value": "slide", "label": "Slide" },
-          { "value": "slide carousel-fade", "label": "Fade" }
+          {
+            "value": "slide",
+            "label": "Slide"
+          },
+          {
+            "value": "slide carousel-fade",
+            "label": "Fade"
+          }
         ],
         "default": "slide"
       },
@@ -389,8 +538,14 @@
         "label": "Sale badge discount type",
         "default": "percentage",
         "options": [
-          { "value": "percentage",  "label": "Percentage" },
-          { "value": "value", "label": "Value" }
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "value",
+            "label": "Value"
+          }
         ]
       },
       {
@@ -405,11 +560,26 @@
         "label": "Title font-size",
         "default": "fs-lg",
         "options": [
-          { "value": "fs-sm", "label": "sm" },
-          { "value": "fs-md", "label": "md" },
-          { "value": "fs-lg", "label": "lg" },
-          { "value": "fs-xl", "label": "xl" },
-          { "value": "fs-xxl", "label": "xxl" }
+          {
+            "value": "fs-sm",
+            "label": "sm"
+          },
+          {
+            "value": "fs-md",
+            "label": "md"
+          },
+          {
+            "value": "fs-lg",
+            "label": "lg"
+          },
+          {
+            "value": "fs-xl",
+            "label": "xl"
+          },
+          {
+            "value": "fs-xxl",
+            "label": "xxl"
+          }
         ]
       },
       {
@@ -424,22 +594,86 @@
         "label": "\"Add to cart\" button color",
         "default": "btn-primary",
         "options": [
-          { "group": "Solid", "value": "btn-primary", "label": "Primary" },
-          { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
-          { "group": "Solid", "value": "btn-tertiary", "label": "Tertiary" },
-          { "group": "Solid", "value": "btn-white", "label": "White" },
-          { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
-          { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
-          { "group": "Light", "value": "btn-light-tertiary", "label": "Tertiary" },
-          { "group": "Light", "value": "btn-light-white", "label": "White" },
-          { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
-          { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
-          { "group": "Outline", "value": "btn-outline-tertiary", "label": "Tertiary" },
-          { "group": "Outline", "value": "btn-outline-white", "label": "White" },
-          { "group": "Alert", "value": "btn-success", "label": "Success" },
-          { "group": "Alert", "value": "btn-warning", "label": "Warning" },
-          { "group": "Alert", "value": "btn-danger", "label": "Danger" },
-          { "group": "Alert", "value": "btn-info", "label": "Info" }
+          {
+            "group": "Solid",
+            "value": "btn-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-tertiary",
+            "label": "Tertiary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-white",
+            "label": "White"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-tertiary",
+            "label": "Tertiary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-white",
+            "label": "White"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-tertiary",
+            "label": "Tertiary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-white",
+            "label": "White"
+          },
+          {
+            "group": "Alert",
+            "value": "btn-success",
+            "label": "Success"
+          },
+          {
+            "group": "Alert",
+            "value": "btn-warning",
+            "label": "Warning"
+          },
+          {
+            "group": "Alert",
+            "value": "btn-danger",
+            "label": "Danger"
+          },
+          {
+            "group": "Alert",
+            "value": "btn-info",
+            "label": "Info"
+          }
         ]
       },
       {
@@ -448,8 +682,14 @@
         "label": "\"Add to cart\" style",
         "default": "quick-view",
         "options": [
-          { "value": "quick-view", "label": "Quick view" },
-          { "value": "variant-selector", "label": "Variant selector" }
+          {
+            "value": "quick-view",
+            "label": "Quick view"
+          },
+          {
+            "value": "variant-selector",
+            "label": "Variant selector"
+          }
         ]
       },
       {
@@ -474,8 +714,14 @@
         "label": "Cart icon",
         "default": "cart",
         "options": [
-          { "value": "cart",  "label": "Cart" },
-          { "value": "bag",  "label": "Bag" }
+          {
+            "value": "cart",
+            "label": "Cart"
+          },
+          {
+            "value": "bag",
+            "label": "Bag"
+          }
         ]
       },
       {
@@ -530,14 +776,46 @@
         "label": "Background color",
         "default": "bg-danger",
         "options": [
-          { "group": "Theme", "value": "bg-primary",  "label": "Primary" },
-          { "group": "Theme", "value": "bg-secondary", "label": "Secondary" },
-          { "group": "Theme", "value": "bg-body", "label": "Body" },
-          { "group": "Theme", "value": "bg-white", "label": "White" },
-          { "group": "Alert", "value": "bg-success",  "label": "Success" },
-          { "group": "Alert", "value": "bg-warning", "label": "Warning" },
-          { "group": "Alert", "value": "bg-danger", "label": "Danger" },
-          { "group": "Alert", "value": "bg-info",  "label": "Info" }
+          {
+            "group": "Theme",
+            "value": "bg-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Theme",
+            "value": "bg-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Theme",
+            "value": "bg-body",
+            "label": "Body"
+          },
+          {
+            "group": "Theme",
+            "value": "bg-white",
+            "label": "White"
+          },
+          {
+            "group": "Alert",
+            "value": "bg-success",
+            "label": "Success"
+          },
+          {
+            "group": "Alert",
+            "value": "bg-warning",
+            "label": "Warning"
+          },
+          {
+            "group": "Alert",
+            "value": "bg-danger",
+            "label": "Danger"
+          },
+          {
+            "group": "Alert",
+            "value": "bg-info",
+            "label": "Info"
+          }
         ]
       },
       {
@@ -576,7 +854,7 @@
         "type": "richtext",
         "id": "cart_gift_upsell_description",
         "label": "Description",
-        "default": "<p>Wrap as gifts the items in the cart for only <strong>only [price]<\/strong><\/p>"
+        "default": "<p>Wrap as gifts the items in the cart for only <strong>only [price]</strong></p>"
       }
     ]
   },
@@ -593,13 +871,41 @@
         "label": "Color",
         "default": "primary",
         "options": [
-          { "group": "Theme", "value": "primary",  "label": "Primary" },
-          { "group": "Theme", "value": "secondary", "label": "Secondary" },
-          { "group": "Theme", "value": "body-color", "label": "Body" },
-          { "group": "Alert", "value": "success",  "label": "Success" },
-          { "group": "Alert", "value": "warning", "label": "Warning" },
-          { "group": "Alert", "value": "danger", "label": "Danger" },
-          { "group": "Alert", "value": "info",  "label": "Info" }
+          {
+            "group": "Theme",
+            "value": "primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Theme",
+            "value": "secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Theme",
+            "value": "body-color",
+            "label": "Body"
+          },
+          {
+            "group": "Alert",
+            "value": "success",
+            "label": "Success"
+          },
+          {
+            "group": "Alert",
+            "value": "warning",
+            "label": "Warning"
+          },
+          {
+            "group": "Alert",
+            "value": "danger",
+            "label": "Danger"
+          },
+          {
+            "group": "Alert",
+            "value": "info",
+            "label": "Info"
+          }
         ]
       },
       {
@@ -615,7 +921,7 @@
         "type": "richtext",
         "id": "cart_goal_desc_completed",
         "label": "Description - Goals are completed",
-        "default": "<p>Congrats! You're eligible for <strong>ALL OFFERINGS.<\/strong><\/p>"
+        "default": "<p>Congrats! You're eligible for <strong>ALL OFFERINGS.</strong></p>"
       },
       {
         "type": "checkbox",
@@ -647,21 +953,45 @@
         "label": "Icon",
         "default": "truck",
         "options": [
-          { "value": "award", "label": "Award" },
-          { "value": "smile", "label": "Smile" },
-          { "value": "star", "label": "Star" },
-          { "value": "percent", "label": "Percent" },
-          { "value": "truck", "label": "Truck" },
-          { "value": "gift", "label": "Gift" },
-          { "value": "heart", "label": "Heart" },
-          { "value": "cart", "label": "Cart" }
+          {
+            "value": "award",
+            "label": "Award"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "star",
+            "label": "Star"
+          },
+          {
+            "value": "percent",
+            "label": "Percent"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "heart",
+            "label": "Heart"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          }
         ]
       },
       {
         "type": "richtext",
         "id": "cart_goal_1_desc",
         "label": "Description",
-        "default": "<p>You're <strong>[amount]<\/strong> away from <strong>FREE SHIPPING!<\/strong><\/p>"
+        "default": "<p>You're <strong>[amount]</strong> away from <strong>FREE SHIPPING!</strong></p>"
       },
       {
         "type": "header",
@@ -685,21 +1015,45 @@
         "label": "Icon",
         "default": "gift",
         "options": [
-          { "value": "award", "label": "Award" },
-          { "value": "smile", "label": "Smile" },
-          { "value": "star", "label": "Star" },
-          { "value": "percent", "label": "Percent" },
-          { "value": "truck", "label": "Truck" },
-          { "value": "gift", "label": "Gift" },
-          { "value": "heart", "label": "Heart" },
-          { "value": "cart", "label": "Cart" }
+          {
+            "value": "award",
+            "label": "Award"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "star",
+            "label": "Star"
+          },
+          {
+            "value": "percent",
+            "label": "Percent"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "heart",
+            "label": "Heart"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          }
         ]
       },
       {
         "type": "richtext",
         "id": "cart_goal_2_desc",
         "label": "Description",
-        "default": "<p>You're <strong>[amount]<\/strong> away from a <strong>FREE GIFT!<\/strong><\/p>"
+        "default": "<p>You're <strong>[amount]</strong> away from a <strong>FREE GIFT!</strong></p>"
       },
       {
         "type": "header",
@@ -723,21 +1077,1006 @@
         "label": "Icon",
         "default": "percent",
         "options": [
-          { "value": "award", "label": "Award" },
-          { "value": "smile", "label": "Smile" },
-          { "value": "star", "label": "Star" },
-          { "value": "percent", "label": "Percent" },
-          { "value": "truck", "label": "Truck" },
-          { "value": "gift", "label": "Gift" },
-          { "value": "heart", "label": "Heart" },
-          { "value": "cart", "label": "Cart" }
+          {
+            "value": "award",
+            "label": "Award"
+          },
+          {
+            "value": "smile",
+            "label": "Smile"
+          },
+          {
+            "value": "star",
+            "label": "Star"
+          },
+          {
+            "value": "percent",
+            "label": "Percent"
+          },
+          {
+            "value": "truck",
+            "label": "Truck"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "heart",
+            "label": "Heart"
+          },
+          {
+            "value": "cart",
+            "label": "Cart"
+          }
         ]
       },
       {
         "type": "richtext",
         "id": "cart_goal_3_desc",
         "label": "Description",
-        "default": "<p>You're <strong>[amount]<\/strong> away from <strong>30% OFF!<\/strong><\/p>"
+        "default": "<p>You're <strong>[amount]</strong> away from <strong>30% OFF!</strong></p>"
+      }
+    ]
+  },
+  {
+    "name": "SF Cart · Timer",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A countdown shown at the top of the cart drawer, as a message with a shrinking progress bar. It starts when the first item is added and keeps counting across pages."
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_timer_enable",
+        "label": "Show cart timer",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "sf_timer_message",
+        "label": "Message",
+        "default": "Offer expires soon {{timer}}",
+        "info": "Use {{timer}} where the countdown should appear. Up to 100 characters."
+      },
+      {
+        "type": "header",
+        "content": "Duration"
+      },
+      {
+        "type": "number",
+        "id": "sf_timer_minutes",
+        "label": "Minutes",
+        "default": 10
+      },
+      {
+        "type": "number",
+        "id": "sf_timer_seconds",
+        "label": "Seconds",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "When timer ends"
+      },
+      {
+        "type": "radio",
+        "id": "sf_timer_end",
+        "label": "When the timer ends",
+        "default": "hide",
+        "options": [
+          {
+            "value": "hide",
+            "label": "Hide the countdown"
+          },
+          {
+            "value": "clear",
+            "label": "Remove all items from cart"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SF Cart · Rewards",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A reward progress bar in the cart drawer with up to 5 tiers. Important: these settings only change what the cart shows. The real discounts at checkout are Shopify automatic discounts (Discounts in your admin), so when you change a tier here, update its matching discount too."
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_enable",
+        "label": "Show reward progress bar",
+        "default": true,
+        "info": "Replaces the theme's Cart goal bar."
+      },
+      {
+        "type": "header",
+        "content": "Customer purchases"
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_measure",
+        "label": "Measure by",
+        "default": "value",
+        "options": [
+          {
+            "value": "value",
+            "label": "Total cart value"
+          },
+          {
+            "value": "quantity",
+            "label": "Total item quantity"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_applies",
+        "label": "Applies to",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All products"
+          },
+          {
+            "value": "products",
+            "label": "Specific products"
+          },
+          {
+            "value": "collections",
+            "label": "Specific collections"
+          }
+        ]
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_products",
+        "label": "Products (when \"Specific products\")",
+        "limit": 50
+      },
+      {
+        "type": "collection_list",
+        "id": "sf_rw_collections",
+        "label": "Collections (when \"Specific collections\")",
+        "limit": 25
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_calc",
+        "label": "Calculate reward bar",
+        "default": "before",
+        "options": [
+          {
+            "value": "before",
+            "label": "Before discounts"
+          },
+          {
+            "value": "after",
+            "label": "After discounts"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_exclude",
+        "label": "Exclude products / collections",
+        "default": false
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_ex_products",
+        "label": "Excluded products",
+        "limit": 50
+      },
+      {
+        "type": "collection_list",
+        "id": "sf_rw_ex_collections",
+        "label": "Excluded collections",
+        "limit": 25
+      },
+      {
+        "type": "header",
+        "content": "Messages"
+      },
+      {
+        "type": "text",
+        "id": "sf_rw_done_text",
+        "label": "Text after completing full reward bar",
+        "default": "Congratulations! You have unlocked all rewards 🎉"
+      },
+      {
+        "type": "header",
+        "content": "When customers reach multiple tiers"
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_mode",
+        "label": "Rewards",
+        "default": "all",
+        "options": [
+          {
+            "value": "highest",
+            "label": "Only give the highest tier"
+          },
+          {
+            "value": "all",
+            "label": "Give rewards from all tiers"
+          }
+        ],
+        "info": "Changes how the cart labels unlocked rewards. Match it with your discounts' combination settings in the admin."
+      },
+      {
+        "type": "header",
+        "content": "Tier 1"
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_t1_enable",
+        "label": "Use tier 1",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t1_icon",
+        "label": "Tier icon",
+        "default": "truck-fast",
+        "options": [
+          {
+            "value": "truck",
+            "label": "Delivery van"
+          },
+          {
+            "value": "truck-fast",
+            "label": "Fast delivery"
+          },
+          {
+            "value": "percent",
+            "label": "Percent badge"
+          },
+          {
+            "value": "coin",
+            "label": "Money tag"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "award",
+            "label": "Award"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t1_type",
+        "label": "Reward type",
+        "default": "shipping",
+        "options": [
+          {
+            "value": "shipping",
+            "label": "Shipping discount"
+          },
+          {
+            "value": "discount",
+            "label": "Discount"
+          },
+          {
+            "value": "product",
+            "label": "Product (free gift)"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t1_min",
+        "label": "Min cart value (₹) or item quantity",
+        "default": 399
+      },
+      {
+        "type": "text",
+        "id": "sf_rw_t1_desc",
+        "label": "Reward description",
+        "default": "Free delivery",
+        "info": "Short label under the tier icon, up to about 15 characters."
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t1_value_type",
+        "label": "Discount / reward value",
+        "default": "free",
+        "options": [
+          {
+            "value": "free",
+            "label": "Free"
+          },
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed amount"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t1_value",
+        "label": "Value (% or ₹)",
+        "default": 0,
+        "info": "Not used when the value is Free."
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t1_ship_scope",
+        "label": "Apply to (shipping discount)",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All shipping methods"
+          },
+          {
+            "value": "specific",
+            "label": "Specific shipping methods"
+          }
+        ],
+        "info": "Set the actual methods in the matching admin discount."
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_t1_products",
+        "label": "Gift products (Product reward)",
+        "limit": 10
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t1_max",
+        "label": "Max rewards per order (Product reward)",
+        "default": 1
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t1_gift_mode",
+        "label": "How customers get the gift",
+        "default": "popup",
+        "options": [
+          {
+            "value": "popup",
+            "label": "Let customer pick (popup)"
+          },
+          {
+            "value": "auto",
+            "label": "Auto-add to cart"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "sf_rw_t1_text",
+        "label": "Text before completing tier",
+        "default": "You are {{min_amount}} away from Free delivery",
+        "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
+      },
+      {
+        "type": "header",
+        "content": "Tier 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_t2_enable",
+        "label": "Use tier 2",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t2_icon",
+        "label": "Tier icon",
+        "default": "percent",
+        "options": [
+          {
+            "value": "truck",
+            "label": "Delivery van"
+          },
+          {
+            "value": "truck-fast",
+            "label": "Fast delivery"
+          },
+          {
+            "value": "percent",
+            "label": "Percent badge"
+          },
+          {
+            "value": "coin",
+            "label": "Money tag"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "award",
+            "label": "Award"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t2_type",
+        "label": "Reward type",
+        "default": "discount",
+        "options": [
+          {
+            "value": "shipping",
+            "label": "Shipping discount"
+          },
+          {
+            "value": "discount",
+            "label": "Discount"
+          },
+          {
+            "value": "product",
+            "label": "Product (free gift)"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t2_min",
+        "label": "Min cart value (₹) or item quantity",
+        "default": 799
+      },
+      {
+        "type": "text",
+        "id": "sf_rw_t2_desc",
+        "label": "Reward description",
+        "default": "5% off",
+        "info": "Short label under the tier icon, up to about 15 characters."
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t2_value_type",
+        "label": "Discount / reward value",
+        "default": "percentage",
+        "options": [
+          {
+            "value": "free",
+            "label": "Free"
+          },
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed amount"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t2_value",
+        "label": "Value (% or ₹)",
+        "default": 5,
+        "info": "Not used when the value is Free."
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t2_ship_scope",
+        "label": "Apply to (shipping discount)",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All shipping methods"
+          },
+          {
+            "value": "specific",
+            "label": "Specific shipping methods"
+          }
+        ],
+        "info": "Set the actual methods in the matching admin discount."
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_t2_products",
+        "label": "Gift products (Product reward)",
+        "limit": 10
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t2_max",
+        "label": "Max rewards per order (Product reward)",
+        "default": 1
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t2_gift_mode",
+        "label": "How customers get the gift",
+        "default": "popup",
+        "options": [
+          {
+            "value": "popup",
+            "label": "Let customer pick (popup)"
+          },
+          {
+            "value": "auto",
+            "label": "Auto-add to cart"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "sf_rw_t2_text",
+        "label": "Text before completing tier",
+        "default": "You are {{min_amount}} away from 5% off your order",
+        "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
+      },
+      {
+        "type": "header",
+        "content": "Tier 3"
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_t3_enable",
+        "label": "Use tier 3",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t3_icon",
+        "label": "Tier icon",
+        "default": "percent",
+        "options": [
+          {
+            "value": "truck",
+            "label": "Delivery van"
+          },
+          {
+            "value": "truck-fast",
+            "label": "Fast delivery"
+          },
+          {
+            "value": "percent",
+            "label": "Percent badge"
+          },
+          {
+            "value": "coin",
+            "label": "Money tag"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "award",
+            "label": "Award"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t3_type",
+        "label": "Reward type",
+        "default": "discount",
+        "options": [
+          {
+            "value": "shipping",
+            "label": "Shipping discount"
+          },
+          {
+            "value": "discount",
+            "label": "Discount"
+          },
+          {
+            "value": "product",
+            "label": "Product (free gift)"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t3_min",
+        "label": "Min cart value (₹) or item quantity",
+        "default": 1599
+      },
+      {
+        "type": "text",
+        "id": "sf_rw_t3_desc",
+        "label": "Reward description",
+        "default": "10% off",
+        "info": "Short label under the tier icon, up to about 15 characters."
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t3_value_type",
+        "label": "Discount / reward value",
+        "default": "percentage",
+        "options": [
+          {
+            "value": "free",
+            "label": "Free"
+          },
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed amount"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t3_value",
+        "label": "Value (% or ₹)",
+        "default": 10,
+        "info": "Not used when the value is Free."
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t3_ship_scope",
+        "label": "Apply to (shipping discount)",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All shipping methods"
+          },
+          {
+            "value": "specific",
+            "label": "Specific shipping methods"
+          }
+        ],
+        "info": "Set the actual methods in the matching admin discount."
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_t3_products",
+        "label": "Gift products (Product reward)",
+        "limit": 10
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t3_max",
+        "label": "Max rewards per order (Product reward)",
+        "default": 1
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t3_gift_mode",
+        "label": "How customers get the gift",
+        "default": "popup",
+        "options": [
+          {
+            "value": "popup",
+            "label": "Let customer pick (popup)"
+          },
+          {
+            "value": "auto",
+            "label": "Auto-add to cart"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "sf_rw_t3_text",
+        "label": "Text before completing tier",
+        "default": "You are {{min_amount}} away from 10% off your order",
+        "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
+      },
+      {
+        "type": "header",
+        "content": "Tier 4"
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_t4_enable",
+        "label": "Use tier 4",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t4_icon",
+        "label": "Tier icon",
+        "default": "gift",
+        "options": [
+          {
+            "value": "truck",
+            "label": "Delivery van"
+          },
+          {
+            "value": "truck-fast",
+            "label": "Fast delivery"
+          },
+          {
+            "value": "percent",
+            "label": "Percent badge"
+          },
+          {
+            "value": "coin",
+            "label": "Money tag"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "award",
+            "label": "Award"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t4_type",
+        "label": "Reward type",
+        "default": "product",
+        "options": [
+          {
+            "value": "shipping",
+            "label": "Shipping discount"
+          },
+          {
+            "value": "discount",
+            "label": "Discount"
+          },
+          {
+            "value": "product",
+            "label": "Product (free gift)"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t4_min",
+        "label": "Min cart value (₹) or item quantity",
+        "default": 2499
+      },
+      {
+        "type": "text",
+        "id": "sf_rw_t4_desc",
+        "label": "Reward description",
+        "default": "Free gift",
+        "info": "Short label under the tier icon, up to about 15 characters."
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t4_value_type",
+        "label": "Discount / reward value",
+        "default": "free",
+        "options": [
+          {
+            "value": "free",
+            "label": "Free"
+          },
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed amount"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t4_value",
+        "label": "Value (% or ₹)",
+        "default": 0,
+        "info": "Not used when the value is Free."
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t4_ship_scope",
+        "label": "Apply to (shipping discount)",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All shipping methods"
+          },
+          {
+            "value": "specific",
+            "label": "Specific shipping methods"
+          }
+        ],
+        "info": "Set the actual methods in the matching admin discount."
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_t4_products",
+        "label": "Gift products (Product reward)",
+        "limit": 10
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t4_max",
+        "label": "Max rewards per order (Product reward)",
+        "default": 1
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t4_gift_mode",
+        "label": "How customers get the gift",
+        "default": "popup",
+        "options": [
+          {
+            "value": "popup",
+            "label": "Let customer pick (popup)"
+          },
+          {
+            "value": "auto",
+            "label": "Auto-add to cart"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "sf_rw_t4_text",
+        "label": "Text before completing tier",
+        "default": "Spend {{min_amount}} more to unlock a free gift",
+        "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
+      },
+      {
+        "type": "header",
+        "content": "Tier 5"
+      },
+      {
+        "type": "checkbox",
+        "id": "sf_rw_t5_enable",
+        "label": "Use tier 5",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t5_icon",
+        "label": "Tier icon",
+        "default": "award",
+        "options": [
+          {
+            "value": "truck",
+            "label": "Delivery van"
+          },
+          {
+            "value": "truck-fast",
+            "label": "Fast delivery"
+          },
+          {
+            "value": "percent",
+            "label": "Percent badge"
+          },
+          {
+            "value": "coin",
+            "label": "Money tag"
+          },
+          {
+            "value": "gift",
+            "label": "Gift"
+          },
+          {
+            "value": "award",
+            "label": "Award"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t5_type",
+        "label": "Reward type",
+        "default": "discount",
+        "options": [
+          {
+            "value": "shipping",
+            "label": "Shipping discount"
+          },
+          {
+            "value": "discount",
+            "label": "Discount"
+          },
+          {
+            "value": "product",
+            "label": "Product (free gift)"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t5_min",
+        "label": "Min cart value (₹) or item quantity",
+        "default": 3499
+      },
+      {
+        "type": "text",
+        "id": "sf_rw_t5_desc",
+        "label": "Reward description",
+        "default": "15% off",
+        "info": "Short label under the tier icon, up to about 15 characters."
+      },
+      {
+        "type": "select",
+        "id": "sf_rw_t5_value_type",
+        "label": "Discount / reward value",
+        "default": "percentage",
+        "options": [
+          {
+            "value": "free",
+            "label": "Free"
+          },
+          {
+            "value": "percentage",
+            "label": "Percentage"
+          },
+          {
+            "value": "fixed",
+            "label": "Fixed amount"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t5_value",
+        "label": "Value (% or ₹)",
+        "default": 15,
+        "info": "Not used when the value is Free."
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t5_ship_scope",
+        "label": "Apply to (shipping discount)",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All shipping methods"
+          },
+          {
+            "value": "specific",
+            "label": "Specific shipping methods"
+          }
+        ],
+        "info": "Set the actual methods in the matching admin discount."
+      },
+      {
+        "type": "product_list",
+        "id": "sf_rw_t5_products",
+        "label": "Gift products (Product reward)",
+        "limit": 10
+      },
+      {
+        "type": "number",
+        "id": "sf_rw_t5_max",
+        "label": "Max rewards per order (Product reward)",
+        "default": 1
+      },
+      {
+        "type": "radio",
+        "id": "sf_rw_t5_gift_mode",
+        "label": "How customers get the gift",
+        "default": "popup",
+        "options": [
+          {
+            "value": "popup",
+            "label": "Let customer pick (popup)"
+          },
+          {
+            "value": "auto",
+            "label": "Auto-add to cart"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "sf_rw_t5_text",
+        "label": "Text before completing tier",
+        "default": "You are {{min_amount}} away from 15% off your order",
+        "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
       }
     ]
   },
@@ -762,8 +2101,14 @@
         "label": "Style",
         "default": "slider",
         "options": [
-          { "value": "slider", "label": "Slider" },
-          { "value": "stack",  "label": "Stack" }
+          {
+            "value": "slider",
+            "label": "Slider"
+          },
+          {
+            "value": "stack",
+            "label": "Stack"
+          }
         ]
       },
       {
@@ -780,15 +2125,51 @@
         "label": "\"Add to cart\" button color",
         "default": "btn-outline-primary",
         "options": [
-          { "group": "Solid", "value": "btn-primary", "label": "Primary" },
-          { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
-          { "group": "Solid", "value": "btn-white", "label": "White" },
-          { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
-          { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
-          { "group": "Light", "value": "btn-light-white", "label": "White" },
-          { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
-          { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
-          { "group": "Outline", "value": "btn-outline-white", "label": "White" }
+          {
+            "group": "Solid",
+            "value": "btn-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-white",
+            "label": "White"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-white",
+            "label": "White"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-white",
+            "label": "White"
+          }
         ]
       }
     ]
@@ -838,15 +2219,51 @@
         "label": "\"Quick view\" button color",
         "default": "btn-outline-primary",
         "options": [
-          { "group": "Solid", "value": "btn-primary", "label": "Primary" },
-          { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
-          { "group": "Solid", "value": "btn-white", "label": "White" },
-          { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
-          { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
-          { "group": "Light", "value": "btn-light-white", "label": "White" },
-          { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
-          { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
-          { "group": "Outline", "value": "btn-outline-white", "label": "White" }
+          {
+            "group": "Solid",
+            "value": "btn-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Solid",
+            "value": "btn-white",
+            "label": "White"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Light",
+            "value": "btn-light-white",
+            "label": "White"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-primary",
+            "label": "Primary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-secondary",
+            "label": "Secondary"
+          },
+          {
+            "group": "Outline",
+            "value": "btn-outline-white",
+            "label": "White"
+          }
         ]
       }
     ]
@@ -873,7 +2290,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Enter the full URL for each social media site below. E.g: https:\/\/www.facebook.com\/shopify"
+        "content": "Enter the full URL for each social media site below. E.g: https://www.facebook.com/shopify"
       },
       {
         "type": "text",

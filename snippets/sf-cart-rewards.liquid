@@ -1,0 +1,289 @@
+{%- comment -%}
+  sf-cart-rewards — reward progress bar for the cart drawer (Theme settings → SF Cart · Rewards).
+  Rendered in Liquid, so it is recalculated every time the theme re-renders the drawer
+  after a cart change. Gift handling (auto-add / pick popup / removal) is in assets/sf-cart.js.
+  NOTE: this only displays rewards. The actual discounts are Shopify automatic discounts.
+{%- endcomment -%}
+{%- if settings.sf_rw_enable -%}
+  {%- liquid
+    assign by_qty = false
+    if settings.sf_rw_measure == 'quantity'
+      assign by_qty = true
+    endif
+
+    # ---- which lines count -------------------------------------------------
+    assign inc_product_ids = settings.sf_rw_products | map: 'id'
+    assign inc_collection_ids = settings.sf_rw_collections | map: 'id'
+    assign ex_product_ids = settings.sf_rw_ex_products | map: 'id'
+    assign ex_collection_ids = settings.sf_rw_ex_collections | map: 'id'
+
+    assign total = 0
+    assign gift_lines = ''
+    for line in cart.items
+      assign gift_prop = line.properties['_sf_gift']
+      if gift_prop != blank
+        assign gift_lines = gift_lines | append: line.key | append: ':' | append: gift_prop | append: ','
+        continue
+      endif
+
+      assign counts = true
+      if settings.sf_rw_applies == 'products'
+        unless inc_product_ids contains line.product_id
+          assign counts = false
+        endunless
+      elsif settings.sf_rw_applies == 'collections'
+        assign in_col = false
+        for c in line.product.collections
+          if inc_collection_ids contains c.id
+            assign in_col = true
+            break
+          endif
+        endfor
+        unless in_col
+          assign counts = false
+        endunless
+      endif
+      if settings.sf_rw_exclude and counts
+        if ex_product_ids contains line.product_id
+          assign counts = false
+        else
+          for c in line.product.collections
+            if ex_collection_ids contains c.id
+              assign counts = false
+              break
+            endif
+          endfor
+        endif
+      endif
+
+      if counts
+        if by_qty
+          assign total = total | plus: line.quantity
+        elsif settings.sf_rw_calc == 'after'
+          assign total = total | plus: line.final_line_price
+        else
+          assign total = total | plus: line.original_line_price
+        endif
+      endif
+    endfor
+
+    # "after discounts" also takes off order-level discounts when everything counts
+    if by_qty == false and settings.sf_rw_calc == 'after' and settings.sf_rw_applies == 'all' and settings.sf_rw_exclude == false
+      assign cart_disc = cart.cart_level_discount_applications | map: 'total_allocated_amount' | sum
+      assign total = total | minus: cart_disc
+      if total < 0
+        assign total = 0
+      endif
+    endif
+
+    # ---- enabled tiers, sorted by threshold --------------------------------
+    assign keys = ''
+    for n in (1..5)
+      assign k_en = 'sf_rw_t' | append: n | append: '_enable'
+      assign k_min = 'sf_rw_t' | append: n | append: '_min'
+      if settings[k_en] and settings[k_min] > 0
+        if by_qty
+          assign min_units = settings[k_min]
+        else
+          assign min_units = settings[k_min] | times: 100
+        endif
+        assign padded = '0000000000' | append: min_units | slice: -10, 10
+        assign keys = keys | append: padded | append: '|' | append: n | append: ','
+      endif
+    endfor
+    assign tiers = keys | split: ',' | sort
+    assign tier_count = tiers.size
+  -%}
+
+  {%- if tier_count > 0 -%}
+    {%- liquid
+      assign achieved = 0
+      assign next_n = 0
+      assign prev_min = 0
+      assign next_min = 0
+      for t in tiers
+        assign t_min = t | split: '|' | first | plus: 0
+        if total >= t_min
+          assign achieved = achieved | plus: 1
+          assign prev_min = t_min
+        elsif next_n == 0
+          assign next_n = t | split: '|' | last | plus: 0
+          assign next_min = t_min
+        endif
+      endfor
+
+      if achieved >= tier_count
+        assign pct = 100
+      else
+        assign span = next_min | minus: prev_min
+        assign into = total | minus: prev_min
+        assign pct = into | times: 1.0 | divided_by: span | plus: achieved | times: 100.0 | divided_by: tier_count
+      endif
+
+      if next_n > 0
+        assign remaining = next_min | minus: total
+        if by_qty
+          if remaining == 1
+            assign remaining_text = '1 item'
+          else
+            assign remaining_text = remaining | append: ' items'
+          endif
+        else
+          assign remaining_text = remaining | money_without_trailing_zeros
+        endif
+        assign k_text = 'sf_rw_t' | append: next_n | append: '_text'
+        assign k_desc = 'sf_rw_t' | append: next_n | append: '_desc'
+        # build the min_amount / reward tokens (double braces) without writing them literally here
+        assign ob = '{' | append: '{'
+        assign cb = '}' | append: '}'
+        assign tok_min = ob | append: 'min_amount' | append: cb
+        assign tok_min_s = ob | append: ' min_amount ' | append: cb
+        assign tok_rw = ob | append: 'reward' | append: cb
+        assign tok_rw_s = ob | append: ' reward ' | append: cb
+        assign rem_html = '<strong>' | append: remaining_text | append: '</strong>'
+        assign msg = settings[k_text] | escape | replace: tok_min, rem_html | replace: tok_min_s, rem_html
+        assign msg = msg | replace: tok_rw, settings[k_desc] | replace: tok_rw_s, settings[k_desc]
+      else
+        assign msg = settings.sf_rw_done_text | escape
+      endif
+    -%}
+    <sf-cart-rewards
+      class="sf-rw{% if achieved >= tier_count %} is-complete{% endif %}"
+      data-achieved="{{ achieved }}"
+      data-mode="{{ settings.sf_rw_mode }}"
+      style="--sf-rw-pct: {{ pct | at_most: 100 | at_least: 0 }}%; --sf-rw-n: {{ tier_count }};"
+    >
+      <p class="sf-rw__msg" role="status">{{ msg }}</p>
+
+      <div class="sf-rw__track" aria-hidden="true">
+        <div class="sf-rw__fill"></div>
+      </div>
+
+      <ol class="sf-rw__tiers" role="list">
+        {%- for t in tiers -%}
+          {%- liquid
+            assign n = t | split: '|' | last | plus: 0
+            assign t_min = t | split: '|' | first | plus: 0
+            assign k_icon = 'sf_rw_t' | append: n | append: '_icon'
+            assign k_desc = 'sf_rw_t' | append: n | append: '_desc'
+            assign done = false
+            if total >= t_min
+              assign done = true
+            endif
+            assign superseded = false
+            if done and settings.sf_rw_mode == 'highest' and forloop.index < achieved
+              assign superseded = true
+            endif
+            if by_qty
+              assign label_min = t_min | append: '+ items'
+            else
+              assign label_min = t_min | money_without_trailing_zeros
+            endif
+          -%}
+          <li
+            class="sf-rw__tier{% if done %} is-done{% endif %}{% if superseded %} is-superseded{% endif %}"
+            style="--sf-rw-pos: {{ forloop.index | times: 100.0 | divided_by: tier_count }}%;"
+            data-tier="{{ n }}"
+          >
+            <span class="sf-rw__icon">
+              {%- render 'sf-rw-icon', name: settings[k_icon] -%}
+              {%- if done -%}<span class="sf-rw__tick" aria-hidden="true">✓</span>{%- endif -%}
+            </span>
+            <span class="sf-rw__label">
+              <strong>{{ settings[k_desc] }}</strong>
+              <span>{{ label_min }}</span>
+            </span>
+            <span class="visually-hidden">{% if done %}Unlocked{% else %}Locked{% endif %}</span>
+          </li>
+        {%- endfor -%}
+      </ol>
+
+      {%- comment -%} Free-gift tiers: picker data for sf-cart.js {%- endcomment -%}
+      {%- liquid
+        assign gift_tiers = ''
+        for t in tiers
+          assign n = t | split: '|' | last | plus: 0
+          assign t_min = t | split: '|' | first | plus: 0
+          assign k_type = 'sf_rw_t' | append: n | append: '_type'
+          if settings[k_type] == 'product'
+            assign gift_tiers = gift_tiers | append: n | append: ','
+          endif
+        endfor
+      -%}
+      {%- if gift_tiers != blank -%}
+        {%- assign gift_tier_list = gift_tiers | split: ',' -%}
+        <script type="application/json" data-sf-rw-gifts>
+          {
+            "giftLines": [
+              {%- assign gl = gift_lines | split: ',' -%}
+              {%- for g in gl -%}{"key": {{ g | split: ':' | first | json }}, "tier": {{ g | split: ':' | last | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+            ],
+            "tiers": [
+              {%- for gt in gift_tier_list -%}
+                {%- liquid
+                  assign n = gt | plus: 0
+                  assign k_min = 'sf_rw_t' | append: n | append: '_min'
+                  if by_qty
+                    assign t_min = settings[k_min]
+                  else
+                    assign t_min = settings[k_min] | times: 100
+                  endif
+                  assign k_products = 'sf_rw_t' | append: n | append: '_products'
+                  assign k_mode = 'sf_rw_t' | append: n | append: '_gift_mode'
+                  assign k_max = 'sf_rw_t' | append: n | append: '_max'
+                -%}
+                {
+                  "tier": "{{ n }}",
+                  "unlocked": {% if total >= t_min %}true{% else %}false{% endif %},
+                  "mode": {{ settings[k_mode] | json }},
+                  "max": {{ settings[k_max] | default: 1 }},
+                  "variants": [
+                    {%- for gp in settings[k_products] -%}
+                      {%- assign gv = gp.selected_or_first_available_variant -%}
+                      {"id": {{ gv.id }}, "available": {{ gv.available }}, "title": {{ gp.title | json }}, "img": {{ gp.featured_image | image_url: width: 160 | json }}}{%- unless forloop.last -%},{%- endunless -%}
+                    {%- endfor -%}
+                  ]
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }
+        </script>
+        {%- for gt in gift_tier_list -%}
+          {%- liquid
+            assign n = gt | plus: 0
+            assign k_min = 'sf_rw_t' | append: n | append: '_min'
+            if by_qty
+              assign t_min = settings[k_min]
+            else
+              assign t_min = settings[k_min] | times: 100
+            endif
+            assign k_mode = 'sf_rw_t' | append: n | append: '_gift_mode'
+            assign k_products = 'sf_rw_t' | append: n | append: '_products'
+            assign k_desc = 'sf_rw_t' | append: n | append: '_desc'
+          -%}
+          {%- if total >= t_min and settings[k_mode] == 'popup' and settings[k_products].size > 0 -%}
+            <div class="sf-rw__gift">
+              <button type="button" class="sf-rw__gift-btn" data-sf-gift-open="{{ n }}" aria-expanded="false">
+                🎁 Choose your {{ settings[k_desc] | default: 'free gift' | downcase }}
+              </button>
+              <div class="sf-rw__gift-list" data-sf-gift-list="{{ n }}" hidden>
+                {%- for gp in settings[k_products] -%}
+                  {%- assign gv = gp.selected_or_first_available_variant -%}
+                  <div class="sf-rw__gift-item">
+                    {%- if gp.featured_image -%}
+                      {{ gp.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy', alt: gp.title }}
+                    {%- endif -%}
+                    <span class="sf-rw__gift-name">{{ gp.title }}</span>
+                    <button type="button" class="sf-rw__gift-add" data-sf-gift-add="{{ gv.id }}" data-tier="{{ n }}"{% unless gv.available %} disabled{% endunless %}>
+                      {%- if gv.available -%}Add{%- else -%}Sold out{%- endif -%}
+                    </button>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </sf-cart-rewards>
+  {%- endif -%}
+{%- endif -%}

@@ -17,6 +17,9 @@
     </div>
     <div class="offcanvas-body pt-4 pb-8">
       {% render 'cart-announcement' %}
+      {%- comment -%} SF: countdown + reward bar (Theme settings → SF Cart · Timer / Rewards) {%- endcomment -%}
+      {% render 'sf-cart-timer' %}
+      {% render 'sf-cart-rewards' %}
       <div id="cart-alert" class="cart-alert alert alert-danger small px-4 py-3" role="alert" hidden>
         <div class="d-flex align-items-center">
           <div class="alert-icon me-4 flex-shrink-0">
@@ -26,7 +29,9 @@
         </div>
       </div>
       {% liquid
-        render 'cart-goal' 
+        unless settings.sf_rw_enable
+          render 'cart-goal'
+        endunless
         render 'cart-items' 
         render 'cart-upsells'
         render 'cart-gift-upsell'
