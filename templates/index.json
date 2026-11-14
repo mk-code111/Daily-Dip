@@ -96,7 +96,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF \u00b7 Product cards",
+      "name": "SF · Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -252,7 +252,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF \u00b7 Moments",
+      "name": "SF · Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -379,11 +379,11 @@
             "external_video": "",
             "text_align_mobile": "text-center",
             "text_align_desktop": "text-desktop-start",
-            "subtitle": "\u2606\u2606\u2606\u2606\u2606",
+            "subtitle": "☆☆☆☆☆",
             "subtitle_font_size": "fs-md",
             "title": "Certified Organic Matcha",
             "title_font_size": "h1",
-            "description": "<p>Tap into a higher frequency with our organic, ceremonial grade matcha powder \u2014 it's the element your daily ritual has been missing. Enjoy elevated focus, energy, immunity and a pinch of enlightenment.</p>",
+            "description": "<p>Tap into a higher frequency with our organic, ceremonial grade matcha powder — it's the element your daily ritual has been missing. Enjoy elevated focus, energy, immunity and a pinch of enlightenment.</p>",
             "description_font_size": "fs-md",
             "btn_primary_text": "I Want Organic",
             "btn_primary_url": "",
@@ -421,7 +421,7 @@
             "external_video": "",
             "text_align_mobile": "text-center",
             "text_align_desktop": "text-desktop-start",
-            "subtitle": "\u2606\u2606\u2606\u2606\u2606",
+            "subtitle": "☆☆☆☆☆",
             "subtitle_font_size": "fs-md",
             "title": "Superior Japanese Matcha",
             "title_font_size": "h1",
@@ -462,11 +462,11 @@
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
             "button_action": "view",
+            "button_label": "",
             "custom_badge": "NEW",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c",
-            "button_label": ""
+            "views_badge_bg_color": "#1c1c1c"
           }
         },
         "video_2": {
@@ -479,11 +479,11 @@
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
             "button_action": "view",
+            "button_label": "",
             "custom_badge": "NEW",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c",
-            "button_label": ""
+            "views_badge_bg_color": "#1c1c1c"
           }
         },
         "video_3": {
@@ -496,11 +496,11 @@
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
             "button_action": "view",
+            "button_label": "",
             "custom_badge": "NEW",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c",
-            "button_label": ""
+            "views_badge_bg_color": "#1c1c1c"
           }
         },
         "video_4": {
@@ -513,11 +513,11 @@
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
             "button_action": "view",
+            "button_label": "",
             "custom_badge": "",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c",
-            "button_label": ""
+            "views_badge_bg_color": "#1c1c1c"
           }
         }
       },
@@ -536,7 +536,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep \u00b7 sip \u00b7 see",
+        "eyebrow": "steep · sip · see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -547,20 +547,20 @@
         "slider_pagination": true,
         "slider_pagination_type": "bullets",
         "slider_loop": true,
+        "mobile_center": true,
         "slider_partial_slides_mobile": true,
         "slider_autoplay": 4,
         "item_border_width": 3,
         "item_shadow": "hard",
         "item_title_font_size": "md",
-        "atc_label": "Add to cart +",
         "view_label": "Dip in +",
+        "atc_label": "Add to cart +",
         "views_suffix": "sips",
         "breakpoint_mobile": 1,
         "breakpoint_tablet": 2,
         "breakpoint_desktop": 4,
         "pt": 48,
-        "pb": 56,
-        "mobile_center": true
+        "pb": 56
       }
     },
     "shoppable_videos_fyjcgm": {
@@ -737,7 +737,7 @@
           "type": "item",
           "settings": {
             "title": "Can I order as a gift for someone else?",
-            "description": "<p>When ordering as a gift for someone, be sure to enter in your email address to receive all summary information but enter in the recipient\u2019s name and shipping information. We will be sure to keep all prices and receipts out of the package.</p>"
+            "description": "<p>When ordering as a gift for someone, be sure to enter in your email address to receive all summary information but enter in the recipient’s name and shipping information. We will be sure to keep all prices and receipts out of the package.</p>"
           }
         },
         "item_7DmaW8": {
@@ -756,6 +756,7 @@
         "item_4epBnc",
         "item_7DmaW8"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -776,81 +777,64 @@
         "pb": 10
       }
     },
-    "trust_icons_tWUpz7": {
-      "type": "trust-icons",
+    "sf_pdp_know_more_3iPGTz": {
+      "type": "sf-pdp-know-more",
       "blocks": {
-        "item_hwzRYK": {
+        "item_PVf3Kz": {
           "type": "item",
           "settings": {
-            "title": "Outstanding Quality",
-            "description": "<p>We pride ourselves to offer the best quality in class. No compromises!</p>"
+            "title": "Directions",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "open": false
           }
         },
-        "item_AFEdMi": {
+        "item_LErz68": {
           "type": "item",
           "settings": {
-            "title": "Free Shipping",
-            "description": "<p>Have a treat with free shipping for all orders over $100. Ready to shop?!</p>"
+            "title": "Directions",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "open": false
           }
         },
-        "item_PGVbD8": {
+        "item_M7Vr4j": {
           "type": "item",
           "settings": {
-            "title": "Free Retuns",
-            "description": "<p>Have peace of mind with our free return policy. Terms may apply.</p>"
+            "title": "Directions",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "open": false
           }
         },
-        "item_nBwgqb": {
+        "item_RDreYt": {
           "type": "item",
           "settings": {
-            "title": "Secure payments",
-            "description": "<p>100% secure and protected payments. Buy with confidence.</p>"
+            "title": "Ingredients & Allergies",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "open": false
+          }
+        },
+        "item_EhK7pF": {
+          "type": "item",
+          "settings": {
+            "title": "Directions",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "open": false
           }
         }
       },
       "block_order": [
-        "item_hwzRYK",
-        "item_AFEdMi",
-        "item_PGVbD8",
-        "item_nBwgqb"
+        "item_PVf3Kz",
+        "item_LErz68",
+        "item_M7Vr4j",
+        "item_RDreYt",
+        "item_EhK7pF"
       ],
+      "name": "SF · Know more",
       "settings": {
-        "bg_color": "bg-body",
-        "bg_opacity": 100,
-        "bg_gradient_opacity": 5,
-        "bg_gradient_direction": 210,
-        "text_color": "text-body",
-        "border_top_width": 0,
-        "border_bottom_width": 0,
-        "border_color": "border-body",
-        "border_opacity": 100,
-        "container_max_width": "",
-        "header_title": "",
-        "header_title_font_size": "h2",
-        "header_description": "",
-        "header_description_font_size": "fs-md",
-        "label": "Trust information",
-        "item_bg_color": "bg-transparent",
-        "item_bg_opacity": 100,
-        "item_bg_gradient_opacity": 0,
-        "item_bg_gradient_direction": 180,
-        "item_text_color": "text-body",
-        "item_border_width": 0,
-        "item_border_color": "border-body",
-        "item_border_opacity": 50,
-        "item_shadow": "shadow-none",
-        "item_text_align": "text-start",
-        "item_p": 3,
-        "item_img_height": 32,
-        "item_title_font_size": "fs-xl",
-        "item_description_font_size": "fs-md",
-        "breakpoint_mobile": 1,
-        "breakpoint_tablet": 2,
-        "breakpoint_desktop": 4,
-        "pt": 10,
-        "pb": 10
-      },
-      "disabled": true
+        "heading": "FAQs",
+        "intro": "",
+        "pt": 16,
+        "pb": 16
+      }
     },
     "sf_trust": {
       "type": "sf-trust",
@@ -911,7 +895,7 @@
         "promise_4"
       ],
       "settings": {
-        "layout": "cards",
+        "layout": "strip",
         "breakpoint_mobile": 2,
         "breakpoint_tablet": 2,
         "breakpoint_desktop": 4,
@@ -923,13 +907,13 @@
         "header_description": "",
         "head_align": "center",
         "label": "Trust information",
-        "seal_shape": "scallop",
+        "seal_shape": "leaf",
         "item_img_height": 30,
         "numbers": true,
         "show_desc": true,
         "steep": true,
         "steep_height": 26,
-        "item_shadow": "hard",
+        "item_shadow": "soft",
         "item_border_width": 2.5,
         "radius": 22,
         "item_p": 22,
@@ -940,10 +924,86 @@
         "c_text": "#1c1c1c",
         "c_line": "#1c1c1c",
         "pattern": true,
-        "edge_top": false,
-        "edge_bottom": false,
+        "edge_top": true,
+        "edge_bottom": true,
         "pt": 64,
         "pb": 64
+      }
+    },
+    "trust_icons_tWUpz7": {
+      "type": "trust-icons",
+      "blocks": {
+        "item_hwzRYK": {
+          "type": "item",
+          "settings": {
+            "title": "Outstanding Quality",
+            "description": "<p>We pride ourselves to offer the best quality in class. No compromises!</p>"
+          }
+        },
+        "item_AFEdMi": {
+          "type": "item",
+          "settings": {
+            "title": "Free Shipping",
+            "description": "<p>Have a treat with free shipping for all orders over $100. Ready to shop?!</p>"
+          }
+        },
+        "item_PGVbD8": {
+          "type": "item",
+          "settings": {
+            "title": "Free Retuns",
+            "description": "<p>Have peace of mind with our free return policy. Terms may apply.</p>"
+          }
+        },
+        "item_nBwgqb": {
+          "type": "item",
+          "settings": {
+            "title": "Secure payments",
+            "description": "<p>100% secure and protected payments. Buy with confidence.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_hwzRYK",
+        "item_AFEdMi",
+        "item_PGVbD8",
+        "item_nBwgqb"
+      ],
+      "disabled": true,
+      "settings": {
+        "bg_color": "bg-body",
+        "bg_opacity": 100,
+        "bg_gradient_opacity": 5,
+        "bg_gradient_direction": 210,
+        "text_color": "text-body",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "border-body",
+        "border_opacity": 100,
+        "container_max_width": "",
+        "header_title": "",
+        "header_title_font_size": "h2",
+        "header_description": "",
+        "header_description_font_size": "fs-md",
+        "label": "Trust information",
+        "item_bg_color": "bg-transparent",
+        "item_bg_opacity": 100,
+        "item_bg_gradient_opacity": 0,
+        "item_bg_gradient_direction": 180,
+        "item_text_color": "text-body",
+        "item_border_width": 0,
+        "item_border_color": "border-body",
+        "item_border_opacity": 50,
+        "item_shadow": "shadow-none",
+        "item_text_align": "text-start",
+        "item_p": 3,
+        "item_img_height": 32,
+        "item_title_font_size": "fs-xl",
+        "item_description_font_size": "fs-md",
+        "breakpoint_mobile": 1,
+        "breakpoint_tablet": 2,
+        "breakpoint_desktop": 4,
+        "pt": 10,
+        "pb": 10
       }
     }
   },
@@ -958,6 +1018,7 @@
     "shoppable_videos_fyjcgm",
     "richtext_fLeqN4",
     "faq_zbQYep",
+    "sf_pdp_know_more_3iPGTz",
     "sf_trust",
     "trust_icons_tWUpz7"
   ]
