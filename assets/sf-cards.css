@@ -34,6 +34,7 @@
 .sf-car__track.is-animating { transition: transform var(--sf-car-speed, .55s) cubic-bezier(.22, .8, .24, 1); }
 .sf-car__dots.is-fraction { font: 700 15px/1 var(--sf-font-head); letter-spacing: 1px; }
 .sf-car__track.is-dragging { cursor: grabbing; }
+.sf-car__track.is-jumping, .sf-car__track.is-jumping * { transition: none !important; }
 .sf-car__track.is-dragging a, .sf-car__track.is-dragging img { pointer-events: none; }
 .sf-car__track img { -webkit-user-drag: none; }
 .sf-car__slide {

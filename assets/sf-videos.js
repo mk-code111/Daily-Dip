@@ -59,6 +59,16 @@
     }
 
     onClick(e) {
+      // phones (centred layout): tapping a side video brings it to the middle
+      const slide = e.target.closest('.sf-car__slide');
+      const car = this.querySelector('sf-carousel');
+      if (slide && car && car.centered && car.centered() && !slide.classList.contains('is-active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const pos = [...car.track.children].indexOf(slide);
+        car.go(pos - car.offset, true);
+        return;
+      }
       const sound = e.target.closest('[data-sf-sv-sound]');
       if (sound) { e.stopPropagation(); this.toggleCardSound(sound); return; }
       const open = e.target.closest('[data-sf-sv-open]');

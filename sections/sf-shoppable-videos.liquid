@@ -25,6 +25,10 @@
   if section.settings.slider_partial_slides_mobile
     assign per_mobile = per_mobile | plus: 0.4
   endif
+  # centred phone layout: active video takes 60% of the width, 20% of each neighbour peeks in
+  if section.settings.mobile_center
+    assign per_mobile = 1.6667
+  endif
   assign per_tablet = section.settings.breakpoint_tablet
   if section.settings.slider_partial_slides_mobile and per_tablet < 4
     assign per_tablet = per_tablet | plus: 0.4
@@ -57,7 +61,7 @@
   @media (min-width: 1200px) { #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.breakpoint_desktop }}; } }
 </style>
 
-<div class="sf-pdp sf-sv sf-sv--shadow-{{ section.settings.item_shadow }} sf-sv--title-{{ section.settings.item_title_font_size }}">
+<div class="sf-pdp sf-sv{% if section.settings.mobile_center %} sf-sv--center{% endif %} sf-sv--shadow-{{ section.settings.item_shadow }} sf-sv--title-{{ section.settings.item_title_font_size }}">
   <div class="sf-pdp__wrap">
     {%- if section.settings.header_title != blank or section.settings.eyebrow != blank -%}
       <div class="sf-sv__head sf-reveal">
@@ -84,6 +88,7 @@
           data-loop="{{ section.settings.slider_loop }}"
           data-autoplay="{{ autoplay }}"
           data-speed="{{ section.settings.slider_autoplay | times: 1000 }}"
+          data-center-mobile="{{ section.settings.mobile_center }}"
           role="region"
           aria-roledescription="carousel"
           aria-label="{{ section.settings.header_title | default: 'Videos' | escape }}"
@@ -171,12 +176,14 @@
                               </span>
                             </div>
                           </div>
-                          {%- if block.settings.button_action == 'view' -%}
-                            <a class="sf-btn sf-sv__btn" href="{{ p.url }}">{{ section.settings.view_label }}</a>
-                          {%- else -%}
-                            <button type="button" class="sf-btn sf-sv__btn" data-sf-sv-add="{{ v.id }}" data-label="{{ section.settings.atc_label | escape }}"{% unless v.available %} disabled{% endunless %}>
-                              {%- if v.available -%}{{ section.settings.atc_label }}{%- else -%}Sold out{%- endif -%}
+                          {%- if block.settings.button_action == 'add' -%}
+                            {%- assign btn_text = block.settings.button_label | default: section.settings.atc_label -%}
+                            <button type="button" class="sf-btn sf-sv__btn" data-sf-sv-add="{{ v.id }}" data-label="{{ btn_text | escape }}"{% unless v.available %} disabled{% endunless %}>
+                              {%- if v.available -%}{{ btn_text }}{%- else -%}Sold out{%- endif -%}
                             </button>
+                          {%- else -%}
+                            {%- assign btn_text = block.settings.button_label | default: section.settings.view_label -%}
+                            <a class="sf-btn sf-sv__btn" href="{{ p.url }}">{{ btn_text }}</a>
                           {%- endif -%}
                         </div>
                       {%- endif -%}
@@ -271,8 +278,9 @@
       "options": [{ "value": "bullets", "label": "Bullets" }, { "value": "fraction", "label": "Fraction" }]
     },
     { "type": "checkbox", "id": "slider_loop", "label": "Infinite loop", "default": true },
+    { "type": "checkbox", "id": "mobile_center", "label": "Phones: centre the active video", "default": true, "info": "Active video in the middle, raised a little, with 20% of the previous and next videos peeking in on each side. Overrides the Mobile videos-per-view setting." },
     { "type": "checkbox", "id": "slider_partial_slides_mobile", "label": "Partial slides on mobile / tablet", "default": true, "info": "Shows part of the next video so customers know they can swipe." },
-    { "type": "range", "id": "slider_autoplay", "label": "Autoplay", "min": 0, "max": 10, "step": 1, "unit": "sec", "default": 0, "info": "0 turns autoplay off." },
+    { "type": "range", "id": "slider_autoplay", "label": "Auto-scroll every", "min": 0, "max": 10, "step": 1, "unit": "sec", "default": 4, "info": "0 turns auto-scroll off. It pauses while a customer hovers, swipes or watches a video." },
 
     { "type": "header", "content": "Item" },
     { "type": "range", "id": "item_border_width", "label": "Border width", "min": 0, "max": 6, "step": 1, "unit": "px", "default": 3 },
@@ -284,8 +292,8 @@
       "type": "select", "id": "item_title_font_size", "label": "Product title size", "default": "md",
       "options": [{ "value": "sm", "label": "Small" }, { "value": "md", "label": "Medium" }, { "value": "lg", "label": "Large" }]
     },
-    { "type": "text", "id": "atc_label", "label": "Add to cart button", "default": "Dip in +" },
-    { "type": "text", "id": "view_label", "label": "View product button", "default": "Take a sip →" },
+    { "type": "text", "id": "view_label", "label": "Button text (opens product)", "default": "Dip in +", "info": "Used when a video's button opens the product page. Each video can override it." },
+    { "type": "text", "id": "atc_label", "label": "Button text (add to cart)", "default": "Add to cart +" },
     { "type": "text", "id": "views_suffix", "label": "Text after view count", "default": "sips" },
 
     { "type": "header", "content": "Breakpoints", "info": "Videos per view at each screen size" },
@@ -310,9 +318,10 @@
         { "type": "color", "id": "product_bg_color", "label": "Card background", "default": "#fff8e6" },
         { "type": "color", "id": "product_text_color", "label": "Card text", "default": "#1c1c1c" },
         {
-          "type": "select", "id": "button_action", "label": "Button", "default": "add",
-          "options": [{ "value": "add", "label": "Add to cart" }, { "value": "view", "label": "Open product page" }]
+          "type": "select", "id": "button_action", "label": "Button", "default": "view",
+          "options": [{ "value": "view", "label": "Open product page" }, { "value": "add", "label": "Add to cart" }]
         },
+        { "type": "text", "id": "button_label", "label": "Button text", "info": "Leave empty to use the section's button text." },
         { "type": "header", "content": "Top area" },
         { "type": "text", "id": "custom_badge", "label": "Tea-bag tag badge", "default": "NEW", "info": "Leave empty to hide" },
         { "type": "color", "id": "custom_badge_bg_color", "label": "Tag color", "default": "#c8f169" },

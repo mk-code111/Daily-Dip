@@ -241,6 +241,20 @@ html.sf-sv-locked, html.sf-sv-locked body { overflow: hidden; }
   .sf-sv__tag { transform: translateX(-50%); }
   .sf-sv__bag, .sf-sv__item:hover .sf-sv__bag { transition: none; }
 }
+/* ---------- Phones: centred carousel ---------- */
+@media (max-width: 599px) {
+  .sf-sv--center .sf-car__arrow { display: none; }
+  .sf-sv--center .sf-car__viewport { margin-left: -16px; margin-right: -16px; padding-left: 0; padding-right: 0; }
+  .sf-sv--center .sf-car__slide .sf-sv__item {
+    transform: translateY(26px) scale(.9); opacity: .7; filter: saturate(.8);
+    transition: transform .45s cubic-bezier(.3, 1.3, .5, 1), opacity .35s, filter .35s;
+  }
+  .sf-sv--center .sf-car__slide.is-active .sf-sv__item { transform: translateY(-4px) scale(1); opacity: 1; filter: none; }
+  .sf-sv--center .sf-car__slide:not(.is-active) .sf-sv__play,
+  .sf-sv--center .sf-car__slide:not(.is-active) .sf-sv__sound,
+  .sf-sv--center .sf-car__slide:not(.is-active) .sf-sv__btn { pointer-events: none; }
+  .sf-sv--center .sf-car__viewport { padding-bottom: 40px; margin-bottom: -40px; }
+}
 @media (max-width: 599px) {
   .sf-sv__play-btn { width: 56px; height: 56px; }
   .sf-sv__story-frame { height: auto; width: calc(100vw - 20px); max-height: 86vh; }

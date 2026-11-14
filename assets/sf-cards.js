@@ -157,7 +157,7 @@
       this.per = this.readPer();
       this.track.querySelectorAll('[data-sf-clone]').forEach((c) => c.remove());
       // with looping on, it can also scroll when the cards exactly fill the row
-      this.canMove = this.n > this.per || (this.wantLoop && this.n > 1 && this.n >= Math.floor(this.per));
+      this.canMove = this.n > this.per || (this.n > 1 && (this.centered() || (this.wantLoop && this.n >= Math.floor(this.per))));
       this.loop = this.wantLoop && this.canMove;
       if (this.loop) {
         const mk = (s) => {
@@ -171,7 +171,7 @@
         this.track.append(...this.real.map(mk));
       }
       this.offset = this.loop ? this.n : 0;
-      this.maxIndex = this.loop ? this.n - 1 : Math.max(0, Math.ceil(this.n - this.per));
+      this.maxIndex = (this.loop || this.centered()) ? this.n - 1 : Math.max(0, Math.ceil(this.n - this.per));
       this.index = this.loop ? mod(this.index, this.n) : Math.min(this.index, this.maxIndex);
       this.navEls.forEach((el) => { el.hidden = !this.canMove; });
       this.buildDots();
@@ -235,10 +235,22 @@
       return el ? el.offsetLeft - all[0].offsetLeft : 0;
     }
 
+    // data-center-mobile="true": on phones the active slide sits in the middle
+    // with the neighbours peeking in on both sides
+    centered() {
+      return this.dataset.centerMobile === 'true' && window.matchMedia('(max-width: 599px)').matches;
+    }
+
     place(animate, extra = 0) {
       this.track.classList.toggle('is-animating', !!animate);
-      const x = this.canMove ? -this.xFor(this.offset + this.index) + extra : 0;
+      const pos = this.offset + this.index;
+      let x = this.canMove ? -this.xFor(pos) + extra : 0;
+      const all = this.slides();
+      if (this.canMove && this.centered() && all[pos]) {
+        x += (this.track.clientWidth - all[pos].offsetWidth) / 2;
+      }
       this.track.style.transform = `translate3d(${x}px, 0, 0)`;
+      [...all].forEach((el, k) => el.classList.toggle('is-active', k === pos));
       if (!animate) this.updateDots();
     }
 
@@ -247,7 +259,11 @@
       this.track.classList.remove('is-animating');
       if (this.loop && (this.index < 0 || this.index >= this.n)) {
         this.index = mod(this.index, this.n);
+        // jump without animating the active-slide styles
+        this.track.classList.add('is-jumping');
         this.place(false);
+        void this.track.offsetWidth;
+        this.track.classList.remove('is-jumping');
       }
       this.updateDots();
     }
