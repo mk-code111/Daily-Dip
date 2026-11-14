@@ -552,7 +552,8 @@
         "breakpoint_desktop": 4,
         "pt": 10,
         "pb": 10
-      }
+      },
+      "disabled": true
     },
     "richtext_fLeqN4": {
       "type": "richtext",
@@ -735,6 +736,115 @@
         "pt": 10,
         "pb": 10
       }
+    },
+    "sf_shoppable_videos": {
+      "type": "sf-shoppable-videos",
+      "blocks": {
+        "video_1": {
+          "type": "item",
+          "settings": {
+            "video": "shopify://files/videos/Woman_reviewing_masala_tea_product_20260915151030.mp4",
+            "video_autoplay": true,
+            "caption": "the morning dip",
+            "product": "malanchi-re-pairing-whitening-cream",
+            "product_bg_color": "#fff8e6",
+            "product_text_color": "#1c1c1c",
+            "button_action": "add",
+            "custom_badge": "NEW",
+            "custom_badge_bg_color": "#c8f169",
+            "views_badge": "3.8k",
+            "views_badge_bg_color": "#1c1c1c"
+          }
+        },
+        "video_2": {
+          "type": "item",
+          "settings": {
+            "video": "shopify://files/videos/t2.mp4",
+            "video_autoplay": true,
+            "caption": "gut care, sorted",
+            "product": "malanchi-pappaya-body-whitening",
+            "product_bg_color": "#fff8e6",
+            "product_text_color": "#1c1c1c",
+            "button_action": "add",
+            "custom_badge": "NEW",
+            "custom_badge_bg_color": "#c8f169",
+            "views_badge": "3.8k",
+            "views_badge_bg_color": "#1c1c1c"
+          }
+        },
+        "video_3": {
+          "type": "item",
+          "settings": {
+            "video": "shopify://files/videos/y3.mp4",
+            "video_autoplay": true,
+            "caption": "steep & chill",
+            "product": "malanchi-2-salicylic-acid-face-wash",
+            "product_bg_color": "#fff8e6",
+            "product_text_color": "#1c1c1c",
+            "button_action": "add",
+            "custom_badge": "NEW",
+            "custom_badge_bg_color": "#c8f169",
+            "views_badge": "3.8k",
+            "views_badge_bg_color": "#1c1c1c"
+          }
+        },
+        "video_4": {
+          "type": "item",
+          "settings": {
+            "video": "shopify://files/videos/r4.mp4",
+            "video_autoplay": true,
+            "caption": "my 4pm ritual",
+            "product": "malanchi-acne-control-serum",
+            "product_bg_color": "#fff8e6",
+            "product_text_color": "#1c1c1c",
+            "button_action": "add",
+            "custom_badge": "NEW",
+            "custom_badge_bg_color": "#c8f169",
+            "views_badge": "3.8k",
+            "views_badge_bg_color": "#1c1c1c"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4"
+      ],
+      "settings": {
+        "eyebrow": "steep · sip · see",
+        "header_title": "Watch before",
+        "header_highlight": "you dip.",
+        "header_title_font_size": "lg",
+        "header_description": "",
+        "header_description_font_size": "md",
+        "slider_speed": 500,
+        "slider_navigation": true,
+        "slider_pagination": true,
+        "slider_pagination_type": "bullets",
+        "slider_loop": true,
+        "slider_partial_slides_mobile": true,
+        "slider_autoplay": 0,
+        "item_border_width": 3,
+        "item_shadow": "hard",
+        "item_title_font_size": "md",
+        "atc_label": "Dip in +",
+        "view_label": "Take a sip →",
+        "views_suffix": "sips",
+        "breakpoint_mobile": 1,
+        "breakpoint_tablet": 2,
+        "breakpoint_desktop": 4,
+        "pt": 48,
+        "pb": 56,
+        "c_bg": "#17301f",
+        "c_text": "#fff8e6",
+        "c_accent": "#c8f169",
+        "border_top_width": 0,
+        "border_bottom_width": 0,
+        "border_color": "#1c1c1c",
+        "container_max_width": "",
+        "load_fonts": true
+      }
     }
   },
   "order": [
@@ -744,6 +854,7 @@
     "sf_moments_7ytUUJ",
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
+    "sf_shoppable_videos",
     "shoppable_videos_fyjcgm",
     "richtext_fLeqN4",
     "faq_zbQYep",
