@@ -82,7 +82,7 @@
         "container_max_width": "",
         "header_title": "Featured Collections",
         "header_title_font_size": "h2",
-        "header_description": "<p>Add on optional description for this section<\/p>",
+        "header_description": "<p>Add on optional description for this section</p>",
         "header_description_font_size": "fs-md",
         "slider_speed": 300,
         "slider_navigation": true,
@@ -103,7 +103,8 @@
         "breakpoint_desktop": 4,
         "pt": 11,
         "pb": 11
-      }
+      },
+      "disabled": true
     },
     "featured_products_M8rk9w": {
       "type": "featured-products",
@@ -134,7 +135,7 @@
         "container_max_width": "",
         "header_title": "Best Selling",
         "header_title_font_size": "h2",
-        "header_description": "<p>Add on optional description for this section<\/p>",
+        "header_description": "<p>Add on optional description for this section</p>",
         "header_description_font_size": "fs-md",
         "slider_speed": 300,
         "slider_navigation": true,
@@ -148,10 +149,73 @@
         "breakpoint_desktop": 4,
         "pt": 11,
         "pb": 11
+      },
+      "disabled": true
+    },
+    "sf_collections_list": {
+      "type": "sf-collections-list",
+      "settings": {}
+    },
+    "sf_bestsellers": {
+      "type": "sf-product-cards",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "heading": "Our bestsellers",
+        "subheading": "",
+        "collection": "",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "load_fonts": true,
+        "c_bg": "#ffffff",
+        "pt": 48,
+        "pb": 56
       }
     }
   },
   "order": [
+    "sf_collections_list",
+    "sf_bestsellers",
     "featured_collections_mM4ajz",
     "featured_products_M8rk9w"
   ]
