@@ -210,15 +210,29 @@
       </div>
     {%- endif -%}
 
-    <button
-      type="button"
-      class="sf-btn sf-pc__atc"
-      data-sf-pc-add="{{ current.id }}"
-      data-label="{{ atc_label | escape }}"
-      data-soldout="{{ soldout_label | escape }}"
-      {%- unless current.available %} disabled{% endunless %}
-    >
-      {%- if current.available -%}{{ atc_label }}{%- else -%}{{ soldout_label }}{%- endif -%}
-    </button>
+    <div class="sf-pc__actions">
+      <button
+        type="button"
+        class="sf-btn sf-pc__atc"
+        data-sf-pc-add="{{ current.id }}"
+        data-label="{{ atc_label | escape }}"
+        data-soldout="{{ soldout_label | escape }}"
+        {%- unless current.available %} disabled{% endunless %}
+      >
+        {%- if current.available -%}{{ atc_label }}{%- else -%}{{ soldout_label }}{%- endif -%}
+      </button>
+      {%- if settings.wishlist -%}
+        <wishlist-button class="sf-pc__wishwrap" data-product-url="{{ p.url | split: '?' | first }}">
+          <button
+            type="button"
+            class="btn-wishlist sf-pc__wish"
+            aria-label="{{ 'general.wishlist.add' | t }}"
+            aria-pressed="false"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="currentColor" stroke="#1c1c1c" stroke-width="2" stroke-linejoin="round"/></svg>
+          </button>
+        </wishlist-button>
+      {%- endif -%}
+    </div>
   </div>
 </sf-product-card>

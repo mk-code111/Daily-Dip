@@ -96,4 +96,28 @@
     }
   }
   customElements.define('sf-header', SfHeader);
+
+  /* Wishlist drawer: the theme's "Quick view" there does nothing, so swap it for a
+     "View product" link to the product page. Items are built by the theme's
+     wishlist.js, so watch the list and swap whenever it re-renders. */
+  const swapQuickView = (root) => {
+    root.querySelectorAll('product-quick-view-button:not([data-sf-swapped])').forEach((qv) => {
+      qv.setAttribute('data-sf-swapped', '');
+      const url = qv.querySelector('[data-product-url]')?.dataset.productUrl;
+      if (!url) return;
+      const a = document.createElement('a');
+      a.className = 'sf-search-view';
+      a.href = url;
+      a.innerHTML = 'View product <span class="sf-search-view__arrow" aria-hidden="true">&rarr;</span>';
+      qv.after(a);
+    });
+  };
+  const watchWishlist = () => {
+    const list = document.querySelector('#offcanvas-wishlist .wishlist-product-list');
+    if (!list) return;
+    swapQuickView(list);
+    new MutationObserver(() => swapQuickView(list)).observe(list, { childList: true, subtree: true });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchWishlist);
+  else watchWishlist();
 })();
