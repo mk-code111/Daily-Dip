@@ -4,7 +4,7 @@
   after a cart change. Gift handling (auto-add / pick popup / removal) is in assets/sf-cart.js.
   NOTE: this only displays rewards. The actual discounts are Shopify automatic discounts.
 {%- endcomment -%}
-{%- if settings.sf_rw_enable -%}
+{%- if settings.sf_rw_enable and cart.item_count > 0 -%}
   {%- liquid
     assign by_qty = false
     if settings.sf_rw_measure == 'quantity'
