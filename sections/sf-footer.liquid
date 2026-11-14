@@ -167,14 +167,14 @@
             assign m = s[mk]
           -%}
           {%- if m != blank -%}
-            {%- assign heading = s[tk] | default: linklists[m].title -%}
+            {%- assign heading = s[tk] | default: m.title -%}
             <details class="sf-ft__col sf-ft__menu" data-sf-ft-acc open>
               <summary class="sf-ft__head">
                 <span>{{ heading | escape }}</span>
                 <span class="sf-ft__plus" aria-hidden="true"></span>
               </summary>
               <ul class="sf-ft__links" role="list">
-                {%- for link in linklists[m].links -%}
+                {%- for link in m.links -%}
                   <li><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
                 {%- endfor -%}
               </ul>
