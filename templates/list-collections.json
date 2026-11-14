@@ -189,7 +189,7 @@
       "settings": {
         "heading": "Our bestsellers",
         "subheading": "",
-        "collection": "",
+        "collection": "bestsellers",
         "limit": 8,
         "per_mobile": "1.5",
         "per_tablet": 2.5,
