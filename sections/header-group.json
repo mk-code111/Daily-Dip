@@ -44,7 +44,8 @@
         "pb_mobile": 3,
         "pt_desktop": 3,
         "pb_desktop": 3
-      }
+      },
+      "disabled": true
     },
     "navbar": {
       "type": "navbar",
@@ -116,9 +117,40 @@
         "announcement_scroll": true,
         "shrink_on_scroll": true
       }
+    },
+    "sf_announcement": {
+      "type": "sf-announcement",
+      "blocks": {
+        "msg_1": {
+          "type": "message",
+          "settings": {
+            "text": "Free Shipping On All Orders",
+            "icon": "truck",
+            "code": "",
+            "link": "",
+            "link_label": "Shop now"
+          }
+        }
+      },
+      "block_order": [
+        "msg_1"
+      ],
+      "settings": {
+        "mode": "rotate",
+        "autoplay": 4,
+        "speed": 45,
+        "arrows": true,
+        "scallop": true,
+        "pattern": true,
+        "c_bg": "#1f7a35",
+        "c_text": "#ffffff",
+        "c_icon": "#c8f169",
+        "c_chip": "#ffd23f"
+      }
     }
   },
   "order": [
+    "sf_announcement",
     "announcement_bar_Ge9W3V",
     "sf_header",
     "navbar"
