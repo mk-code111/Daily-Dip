@@ -174,6 +174,8 @@
       this.maxIndex = (this.loop || this.centered()) ? this.n - 1 : Math.max(0, Math.ceil(this.n - this.per));
       this.index = this.loop ? mod(this.index, this.n) : Math.min(this.index, this.maxIndex);
       this.navEls.forEach((el) => { el.hidden = !this.canMove; });
+      // fewer cards than fit: no scrolling, centre them
+      this.classList.toggle('is-static', !this.canMove);
       this.buildDots();
       this.place(false);
       this.alignArrows();

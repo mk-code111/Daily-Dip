@@ -278,3 +278,6 @@
   .sf-car__track.is-animating, .sf-pc__img, .sf-car__dot, .sf-pc__pack, .sf-car__arrow { transition: none !important; }
   .sf-pc .sf-pc__atc.is-added { animation: none; }
 }
+
+/* fewer cards than fit in a row: centre them instead of leaving a gap on the right */
+.sf-car.is-static .sf-car__track { justify-content: center; transform: none !important; }
