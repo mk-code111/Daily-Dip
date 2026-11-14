@@ -70,16 +70,15 @@
 }
 
 /* ---------- Countdown (template: message + timer + progress bar) ----------
-   Flat card with a breathing glow. Colour follows the time left (sf-cart.js sets
-   data-stage): start = green, mid = yellow, end (last 20% or last minute) = red. */
+   Flat card with a breathing glow. Yellow while counting; turns red in the last
+   20% or last minute (sf-cart.js sets data-stage="end"). */
 .sf-tm {
-  --tm-c: var(--sf-green); --tm-bg: #eefbe0; --tm-glow: rgba(31, 122, 53, .45);
+  --tm-c: #c98a00; --tm-bg: #fff6d6; --tm-glow: rgba(255, 196, 0, .55);
   display: block; margin: 0 0 14px; padding: 11px 14px 12px;
   background: var(--tm-bg); border: 2px solid var(--tm-c); border-radius: 16px;
   animation: sf-tm-breathe 2.4s ease-in-out infinite;
   transition: opacity .35s, transform .35s, background .6s, border-color .6s;
 }
-.sf-tm[data-stage="mid"] { --tm-c: #c98a00; --tm-bg: #fff6d6; --tm-glow: rgba(255, 196, 0, .55); }
 .sf-tm[data-stage="end"] { --tm-c: #e5392c; --tm-bg: #ffe6e2; --tm-glow: rgba(255, 90, 77, .55); animation-duration: 1.2s; }
 .sf-tm[hidden] { display: none; }
 .sf-tm.is-leaving { opacity: 0; transform: translateY(-6px); }
