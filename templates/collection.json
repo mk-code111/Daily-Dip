@@ -9,6 +9,103 @@
  */
 {
   "sections": {
+    "sf_collection_hero": {
+      "type": "sf-collection-hero",
+      "settings": {
+        "show_breadcrumb": true,
+        "crumb_home": "Home",
+        "crumb_collections": "Collections",
+        "all_title": "All our blends",
+        "show_desc": false,
+        "desc_lines": 3,
+        "more_label": "Read more",
+        "less_label": "Show less",
+        "fallback_text": "<p>Thoughtfully crafted tea blends for your daily wellness.</p>",
+        "show_count": true,
+        "count_one": "blend",
+        "count_many": "blends",
+        "chip_1": "Free delivery over ₹399",
+        "chip_1_icon": "truck",
+        "chip_2": "100% natural",
+        "chip_2_icon": "leaf",
+        "show_image": true,
+        "use_collection_image": true,
+        "show_pills": true,
+        "pills_list": [],
+        "all_label": "All blends",
+        "pill_images": true,
+        "pills_label": "Browse collections",
+        "c_bg": "#ffffff",
+        "c_card": "#e9f7d0",
+        "c_text": "#1c1c1c",
+        "c_accent": "#1f7a35",
+        "pt": 16,
+        "pb": 8
+      }
+    },
+    "sf_collection_grid": {
+      "type": "sf-collection-grid",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "per_page": 16,
+        "cols_mobile": "1",
+        "cols_tablet": "2",
+        "cols_desktop": 4,
+        "paging": "more",
+        "more_label": "Load more blends",
+        "progress_text": "You've seen [shown] of [total]",
+        "show_count": true,
+        "count_one": "blend",
+        "count_many": "blends",
+        "show_sort": true,
+        "sort_label": "Sort",
+        "show_filters": true,
+        "filter_label": "Filter",
+        "open_groups": 2,
+        "show_value_counts": true,
+        "clear_label": "Clear all",
+        "show_label": "See results ([count])",
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "empty_title": "This cup is empty",
+        "empty_text": "No blends match right now. Try removing a filter.",
+        "empty_button": "See all blends",
+        "c_bg": "#ffffff",
+        "pt": 16,
+        "pb": 56
+      }
+    },
     "collection_header_JKf7mh": {
       "type": "collection-header",
       "blocks": {
@@ -70,8 +167,8 @@
         "mobile_jMQWXe",
         "desktop_eYwwbp"
       ],
-      "settings": {},
-      "disabled": true
+      "disabled": true,
+      "settings": {}
     },
     "simple_collections_tA6GqX": {
       "type": "simple-collections",
@@ -135,6 +232,7 @@
         "collection_P7p7zt",
         "collection_ztc7zF"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -165,11 +263,11 @@
         "pb_mobile": 7,
         "pt_desktop": 10,
         "pb_desktop": 10
-      },
-      "disabled": true
+      }
     },
     "collection_utilities_YfkBEV": {
       "type": "collection-utilities",
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -191,11 +289,11 @@
         "pb_mobile": 5,
         "pt_desktop": 10,
         "pb_desktop": 6
-      },
-      "disabled": true
+      }
     },
     "collection_products_Fx3hb6": {
       "type": "collection-products",
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
@@ -213,8 +311,7 @@
         "breakpoint_desktop": 4,
         "pt": 0,
         "pb": 10
-      },
-      "disabled": true
+      }
     },
     "da87b500-2710-4252-99e4-4bd5db55af39": {
       "type": "separator",
@@ -227,56 +324,6 @@
         "container_max_width": "",
         "pt": 0,
         "pb": 0
-      }
-    },
-    "sf_collection_hero": {
-      "type": "sf-collection-hero",
-      "settings": {
-        "show_breadcrumb": true,
-        "show_desc": true,
-        "show_count": true,
-        "show_image": true,
-        "show_pills": true
-      }
-    },
-    "sf_collection_grid": {
-      "type": "sf-collection-grid",
-      "blocks": {
-        "benefit_qiXfqC": {
-          "type": "benefit",
-          "settings": {
-            "icon": "leaf",
-            "text": "Natural Ingredients"
-          }
-        },
-        "benefit_HqqpFN": {
-          "type": "benefit",
-          "settings": {
-            "icon": "drop",
-            "text": "Rich & Aromatic"
-          }
-        },
-        "benefit_y4y34L": {
-          "type": "benefit",
-          "settings": {
-            "icon": "cup",
-            "text": "Perfect for Daily Use"
-          }
-        }
-      },
-      "block_order": [
-        "benefit_qiXfqC",
-        "benefit_HqqpFN",
-        "benefit_y4y34L"
-      ],
-      "settings": {
-        "per_page": 16,
-        "cols_mobile": "1",
-        "cols_tablet": "2",
-        "cols_desktop": 4,
-        "paging": "more",
-        "show_filters": true,
-        "show_sort": true
       }
     }
   },
