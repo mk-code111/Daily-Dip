@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer Group",
@@ -16,7 +25,6 @@
         "header_title_font_size": "h2",
         "header_description": "<p>Add on optional description for this section</p>",
         "header_description_font_size": "fs-md",
-        "img": "shopify://shop_images/pexels-lina-5328297.jpg",
         "img_height": "500",
         "btn_color": "btn-primary",
         "btn_size": "",
@@ -85,6 +93,7 @@
         "newsletter_3wmA8g",
         "7468602d-7e94-4bd5-9673-02b2f8269581"
       ],
+      "disabled": true,
       "settings": {
         "bg_color": "bg-primary",
         "bg_opacity": 100,
@@ -100,8 +109,7 @@
         "show_scroll_top_btn": true,
         "pt": 11,
         "pb": 7
-      },
-      "disabled": true
+      }
     },
     "sf_footer": {
       "type": "sf-footer",
@@ -110,10 +118,25 @@
         "brand_text": "DailyDip",
         "tagline": "<p>Small sips, a healthier you. Thoughtfully crafted tea blends for your daily wellness.</p>",
         "show_social": true,
+        "social_instagram": "https://www.instagram.com/_mijdad_/",
+        "social_facebook": "https://www.instagram.com/_mijdad_/",
+        "social_youtube": "https://www.instagram.com/_mijdad_/",
+        "social_linkedin": "https://www.instagram.com/_mijdad_/",
+        "social_x": "https://www.instagram.com/_mijdad_/",
+        "social_pinterest": "",
+        "social_whatsapp": "https://www.instagram.com/_mijdad_/",
+        "social_tiktok": "",
+        "social_threads": "",
+        "menu_1": "main-menu",
+        "menu_1_title": "",
+        "menu_2": "footer",
+        "menu_2_title": "",
+        "menu_3": "customer-account-main-menu",
+        "menu_3_title": "",
         "contact_title": "Say hello",
         "phone": "+91 8369487891",
         "phone_label": "Call us",
-        "email": "",
+        "email": "dailydip@gmail.com",
         "email_label": "Write to us",
         "address": "WeWork Enam Sambhav, C-20, G Block Rd, G Block BKC, Bandra Kurla Complex, Bandra East, Mumbai, Maharashtra 400051",
         "address_label": "Visit us",
@@ -129,7 +152,7 @@
         "news_success": "You're in! Welcome to the Dip Club.",
         "show_wordmark": true,
         "wordmark_text": "",
-        "copyright": "\u00a9 [year] DailyDip. Brewed with care in India.",
+        "copyright": "© [year] DailyDip. Brewed with care in India.",
         "show_policies": true,
         "show_payment_icons": true,
         "show_scroll_top_btn": true,
