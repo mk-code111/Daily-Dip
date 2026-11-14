@@ -49,7 +49,7 @@
         "description": {
           "type": "description",
           "settings": {
-            "text": "<p><strong>Dailydip® Cleanse</strong> Herbal Infusion is a daily wellness tea crafted with <strong>5 powerful botanicals</strong> – Blue Pea Flower, Ginger, Cinnamon, Fennel and Dandelion Root.</p>"
+            "text": "<p><strong>Dailydip\u00ae Cleanse</strong> Herbal Infusion is a daily wellness tea crafted with <strong>5 powerful botanicals</strong> \u2013 Blue Pea Flower, Ginger, Cinnamon, Fennel and Dandelion Root.</p>"
           }
         },
         "packs": {
@@ -58,7 +58,7 @@
             "title": "Choose your pack",
             "columns": 3,
             "show_images": true,
-            "icons": "📦,🎁,🍃",
+            "icons": "\ud83d\udce6,\ud83c\udf81,\ud83c\udf43",
             "mrp_label": "MRP",
             "show_per_serving": true,
             "serving_label": "serving"
@@ -78,13 +78,13 @@
         "ship": {
           "type": "ship",
           "settings": {
-            "text": "🚚 Free shipping + 3% prepaid bonus"
+            "text": "\ud83d\ude9a Free shipping + 3% prepaid bonus"
           }
         },
         "trust": {
           "type": "trust",
           "settings": {
-            "items": "🍃 | Tastes Fresh & Light\n☕ | Zero Caffeine\n🫖 | Plastic Free Teabags\n🚫 | No Added Sugar"
+            "items": "\ud83c\udf43 | Tastes Fresh & Light\n\u2615 | Zero Caffeine\n\ud83e\uded6 | Plastic Free Teabags\n\ud83d\udeab | No Added Sugar"
           }
         },
         "tabs": {
@@ -118,7 +118,7 @@
         "img_ratio": "square",
         "img_fit": "cover",
         "after_add": "drawer",
-        "added_label": "ADDED ✓",
+        "added_label": "ADDED \u2713",
         "sticky": "all",
         "sticky_buttons": "both",
         "sticky_label": "Add to cart",
@@ -143,7 +143,7 @@
       "type": "sf-pdp-banner",
       "settings": {
         "heading": "Gut care?\nLet's dip.",
-        "subheading": "Tear · Dip · Sip",
+        "subheading": "Tear \u00b7 Dip \u00b7 Sip",
         "btn_label": "",
         "btn_link": "",
         "overlay": 25,
@@ -179,7 +179,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -200,7 +200,7 @@
       ],
       "settings": {
         "heading": "Know more",
-        "intro": "<p>Everything inside the tin — what's in it, how to brew it and why it works.</p>",
+        "intro": "<p>Everything inside the tin \u2014 what's in it, how to brew it and why it works.</p>",
         "pt": 16,
         "pb": 16
       }
@@ -220,14 +220,56 @@
       "disabled": true,
       "settings": {
         "heading": "You may also like",
+        "subheading": "",
         "intent": "related",
-        "limit": 4,
-        "add_label": "Add",
-        "options_label": "Choose pack",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
         "soldout_label": "Sold out",
+        "c_bg": "#ffffff",
         "pt": 16,
         "pb": 48
-      }
+      },
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ]
     }
   },
   "order": [
