@@ -109,7 +109,12 @@
         "load_fonts": true,
         "c_bar": "#ffffff",
         "c_ring": "#ece7d8",
-        "c_text": "#3d3a33"
+        "c_text": "#3d3a33",
+        "float_mode": "home",
+        "frost_over": true,
+        "scroll_mode": "smart",
+        "announcement_scroll": true,
+        "shrink_on_scroll": true
       }
     }
   },
