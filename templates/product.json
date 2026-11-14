@@ -217,7 +217,6 @@
     },
     "related": {
       "type": "sf-pdp-related",
-      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "subheading": "",
