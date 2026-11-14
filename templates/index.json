@@ -461,11 +461,12 @@
             "product": "malanchi-re-pairing-whitening-cream",
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
-            "button_action": "add",
+            "button_action": "view",
             "custom_badge": "NEW",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c"
+            "views_badge_bg_color": "#1c1c1c",
+            "button_label": ""
           }
         },
         "video_2": {
@@ -477,11 +478,12 @@
             "product": "malanchi-pappaya-body-whitening",
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
-            "button_action": "add",
+            "button_action": "view",
             "custom_badge": "NEW",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c"
+            "views_badge_bg_color": "#1c1c1c",
+            "button_label": ""
           }
         },
         "video_3": {
@@ -493,11 +495,12 @@
             "product": "malanchi-2-salicylic-acid-face-wash",
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
-            "button_action": "add",
+            "button_action": "view",
             "custom_badge": "NEW",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c"
+            "views_badge_bg_color": "#1c1c1c",
+            "button_label": ""
           }
         },
         "video_4": {
@@ -509,11 +512,12 @@
             "product": "malanchi-acne-control-serum",
             "product_bg_color": "#fff8e6",
             "product_text_color": "#1c1c1c",
-            "button_action": "add",
+            "button_action": "view",
             "custom_badge": "",
             "custom_badge_bg_color": "#c8f169",
             "views_badge": "3.8k",
-            "views_badge_bg_color": "#1c1c1c"
+            "views_badge_bg_color": "#1c1c1c",
+            "button_label": ""
           }
         }
       },
@@ -544,18 +548,19 @@
         "slider_pagination_type": "bullets",
         "slider_loop": true,
         "slider_partial_slides_mobile": true,
-        "slider_autoplay": 0,
+        "slider_autoplay": 4,
         "item_border_width": 3,
         "item_shadow": "hard",
         "item_title_font_size": "md",
-        "atc_label": "Dip in +",
-        "view_label": "Take a sip →",
+        "atc_label": "Add to cart +",
+        "view_label": "Dip in +",
         "views_suffix": "sips",
         "breakpoint_mobile": 1,
         "breakpoint_tablet": 2,
         "breakpoint_desktop": 4,
         "pt": 48,
-        "pb": 56
+        "pb": 56,
+        "mobile_center": true
       }
     },
     "shoppable_videos_fyjcgm": {
