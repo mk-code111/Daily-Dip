@@ -10,10 +10,47 @@
         "breakpoint_desktop": 4,
         "pt": 9,
         "pb": 10
+      },
+      "disabled": true
+    },
+    "sf_search": {
+      "type": "sf-search-main",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "picks_collection": "bestsellers",
+        "limit": 16
       }
     }
   },
   "order": [
+    "sf_search",
     "template-search"
   ]
-} 
+}

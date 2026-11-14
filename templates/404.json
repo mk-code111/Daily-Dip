@@ -18,17 +18,18 @@
         "subtitle_font_size": "fs-xl",
         "title": "Page not found!",
         "title_font_size": "h1",
-        "description": "<p>The page you were looking for does not exist<\/p>",
+        "description": "<p>The page you were looking for does not exist</p>",
         "description_font_size": "fs-lg",
         "btn_primary_text": "Go to homepage",
-        "btn_primary_url": "\/",
+        "btn_primary_url": "/",
         "btn_primary_color": "btn-primary",
         "btn_secondary_text": "Shop all products",
-        "btn_secondary_url": "shopify:\/\/collections\/all",
+        "btn_secondary_url": "shopify://collections/all",
         "btn_secondary_color": "btn-secondary",
         "pt": 14,
         "pb": 15
-      }
+      },
+      "disabled": true
     },
     "separator_TdBaEC": {
       "type": "separator",
@@ -40,7 +41,8 @@
         "container_max_width": "",
         "pt": 0,
         "pb": 4
-      }
+      },
+      "disabled": true
     },
     "featured_products_UhEbjM": {
       "type": "featured-products",
@@ -81,7 +83,7 @@
         "container_max_width": "",
         "header_title": "Featured Products",
         "header_title_font_size": "h2",
-        "header_description": "<p>Add on optional description for this section<\/p>",
+        "header_description": "<p>Add on optional description for this section</p>",
         "header_description_font_size": "fs-md",
         "slider_speed": 300,
         "slider_navigation": true,
@@ -95,10 +97,73 @@
         "breakpoint_desktop": 4,
         "pt": 10,
         "pb": 11
+      },
+      "disabled": true
+    },
+    "sf_404": {
+      "type": "sf-404",
+      "settings": {}
+    },
+    "sf_404_products": {
+      "type": "sf-product-cards",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "heading": "Brew something new",
+        "subheading": "",
+        "collection": "bestsellers",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "load_fonts": true,
+        "c_bg": "#ffffff",
+        "pt": 24,
+        "pb": 56
       }
     }
   },
   "order": [
+    "sf_404",
+    "sf_404_products",
     "richtext",
     "separator_TdBaEC",
     "featured_products_UhEbjM"
