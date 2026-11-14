@@ -2,7 +2,7 @@
   sf-icon — small outline icons for SF sections. Usage: {% render 'sf-icon', name: 'leaf' %}
   Names: leaf, drop, cup, cup-steam, heart, shield, star, check, sparkle, gut, sun, sunrise, moon, moon-star, globe,
          search, user, bag, cart, menu, close, chevron-down,
-         truck, gift, percent, clock, tag
+         truck, gift, percent, clock, tag, return, lock, award, hand-leaf, flask, chat
 {%- endcomment -%}
 <svg class="sf-icon sf-icon--{{ name | default: 'leaf' }}" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   {%- case name -%}
@@ -60,5 +60,17 @@
       <circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>
     {%- when 'tag' -%}
       <path d="M3.5 12.5V4h8.5l8.5 8.5-8 8z"/><circle cx="8" cy="8.5" r="1.3"/>
+    {%- when 'return' -%}
+      <path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5"/><path d="M20 4v4.5h-4.5"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5"/><path d="M4 20v-4.5h4.5"/>
+    {%- when 'lock' -%}
+      <rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/>
+    {%- when 'award' -%}
+      <circle cx="12" cy="9.5" r="5.5"/><path d="M9 14.2L7.5 21l4.5-2.5 4.5 2.5-1.5-6.8"/><path d="M10 9.5l1.5 1.5 2.7-2.8"/>
+    {%- when 'hand-leaf' -%}
+      <path d="M3 15h3l4 3h6.5a1.5 1.5 0 0 0 0-3H12"/><path d="M6 15l3.5-2.5H13a1.5 1.5 0 0 1 0 3"/><path d="M14 9c0-3.5 2.5-6 6-6 0 3.5-2.5 6-6 6zM14 9l3-3"/>
+    {%- when 'flask' -%}
+      <path d="M9.5 3h5M10.5 3v6L5 18.5A1.7 1.7 0 0 0 6.5 21h11a1.7 1.7 0 0 0 1.5-2.5L13.5 9V3"/><path d="M7.5 15h9"/>
+    {%- when 'chat' -%}
+      <path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/>
 {%- endcase -%}
 </svg>

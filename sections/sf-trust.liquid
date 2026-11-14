@@ -1,0 +1,223 @@
+{%- comment -%}
+  sf-trust — DailyDip trust icons.
+  Each promise is a card with a "quality seal" (scalloped stamp, round or leaf) holding
+  the icon. When a card scrolls into view a tea-coloured wave rises from its bottom,
+  like a cup steeping. Cards layout or a compact strip; swipe row on phones.
+  Styles: assets/sf-trust.css · Script: assets/sf-trust.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-trust.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-trust.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign max_w = s.container_max_width | default: 1320
+-%}
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-tr-bg: {{ s.c_bg }};
+    --sf-tr-card: {{ s.c_card }};
+    --sf-tr-text: {{ s.c_text }};
+    --sf-tr-line: {{ s.c_line }};
+    --sf-tr-border: {{ s.item_border_width }}px;
+    --sf-tr-radius: {{ s.radius }}px;
+    --sf-tr-pad: {{ s.item_p }}px;
+    --sf-tr-ico: {{ s.item_img_height }}px;
+    --sf-tr-title: {{ s.title_size }}px;
+    --sf-tr-desc: {{ s.desc_size }}px;
+    --sf-tr-steep: {{ s.steep_height }}%;
+    --sf-tr-cols-m: {{ s.breakpoint_mobile }};
+    --sf-tr-cols-t: {{ s.breakpoint_tablet }};
+    --sf-tr-cols-d: {{ s.breakpoint_desktop }};
+    --sf-tr-max: {{ max_w }}px;
+    --sf-tr-pt: {{ s.pt | times: 0.6 | round }}px;
+    --sf-tr-pb: {{ s.pb | times: 0.6 | round }}px;
+  }
+  @media (min-width: 990px) {
+    #shopify-section-{{ section.id }} { --sf-tr-pt: {{ s.pt }}px; --sf-tr-pb: {{ s.pb }}px; }
+  }
+</style>
+
+<section
+  class="sf-pdp sf-tr sf-tr--{{ s.layout }} sf-tr--{{ s.item_text_align }} sf-tr--shadow-{{ s.item_shadow }} sf-tr--seal-{{ s.seal_shape }}{% if s.mobile_swipe %} sf-tr--swipe{% endif %}{% if s.steep %} sf-tr--steep{% endif %}{% if s.pattern %} sf-tr--pattern{% endif %}{% if s.edge_top %} sf-tr--edge-top{% endif %}{% if s.edge_bottom %} sf-tr--edge-bottom{% endif %}"
+>
+  <div class="sf-tr__wrap">
+    {%- if s.eyebrow != blank or s.header_title != blank or s.header_description != blank -%}
+      <div class="sf-tr__head sf-tr__head--{{ s.head_align }}">
+        {%- if s.eyebrow != blank -%}<p class="sf-tr__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        {%- if s.header_title != blank -%}<h2 class="sf-tr__title">{{ s.header_title }}</h2>{%- endif -%}
+        {%- if s.header_description != blank -%}<div class="sf-tr__intro">{{ s.header_description }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul class="sf-tr__list" role="list" aria-label="{{ s.label | escape }}" data-sf-tr-list>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign num = forloop.index | prepend: '0' | slice: -2, 2
+        -%}
+        <li class="sf-tr__item" style="--sf-tr-tint: {{ b.tint }}; --i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          {%- if b.link != blank -%}<a class="sf-tr__card" href="{{ b.link }}">{%- else -%}<div class="sf-tr__card">{%- endif -%}
+            {%- if s.steep -%}
+              <span class="sf-tr__tea" aria-hidden="true">
+                <svg class="sf-tr__wave" viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 V20 H0Z"/></svg>
+              </span>
+            {%- endif -%}
+
+            <span class="sf-tr__seal">
+              {%- if s.seal_shape == 'scallop' -%}
+                <svg class="sf-tr__seal-bg" aria-hidden="true" viewBox="0 0 100 100"><path d="M58.9 11.0 Q70.0 8.6 74.9 18.7 Q86.0 21.3 86.0 32.6 Q94.8 39.8 90.0 50.0 Q94.8 60.2 86.0 67.4 Q86.0 78.7 74.9 81.3 Q70.0 91.4 58.9 89.0 Q50.0 96.0 41.1 89.0 Q30.0 91.4 25.1 81.3 Q14.0 78.7 14.0 67.4 Q5.2 60.2 10.0 50.0 Q5.2 39.8 14.0 32.6 Q14.0 21.3 25.1 18.7 Q30.0 8.6 41.1 11.0 Q50.0 4.0 58.9 11.0Z"/></svg>
+              {%- endif -%}
+              <span class="sf-tr__seal-ico">
+                {%- if b.img != blank -%}
+                  {{ b.img | image_url: height: 160 | image_tag: loading: 'lazy', alt: '', class: 'sf-tr__img' }}
+                {%- else -%}
+                  {% render 'sf-icon', name: b.icon %}
+                {%- endif -%}
+              </span>
+              {%- if b.badge != blank -%}<span class="sf-tr__badge">{{ b.badge | escape }}</span>{%- endif -%}
+            </span>
+
+            {%- if s.numbers -%}<span class="sf-tr__num" aria-hidden="true">{{ num }}</span>{%- endif -%}
+
+            <div class="sf-tr__body">
+              {%- if b.title != blank -%}<h3 class="sf-tr__name">{{ b.title | escape }}</h3>{%- endif -%}
+              {%- if b.description != blank and s.show_desc -%}<div class="sf-tr__desc rte">{{ b.description }}</div>{%- endif -%}
+              {%- if b.link != blank and b.link_label != blank -%}
+                <span class="sf-tr__more">{{ b.link_label | escape }} <span aria-hidden="true">&rarr;</span></span>
+              {%- endif -%}
+            </div>
+          {%- if b.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF · Trust icons",
+  "tag": "div",
+  "class": "sf-tr-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select", "id": "layout", "label": "Layout", "default": "cards",
+      "options": [
+        { "value": "cards", "label": "Cards" },
+        { "value": "strip", "label": "Compact strip" }
+      ],
+      "info": "Compact strip is a slim band, good right under the banner."
+    },
+    { "type": "range", "id": "breakpoint_mobile", "label": "Columns: phone (<600px)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "breakpoint_tablet", "label": "Columns: tablet (≥600px)", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "range", "id": "breakpoint_desktop", "label": "Columns: desktop (≥990px)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "mobile_swipe", "label": "Swipe row on phones", "default": false, "info": "Cards sit in one row you swipe through, instead of a grid." },
+    {
+      "type": "select", "id": "item_text_align", "label": "Text align", "default": "start",
+      "options": [{ "value": "start", "label": "Left" }, { "value": "center", "label": "Center" }]
+    },
+    { "type": "text", "id": "container_max_width", "label": "Max width (px)", "placeholder": "1320" },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "The DailyDip promise" },
+    { "type": "inline_richtext", "id": "header_title", "label": "Title", "default": "Every cup, <em>taken care of</em>", "info": "Italic words get a lime highlight." },
+    { "type": "richtext", "id": "header_description", "label": "Description" },
+    {
+      "type": "select", "id": "head_align", "label": "Heading align", "default": "center",
+      "options": [{ "value": "start", "label": "Left" }, { "value": "center", "label": "Center" }]
+    },
+    { "type": "text", "id": "label", "label": "List label (screen readers)", "default": "Trust information" },
+
+    { "type": "header", "content": "Cards" },
+    {
+      "type": "select", "id": "seal_shape", "label": "Icon seal", "default": "scallop",
+      "options": [
+        { "value": "scallop", "label": "Scalloped stamp" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "leaf", "label": "Leaf" }
+      ]
+    },
+    { "type": "range", "id": "item_img_height", "label": "Icon size", "min": 20, "max": 56, "step": 2, "unit": "px", "default": 30 },
+    { "type": "checkbox", "id": "numbers", "label": "Show numbers (01, 02…)", "default": true },
+    { "type": "checkbox", "id": "show_desc", "label": "Show descriptions", "default": true },
+    { "type": "checkbox", "id": "steep", "label": "Steeping tea wave", "default": true, "info": "A tea-coloured wave rises in each card as it scrolls into view, and a little more on hover." },
+    { "type": "range", "id": "steep_height", "label": "Tea wave height", "min": 10, "max": 60, "step": 2, "unit": "%", "default": 26 },
+    {
+      "type": "select", "id": "item_shadow", "label": "Shadow", "default": "hard",
+      "options": [
+        { "value": "hard", "label": "Hard offset (DailyDip)" },
+        { "value": "soft", "label": "Soft" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    { "type": "range", "id": "item_border_width", "label": "Border width", "min": 0, "max": 4, "step": 0.5, "unit": "px", "default": 2.5 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 22 },
+    { "type": "range", "id": "item_p", "label": "Inner spacing", "min": 12, "max": 40, "step": 2, "unit": "px", "default": 22 },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 14, "max": 28, "step": 1, "unit": "px", "default": 19 },
+    { "type": "range", "id": "desc_size", "label": "Description size", "min": 11, "max": 18, "step": 1, "unit": "px", "default": 14 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "c_bg", "label": "Section background", "default": "#fbf8ef" },
+    { "type": "color", "id": "c_card", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1c1c" },
+    { "type": "color", "id": "c_line", "label": "Borders & shadow", "default": "#1c1c1c" },
+    { "type": "checkbox", "id": "pattern", "label": "Leaf pattern behind", "default": true },
+    { "type": "checkbox", "id": "edge_top", "label": "Scalloped top edge", "default": false },
+    { "type": "checkbox", "id": "edge_bottom", "label": "Scalloped bottom edge", "default": false },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "pt", "label": "Top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Promise",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "award", "label": "Quality award" },
+            { "value": "truck", "label": "Delivery" },
+            { "value": "return", "label": "Returns" },
+            { "value": "lock", "label": "Secure payment" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "hand-leaf", "label": "Hand-picked" },
+            { "value": "flask", "label": "Lab tested" },
+            { "value": "cup-steam", "label": "Tea cup" },
+            { "value": "drop", "label": "Drop" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "star", "label": "Star" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "chat", "label": "Support" },
+            { "value": "globe", "label": "Globe" },
+            { "value": "sparkle", "label": "Sparkle" }
+          ]
+        },
+        { "type": "image_picker", "id": "img", "label": "Custom icon image", "info": "Replaces the icon above." },
+        { "type": "text", "id": "title", "label": "Title", "default": "Hand-picked leaves" },
+        { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Whole leaves and real herbs, nothing artificial.</p>" },
+        { "type": "color", "id": "tint", "label": "Seal & tea colour", "default": "#c8f169" },
+        { "type": "text", "id": "badge", "label": "Sticker", "info": "Optional, e.g. 100% or NEW." },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Learn more" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Trust icons",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "award", "title": "Outstanding quality", "tint": "#c8f169" } },
+        { "type": "item", "settings": { "icon": "truck", "title": "Free delivery", "tint": "#ffd23f" } },
+        { "type": "item", "settings": { "icon": "return", "title": "Easy returns", "tint": "#bfe6ff" } },
+        { "type": "item", "settings": { "icon": "lock", "title": "Secure payments", "tint": "#ffc2b8" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
