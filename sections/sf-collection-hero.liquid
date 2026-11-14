@@ -113,7 +113,7 @@
             <li><a href="{{ routes.all_products_collection_url }}" class="sf-ch__pill{% if c.handle == 'all' %} is-active{% endif %}"{% if c.handle == 'all' %} aria-current="page"{% endif %}>{{ s.all_label | escape }}</a></li>
           {%- endif -%}
           {%- for pc in pill_cols limit: 16 -%}
-            {%- if pc.handle != 'all' and pc.all_products_count > 0 -%}
+            {%- if pc.handle != 'all' and pc.handle != 'frontpage' and pc.all_products_count > 0 -%}
               <li><a href="{{ pc.url }}" class="sf-ch__pill{% if pc.handle == c.handle %} is-active{% endif %}"{% if pc.handle == c.handle %} aria-current="page"{% endif %}>
                 {%- if s.pill_images and pc.image != blank -%}{{ pc.image | image_url: width: 64, height: 64, crop: 'center' | image_tag: alt: '', loading: 'lazy', class: 'sf-ch__pill-img' }}{%- endif -%}
                 {{ pc.title | escape }}

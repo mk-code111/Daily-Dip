@@ -26,7 +26,7 @@
 .sf-ch__leaf--b { width: 70px; height: 70px; right: 40%; top: -18px; transform: rotate(40deg); }
 
 .sf-ch__crumbs {
-  display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  display: flex; width: fit-content; max-width: 100%; flex-wrap: wrap; align-items: center; gap: 6px;
   margin-bottom: 14px; padding: 5px 12px;
   background: rgba(255, 255, 255, .75); border: 1.5px solid var(--sf-ink, #1c1c1c); border-radius: 99px;
   font: 500 12.5px/1.3 var(--sf-font-body);
@@ -36,7 +36,7 @@
 .sf-ch__crumbs span[aria-hidden] { opacity: .4; }
 .sf-ch__crumbs [aria-current] { font-weight: 600; }
 
-.sf-ch__title { position: relative; display: inline-block; margin: 0 0 6px; padding-bottom: 10px;
+.sf-ch__title { position: relative; display: block; width: fit-content; margin: 0 0 6px; padding-bottom: 10px;
   font: 700 clamp(32px, 6vw, 58px)/1.02 var(--sf-font-head); letter-spacing: -.5px; color: inherit; }
 .sf-ch__swash { position: absolute; left: 0; bottom: 0; width: 100%; height: 14px; overflow: visible; }
 .sf-ch__swash path { fill: none; stroke: var(--sf-lime, #c8f169); stroke-width: 9; stroke-linecap: round;

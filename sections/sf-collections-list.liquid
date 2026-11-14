@@ -78,7 +78,9 @@
           assign skip = false
           if c == blank
             assign skip = true
-          elsif c.handle == 'all' and use_blocks == false
+          elsif use_blocks == false and c.handle == 'all'
+            assign skip = true
+          elsif use_blocks == false and c.handle == 'frontpage'
             assign skip = true
           elsif s.hide_empty and c.all_products_count == 0
             assign skip = true
