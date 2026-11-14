@@ -1,55 +1,89 @@
 {%- comment -%}
-  sf-pdp-related — Shopify product recommendations in the SF card style.
-  Loads lazily via the Section Rendering API (recommendations object).
-  Single-variant products get a quick "Add" button; others link to the product.
+  sf-pdp-related — Shopify product recommendations shown with the DailyDip product
+  card (snippets/sf-product-card) in the shared carousel (<sf-carousel>), same as
+  SF · Product cards. Loads lazily via the Section Rendering API (recommendations).
 {%- endcomment -%}
 {{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-cards.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-cards.js' | asset_url }}" defer></script>
 
 <style>
-  #shopify-section-{{ section.id }} .sf-pdp-related {
+  #shopify-section-{{ section.id }} .sf-pcs {
+    background: {{ section.settings.c_bg }};
     padding-top: {{ section.settings.pt }}px;
     padding-bottom: {{ section.settings.pb }}px;
+  }
+  #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_mobile }}; }
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_tablet }}; }
+  }
+  @media (min-width: 1100px) {
+    #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_desktop }}; }
+  }
+  @media (min-width: 1440px) {
+    #shopify-section-{{ section.id }} .sf-car { --sf-per: {{ section.settings.per_wide }}; }
   }
 </style>
 
 <sf-pdp-related
-  class="sf-pdp sf-pdp-related"
+  class="sf-pdp sf-pcs sf-pdp-related"
   data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent={{ section.settings.intent }}"
 >
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    {%- assign count = recommendations.products_count -%}
     <div class="sf-pdp__wrap">
-      <div class="sf-sec">
-        {%- if section.settings.heading != blank -%}
-          <h2 class="sf-h2">{{ section.settings.heading }}</h2>
-        {%- endif -%}
-        <div class="sf-rel__track" style="--sf-rel-cols: {{ recommendations.products_count | at_most: 4 }};">
-          {%- for p in recommendations.products -%}
-            {%- assign pv = p.selected_or_first_available_variant -%}
-            <div class="sf-box sf-card sf-reveal" style="--sf-delay: {{ forloop.index0 | times: 0.08 }}s;">
-              <a class="sf-card__img" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
-                {%- if p.featured_image -%}
-                  {{ p.featured_image | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 1100px) 270px, (min-width: 768px) 30vw, 46vw', loading: 'lazy', alt: p.featured_image.alt | default: p.title }}
-                {%- else -%}
-                  {{ 'product-1' | placeholder_svg_tag }}
-                {%- endif -%}
-              </a>
-              <a class="sf-card__title" href="{{ p.url }}">{{ p.title }}</a>
-              <div class="sf-card__price">
-                <b>{{ p.price | money_without_trailing_zeros }}</b>
-                {%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
-              </div>
-              {%- if p.has_only_default_variant and p.available -%}
-                <button type="button" class="sf-btn" data-sf-quick-add="{{ pv.id }}" data-label="{{ section.settings.add_label | escape }}">{{ section.settings.add_label }}</button>
-              {%- elsif p.available -%}
-                <a class="sf-btn" href="{{ p.url }}">{{ section.settings.options_label }}</a>
-              {%- else -%}
-                <button type="button" class="sf-btn" disabled>{{ section.settings.soldout_label }}</button>
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
+      {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class="sf-pcs__head">
+          {%- if section.settings.heading != blank -%}<h2 class="sf-pcs__title">{{ section.settings.heading }}</h2>{%- endif -%}
+          {%- if section.settings.subheading != blank -%}<p class="sf-pcs__sub">{{ section.settings.subheading }}</p>{%- endif -%}
         </div>
-      </div>
+      {%- endif -%}
+
+      <sf-carousel
+        class="sf-car"
+        data-loop="{{ section.settings.loop }}"
+        data-autoplay="{{ section.settings.autoplay }}"
+        data-speed="{{ section.settings.speed | times: 1000 }}"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="{{ section.settings.heading | default: 'Related products' | escape }}"
+      >
+        <div class="sf-car__stage">
+          <div class="sf-car__viewport">
+            <div class="sf-car__track" data-sf-car-track>
+              {%- for p in recommendations.products -%}
+                <div class="sf-car__slide" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}">
+                  {%- render 'sf-product-card',
+                    p: p,
+                    benefits: section.blocks,
+                    new_label: section.settings.new_label,
+                    atc_label: section.settings.atc_label,
+                    soldout_label: section.settings.soldout_label,
+                    show_arrows: section.settings.card_arrows,
+                    show_discount: section.settings.show_discount,
+                    ratio: section.settings.ratio,
+                    eager: false
+                  -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          {%- if section.settings.show_arrows -%}
+            <button type="button" class="sf-car__arrow sf-car__arrow--prev" data-sf-car-prev aria-label="Previous products">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="sf-car__arrow sf-car__arrow--next" data-sf-car-next aria-label="Next products">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_dots -%}
+          <div class="sf-car__dots" data-sf-car-dots></div>
+        {%- endif -%}
+      </sf-carousel>
     </div>
   {%- endif -%}
 </sf-pdp-related>
@@ -59,8 +93,10 @@
   "name": "SF · Related products",
   "tag": "section",
   "class": "sf-pdp-related-section",
+  "max_blocks": 4,
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "You may also like" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
     {
       "type": "select", "id": "intent", "label": "Type", "default": "related",
       "options": [
@@ -68,14 +104,71 @@
         { "value": "complementary", "label": "Complementary (set in Search & Discovery app)" }
       ]
     },
-    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 },
-    { "type": "text", "id": "add_label", "label": "Add button", "default": "Add" },
-    { "type": "text", "id": "options_label", "label": "Options button", "default": "Choose pack" },
-    { "type": "text", "id": "soldout_label", "label": "Sold out button", "default": "Sold out" },
-    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
-    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 48 }
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 10, "step": 1, "default": 8 },
+    { "type": "header", "content": "Carousel" },
+    { "type": "select", "id": "per_mobile", "label": "Cards per view: phone", "default": "1.5", "options": [{ "value": "1", "label": "1" }, { "value": "1.5", "label": "1.5 (next card peeks in)" }, { "value": "2", "label": "2" }] },
+    { "type": "range", "id": "per_tablet", "label": "Cards per view: tablet", "min": 2, "max": 3, "step": 0.5, "default": 2.5 },
+    { "type": "range", "id": "per_desktop", "label": "Cards per view: desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "per_wide", "label": "Cards per view: wide", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "loop", "label": "Infinite loop", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-scroll", "default": true },
+    { "type": "range", "id": "speed", "label": "Auto-scroll every", "min": 2, "max": 10, "step": 1, "unit": "s", "default": 4 },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": true },
+    { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": true },
+    { "type": "header", "content": "Card" },
+    {
+      "type": "select", "id": "ratio", "label": "Image shape", "default": "1",
+      "options": [
+        { "value": "1", "label": "Square" },
+        { "value": "0.8", "label": "Portrait (4:5)" },
+        { "value": "1.25", "label": "Landscape (5:4)" }
+      ]
+    },
+    { "type": "checkbox", "id": "card_arrows", "label": "Image arrows on cards", "default": true, "info": "Only shown when a product has 2+ images." },
+    { "type": "checkbox", "id": "show_discount", "label": "Show discount sticker", "default": true },
+    { "type": "text", "id": "new_label", "label": "Tag for products tagged \"new\"", "default": "NEW", "info": "Product metafield custom.card_tag overrides this." },
+    { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
+    { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "drop", "label": "Drop" },
+            { "value": "cup", "label": "Cup" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "gut", "label": "Gut" },
+            { "value": "sun", "label": "Sun" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Custom icon", "info": "Replaces the icon above." },
+        { "type": "text", "id": "text", "label": "Text", "default": "Natural Ingredients" }
+      ]
+    }
   ],
   "enabled_on": { "templates": ["product"] },
-  "presets": [{ "name": "SF · Related products" }]
+  "presets": [
+    {
+      "name": "SF · Related products",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "leaf", "text": "Natural Ingredients" } },
+        { "type": "benefit", "settings": { "icon": "drop", "text": "Rich & Aromatic" } },
+        { "type": "benefit", "settings": { "icon": "cup", "text": "Perfect for Daily Use" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

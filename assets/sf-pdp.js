@@ -313,7 +313,7 @@
   class SfPdpRelated extends HTMLElement {
     connectedCallback() {
       this.addEventListener('click', (e) => this.onClick(e));
-      if (this.querySelector('.sf-rel__track') || !this.dataset.url) return;
+      if (this.querySelector('.sf-rel__track, sf-carousel') || !this.dataset.url) return;
       const load = () => {
         fetch(this.dataset.url)
           .then((r) => r.text())
