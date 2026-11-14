@@ -4,15 +4,36 @@
    Uses the colour variables and .sf-btn from sf-pdp.css.
    ========================================================================== */
 
-.sf-header-section { position: relative; z-index: 30; }
-.sf-hd { display: block; font-family: var(--sf-font-body); }
+/* ---------- Placement ----------
+   The header group no longer paints a white strip. The announcement bar scrolls
+   away with the page (or stays pinned with .sf-hd--pin-ann). <sf-header> keeps a
+   spacer the height of the bar; with .is-float the spacer is 0 so the bar sits
+   over the first section. The bar itself (.sf-hd__wrap) is absolute inside the
+   spacer, and turns fixed (.is-fixed) once the page scrolls past it. */
+#header-group:has(.sf-hd) { background: transparent !important; box-shadow: none !important; }
+#header-group:has(.sf-hd):not(:has(.sf-hd--pin-ann)) { position: relative !important; }
+#header-group:has(.sf-hd) > .shopify-section:not(.sf-header-section) { position: relative; z-index: 31; }
+.sf-header-section { position: relative; z-index: 30; background: transparent !important; pointer-events: none; }
+.sf-header-section .sf-hd__wrap, .sf-header-section .sf-hd__drawer { pointer-events: auto; }
+
+.sf-hd {
+  display: block; position: relative; font-family: var(--sf-font-body);
+  height: var(--sf-hd-space, 86px);
+}
+@media (min-width: 990px) { .sf-hd { height: var(--sf-hd-space, 104px); } }
+.sf-hd.is-float { height: 0; }
 
 .sf-hd__wrap {
+  position: absolute; top: 0; left: 0; right: 0;
   max-width: 1320px; margin: 0 auto;
   padding: 10px 12px;
-  transition: padding .25s ease;
+  transition: padding .25s ease, transform .45s cubic-bezier(.2, .8, .2, 1);
+  will-change: transform;
 }
 @media (min-width: 990px) { .sf-hd__wrap { padding: 14px 24px; } }
+.sf-hd.is-fixed .sf-hd__wrap { position: fixed; }
+/* slides up out of view; a little extra so the shadow goes too */
+.sf-hd.is-hidden .sf-hd__wrap { transform: translateY(calc(-100% - 24px)); }
 
 /* frosted frame around the bar */
 .sf-hd__ring {
@@ -32,9 +53,32 @@
 }
 @media (min-width: 990px) { .sf-hd__bar { min-height: 64px; padding: 0 8px 0 22px; gap: 10px; border-radius: 20px; } }
 
-/* scrolled: a little tighter, a little stronger shadow */
-.sf-hd.is-scrolled .sf-hd__wrap { padding-top: 6px; padding-bottom: 6px; }
+.sf-hd__bar { transition: min-height .25s ease, background-color .3s ease, box-shadow .3s ease; }
+
+/* scrolled: a stronger shadow */
 .sf-hd.is-scrolled .sf-hd__ring { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .75), 0 18px 34px -16px rgba(60, 50, 20, .45); }
+
+/* shrink on scroll: slimmer bar, smaller logo */
+.sf-hd--shrink.is-scrolled .sf-hd__wrap { padding-top: 6px; padding-bottom: 6px; }
+.sf-hd--shrink.is-scrolled .sf-hd__bar { min-height: 50px; }
+.sf-hd__logo img { transition: transform .25s ease; transform-origin: center; }
+.sf-hd--shrink.is-scrolled .sf-hd__logo img { transform: scale(.86); }
+@media (min-width: 990px) {
+  .sf-hd--shrink.is-scrolled .sf-hd__bar { min-height: 54px; }
+  .sf-hd--shrink.is-scrolled .sf-hd__logo img { transform-origin: left center; }
+}
+
+/* frosted glass while over the banner */
+.sf-hd.is-over .sf-hd__ring {
+  background: rgba(255, 255, 255, .16);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .55), 0 14px 30px -20px rgba(0, 0, 0, .35);
+}
+.sf-hd.is-over .sf-hd__bar {
+  background: color-mix(in srgb, var(--sf-hd-bar, #fff) 58%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .7) inset, 0 4px 18px rgba(0, 0, 0, .08);
+}
 
 /* ---------- Logo ---------- */
 .sf-hd__logo { display: flex; align-items: center; flex: none; text-decoration: none; color: var(--sf-ink); }
@@ -232,5 +276,5 @@
 html.sf-hd-locked, html.sf-hd-locked body { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
-  .sf-hd__wrap, .sf-hd__panel, .sf-hd__overlay, .sf-hd__drop, .sf-hd__link::after { transition: none !important; }
+  .sf-hd__wrap, .sf-hd__bar, .sf-hd__logo img, .sf-hd__panel, .sf-hd__overlay, .sf-hd__drop, .sf-hd__link::after { transition: none !important; }
 }

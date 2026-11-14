@@ -53,7 +53,7 @@
   .sf-pdp-main__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
 }
 @media (min-width: 768px) and (min-height: 600px) {
-  .sf-pdp-main__media { position: sticky; top: calc(var(--sf-header-h, 90px) + 16px); }
+  .sf-pdp-main__media { position: sticky; top: calc(var(--sf-hd-bar-h, var(--sf-header-h, 90px)) + 16px); transition: top .3s ease; }
 }
 @media (min-width: 1100px) {
   .sf-pdp-main__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 56px; }

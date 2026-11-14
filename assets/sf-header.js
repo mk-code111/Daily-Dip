@@ -7,10 +7,28 @@
       this.drawer = document.getElementById(this.dataset.drawer);
       this.opener = this.querySelector('[data-sf-hd-open]');
 
-      // scrolled state
-      this._onScroll = () => this.classList.toggle('is-scrolled', window.scrollY > 8);
+      // placement + scroll behaviour
+      this.wrap = this.querySelector('.sf-hd__wrap');
+      this.mode = this.dataset.scroll || 'always';
+      this.frost = this.dataset.frost === 'true';
+      if (this.dataset.float === 'all' && !this.heroFirst()) this.classList.remove('is-float');
+      this.lastY = window.scrollY;
+      this.measure();
+      this._onScroll = () => {
+        if (this._raf) return;
+        this._raf = requestAnimationFrame(() => { this._raf = 0; this.update(); });
+      };
+      this._onResize = () => { this.measure(); this.update(); };
       window.addEventListener('scroll', this._onScroll, { passive: true });
-      this._onScroll();
+      window.addEventListener('resize', this._onResize);
+      window.addEventListener('load', this._onResize);
+      if ('ResizeObserver' in window && this.wrap) {
+        this._ro = new ResizeObserver(() => this.publishHeight());
+        this._ro.observe(this.wrap);
+      }
+      this.update();
+      // reveal the bar whenever something inside it gets keyboard focus
+      this.addEventListener('focusin', () => this.show());
 
       // dropdowns: first tap on a parent link opens it on touch screens
       this.querySelectorAll('[data-sf-hd-parent]').forEach((a) => {
@@ -47,7 +65,71 @@
       this._mq.addEventListener?.('change', this._onMq);
     }
 
+    /* first section of the page, if it's a banner-like section the bar can float over */
+    firstSection() {
+      const main = document.querySelector('main') || document.getElementById('MainContent');
+      return main ? main.querySelector('.shopify-section') : null;
+    }
+
+    heroFirst() {
+      const first = this.firstSection();
+      if (!first) return false;
+      if (/slideshow|slider|banner|hero|image|video|sf-moments/i.test(first.id + ' ' + first.className)) return true;
+      const media = first.querySelector('img, video, picture');
+      return !!media && first.offsetHeight > 260 && media.getBoundingClientRect().top - first.getBoundingClientRect().top < 40;
+    }
+
+    measure() {
+      // spacer height = bar height when not scrolled (so content never jumps)
+      if (this.wrap && !this.classList.contains('is-scrolled')) {
+        this.style.setProperty('--sf-hd-space', this.wrap.offsetHeight + 'px');
+      }
+      // where the header stops being "over the banner" and may hide
+      const first = this.classList.contains('is-float') ? this.firstSection() : null;
+      const barH = this.wrap ? this.wrap.offsetHeight : 90;
+      if (first) {
+        this.overUntil = first.getBoundingClientRect().bottom + window.scrollY - barH;
+        this.hideAfter = Math.max(this.overUntil, barH * 2);
+      } else {
+        this.overUntil = -1;
+        this.hideAfter = Math.max(this.getBoundingClientRect().bottom + window.scrollY, 0) + 200;
+      }
+      this.publishHeight();
+    }
+
+    publishHeight() {
+      if (!this.wrap) return;
+      document.documentElement.style.setProperty('--sf-hd-bar-h', this.wrap.offsetHeight + 'px');
+    }
+
+    busy() {
+      return (this.drawer && !this.drawer.hidden) || !!this.querySelector('.sf-hd__item--parent.is-open, .sf-hd__item--parent:hover');
+    }
+
+    show() { this.classList.remove('is-hidden'); }
+
+    update() {
+      const y = Math.max(window.scrollY, 0);
+      const dy = y - this.lastY;
+      this.classList.toggle('is-scrolled', y > 8);
+      // fixed once the spacer's top reaches the top of the screen
+      this.classList.toggle('is-fixed', this.getBoundingClientRect().top <= 0);
+      this.classList.toggle('is-over', this.frost && this.overUntil > 0 && y < this.overUntil);
+
+      if (this.mode !== 'always') {
+        const past = y > this.hideAfter;
+        if (!past || this.busy()) this.show();
+        else if (this.mode === 'hide') this.classList.add('is-hidden');
+        else if (dy > 6) this.classList.add('is-hidden');
+        else if (dy < -6) this.show();
+      }
+      if (Math.abs(dy) > 6 || y < 8) this.lastY = y;
+    }
+
     disconnectedCallback() {
+      window.removeEventListener('resize', this._onResize);
+      window.removeEventListener('load', this._onResize);
+      this._ro?.disconnect();
       window.removeEventListener('scroll', this._onScroll);
       document.removeEventListener('click', this._onDocClick);
       document.removeEventListener('keydown', this._onKey);

@@ -48,7 +48,24 @@
   }
 </style>
 
-<sf-header class="sf-pdp sf-hd" data-drawer="{{ drawer_id }}">
+{%- liquid
+  assign float_on = false
+  case section.settings.float_mode
+    when 'home'
+      if request.page_type == 'index'
+        assign float_on = true
+      endif
+    when 'all'
+      assign float_on = true
+  endcase
+-%}
+<sf-header
+  class="sf-pdp sf-hd{% if float_on %} is-float{% endif %}{% if section.settings.shrink_on_scroll %} sf-hd--shrink{% endif %}{% unless section.settings.announcement_scroll %} sf-hd--pin-ann{% endunless %}"
+  data-drawer="{{ drawer_id }}"
+  data-float="{{ section.settings.float_mode }}"
+  data-frost="{{ section.settings.frost_over }}"
+  data-scroll="{{ section.settings.scroll_mode }}"
+>
   <div class="sf-hd__wrap">
     <div class="sf-hd__ring">
       <div class="sf-hd__bar">
@@ -286,6 +303,27 @@
     { "type": "header", "content": "Button" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop", "info": "Leave empty to hide the button." },
     { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "header", "content": "Placement & scroll" },
+    {
+      "type": "select", "id": "float_mode", "label": "Float over first section", "default": "home",
+      "options": [
+        { "value": "home", "label": "Home page only" },
+        { "value": "all", "label": "All pages" },
+        { "value": "off", "label": "Off" }
+      ],
+      "info": "The header sits on top of the banner instead of above it. On pages that don't start with a banner, the page moves down to make room."
+    },
+    { "type": "checkbox", "id": "frost_over", "label": "Frosted glass over banner", "default": true, "info": "See-through blur while over the banner, solid white after it." },
+    {
+      "type": "select", "id": "scroll_mode", "label": "On scroll", "default": "smart",
+      "options": [
+        { "value": "always", "label": "Always visible" },
+        { "value": "smart", "label": "Hide after banner, show on scroll up" },
+        { "value": "hide", "label": "Hide after banner" }
+      ]
+    },
+    { "type": "checkbox", "id": "announcement_scroll", "label": "Announcement bar scrolls away", "default": true, "info": "Off keeps the announcement bar pinned at the top." },
+    { "type": "checkbox", "id": "shrink_on_scroll", "label": "Shrink on scroll", "default": true, "info": "Slimmer bar and smaller logo once you scroll." },
     { "type": "header", "content": "Style" },
     { "type": "checkbox", "id": "load_fonts", "label": "Load Fredoka + Poppins", "default": true },
     { "type": "color", "id": "c_bar", "label": "Bar", "default": "#ffffff" },
