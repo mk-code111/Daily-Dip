@@ -96,7 +96,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF · Product cards",
+      "name": "SF \u00b7 Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -252,7 +252,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF · Moments",
+      "name": "SF \u00b7 Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -379,11 +379,11 @@
             "external_video": "",
             "text_align_mobile": "text-center",
             "text_align_desktop": "text-desktop-start",
-            "subtitle": "☆☆☆☆☆",
+            "subtitle": "\u2606\u2606\u2606\u2606\u2606",
             "subtitle_font_size": "fs-md",
             "title": "Certified Organic Matcha",
             "title_font_size": "h1",
-            "description": "<p>Tap into a higher frequency with our organic, ceremonial grade matcha powder — it's the element your daily ritual has been missing. Enjoy elevated focus, energy, immunity and a pinch of enlightenment.</p>",
+            "description": "<p>Tap into a higher frequency with our organic, ceremonial grade matcha powder \u2014 it's the element your daily ritual has been missing. Enjoy elevated focus, energy, immunity and a pinch of enlightenment.</p>",
             "description_font_size": "fs-md",
             "btn_primary_text": "I Want Organic",
             "btn_primary_url": "",
@@ -421,7 +421,7 @@
             "external_video": "",
             "text_align_mobile": "text-center",
             "text_align_desktop": "text-desktop-start",
-            "subtitle": "☆☆☆☆☆",
+            "subtitle": "\u2606\u2606\u2606\u2606\u2606",
             "subtitle_font_size": "fs-md",
             "title": "Superior Japanese Matcha",
             "title_font_size": "h1",
@@ -536,7 +536,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep · sip · see",
+        "eyebrow": "steep \u00b7 sip \u00b7 see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -737,7 +737,7 @@
           "type": "item",
           "settings": {
             "title": "Can I order as a gift for someone else?",
-            "description": "<p>When ordering as a gift for someone, be sure to enter in your email address to receive all summary information but enter in the recipient’s name and shipping information. We will be sure to keep all prices and receipts out of the package.</p>"
+            "description": "<p>When ordering as a gift for someone, be sure to enter in your email address to receive all summary information but enter in the recipient\u2019s name and shipping information. We will be sure to keep all prices and receipts out of the package.</p>"
           }
         },
         "item_7DmaW8": {
@@ -849,6 +849,101 @@
         "breakpoint_desktop": 4,
         "pt": 10,
         "pb": 10
+      },
+      "disabled": true
+    },
+    "sf_trust": {
+      "type": "sf-trust",
+      "blocks": {
+        "promise_1": {
+          "type": "item",
+          "settings": {
+            "icon": "award",
+            "title": "Outstanding Quality",
+            "description": "<p>We pride ourselves to offer the best quality in class. No compromises!</p>",
+            "tint": "#c8f169",
+            "badge": "",
+            "link": "",
+            "link_label": "Learn more"
+          }
+        },
+        "promise_2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free Shipping",
+            "description": "<p>Have a treat with free shipping for all orders over $100. Ready to shop?!</p>",
+            "tint": "#ffd23f",
+            "badge": "",
+            "link": "",
+            "link_label": "Learn more"
+          }
+        },
+        "promise_3": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Free Returns",
+            "description": "<p>Have peace of mind with our free return policy. Terms may apply.</p>",
+            "tint": "#bfe6ff",
+            "badge": "",
+            "link": "",
+            "link_label": "Learn more"
+          }
+        },
+        "promise_4": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure payments",
+            "description": "<p>100% secure and protected payments. Buy with confidence.</p>",
+            "tint": "#ffc2b8",
+            "badge": "",
+            "link": "",
+            "link_label": "Learn more"
+          }
+        }
+      },
+      "block_order": [
+        "promise_1",
+        "promise_2",
+        "promise_3",
+        "promise_4"
+      ],
+      "settings": {
+        "layout": "cards",
+        "breakpoint_mobile": 2,
+        "breakpoint_tablet": 2,
+        "breakpoint_desktop": 4,
+        "mobile_swipe": false,
+        "item_text_align": "start",
+        "container_max_width": "",
+        "eyebrow": "The DailyDip promise",
+        "header_title": "Every cup, <em>taken care of</em>",
+        "header_description": "",
+        "head_align": "center",
+        "label": "Trust information",
+        "seal_shape": "scallop",
+        "item_img_height": 30,
+        "numbers": true,
+        "show_desc": true,
+        "steep": true,
+        "steep_height": 26,
+        "item_shadow": "hard",
+        "item_border_width": 2.5,
+        "radius": 22,
+        "item_p": 22,
+        "title_size": 19,
+        "desc_size": 14,
+        "c_bg": "#fbf8ef",
+        "c_card": "#ffffff",
+        "c_text": "#1c1c1c",
+        "c_line": "#1c1c1c",
+        "pattern": true,
+        "edge_top": false,
+        "edge_bottom": false,
+        "pt": 64,
+        "pb": 64
       }
     }
   },
@@ -863,6 +958,7 @@
     "shoppable_videos_fyjcgm",
     "richtext_fLeqN4",
     "faq_zbQYep",
+    "sf_trust",
     "trust_icons_tWUpz7"
   ]
 }
