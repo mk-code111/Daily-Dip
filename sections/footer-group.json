@@ -106,7 +106,7 @@
     "sf_footer": {
       "type": "sf-footer",
       "settings": {
-        "logo_width": 150,
+        "logo_width": 160,
         "brand_text": "DailyDip",
         "tagline": "<p>Small sips, a healthier you. Thoughtfully crafted tea blends for your daily wellness.</p>",
         "show_social": true,
