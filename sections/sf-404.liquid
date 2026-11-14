@@ -1,0 +1,110 @@
+{%- comment -%}
+  sf-404 — DailyDip "spilled tea" page-not-found.
+  "4 [cup] 4": the zero is a tipped-over teacup with a tea puddle and a tea-bag tag.
+  Tap the cup and it rights itself, refills and starts to steam (easter egg).
+  Then a message, buttons, a search box and quick links.
+  Styles: assets/sf-pages.css · Script: assets/sf-pages.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-pages.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pages.js' | asset_url }}" defer></script>
+
+{%- assign s = section.settings -%}
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-nf-bg: {{ s.c_bg }};
+    --sf-nf-tea: {{ s.c_tea }};
+    --sf-nf-cup: {{ s.c_cup }};
+    --sf-nf-pt: {{ s.pt }}px;
+    --sf-nf-pb: {{ s.pb }}px;
+  }
+</style>
+
+<section class="sf-pdp sf-nf">
+  <div class="sf-pdp__wrap">
+    <div class="sf-nf__stage">
+      <span class="sf-nf__digit" aria-hidden="true">4</span>
+
+      <button type="button" class="sf-nf__cup" data-sf-nf-cup aria-label="{{ s.cup_label | escape }}">
+        <svg viewBox="0 0 220 200" aria-hidden="true">
+          <!-- puddle -->
+          <ellipse class="sf-nf__puddle" cx="58" cy="158" rx="62" ry="13"/>
+          <g class="sf-nf__drops"><circle cx="-10" cy="150" r="5"/><circle cx="-22" cy="158" r="3"/><circle cx="118" cy="166" r="3.5"/></g>
+          <!-- steam (only when refilled) -->
+          <g class="sf-nf__steam"><path d="M80 52c-6-8 6-14 0-24"/><path d="M104 46c-6-8 6-14 0-24"/><path d="M128 52c-6-8 6-14 0-24"/></g>
+          <!-- the cup -->
+          <g class="sf-nf__mug">
+            <path class="sf-nf__body" d="M50 70h112v44a46 46 0 0 1-46 46h-20a46 46 0 0 1-46-46z"/>
+            <path class="sf-nf__tea-in" d="M58 80h96v30a38 38 0 0 1-38 38h-20a38 38 0 0 1-38-38z"/>
+            <path class="sf-nf__handle" d="M162 86h10a20 20 0 0 1 0 40h-12"/>
+            <path class="sf-nf__rim" d="M46 70h120"/>
+            <!-- tea-bag string + tag -->
+            <path class="sf-nf__string" d="M118 70c6 18 22 22 30 40"/>
+            <g class="sf-nf__tag"><rect x="134" y="108" width="34" height="26" rx="5"/><text x="151" y="125" text-anchor="middle">{{ s.tag_text | escape | truncate: 5, '' }}</text></g>
+          </g>
+        </svg>
+      </button>
+
+      <span class="sf-nf__digit" aria-hidden="true">4</span>
+    </div>
+
+    <p class="sf-nf__hint" aria-hidden="true">{{ s.hint | escape }}</p>
+
+    <div class="sf-nf__copy">
+      <h1 class="sf-nf__title">{{ s.title }}</h1>
+      {%- if s.text != blank -%}<div class="sf-nf__text">{{ s.text }}</div>{%- endif -%}
+
+      <div class="sf-nf__btns">
+        {%- if s.btn1_label != blank -%}<a class="sf-btn sf-nf__btn" href="{{ s.btn1_link | default: routes.root_url }}">{{ s.btn1_label | escape }}</a>{%- endif -%}
+        {%- if s.btn2_label != blank -%}<a class="sf-nf__btn2" href="{{ s.btn2_link | default: routes.all_products_collection_url }}">{{ s.btn2_label | escape }} <span aria-hidden="true">&rarr;</span></a>{%- endif -%}
+      </div>
+
+      {%- if s.show_search -%}
+        <form action="{{ routes.search_url }}" method="get" role="search" class="sf-nf__search">
+          <input type="hidden" name="type" value="product">
+          <label class="visually-hidden" for="SfNfSearch">{{ s.search_placeholder | escape }}</label>
+          <span aria-hidden="true">{% render 'sf-icon', name: 'search' %}</span>
+          <input id="SfNfSearch" type="search" name="q" placeholder="{{ s.search_placeholder | escape }}" autocomplete="off">
+          <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </form>
+      {%- endif -%}
+
+      {%- if s.links_menu != blank -%}
+        <ul class="sf-nf__links" role="list">
+          {%- for link in s.links_menu.links -%}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SF · 404",
+  "tag": "div",
+  "class": "sf-nf-section",
+  "enabled_on": { "templates": ["404"] },
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Oops, this page <em>spilled</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The page you're looking for has gone cold, moved or never existed. Let's brew you something better.</p>" },
+    { "type": "text", "id": "hint", "label": "Hint under the cup", "default": "psst… tap the cup" },
+    { "type": "text", "id": "cup_label", "label": "Cup button label (screen readers)", "default": "Pick up the spilled cup" },
+    { "type": "text", "id": "tag_text", "label": "Tea-bag tag text", "default": "oops", "info": "Up to 5 letters." },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "btn1_label", "label": "Main button", "default": "Back to home" },
+    { "type": "url", "id": "btn1_link", "label": "Main button link" },
+    { "type": "text", "id": "btn2_label", "label": "Second link", "default": "Shop all blends" },
+    { "type": "url", "id": "btn2_link", "label": "Second link URL" },
+    { "type": "checkbox", "id": "show_search", "label": "Search box", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search for a blend…" },
+    { "type": "link_list", "id": "links_menu", "label": "Quick links menu", "info": "Optional row of links." },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#fbf8ef" },
+    { "type": "color", "id": "c_cup", "label": "Cup", "default": "#c8f169" },
+    { "type": "color", "id": "c_tea", "label": "Tea", "default": "#c98a3a" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "presets": [{ "name": "SF · 404" }]
+}
+{% endschema %}

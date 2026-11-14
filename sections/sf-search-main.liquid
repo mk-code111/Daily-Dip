@@ -1,0 +1,353 @@
+{%- comment -%}
+  sf-search-main — DailyDip "tea finder" search page.
+  Big search pill (placeholder types out suggestions), popular-search chips, then
+  results: products as DailyDip cards, pages/articles as small cards. Filters, sort
+  and "Load more" reuse the collection grid (sf-collection.js). No results → an
+  empty-tin message, the chips and a row of picks.
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-cards.css' | asset_url | stylesheet_tag }}
+{{ 'sf-collection.css' | asset_url | stylesheet_tag }}
+{{ 'sf-pages.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-pdp.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-cards.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-collection.js' | asset_url }}" defer></script>
+<script src="{{ 'sf-pages.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign terms = search.terms | escape
+  assign chips = s.popular | split: ','
+  assign sort_by = search.sort_by | default: search.default_sort_by
+  assign active_count = 0
+  for filter in search.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
+  assign has_filters = false
+  if s.show_filters and search.performed and search.filters.size > 0
+    assign has_filters = true
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-cg-bg: {{ s.c_bg }};
+    --sf-cg-cols-m: {{ s.breakpoint_mobile }};
+    --sf-cg-cols-t: {{ s.breakpoint_tablet }};
+    --sf-cg-cols-d: {{ s.breakpoint_desktop }};
+    --sf-cg-pt: 8px;
+    --sf-cg-pb: {{ s.pb }}px;
+    --sf-sr-card: {{ s.c_card }};
+  }
+</style>
+
+<section class="sf-pdp sf-sr" style="padding-top: {{ s.pt }}px;">
+  <div class="sf-pdp__wrap">
+    <div class="sf-sr__hero">
+      <svg class="sf-sr__leaf sf-sr__leaf--a" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/></svg>
+      <svg class="sf-sr__leaf sf-sr__leaf--b" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/></svg>
+
+      {%- if s.eyebrow != blank -%}<p class="sf-sr__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      <h1 class="sf-sr__title">
+        {%- if search.performed -%}
+          {{ s.title_results | escape }} <em>&ldquo;{{ terms }}&rdquo;</em>
+        {%- else -%}
+          {{ s.title }}
+        {%- endif -%}
+      </h1>
+
+      <form action="{{ routes.search_url }}" method="get" role="search" class="sf-sr__form">
+        {%- if s.products_only -%}<input type="hidden" name="type" value="product">{%- endif -%}
+        <input type="hidden" name="options[prefix]" value="last">
+        <label class="visually-hidden" for="SfSearch-{{ section.id }}">{{ s.placeholder | escape }}</label>
+        <span class="sf-sr__glass" aria-hidden="true">{% render 'sf-icon', name: 'search' %}</span>
+        <input
+          id="SfSearch-{{ section.id }}" class="sf-sr__input" type="search" name="q"
+          value="{{ terms }}" autocomplete="off" autocapitalize="off" spellcheck="false"
+          placeholder="{{ s.placeholder | escape }}"
+          data-sf-type="{{ s.typing | escape }}"
+        >
+        <button type="submit" class="sf-sr__go">
+          <span>{{ s.button | escape }}</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+
+      {%- if chips.size > 0 and s.popular != blank -%}
+        <div class="sf-sr__popular">
+          <span class="sf-sr__pop-lbl">{{ s.popular_label | escape }}</span>
+          <ul role="list">
+            {%- for c in chips -%}
+              {%- assign t = c | strip -%}
+              {%- if t != blank -%}
+                <li><a class="sf-sr__chip{% if t == search.terms %} is-active{% endif %}" href="{{ routes.search_url }}?q={{ t | url_encode }}{% if s.products_only %}&type=product{% endif %}">{{ t | escape }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- if search.performed and search.results_count > 0 -%}
+  <sf-collection class="sf-pdp sf-cg sf-sr-results" data-section="{{ section.id }}" data-base="{{ routes.search_url }}">
+    <div class="sf-pdp__wrap" data-sf-cg-results>
+      {%- paginate search.results by s.limit -%}
+        <div class="sf-cg__bar">
+          {%- if has_filters -%}
+            <button type="button" class="sf-cg__filter-btn" data-sf-cg-open aria-expanded="false">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+              <span>{{ s.filter_label | escape }}</span>
+              {%- if active_count > 0 -%}<span class="sf-cg__badge">{{ active_count }}</span>{%- endif -%}
+            </button>
+          {%- endif -%}
+          <p class="sf-cg__count" role="status"><b>{{ search.results_count }}</b> {% if search.results_count == 1 %}{{ s.count_one | escape }}{% else %}{{ s.count_many | escape }}{% endif %}</p>
+          {%- if s.show_sort -%}
+            <label class="sf-cg__sort">
+              <span class="sf-cg__sort-lbl">{{ s.sort_label | escape }}</span>
+              <select name="sort_by" data-sf-cg-sort>
+                {%- for option in search.sort_options -%}
+                  <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+                {%- endfor -%}
+              </select>
+              <svg class="sf-cg__sort-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </label>
+          {%- endif -%}
+        </div>
+
+        {%- if active_count > 0 -%}
+          <ul class="sf-cg__chips" role="list">
+            {%- for filter in search.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                  <li><a class="sf-cg__chip" href="{{ filter.url_to_remove }}" data-sf-cg-link>{{ filter.min_value.value | default: 0 | money_without_trailing_zeros }} – {{ filter.max_value.value | default: filter.range_max | money_without_trailing_zeros }}<span class="sf-cg__chip-x" aria-hidden="true">×</span></a></li>
+                {%- endif -%}
+              {%- else -%}
+                {%- for v in filter.active_values -%}
+                  <li><a class="sf-cg__chip" href="{{ v.url_to_remove }}" data-sf-cg-link>{{ v.label | escape }}<span class="sf-cg__chip-x" aria-hidden="true">×</span></a></li>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <ul class="sf-cg__grid" role="list" data-sf-cg-grid>
+          {%- for item in search.results -%}
+            <li class="sf-cg__item" style="--i: {{ forloop.index0 | modulo: 8 }};">
+              {%- if item.object_type == 'product' -%}
+                {%- render 'sf-product-card',
+                  p: item,
+                  benefits: section.blocks,
+                  new_label: s.new_label,
+                  atc_label: s.atc_label,
+                  soldout_label: s.soldout_label,
+                  show_arrows: true,
+                  show_discount: true,
+                  ratio: 1,
+                  eager: false
+                -%}
+              {%- else -%}
+                <a class="sf-sr__doc" href="{{ item.url }}">
+                  <span class="sf-sr__doc-type">{% if item.object_type == 'article' %}{{ s.label_article | escape }}{% else %}{{ s.label_page | escape }}{% endif %}</span>
+                  {%- if item.image -%}{{ item.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: '', class: 'sf-sr__doc-img' }}{%- endif -%}
+                  <span class="sf-sr__doc-title">{{ item.title | escape }}</span>
+                  <span class="sf-sr__doc-text">{{ item.content | strip_html | truncatewords: 18 }}</span>
+                  <span class="sf-sr__doc-go">{{ s.read_label | escape }} <span aria-hidden="true">&rarr;</span></span>
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if paginate.pages > 1 -%}
+          <div class="sf-cg__more" data-sf-cg-more-wrap>
+            {%- assign shown = paginate.current_offset | plus: search.results.size -%}
+            <p class="sf-cg__progress">{{ s.progress_text | replace: '[shown]', shown | replace: '[total]', paginate.items }}<span class="sf-cg__progress-bar" style="--p: {{ shown | times: 100 | divided_by: paginate.items }}%;"></span></p>
+            {%- if paginate.next -%}
+              <a class="sf-cg__more-btn" href="{{ paginate.next.url }}" data-sf-cg-more>
+                <span>{{ s.more_label | escape }}</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    {%- if has_filters -%}
+      <div class="sf-cg__overlay" data-sf-cg-close hidden></div>
+      <aside class="sf-cg__drawer" role="dialog" aria-modal="true" aria-label="{{ s.filter_label | escape }}" hidden data-sf-cg-drawer>
+        <div class="sf-cg__dhead">
+          <p class="sf-cg__dtitle">{{ s.filter_label | escape }}</p>
+          <button type="button" class="sf-cg__x" data-sf-cg-close aria-label="Close">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <form class="sf-cg__form" data-sf-cg-form>
+          <input type="hidden" name="q" value="{{ terms }}">
+          {%- if s.products_only -%}<input type="hidden" name="type" value="product">{%- endif -%}
+          <input type="hidden" name="options[prefix]" value="last">
+          {%- for filter in search.filters -%}
+            <details class="sf-cg__group" data-key="{{ filter.param_name | default: filter.label | handle }}" open>
+              <summary class="sf-cg__gsum"><span>{{ filter.label | escape }}</span><span class="sf-cg__plus" aria-hidden="true"></span></summary>
+              <div class="sf-cg__gbody">
+                {%- if filter.type == 'price_range' -%}
+                  <div class="sf-cg__price">
+                    <label><span>From</span><span class="sf-cg__money"><i>₹</i><input type="number" inputmode="numeric" min="0" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% endif %}" placeholder="0"></span></label>
+                    <span class="sf-cg__dash" aria-hidden="true">–</span>
+                    <label><span>To</span><span class="sf-cg__money"><i>₹</i><input type="number" inputmode="numeric" min="0" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% endif %}" placeholder="{{ filter.range_max | divided_by: 100 }}"></span></label>
+                  </div>
+                {%- else -%}
+                  <ul class="sf-cg__opts" role="list">
+                    {%- for v in filter.values -%}
+                      <li><label class="sf-cg__opt{% if v.count == 0 and v.active == false %} is-off{% endif %}">
+                        <input type="checkbox" name="{{ v.param_name }}" value="{{ v.value }}"{% if v.active %} checked{% endif %}{% if v.count == 0 and v.active == false %} disabled{% endif %}>
+                        <span class="sf-cg__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                        <span class="sf-cg__opt-lbl">{{ v.label | escape }}</span><span class="sf-cg__opt-n">{{ v.count }}</span>
+                      </label></li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </form>
+        <div class="sf-cg__dfoot">
+          <a class="sf-cg__dclear" href="{{ routes.search_url }}?q={{ search.terms | url_encode }}{% if s.products_only %}&type=product{% endif %}" data-sf-cg-link>{{ s.clear_label | escape }}</a>
+          <button type="button" class="sf-btn sf-cg__dshow" data-sf-cg-close>{{ s.show_label | replace: '[count]', search.results_count }}</button>
+        </div>
+      </aside>
+    {%- endif -%}
+  </sf-collection>
+
+{%- elsif search.performed -%}
+  <section class="sf-pdp sf-sr-empty">
+    <div class="sf-pdp__wrap">
+      <div class="sf-sr__none">
+        <svg class="sf-sr__tin" viewBox="0 0 160 140" aria-hidden="true">
+          <g class="sf-sr__lid"><rect x="34" y="20" width="92" height="16" rx="6"/><rect x="70" y="10" width="20" height="10" rx="4"/></g>
+          <path class="body" d="M40 40h80v78a10 10 0 0 1-10 10H50a10 10 0 0 1-10-10z"/>
+          <rect class="label" x="52" y="62" width="56" height="34" rx="8"/>
+          <path class="mouth" d="M70 84c4-5 16-5 20 0"/>
+          <circle class="eye" cx="70" cy="74" r="2.6"/><circle class="eye" cx="90" cy="74" r="2.6"/>
+        </svg>
+        <p class="sf-sr__none-title">{{ s.empty_title | escape }}</p>
+        <p class="sf-sr__none-text">{{ s.empty_text | replace: '[terms]', terms }}</p>
+        <a class="sf-btn sf-sr__none-btn" href="{{ routes.all_products_collection_url }}">{{ s.empty_button | escape }}</a>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- liquid
+  assign show_picks = false
+  if s.picks_collection != blank
+    if search.performed == false and s.picks_on_start
+      assign show_picks = true
+    elsif search.performed and search.results_count == 0
+      assign show_picks = true
+    endif
+  endif
+-%}
+{%- if show_picks -%}
+  <section class="sf-pdp sf-sr-picks">
+    <div class="sf-pdp__wrap">
+      {%- if s.picks_title != blank -%}<h2 class="sf-sr__picks-title">{{ s.picks_title | escape }}</h2>{%- endif -%}
+      <ul class="sf-cg__grid" role="list">
+        {%- for p in s.picks_collection.products limit: s.picks_limit -%}
+          <li class="sf-cg__item">
+            {%- render 'sf-product-card', p: p, benefits: section.blocks, new_label: s.new_label, atc_label: s.atc_label, soldout_label: s.soldout_label, show_arrows: true, show_discount: true, ratio: 1, eager: false -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SF · Search",
+  "tag": "div",
+  "class": "sf-sr-section",
+  "max_blocks": 4,
+  "enabled_on": { "templates": ["search"] },
+  "settings": [
+    { "type": "header", "content": "Search box" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Tea finder" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "What are you <em>sipping</em> today?" },
+    { "type": "text", "id": "title_results", "label": "Title with results", "default": "Results for" },
+    { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Search blends, moods, ingredients…" },
+    { "type": "text", "id": "typing", "label": "Typing suggestions", "default": "sleep tea,detox,green tea for glow,something for my gut", "info": "Comma-separated. The empty search box types these out. Leave empty to turn off." },
+    { "type": "text", "id": "button", "label": "Button", "default": "Find" },
+    { "type": "checkbox", "id": "products_only", "label": "Search products only", "default": true },
+    { "type": "text", "id": "popular_label", "label": "Popular label", "default": "Popular:" },
+    { "type": "text", "id": "popular", "label": "Popular searches", "default": "Sleep,Detox,Lean,Cleanse", "info": "Comma-separated." },
+
+    { "type": "header", "content": "Results" },
+    { "type": "range", "id": "limit", "label": "Results per page", "min": 8, "max": 48, "step": 4, "default": 16 },
+    { "type": "select", "id": "breakpoint_mobile", "label": "Columns: phone", "default": "1", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }] },
+    { "type": "select", "id": "breakpoint_tablet", "label": "Columns: tablet", "default": "2", "options": [{ "value": "2", "label": "2" }, { "value": "3", "label": "3" }] },
+    { "type": "range", "id": "breakpoint_desktop", "label": "Columns: desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "text", "id": "count_one", "label": "Count label (one)", "default": "result" },
+    { "type": "text", "id": "count_many", "label": "Count label (many)", "default": "results" },
+    { "type": "checkbox", "id": "show_sort", "label": "Sorting", "default": true },
+    { "type": "text", "id": "sort_label", "label": "Sort label", "default": "Sort" },
+    { "type": "checkbox", "id": "show_filters", "label": "Filters", "default": true },
+    { "type": "text", "id": "filter_label", "label": "Filter button", "default": "Filter" },
+    { "type": "text", "id": "clear_label", "label": "Clear text", "default": "Clear all" },
+    { "type": "text", "id": "show_label", "label": "Drawer button", "default": "See results ([count])" },
+    { "type": "text", "id": "more_label", "label": "Load more text", "default": "Load more" },
+    { "type": "text", "id": "progress_text", "label": "Progress text", "default": "You've seen [shown] of [total]" },
+    { "type": "text", "id": "label_page", "label": "Page tag", "default": "Page" },
+    { "type": "text", "id": "label_article", "label": "Article tag", "default": "Journal" },
+    { "type": "text", "id": "read_label", "label": "Read link", "default": "Read" },
+    { "type": "text", "id": "new_label", "label": "Tag for products tagged \"new\"", "default": "NEW" },
+    { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
+    { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
+
+    { "type": "header", "content": "No results" },
+    { "type": "text", "id": "empty_title", "label": "Title", "default": "This tin is empty" },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "We looked everywhere for \"[terms]\". Try another word, or one of the popular searches above." },
+    { "type": "text", "id": "empty_button", "label": "Button", "default": "Browse all blends" },
+
+    { "type": "header", "content": "Picks" },
+    { "type": "collection", "id": "picks_collection", "label": "Picks collection", "info": "Shown when nothing is found." },
+    { "type": "checkbox", "id": "picks_on_start", "label": "Also show before searching", "default": true },
+    { "type": "text", "id": "picks_title", "label": "Picks title", "default": "Loved by our sippers" },
+    { "type": "range", "id": "picks_limit", "label": "Picks to show", "min": 2, "max": 8, "step": 1, "default": 4 },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_card", "label": "Search banner colour", "default": "#e9f7d0" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Leaf" }, { "value": "drop", "label": "Drop" }, { "value": "cup", "label": "Cup" },
+            { "value": "heart", "label": "Heart" }, { "value": "shield", "label": "Shield" }, { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" }, { "value": "sparkle", "label": "Sparkle" }, { "value": "gut", "label": "Gut" },
+            { "value": "sun", "label": "Sun" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Custom icon" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Natural Ingredients" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "SF · Search" }]
+}
+{% endschema %}
