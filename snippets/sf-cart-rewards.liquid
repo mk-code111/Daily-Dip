@@ -2,12 +2,99 @@
   sf-cart-rewards — reward progress bar for the cart drawer (Theme settings → SF Cart · Rewards).
   Rendered in Liquid, so it is recalculated every time the theme re-renders the drawer
   after a cart change. Gift handling (auto-add / pick popup / removal) is in assets/sf-cart.js.
-  NOTE: this only displays rewards. The actual discounts are Shopify automatic discounts.
+  Tier source: the DailyDip Rewards app saves the tiers to the shop metafield
+  dailydip.rewards (JSON) and keeps the Shopify discounts in sync with them. When that
+  metafield exists it is used; otherwise Theme settings → SF Cart · Rewards is used.
 {%- endcomment -%}
 {%- if settings.sf_rw_enable and cart.item_count > 0 -%}
   {%- liquid
+    # ---- tier source: app metafield, else theme settings ------------------
+    assign rw_src = shop.metafields.dailydip.rewards.value
+    assign use_app = false
+    if rw_src and rw_src.tiers
+      assign use_app = true
+    endif
+    if use_app
+      assign rw_measure = rw_src.measure | default: 'value'
+      assign rw_mode = rw_src.mode | default: 'highest'
+      assign rw_done = rw_src.done_text | default: settings.sf_rw_done_text
+    else
+      assign rw_measure = settings.sf_rw_measure
+      assign rw_mode = settings.sf_rw_mode
+      assign rw_done = settings.sf_rw_done_text
+    endif
+
+    # per-tier values as arrays (index = tier number - 1). Each value gets an 'x'
+    # prefix so empty values survive split; read back with remove_first: 'x'.
+    assign D = '§§'
+    assign a_en = '' 
+    assign a_icon = ''
+    assign a_type = ''
+    assign a_min = ''
+    assign a_desc = ''
+    assign a_text = ''
+    assign a_gmode = ''
+    assign a_max = ''
+    assign a_gift = ''
+    for n in (1..5)
+      if use_app
+        assign i0 = n | minus: 1
+        assign t = rw_src.tiers[i0]
+        assign v_en = t.enabled | default: false
+        assign v_icon = t.icon
+        assign v_type = t.type
+        if v_type == 'gift'
+          assign v_type = 'product'
+        endif
+        assign v_min = t.min | default: 0
+        assign v_desc = t.desc
+        assign v_text = t.text
+        assign v_gmode = t.gift_mode | default: 'popup'
+        assign v_max = t.max | default: 1
+        assign v_gift = t.gift_products | remove: ' '
+      else
+        assign k = 'sf_rw_t' | append: n | append: '_'
+        assign k_en = k | append: 'enable'
+        assign k_icon = k | append: 'icon'
+        assign k_type = k | append: 'type'
+        assign k_min = k | append: 'min'
+        assign k_desc = k | append: 'desc'
+        assign k_text = k | append: 'text'
+        assign k_gmode = k | append: 'gift_mode'
+        assign k_max = k | append: 'max'
+        assign k_products = k | append: 'products'
+        assign v_en = settings[k_en]
+        assign v_icon = settings[k_icon]
+        assign v_type = settings[k_type]
+        assign v_min = settings[k_min] | default: 0
+        assign v_desc = settings[k_desc]
+        assign v_text = settings[k_text]
+        assign v_gmode = settings[k_gmode]
+        assign v_max = settings[k_max] | default: 1
+        assign v_gift = settings[k_products] | map: 'handle' | join: ','
+      endif
+      assign a_en = a_en | append: 'x' | append: v_en | append: D
+      assign a_icon = a_icon | append: 'x' | append: v_icon | append: D
+      assign a_type = a_type | append: 'x' | append: v_type | append: D
+      assign a_min = a_min | append: 'x' | append: v_min | append: D
+      assign a_desc = a_desc | append: 'x' | append: v_desc | append: D
+      assign a_text = a_text | append: 'x' | append: v_text | append: D
+      assign a_gmode = a_gmode | append: 'x' | append: v_gmode | append: D
+      assign a_max = a_max | append: 'x' | append: v_max | append: D
+      assign a_gift = a_gift | append: 'x' | append: v_gift | append: D
+    endfor
+    assign T_en = a_en | split: D
+    assign T_icon = a_icon | split: D
+    assign T_type = a_type | split: D
+    assign T_min = a_min | split: D
+    assign T_desc = a_desc | split: D
+    assign T_text = a_text | split: D
+    assign T_gmode = a_gmode | split: D
+    assign T_max = a_max | split: D
+    assign T_gift = a_gift | split: D
+
     assign by_qty = false
-    if settings.sf_rw_measure == 'quantity'
+    if rw_measure == 'quantity'
       assign by_qty = true
     endif
 
@@ -79,13 +166,14 @@
     # ---- enabled tiers, sorted by threshold --------------------------------
     assign keys = ''
     for n in (1..5)
-      assign k_en = 'sf_rw_t' | append: n | append: '_enable'
-      assign k_min = 'sf_rw_t' | append: n | append: '_min'
-      if settings[k_en] and settings[k_min] > 0
+      assign i0 = n | minus: 1
+      assign t_en = T_en[i0] | remove_first: 'x'
+      assign t_minv = T_min[i0] | remove_first: 'x' | plus: 0
+      if t_en == 'true' and t_minv > 0
         if by_qty
-          assign min_units = settings[k_min]
+          assign min_units = t_minv | round
         else
-          assign min_units = settings[k_min] | times: 100
+          assign min_units = t_minv | times: 100 | round
         endif
         assign padded = '0000000000' | append: min_units | slice: -10, 10
         assign keys = keys | append: padded | append: '|' | append: n | append: ','
@@ -131,8 +219,9 @@
         else
           assign remaining_text = remaining | money_without_trailing_zeros
         endif
-        assign k_text = 'sf_rw_t' | append: next_n | append: '_text'
-        assign k_desc = 'sf_rw_t' | append: next_n | append: '_desc'
+        assign i0 = next_n | minus: 1
+        assign nt_text = T_text[i0] | remove_first: 'x'
+        assign nt_desc = T_desc[i0] | remove_first: 'x'
         # build the min_amount / reward tokens (double braces) without writing them literally here
         assign ob = '{' | append: '{'
         assign cb = '}' | append: '}'
@@ -141,16 +230,16 @@
         assign tok_rw = ob | append: 'reward' | append: cb
         assign tok_rw_s = ob | append: ' reward ' | append: cb
         assign rem_html = '<strong>' | append: remaining_text | append: '</strong>'
-        assign msg = settings[k_text] | escape | replace: tok_min, rem_html | replace: tok_min_s, rem_html
-        assign msg = msg | replace: tok_rw, settings[k_desc] | replace: tok_rw_s, settings[k_desc]
+        assign msg = nt_text | escape | replace: tok_min, rem_html | replace: tok_min_s, rem_html
+        assign msg = msg | replace: tok_rw, nt_desc | replace: tok_rw_s, nt_desc
       else
-        assign msg = settings.sf_rw_done_text | escape
+        assign msg = rw_done | escape
       endif
     -%}
     <sf-cart-rewards
       class="sf-rw{% if achieved >= tier_count %} is-complete{% endif %}"
       data-achieved="{{ achieved }}"
-      data-mode="{{ settings.sf_rw_mode }}"
+      data-mode="{{ rw_mode }}"
       style="--sf-rw-pct: {{ pct | at_most: 100 | at_least: 0 }}%; --sf-rw-n: {{ tier_count }};"
     >
       <p class="sf-rw__msg" role="status">{{ msg }}</p>
@@ -164,14 +253,15 @@
           {%- liquid
             assign n = t | split: '|' | last | plus: 0
             assign t_min = t | split: '|' | first | plus: 0
-            assign k_icon = 'sf_rw_t' | append: n | append: '_icon'
-            assign k_desc = 'sf_rw_t' | append: n | append: '_desc'
+            assign i0 = n | minus: 1
+            assign t_icon = T_icon[i0] | remove_first: 'x'
+            assign t_desc = T_desc[i0] | remove_first: 'x'
             assign done = false
             if total >= t_min
               assign done = true
             endif
             assign superseded = false
-            if done and settings.sf_rw_mode == 'highest' and forloop.index < achieved
+            if done and rw_mode == 'highest' and forloop.index < achieved
               assign superseded = true
             endif
             if by_qty
@@ -186,11 +276,11 @@
             data-tier="{{ n }}"
           >
             <span class="sf-rw__icon">
-              {%- render 'sf-rw-icon', name: settings[k_icon] -%}
+              {%- render 'sf-rw-icon', name: t_icon -%}
               {%- if done -%}<span class="sf-rw__tick" aria-hidden="true">✓</span>{%- endif -%}
             </span>
             <span class="sf-rw__label">
-              <strong>{{ settings[k_desc] }}</strong>
+              <strong>{{ t_desc }}</strong>
               <span>{{ label_min }}</span>
             </span>
             <span class="visually-hidden">{% if done %}Unlocked{% else %}Locked{% endif %}</span>
@@ -204,8 +294,9 @@
         for t in tiers
           assign n = t | split: '|' | last | plus: 0
           assign t_min = t | split: '|' | first | plus: 0
-          assign k_type = 'sf_rw_t' | append: n | append: '_type'
-          if settings[k_type] == 'product'
+          assign i0 = n | minus: 1
+          assign t_type = T_type[i0] | remove_first: 'x'
+          if t_type == 'product'
             assign gift_tiers = gift_tiers | append: n | append: ','
           endif
         endfor
@@ -222,25 +313,29 @@
               {%- for gt in gift_tier_list -%}
                 {%- liquid
                   assign n = gt | plus: 0
-                  assign k_min = 'sf_rw_t' | append: n | append: '_min'
-                  if by_qty
-                    assign t_min = settings[k_min]
-                  else
-                    assign t_min = settings[k_min] | times: 100
-                  endif
-                  assign k_products = 'sf_rw_t' | append: n | append: '_products'
-                  assign k_mode = 'sf_rw_t' | append: n | append: '_gift_mode'
-                  assign k_max = 'sf_rw_t' | append: n | append: '_max'
+                  assign i0 = n | minus: 1
+                  assign g_min = T_min[i0] | remove_first: 'x' | plus: 0
+                  unless by_qty
+                    assign g_min = g_min | times: 100
+                  endunless
+                  assign g_mode = T_gmode[i0] | remove_first: 'x'
+                  assign g_max = T_max[i0] | remove_first: 'x' | plus: 0 | at_least: 1
+                  assign g_handles = T_gift[i0] | remove_first: 'x' | split: ','
                 -%}
                 {
                   "tier": "{{ n }}",
-                  "unlocked": {% if total >= t_min %}true{% else %}false{% endif %},
-                  "mode": {{ settings[k_mode] | json }},
-                  "max": {{ settings[k_max] | default: 1 }},
+                  "unlocked": {% if total >= g_min %}true{% else %}false{% endif %},
+                  "mode": {{ g_mode | json }},
+                  "max": {{ g_max }},
                   "variants": [
-                    {%- for gp in settings[k_products] -%}
-                      {%- assign gv = gp.selected_or_first_available_variant -%}
-                      {"id": {{ gv.id }}, "available": {{ gv.available }}, "title": {{ gp.title | json }}, "img": {{ gp.featured_image | image_url: width: 160 | json }}}{%- unless forloop.last -%},{%- endunless -%}
+                    {%- assign first_v = true -%}
+                    {%- for h in g_handles -%}
+                      {%- assign gp = all_products[h] -%}
+                      {%- if gp.id -%}
+                        {%- assign gv = gp.selected_or_first_available_variant -%}
+                        {%- unless first_v -%},{%- endunless -%}{%- assign first_v = false -%}
+                        {"id": {{ gv.id }}, "available": {{ gv.available }}, "title": {{ gp.title | json }}}
+                      {%- endif -%}
                     {%- endfor -%}
                   ]
                 }{%- unless forloop.last -%},{%- endunless -%}
@@ -251,33 +346,35 @@
         {%- for gt in gift_tier_list -%}
           {%- liquid
             assign n = gt | plus: 0
-            assign k_min = 'sf_rw_t' | append: n | append: '_min'
-            if by_qty
-              assign t_min = settings[k_min]
-            else
-              assign t_min = settings[k_min] | times: 100
-            endif
-            assign k_mode = 'sf_rw_t' | append: n | append: '_gift_mode'
-            assign k_products = 'sf_rw_t' | append: n | append: '_products'
-            assign k_desc = 'sf_rw_t' | append: n | append: '_desc'
+            assign i0 = n | minus: 1
+            assign g_min = T_min[i0] | remove_first: 'x' | plus: 0
+            unless by_qty
+              assign g_min = g_min | times: 100
+            endunless
+            assign g_mode = T_gmode[i0] | remove_first: 'x'
+            assign g_desc = T_desc[i0] | remove_first: 'x'
+            assign g_handles = T_gift[i0] | remove_first: 'x' | split: ','
           -%}
-          {%- if total >= t_min and settings[k_mode] == 'popup' and settings[k_products].size > 0 -%}
+          {%- if total >= g_min and g_mode == 'popup' and g_handles.size > 0 -%}
             <div class="sf-rw__gift">
               <button type="button" class="sf-rw__gift-btn" data-sf-gift-open="{{ n }}" aria-expanded="false">
-                🎁 Choose your {{ settings[k_desc] | default: 'free gift' | downcase }}
+                🎁 Choose your {{ g_desc | default: 'free gift' | downcase }}
               </button>
               <div class="sf-rw__gift-list" data-sf-gift-list="{{ n }}" hidden>
-                {%- for gp in settings[k_products] -%}
-                  {%- assign gv = gp.selected_or_first_available_variant -%}
-                  <div class="sf-rw__gift-item">
-                    {%- if gp.featured_image -%}
-                      {{ gp.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy', alt: gp.title }}
-                    {%- endif -%}
-                    <span class="sf-rw__gift-name">{{ gp.title }}</span>
-                    <button type="button" class="sf-rw__gift-add" data-sf-gift-add="{{ gv.id }}" data-tier="{{ n }}"{% unless gv.available %} disabled{% endunless %}>
-                      {%- if gv.available -%}Add{%- else -%}Sold out{%- endif -%}
-                    </button>
-                  </div>
+                {%- for h in g_handles -%}
+                  {%- assign gp = all_products[h] -%}
+                  {%- if gp.id -%}
+                    {%- assign gv = gp.selected_or_first_available_variant -%}
+                    <div class="sf-rw__gift-item">
+                      {%- if gp.featured_image -%}
+                        {{ gp.featured_image | image_url: width: 120 | image_tag: width: 52, height: 52, loading: 'lazy', alt: gp.title }}
+                      {%- endif -%}
+                      <span class="sf-rw__gift-name">{{ gp.title }}</span>
+                      <button type="button" class="sf-rw__gift-add" data-sf-gift-add="{{ gv.id }}" data-tier="{{ n }}"{% unless gv.available %} disabled{% endunless %}>
+                        {%- if gv.available -%}Add{%- else -%}Sold out{%- endif -%}
+                      </button>
+                    </div>
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
             </div>

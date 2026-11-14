@@ -1,0 +1,18 @@
+# DailyDip Rewards: App Home page ("Cart rewards") inside the Shopify admin.
+# Replace the file the CLI created at extensions/app-home/shopify.extension.toml with this one,
+# but KEEP the `uid` line the CLI generated (paste it below where shown).
+api_version = "2026-07"
+
+[[extensions]]
+name = "t:name"
+handle = "app-home"
+type = "ui_extension"
+# uid = "PASTE-THE-UID-THE-CLI-GENERATED-HERE"
+
+[[extensions.targeting]]
+module = "./src/AppHome.jsx"
+target = "admin.app.home.render"
+
+[access_scopes]
+# Discounts: create / update the reward discounts. Metafields on the shop need no extra scope.
+scopes = "read_discounts,write_discounts"

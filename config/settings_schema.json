@@ -1182,7 +1182,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "A reward progress bar in the cart drawer with up to 5 tiers. Important: these settings only change what the cart shows. The real discounts at checkout are Shopify automatic discounts (Discounts in your admin), so when you change a tier here, update its matching discount too."
+        "content": "A reward progress bar in the cart drawer with up to 5 tiers. Once the DailyDip Rewards app is installed and saved, the tiers, measure, multi-tier rule and final message come from the app (Apps → DailyDip Rewards), which also keeps the checkout discounts in sync, and the tier fields below are ignored. Until then, the fields below are used for the cart bar only."
       },
       {
         "type": "checkbox",
