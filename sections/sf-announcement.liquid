@@ -1,0 +1,146 @@
+{%- comment -%}
+  sf-announcement — DailyDip announcement bar.
+  Green strip with a faint leaf pattern and a scalloped tea-bag edge. Each message
+  can have an icon, a tap-to-copy code sticker and a link. Shows one message at a
+  time (rotate) or scrolls them all in a ticker (marquee).
+  Styles: assets/sf-announcement.css · Script: assets/sf-announcement.js
+{%- endcomment -%}
+{{ 'sf-announcement.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-announcement.js' | asset_url }}" defer></script>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-ann-bg: {{ section.settings.c_bg }};
+    --sf-ann-text: {{ section.settings.c_text }};
+    --sf-ann-ico: {{ section.settings.c_icon }};
+    --sf-ann-chip: {{ section.settings.c_chip }};
+  }
+</style>
+
+{%- assign count = section.blocks.size -%}
+<sf-announce
+  class="sf-ann sf-ann--{{ section.settings.mode }}{% if section.settings.scallop %} sf-ann--scallop{% endif %}{% if section.settings.pattern %} sf-ann--pattern{% endif %}"
+  data-mode="{{ section.settings.mode }}"
+  data-interval="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.speed }}"
+  role="region"
+  aria-label="{{ 'general.accessibility.announcements' | t | default: 'Announcements' }}"
+>
+  {%- if count > 0 -%}
+    <div class="sf-ann__inner">
+      {%- if section.settings.mode == 'rotate' and count > 1 and section.settings.arrows -%}
+        <button type="button" class="sf-ann__nav sf-ann__nav--prev" data-sf-ann-prev aria-label="Previous message">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+      {%- endif -%}
+
+      <div class="sf-ann__viewport">
+        <div class="sf-ann__track" data-sf-ann-track>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign b = block.settings
+              assign tag = 'div'
+              if b.link != blank
+                assign tag = 'a'
+              endif
+            -%}
+            <div
+              class="sf-ann__item{% if forloop.first %} is-in{% endif %}"
+              data-index="{{ forloop.index0 }}"
+              {%- unless forloop.first or section.settings.mode == 'marquee' %} aria-hidden="true"{% endunless %}
+              {{ block.shopify_attributes }}
+            >
+              {%- if b.icon != 'none' -%}
+                <span class="sf-ann__ico">{% render 'sf-icon', name: b.icon %}</span>
+              {%- endif -%}
+              <{{ tag }} class="sf-ann__text"{% if b.link != blank %} href="{{ b.link }}"{% endif %}>{{ b.text }}</{{ tag }}>
+              {%- if b.code != blank -%}
+                <button type="button" class="sf-ann__code" data-sf-ann-code="{{ b.code | escape }}" aria-label="Copy code {{ b.code | escape }}">
+                  <span class="sf-ann__code-txt">{{ b.code | escape }}</span>
+                  <span class="sf-ann__code-done" aria-hidden="true">Copied!</span>
+                </button>
+              {%- endif -%}
+              {%- if b.link != blank and b.link_label != blank -%}
+                <a class="sf-ann__link" href="{{ b.link }}" tabindex="-1">{{ b.link_label | escape }} <span aria-hidden="true">&rarr;</span></a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- if section.settings.mode == 'rotate' and count > 1 and section.settings.arrows -%}
+        <button type="button" class="sf-ann__nav sf-ann__nav--next" data-sf-ann-next aria-label="Next message">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      {%- endif -%}
+    </div>
+    <span class="sf-ann__live visually-hidden" aria-live="polite"></span>
+  {%- endif -%}
+</sf-announce>
+
+{% schema %}
+{
+  "name": "SF · Announcement bar",
+  "tag": "div",
+  "class": "sf-ann-section",
+  "enabled_on": { "groups": ["header"] },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "select", "id": "mode", "label": "Style", "default": "rotate",
+      "options": [
+        { "value": "rotate", "label": "One message at a time" },
+        { "value": "marquee", "label": "Scrolling ticker" }
+      ]
+    },
+    { "type": "range", "id": "autoplay", "label": "Change message every", "min": 2, "max": 10, "step": 1, "unit": "s", "default": 4, "info": "One message at a time only." },
+    { "type": "range", "id": "speed", "label": "Ticker speed", "min": 20, "max": 120, "step": 5, "unit": "px", "default": 45, "info": "Pixels per second. Scrolling ticker only." },
+    { "type": "checkbox", "id": "arrows", "label": "Arrows on desktop", "default": true },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "scallop", "label": "Scalloped tea-bag edge", "default": true },
+    { "type": "checkbox", "id": "pattern", "label": "Leaf pattern", "default": true },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#1f7a35" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "c_icon", "label": "Icon bubble", "default": "#c8f169" },
+    { "type": "color", "id": "c_chip", "label": "Code sticker", "default": "#ffd23f" }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Free delivery on orders over ₹399" },
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "truck", "label": "Delivery" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "cup-steam", "label": "Tea cup" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "percent", "label": "Percent" },
+            { "value": "tag", "label": "Price tag" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "star", "label": "Star" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "shield", "label": "Shield" }
+          ]
+        },
+        { "type": "text", "id": "code", "label": "Discount code", "info": "Shows as a sticker. Tapping it copies the code." },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now", "info": "Shown on desktop. On phones the message itself is the link." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Announcement bar",
+      "blocks": [
+        { "type": "message", "settings": { "text": "Free delivery on orders over ₹399", "icon": "truck" } },
+        { "type": "message", "settings": { "text": "Small sips, a healthier you", "icon": "leaf" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
