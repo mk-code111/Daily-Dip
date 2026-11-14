@@ -66,6 +66,7 @@
         "settings": {}
       }
     },
-    "cart_shipping_calculator": false
+    "cart_shipping_calculator": false,
+    "sf_rw_mode": "highest"
   }
 }

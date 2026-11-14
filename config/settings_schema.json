@@ -1295,7 +1295,7 @@
         "type": "radio",
         "id": "sf_rw_mode",
         "label": "Rewards",
-        "default": "all",
+        "default": "highest",
         "options": [
           {
             "value": "highest",
@@ -1306,7 +1306,7 @@
             "label": "Give rewards from all tiers"
           }
         ],
-        "info": "Changes how the cart labels unlocked rewards. Match it with your discounts' combination settings in the admin."
+        "info": "Keep this on \"Only give the highest tier\" while the 5% / 10% discounts are set not to combine with each other in Discounts (free delivery still combines with them)."
       },
       {
         "type": "header",
