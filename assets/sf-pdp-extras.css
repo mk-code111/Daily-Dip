@@ -93,10 +93,22 @@
 .sf-ig__head { text-align: center; margin-bottom: 28px; }
 .sf-ig__text { max-width: 560px; margin: 12px auto 0; font-size: 15px; line-height: 1.6; opacity: .75; }
 .sf-ig__empty { text-align: center; padding: 14px; border: 2px dashed var(--sf-ink, #1c1c1c); border-radius: 16px; font-size: 14px; }
-.sf-ig__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@media (min-width: 750px) { .sf-ig__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; } }
-@media (min-width: 990px) { .sf-ig__grid { grid-template-columns: repeat(var(--sf-ig-cols, 5), minmax(0, 1fr)); gap: 20px; } }
-.sf-ig__item { perspective: 900px; }
+/* centred wrapping row: 1–6 cards always look balanced (odd last card sits in the middle) */
+.sf-ig__grid {
+  --gap: 14px; --per: 2;
+  list-style: none; margin: 0 auto; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 18px var(--gap);
+}
+.sf-ig__item { perspective: 900px; flex: 0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per)); min-width: 0; }
+@media (min-width: 750px) { .sf-ig__grid { --gap: 18px; --per: 3; } }
+@media (min-width: 990px) {
+  /* as many per row as there are cards, up to the max setting; cards never get wider than 260px */
+  .sf-ig__grid { --gap: 20px; --per: min(var(--n, 5), var(--sf-ig-cols, 6)); }
+  .sf-ig__item { max-width: 260px; }
+}
+/* a single card on phones shouldn't stretch edge to edge */
+.sf-ig__grid[data-count="1"] .sf-ig__item { flex-basis: min(100%, 260px); }
+@media (max-width: 749px) { .sf-ig__grid[data-count="1"] .sf-ig__item { flex-basis: 70%; } }
 .sf-ig__grid.is-ready:not(.is-in) .sf-ig__item { opacity: 0; transform: translateY(20px) rotate(-3deg); }
 .sf-ig__item { transition: opacity .5s ease calc(var(--i, 0) * .08s), transform .6s cubic-bezier(.3, 1.4, .5, 1) calc(var(--i, 0) * .08s); }
 

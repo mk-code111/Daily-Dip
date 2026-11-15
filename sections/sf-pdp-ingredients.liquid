@@ -8,21 +8,32 @@
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
-  assign shown = 0
-  for block in section.blocks
-    assign ok = true
-    if block.settings.products != blank
-      assign ok = false
-      for p in block.settings.products
-        if p.id == product.id
-          assign ok = true
-        endif
-      endfor
-    endif
-    if ok
-      assign shown = shown | plus: 1
+  assign mf_count = 0
+  for i in (1..6)
+    assign key = 'ingredient_' | append: i
+    assign ref = product.metafields.custom[key].value
+    if ref != blank and ref.name.value != blank
+      assign mf_count = mf_count | plus: 1
     endif
   endfor
+
+  assign shown = mf_count
+  if mf_count == 0
+    for block in section.blocks
+      assign ok = true
+      if block.settings.products != blank
+        assign ok = false
+        for p in block.settings.products
+          if p.id == product.id
+            assign ok = true
+          endif
+        endfor
+      endif
+      if ok
+        assign shown = shown | plus: 1
+      endif
+    endfor
+  endif
 -%}
 {%- if shown > 0 or request.design_mode -%}
 {{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
@@ -41,11 +52,32 @@
     </div>
 
     {%- if shown == 0 -%}
-      <p class="sf-ig__empty">No ingredient cards are set for this product yet. Add Ingredient blocks and pick this product under "Show on these products".</p>
+      <p class="sf-ig__empty">No ingredients for this product yet. Pick them in Products → this product → Metafields → Ingredient 1–6.</p>
     {%- endif -%}
 
-    <ul class="sf-ig__grid" role="list" data-sf-ig>
+    <ul class="sf-ig__grid" role="list" data-sf-ig data-count="{{ shown }}" style="--n: {{ shown }};">
       {%- assign n = 0 -%}
+      {%- if mf_count > 0 -%}
+        {%- for i in (1..6) -%}
+          {%- liquid
+            assign key = 'ingredient_' | append: i
+            assign ref = product.metafields.custom[key].value
+          -%}
+          {%- if ref != blank and ref.name.value != blank -%}
+            {%- liquid
+              assign ig_name = ref.name.value
+              assign ig_tag = ref.tag.value
+              assign ig_benefit = ref.benefit.value
+              assign ig_goods = ref.good_for.value | split: ','
+              assign ig_img = ref.image.value
+              assign ig_art = ref.illustration.value | default: 'leaf' | downcase | strip
+              assign ig_tint = ref.colour.value | default: '#c8f169'
+            -%}
+            {%- render 'sf-ingredient-card', name: ig_name, tag: ig_tag, benefit: ig_benefit, goods: ig_goods, image: ig_img, art: ig_art, tint: ig_tint, i: n, hint: s.flip_hint, attrs: '' -%}
+            {%- assign n = n | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
       {%- for block in section.blocks -%}
         {%- liquid
           assign b = block.settings
@@ -61,38 +93,12 @@
         -%}
         {%- if ok -%}
           {%- assign goods = b.good_for | split: ',' -%}
-          <li class="sf-ig__item" style="--tint: {{ b.tint }}; --i: {{ n }};" {{ block.shopify_attributes }}>
-            <button type="button" class="sf-ig__card" aria-pressed="false" aria-label="{{ b.name | escape }}: {{ s.flip_hint | escape }}" data-sf-ig-card>
-              <span class="sf-ig__inner">
-                <span class="sf-ig__face sf-ig__front">
-                  <span class="sf-ig__art">
-                    {%- if b.image != blank -%}
-                      {{ b.image | image_url: width: 300 | image_tag: alt: '', loading: 'lazy' }}
-                    {%- else -%}
-                      {%- render 'sf-brew-art', name: b.art -%}
-                    {%- endif -%}
-                  </span>
-                  <span class="sf-ig__name">{{ b.name | escape }}</span>
-                  {%- if b.tag != blank -%}<span class="sf-ig__tag">{{ b.tag | escape }}</span>{%- endif -%}
-                  <span class="sf-ig__flip" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5"/><path d="M20 4v4.5h-4.5"/></svg>
-                  </span>
-                </span>
-                <span class="sf-ig__face sf-ig__back">
-                  <span class="sf-ig__bname">{{ b.name | escape }}</span>
-                  <span class="sf-ig__benefit">{{ b.benefit | strip_html }}</span>
-                  {%- if b.good_for != blank -%}
-                    <span class="sf-ig__goods">
-                      {%- for g in goods -%}{%- assign gg = g | strip -%}{%- if gg != blank -%}<span>{{ gg | escape }}</span>{%- endif -%}{%- endfor -%}
-                    </span>
-                  {%- endif -%}
-                </span>
-              </span>
-            </button>
-          </li>
+          {%- capture attrs -%}{{ block.shopify_attributes }}{%- endcapture -%}
+          {%- render 'sf-ingredient-card', name: b.name, tag: b.tag, benefit: b.benefit, goods: goods, image: b.image, art: b.art, tint: b.tint, i: n, hint: s.flip_hint, attrs: attrs -%}
           {%- assign n = n | plus: 1 -%}
         {%- endif -%}
       {%- endfor -%}
+      {%- endif -%}
     </ul>
 
     {%- if s.note != blank -%}<p class="sf-ig__note">{{ s.note | escape }}</p>{%- endif -%}
@@ -112,7 +118,8 @@
     { "type": "inline_richtext", "id": "title", "label": "Title", "default": "What's in your <em>cup</em>" },
     { "type": "text", "id": "text", "label": "Text", "default": "Real botanicals, nothing hidden. Tap a card to see what each one does." },
     { "type": "text", "id": "flip_hint", "label": "Flip hint (screen readers)", "default": "tap to see what it does" },
-    { "type": "range", "id": "cols_desktop", "label": "Cards per row: desktop", "min": 3, "max": 6, "step": 1, "default": 5 },
+    { "type": "paragraph", "content": "Ingredients come from each product's metafields Ingredient 1–6 (Content → Metaobjects → Ingredient). The blocks below are only used for products with none set." },
+    { "type": "range", "id": "cols_desktop", "label": "Max cards per row: desktop", "min": 3, "max": 6, "step": 1, "default": 6 },
     { "type": "text", "id": "note", "label": "Small print", "default": "Traditional uses shown. Not intended to diagnose, treat or cure any condition." },
     { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
     { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
@@ -121,7 +128,7 @@
   "blocks": [
     {
       "type": "ingredient",
-      "name": "Ingredient",
+      "name": "Ingredient (fallback)",
       "settings": [
         { "type": "text", "id": "name", "label": "Name", "default": "Ginger" },
         { "type": "text", "id": "tag", "label": "Tag", "default": "Warming" },
