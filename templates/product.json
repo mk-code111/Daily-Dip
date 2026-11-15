@@ -278,8 +278,8 @@
           "settings": {
             "air_blockreviews_summaryHeading": "Reviews",
             "air_blockreviews_layout": "list",
-            "air_blockreviews_singleStarColor": "#16A086",
-            "air_blockreviews_primaryColor": "#121212"
+            "air_blockreviews_singleStarColor": "#ffd23f",
+            "air_blockreviews_primaryColor": "#ffc21a"
           }
         }
       },
