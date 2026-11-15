@@ -287,11 +287,144 @@
         "ag_product_reviews_app_block_review_list_QWd6gg"
       ],
       "settings": {}
+    },
+    "ingredients": {
+      "type": "sf-pdp-ingredients",
+      "blocks": {
+        "ing_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Blue Pea Flower",
+            "tag": "Antioxidant",
+            "art": "flower",
+            "benefit": "Rich in natural antioxidants, and the reason your cup turns a beautiful blue.",
+            "good_for": "Antioxidants,Calm",
+            "tint": "#bfe6ff",
+            "products": [
+              "malanchi-acne-control-serum"
+            ]
+          }
+        },
+        "ing_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Ginger",
+            "tag": "Warming",
+            "art": "ginger",
+            "benefit": "A warming root traditionally used to ease digestion and soothe the tummy.",
+            "good_for": "Digestion,Warmth",
+            "tint": "#ffd23f",
+            "products": [
+              "malanchi-acne-control-serum"
+            ]
+          }
+        },
+        "ing_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Cinnamon",
+            "tag": "Sweet spice",
+            "art": "cinnamon",
+            "benefit": "Adds a gentle natural sweetness and warmth, with zero added sugar.",
+            "good_for": "Flavour,Warmth",
+            "tint": "#ffc2b8",
+            "products": [
+              "malanchi-acne-control-serum"
+            ]
+          }
+        },
+        "ing_4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Fennel",
+            "tag": "Gut friendly",
+            "art": "fennel",
+            "benefit": "Traditionally used to ease bloating and support comfortable digestion.",
+            "good_for": "Bloating,Digestion",
+            "tint": "#c8f169",
+            "products": [
+              "malanchi-acne-control-serum"
+            ]
+          }
+        },
+        "ing_5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Dandelion Root",
+            "tag": "Cleansing",
+            "art": "root",
+            "benefit": "An earthy root traditionally used to support the body's natural cleansing.",
+            "good_for": "Cleansing,Liver",
+            "tint": "#e9f7d0",
+            "products": [
+              "malanchi-acne-control-serum"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5"
+      ],
+      "settings": {}
+    },
+    "brew": {
+      "type": "sf-pdp-brew",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "art": "kettle",
+            "title": "Boil water",
+            "text": "Heat 200 ml fresh water, then let it rest a moment.",
+            "tint": "#bfe6ff"
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "art": "bag",
+            "title": "Dip the bag",
+            "text": "Drop in one Dailydip bag.",
+            "tint": "#c8f169"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "art": "timer",
+            "title": "Steep 3–5 min",
+            "text": "Longer steep, bolder taste.",
+            "tint": "#ffd23f"
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "art": "cup",
+            "title": "Sip & repeat",
+            "text": "Enjoy daily for best results.",
+            "tint": "#ffc2b8"
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "banner",
+    "ingredients",
+    "brew",
     "know_more",
     "reviews",
     "related",
