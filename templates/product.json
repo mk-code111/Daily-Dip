@@ -304,7 +304,7 @@
         "chip_2": "90–95°C, just off the boil",
         "chip_3": "Steep 3–5 min",
         "show_timer": true,
-        "timer_minutes": 4,
+        "timer_minutes": 2,
         "timer_title": "Steep with us",
         "timer_start": "Start steeping",
         "timer_pause": "Pause",
@@ -364,6 +364,24 @@
         "pb": 16
       }
     },
+    "1794724834a7c29a4c": {
+      "type": "apps",
+      "blocks": {
+        "ag_product_reviews_app_block_review_list_QWd6gg": {
+          "type": "shopify://apps/ag-product-reviews/blocks/app-block-review-list/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
+          "settings": {
+            "air_blockreviews_summaryHeading": "Reviews",
+            "air_blockreviews_layout": "list",
+            "air_blockreviews_singleStarColor": "#ffd23f",
+            "air_blockreviews_primaryColor": "#ffc21a"
+          }
+        }
+      },
+      "block_order": [
+        "ag_product_reviews_app_block_review_list_QWd6gg"
+      ],
+      "settings": {}
+    },
     "related": {
       "type": "sf-pdp-related",
       "blocks": {
@@ -418,24 +436,6 @@
         "pt": 16,
         "pb": 48
       }
-    },
-    "1794724834a7c29a4c": {
-      "type": "apps",
-      "blocks": {
-        "ag_product_reviews_app_block_review_list_QWd6gg": {
-          "type": "shopify://apps/ag-product-reviews/blocks/app-block-review-list/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
-          "settings": {
-            "air_blockreviews_summaryHeading": "Reviews",
-            "air_blockreviews_layout": "list",
-            "air_blockreviews_singleStarColor": "#ffd23f",
-            "air_blockreviews_primaryColor": "#ffc21a"
-          }
-        }
-      },
-      "block_order": [
-        "ag_product_reviews_app_block_review_list_QWd6gg"
-      ],
-      "settings": {}
     }
   },
   "order": [
