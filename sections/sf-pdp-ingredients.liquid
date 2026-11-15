@@ -55,7 +55,7 @@
       <p class="sf-ig__empty">No ingredients for this product yet. Pick them in Products → this product → Metafields → Ingredient 1–6.</p>
     {%- endif -%}
 
-    <ul class="sf-ig__grid" role="list" data-sf-ig data-count="{{ shown }}" style="--n: {{ shown }};">
+    <ul class="sf-ig__grid" role="list" data-sf-ig data-count="{{ shown }}" data-source="{% if mf_count > 0 %}metafields{% else %}blocks{% endif %}" style="--n: {{ shown }};">
       {%- assign n = 0 -%}
       {%- if mf_count > 0 -%}
         {%- for i in (1..6) -%}
