@@ -208,7 +208,10 @@
   .sf-cp__qty { height: 36px; }
   .sf-cp__qty button { width: 32px; }
   .sf-cp__qty input { width: 38px; font-size: 15px; }
-  .sf-cp__pack { min-width: 0; padding: 4px 8px 5px; }
+  .sf-cp__packs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+  .sf-cp__pack { min-width: 0; padding: 4px 6px 5px; border-radius: 10px; }
+  .sf-cp__pack-name { font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .sf-cp__pack-price { font-size: 12px; }
   .sf-cp__card { padding: 16px; border-radius: 22px; box-shadow: 4px 4px 0 var(--sf-ink); }
   .sf-cp__card-title { font-size: 20px; }
   .sf-cp__sum .is-total dd { font-size: 24px; }
