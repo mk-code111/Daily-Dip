@@ -1,0 +1,100 @@
+{
+  "sections": {
+    "main": {
+      "type": "sf-cart-main",
+      "blocks": {
+        "trust_lock": {
+          "type": "trust",
+          "settings": {
+            "icon": "lock",
+            "text": "Secure checkout",
+            "tint": "#c8f169"
+          }
+        },
+        "trust_ship": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping",
+            "tint": "#ffd23f"
+          }
+        },
+        "trust_herb": {
+          "type": "trust",
+          "settings": {
+            "icon": "hand-leaf",
+            "text": "Natural herbs",
+            "tint": "#e9f7d0"
+          }
+        }
+      },
+      "block_order": [
+        "trust_lock",
+        "trust_ship",
+        "trust_herb"
+      ],
+      "settings": {}
+    },
+    "related": {
+      "type": "sf-product-cards",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "heading": "You may also like",
+        "subheading": "",
+        "product_list": [],
+        "collection": "bestsellers",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "load_fonts": true,
+        "c_bg": "#fbf8ef",
+        "pt": 16,
+        "pb": 56
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related"
+  ]
+}
