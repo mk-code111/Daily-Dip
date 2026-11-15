@@ -10,6 +10,7 @@
 
   /* re-render drawer + badges (same approach as SfCart in sf-pdp.js) */
   async function refreshCart() {
+    document.dispatchEvent(new CustomEvent('sf:cart-changed'));
     try {
       const res = await fetch(`${root}?sections=offcanvas-cart,cart-count-badge`);
       const sections = await res.json();
