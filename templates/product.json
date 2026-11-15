@@ -84,7 +84,9 @@
         "trust": {
           "type": "trust",
           "settings": {
-            "items": "🍃 | Tastes Fresh & Light\n☕ | Zero Caffeine\n🫖 | Plastic Free Teabags\n🚫 | No Added Sugar"
+            "items": "🍃 | Tastes Fresh & Light\n☕ | Zero Caffeine\n🫖 | Plastic Free Teabags\n🚫 | No Added Sugar",
+            "style": "circles",
+            "tints": "#c8f169,#ffd23f,#bfe6ff,#ffc2b8"
           }
         },
         "tabs": {
@@ -155,138 +157,6 @@
         "pt": 8,
         "pb": 8
       }
-    },
-    "know_more": {
-      "type": "sf-pdp-know-more",
-      "blocks": {
-        "item_1": {
-          "type": "item",
-          "settings": {
-            "title": "Ingredients & Allergies",
-            "content": "<p>Blue Pea Flower, Ginger, Cinnamon, Fennel, Dandelion Root. Add allergen statement here.</p>",
-            "open": false
-          }
-        },
-        "item_2": {
-          "type": "item",
-          "settings": {
-            "title": "Science & Certifications",
-            "content": "<p>Add certifications and ingredient research here.</p>",
-            "open": false
-          }
-        },
-        "item_3": {
-          "type": "item",
-          "settings": {
-            "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
-            "open": false
-          }
-        },
-        "item_4": {
-          "type": "item",
-          "settings": {
-            "title": "Benefits",
-            "content": "<p>Supports healthy digestion. Caffeine free with no added sugar.</p>",
-            "open": false
-          }
-        }
-      },
-      "block_order": [
-        "item_1",
-        "item_2",
-        "item_3",
-        "item_4"
-      ],
-      "settings": {
-        "heading": "Know more",
-        "intro": "<p>Everything inside the tin — what's in it, how to brew it and why it works.</p>",
-        "pt": 16,
-        "pb": 16
-      }
-    },
-    "reviews": {
-      "type": "sf-pdp-reviews",
-      "disabled": true,
-      "settings": {
-        "heading": "What our customers say",
-        "tags": "gut-friendly, digestion, taste, herbal-infusion, packaging",
-        "pt": 16,
-        "pb": 40
-      }
-    },
-    "related": {
-      "type": "sf-pdp-related",
-      "blocks": {
-        "benefit_qiXfqC": {
-          "type": "benefit",
-          "settings": {
-            "icon": "leaf",
-            "text": "Natural Ingredients"
-          }
-        },
-        "benefit_HqqpFN": {
-          "type": "benefit",
-          "settings": {
-            "icon": "drop",
-            "text": "Rich & Aromatic"
-          }
-        },
-        "benefit_y4y34L": {
-          "type": "benefit",
-          "settings": {
-            "icon": "cup",
-            "text": "Perfect for Daily Use"
-          }
-        }
-      },
-      "block_order": [
-        "benefit_qiXfqC",
-        "benefit_HqqpFN",
-        "benefit_y4y34L"
-      ],
-      "settings": {
-        "heading": "You may also like",
-        "subheading": "",
-        "intent": "related",
-        "limit": 8,
-        "per_mobile": "1.5",
-        "per_tablet": 2.5,
-        "per_desktop": 4,
-        "per_wide": 4,
-        "loop": true,
-        "autoplay": true,
-        "speed": 3,
-        "show_arrows": true,
-        "show_dots": true,
-        "ratio": "1",
-        "card_arrows": true,
-        "show_discount": true,
-        "new_label": "NEW",
-        "atc_label": "Add to cart",
-        "soldout_label": "Sold out",
-        "c_bg": "#ffffff",
-        "pt": 16,
-        "pb": 48
-      }
-    },
-    "1794724834a7c29a4c": {
-      "type": "apps",
-      "blocks": {
-        "ag_product_reviews_app_block_review_list_QWd6gg": {
-          "type": "shopify://apps/ag-product-reviews/blocks/app-block-review-list/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
-          "settings": {
-            "air_blockreviews_summaryHeading": "Reviews",
-            "air_blockreviews_layout": "list",
-            "air_blockreviews_singleStarColor": "#ffd23f",
-            "air_blockreviews_primaryColor": "#ffc21a"
-          }
-        }
-      },
-      "block_order": [
-        "ag_product_reviews_app_block_review_list_QWd6gg"
-      ],
-      "settings": {}
     },
     "ingredients": {
       "type": "sf-pdp-ingredients",
@@ -369,7 +239,17 @@
         "ing_4",
         "ing_5"
       ],
-      "settings": {}
+      "settings": {
+        "eyebrow": "Ingredient spotlight",
+        "title": "What's in your <em>cup</em>",
+        "text": "Real botanicals, nothing hidden. Tap a card to see what each one does.",
+        "flip_hint": "tap to see what it does",
+        "cols_desktop": 6,
+        "note": "Traditional uses shown. Not intended to diagnose, treat or cure any condition.",
+        "c_bg": "#ffffff",
+        "pt": 48,
+        "pb": 48
+      }
     },
     "brew": {
       "type": "sf-pdp-brew",
@@ -417,6 +297,144 @@
         "step_3",
         "step_4"
       ],
+      "settings": {
+        "eyebrow": "Brew guide",
+        "title": "How to <em>dip</em> it right",
+        "chip_1": "200 ml water",
+        "chip_2": "90–95°C, just off the boil",
+        "chip_3": "Steep 3–5 min",
+        "show_timer": true,
+        "timer_minutes": 4,
+        "timer_title": "Steep with us",
+        "timer_start": "Start steeping",
+        "timer_pause": "Pause",
+        "timer_again": "Brew another",
+        "timer_done": "Ready! Remove the bag and sip slowly ☕",
+        "c_bg": "#fbf8ef",
+        "pt": 48,
+        "pb": 48
+      }
+    },
+    "know_more": {
+      "type": "sf-pdp-know-more",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "title": "Ingredients & Allergies",
+            "content": "<p>Blue Pea Flower, Ginger, Cinnamon, Fennel, Dandelion Root. Add allergen statement here.</p>",
+            "open": false
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "title": "Science & Certifications",
+            "content": "<p>Add certifications and ingredient research here.</p>",
+            "open": false
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "title": "Directions",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "open": false
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "title": "Benefits",
+            "content": "<p>Supports healthy digestion. Caffeine free with no added sugar.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "heading": "Know more",
+        "intro": "<p>Everything inside the tin — what's in it, how to brew it and why it works.</p>",
+        "pt": 16,
+        "pb": 16
+      }
+    },
+    "related": {
+      "type": "sf-pdp-related",
+      "blocks": {
+        "benefit_qiXfqC": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural Ingredients"
+          }
+        },
+        "benefit_HqqpFN": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "text": "Rich & Aromatic"
+          }
+        },
+        "benefit_y4y34L": {
+          "type": "benefit",
+          "settings": {
+            "icon": "cup",
+            "text": "Perfect for Daily Use"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_qiXfqC",
+        "benefit_HqqpFN",
+        "benefit_y4y34L"
+      ],
+      "settings": {
+        "heading": "You may also like",
+        "subheading": "",
+        "intent": "related",
+        "limit": 8,
+        "per_mobile": "1.5",
+        "per_tablet": 2.5,
+        "per_desktop": 4,
+        "per_wide": 4,
+        "loop": true,
+        "autoplay": true,
+        "speed": 3,
+        "show_arrows": true,
+        "show_dots": true,
+        "ratio": "1",
+        "card_arrows": true,
+        "show_discount": true,
+        "new_label": "NEW",
+        "atc_label": "Add to cart",
+        "soldout_label": "Sold out",
+        "c_bg": "#ffffff",
+        "pt": 16,
+        "pb": 48
+      }
+    },
+    "1794724834a7c29a4c": {
+      "type": "apps",
+      "blocks": {
+        "ag_product_reviews_app_block_review_list_QWd6gg": {
+          "type": "shopify://apps/ag-product-reviews/blocks/app-block-review-list/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
+          "settings": {
+            "air_blockreviews_summaryHeading": "Reviews",
+            "air_blockreviews_layout": "list",
+            "air_blockreviews_singleStarColor": "#ffd23f",
+            "air_blockreviews_primaryColor": "#ffc21a"
+          }
+        }
+      },
+      "block_order": [
+        "ag_product_reviews_app_block_review_list_QWd6gg"
+      ],
       "settings": {}
     }
   },
@@ -426,8 +444,7 @@
     "ingredients",
     "brew",
     "know_more",
-    "reviews",
-    "related",
-    "1794724834a7c29a4c"
+    "1794724834a7c29a4c",
+    "related"
   ]
 }
