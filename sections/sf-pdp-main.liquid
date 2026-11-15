@@ -328,17 +328,32 @@
 
             {%- when 'trust' -%}
               {%- assign trust_lines = block.settings.items | newline_to_br | split: '<br />' -%}
-              <div class="sf-trust" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign t_style = block.settings.style | default: 'circles'
+                assign t_tints = block.settings.tints | default: '#c8f169,#ffd23f,#bfe6ff,#ffc2b8' | remove: ' ' | split: ','
+              -%}
+              <div class="sf-trust sf-trust--{{ t_style }}" data-sf-trust {{ block.shopify_attributes }}>
                 {%- for line in trust_lines -%}
                   {%- assign parts = line | strip | split: '|' -%}
                   {%- if parts.size > 0 -%}
                     {%- assign t_icon = parts[0] | strip -%}
                     {%- assign t_label = parts[1] | strip -%}
                     {%- if parts.size == 1 -%}{%- assign t_label = t_icon -%}{%- assign t_icon = '' -%}{%- endif -%}
-                    <div>
-                      {%- if t_icon != blank -%}<span class="sf-trust__icon" aria-hidden="true">{{ t_icon }}</span>{%- endif -%}
-                      {{ t_label }}
-                    </div>
+                    {%- assign ti = forloop.index0 | modulo: t_tints.size -%}
+                    {%- if t_style == 'circles' -%}
+                      <div class="sf-trust__item" style="--tint: {{ t_tints[ti] }}; --i: {{ forloop.index0 }};">
+                        <span class="sf-trust__bubble" aria-hidden="true">
+                          <span class="sf-trust__tea"><svg viewBox="0 0 120 12" preserveAspectRatio="none"><path d="M0 6 Q15 0 30 6 T60 6 T90 6 T120 6 V12 H0Z"/></svg></span>
+                          {%- if t_icon != blank -%}<span class="sf-trust__icon">{{ t_icon }}</span>{%- endif -%}
+                        </span>
+                        <span class="sf-trust__label">{{ t_label }}</span>
+                      </div>
+                    {%- else -%}
+                      <div>
+                        {%- if t_icon != blank -%}<span class="sf-trust__icon" aria-hidden="true">{{ t_icon }}</span>{%- endif -%}
+                        {{ t_label }}
+                      </div>
+                    {%- endif -%}
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -435,167 +450,577 @@
   "tag": "section",
   "class": "sf-pdp-main-section",
   "settings": [
-    { "type": "header", "content": "Gallery" },
-    { "type": "text", "id": "tag", "label": "Image tag", "default": "NEW", "info": "Leave empty to hide." },
     {
-      "type": "select", "id": "img_ratio", "label": "Image ratio", "default": "square",
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Image tag",
+      "default": "NEW",
+      "info": "Leave empty to hide."
+    },
+    {
+      "type": "select",
+      "id": "img_ratio",
+      "label": "Image ratio",
+      "default": "square",
       "options": [
-        { "value": "square", "label": "Square" },
-        { "value": "portrait", "label": "Portrait (4:5)" },
-        { "value": "landscape", "label": "Landscape (4:3)" }
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (4:3)"
+        }
       ]
     },
     {
-      "type": "select", "id": "img_fit", "label": "Image fit", "default": "cover",
+      "type": "select",
+      "id": "img_fit",
+      "label": "Image fit",
+      "default": "cover",
       "options": [
-        { "value": "cover", "label": "Fill (crop)" },
-        { "value": "contain", "label": "Fit (no crop)" }
-      ]
-    },
-    { "type": "header", "content": "Cart" },
-    {
-      "type": "select", "id": "after_add", "label": "After add to cart", "default": "drawer",
-      "options": [
-        { "value": "drawer", "label": "Open cart drawer" },
-        { "value": "cart", "label": "Go to cart page" },
-        { "value": "none", "label": "Stay on page" }
-      ]
-    },
-    { "type": "text", "id": "added_label", "label": "Added confirmation text", "default": "ADDED ✓" },
-    {
-      "type": "select", "id": "sticky", "label": "Sticky add to cart bar", "default": "all",
-      "options": [
-        { "value": "mobile", "label": "Mobile only" },
-        { "value": "all", "label": "All devices" },
-        { "value": "off", "label": "Off" }
+        {
+          "value": "cover",
+          "label": "Fill (crop)"
+        },
+        {
+          "value": "contain",
+          "label": "Fit (no crop)"
+        }
       ]
     },
     {
-      "type": "select", "id": "sticky_buttons", "label": "Sticky bar buttons", "default": "both",
+      "type": "header",
+      "content": "Cart"
+    },
+    {
+      "type": "select",
+      "id": "after_add",
+      "label": "After add to cart",
+      "default": "drawer",
       "options": [
-        { "value": "both", "label": "Add to cart + Buy it now" },
-        { "value": "buy", "label": "Buy it now only" },
-        { "value": "atc", "label": "Add to cart only" }
+        {
+          "value": "drawer",
+          "label": "Open cart drawer"
+        },
+        {
+          "value": "cart",
+          "label": "Go to cart page"
+        },
+        {
+          "value": "none",
+          "label": "Stay on page"
+        }
       ]
     },
-    { "type": "text", "id": "sticky_label", "label": "Sticky add to cart text", "default": "Add to cart" },
-    { "type": "text", "id": "sticky_buy_label", "label": "Sticky buy it now text", "default": "Buy now" },
-    { "type": "checkbox", "id": "sticky_jump", "label": "Bounce sticky buy it now", "default": true },
-    { "type": "text", "id": "save_label", "label": "Savings text", "default": "Save [percent]%", "info": "[percent] is replaced with the discount." },
-    { "type": "header", "content": "Colours" },
-    { "type": "paragraph", "content": "Shared by every SF product section on the page." },
-    { "type": "color", "id": "c_bg", "label": "Section background", "default": "#ffffff" },
-    { "type": "color", "id": "c_ink", "label": "Ink (text, borders, shadows)", "default": "#1c1c1c" },
-    { "type": "color", "id": "c_card", "label": "Card background", "default": "#ffffff" },
-    { "type": "color", "id": "c_green", "label": "Primary (price, buttons)", "default": "#1f7a35" },
-    { "type": "color", "id": "c_lime", "label": "Selected pack / accent", "default": "#c8f169" },
-    { "type": "color", "id": "c_yellow", "label": "Badges / active tab", "default": "#ffd23f" },
-    { "type": "color", "id": "c_red", "label": "MRP / stock / shipping strip", "default": "#ff5a4d" },
-    { "type": "color", "id": "c_chip", "label": "Benefit chip background", "default": "#e9f7d0" },
-    { "type": "color", "id": "c_mute", "label": "Muted text", "default": "#6b6557" },
-    { "type": "header", "content": "Typography" },
-    { "type": "checkbox", "id": "load_fonts", "label": "Use Fredoka + Poppins", "default": true, "info": "Off = inherit the theme fonts." },
-    { "type": "header", "content": "Spacing" },
-    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 16 },
-    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 }
+    {
+      "type": "text",
+      "id": "added_label",
+      "label": "Added confirmation text",
+      "default": "ADDED ✓"
+    },
+    {
+      "type": "select",
+      "id": "sticky",
+      "label": "Sticky add to cart bar",
+      "default": "all",
+      "options": [
+        {
+          "value": "mobile",
+          "label": "Mobile only"
+        },
+        {
+          "value": "all",
+          "label": "All devices"
+        },
+        {
+          "value": "off",
+          "label": "Off"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "sticky_buttons",
+      "label": "Sticky bar buttons",
+      "default": "both",
+      "options": [
+        {
+          "value": "both",
+          "label": "Add to cart + Buy it now"
+        },
+        {
+          "value": "buy",
+          "label": "Buy it now only"
+        },
+        {
+          "value": "atc",
+          "label": "Add to cart only"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "sticky_label",
+      "label": "Sticky add to cart text",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "sticky_buy_label",
+      "label": "Sticky buy it now text",
+      "default": "Buy now"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_jump",
+      "label": "Bounce sticky buy it now",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "save_label",
+      "label": "Savings text",
+      "default": "Save [percent]%",
+      "info": "[percent] is replaced with the discount."
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shared by every SF product section on the page."
+    },
+    {
+      "type": "color",
+      "id": "c_bg",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "c_ink",
+      "label": "Ink (text, borders, shadows)",
+      "default": "#1c1c1c"
+    },
+    {
+      "type": "color",
+      "id": "c_card",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "c_green",
+      "label": "Primary (price, buttons)",
+      "default": "#1f7a35"
+    },
+    {
+      "type": "color",
+      "id": "c_lime",
+      "label": "Selected pack / accent",
+      "default": "#c8f169"
+    },
+    {
+      "type": "color",
+      "id": "c_yellow",
+      "label": "Badges / active tab",
+      "default": "#ffd23f"
+    },
+    {
+      "type": "color",
+      "id": "c_red",
+      "label": "MRP / stock / shipping strip",
+      "default": "#ff5a4d"
+    },
+    {
+      "type": "color",
+      "id": "c_chip",
+      "label": "Benefit chip background",
+      "default": "#e9f7d0"
+    },
+    {
+      "type": "color",
+      "id": "c_mute",
+      "label": "Muted text",
+      "default": "#6b6557"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "checkbox",
+      "id": "load_fonts",
+      "label": "Use Fredoka + Poppins",
+      "default": true,
+      "info": "Off = inherit the theme fonts."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
   ],
   "blocks": [
-    { "type": "@app" },
-    { "type": "title", "name": "Title", "limit": 1, "settings": [] },
     {
-      "type": "rating", "name": "Rating", "limit": 1,
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "rating",
+      "name": "Rating",
+      "limit": 1,
       "settings": [
-        { "type": "text", "id": "reviews_label", "label": "Label", "default": "reviews" },
-        { "type": "paragraph", "content": "Reads the standard reviews.rating / reviews.rating_count metafields. If your reviews app doesn't fill them, remove this block and add the app's star rating block instead." }
+        {
+          "type": "text",
+          "id": "reviews_label",
+          "label": "Label",
+          "default": "reviews"
+        },
+        {
+          "type": "paragraph",
+          "content": "Reads the standard reviews.rating / reviews.rating_count metafields. If your reviews app doesn't fill them, remove this block and add the app's star rating block instead."
+        }
       ]
     },
     {
-      "type": "price", "name": "Price", "limit": 1,
+      "type": "price",
+      "name": "Price",
+      "limit": 1,
       "settings": [
-        { "type": "text", "id": "tax_note", "label": "Note under price", "default": "Inclusive of all taxes" }
+        {
+          "type": "text",
+          "id": "tax_note",
+          "label": "Note under price",
+          "default": "Inclusive of all taxes"
+        }
       ]
     },
     {
-      "type": "stock", "name": "Low stock bar", "limit": 1,
+      "type": "stock",
+      "name": "Low stock bar",
+      "limit": 1,
       "settings": [
-        { "type": "range", "id": "threshold", "label": "Show when stock is at or below", "min": 1, "max": 50, "step": 1, "default": 20 },
-        { "type": "text", "id": "text", "label": "Text", "default": "Only <b>[count] items</b> are in stock!", "info": "[count] is replaced with the stock. Needs Shopify inventory tracking." }
+        {
+          "type": "range",
+          "id": "threshold",
+          "label": "Show when stock is at or below",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Only <b>[count] items</b> are in stock!",
+          "info": "[count] is replaced with the stock. Needs Shopify inventory tracking."
+        }
       ]
     },
     {
-      "type": "chips", "name": "Benefit chips",
+      "type": "chips",
+      "name": "Benefit chips",
       "settings": [
-        { "type": "textarea", "id": "items", "label": "Chips (one per line)", "default": "Supports Healthy Digestion\nZero Caffeine\nNo Added Sugar\nPlastic-Free Teabags" }
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Chips (one per line)",
+          "default": "Supports Healthy Digestion\nZero Caffeine\nNo Added Sugar\nPlastic-Free Teabags"
+        }
       ]
     },
     {
-      "type": "description", "name": "Description",
+      "type": "description",
+      "name": "Description",
       "settings": [
-        { "type": "richtext", "id": "text", "label": "Text", "info": "Leave empty to use the product description. Connect a metafield for per-product text." }
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Leave empty to use the product description. Connect a metafield for per-product text."
+        }
       ]
     },
     {
-      "type": "packs", "name": "Pack selector", "limit": 1,
+      "type": "packs",
+      "name": "Pack selector",
+      "limit": 1,
       "settings": [
-        { "type": "text", "id": "title", "label": "Heading", "default": "Choose your pack" },
-        { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 4, "step": 1, "default": 3 },
-        { "type": "checkbox", "id": "show_images", "label": "Use variant images", "default": true, "info": "Shows each variant's image. Variants without an image fall back to the emoji below." },
-        { "type": "text", "id": "icons", "label": "Fallback emoji (comma separated, in variant order)", "default": "📦,🎁,🍃" },
-        { "type": "text", "id": "mrp_label", "label": "MRP label", "default": "MRP" },
-        { "type": "checkbox", "id": "show_per_serving", "label": "Show price per serving", "default": true, "info": "Needs a custom.servings number metafield on each variant." },
-        { "type": "text", "id": "serving_label", "label": "Serving label", "default": "serving" },
-        { "type": "paragraph", "content": "Badge and subtitle come from variant metafields custom.badge and custom.subtitle." }
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Choose your pack"
+        },
+        {
+          "type": "range",
+          "id": "columns",
+          "label": "Columns",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "checkbox",
+          "id": "show_images",
+          "label": "Use variant images",
+          "default": true,
+          "info": "Shows each variant's image. Variants without an image fall back to the emoji below."
+        },
+        {
+          "type": "text",
+          "id": "icons",
+          "label": "Fallback emoji (comma separated, in variant order)",
+          "default": "📦,🎁,🍃"
+        },
+        {
+          "type": "text",
+          "id": "mrp_label",
+          "label": "MRP label",
+          "default": "MRP"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_per_serving",
+          "label": "Show price per serving",
+          "default": true,
+          "info": "Needs a custom.servings number metafield on each variant."
+        },
+        {
+          "type": "text",
+          "id": "serving_label",
+          "label": "Serving label",
+          "default": "serving"
+        },
+        {
+          "type": "paragraph",
+          "content": "Badge and subtitle come from variant metafields custom.badge and custom.subtitle."
+        }
       ]
     },
     {
-      "type": "buy", "name": "Quantity + buttons", "limit": 1,
+      "type": "buy",
+      "name": "Quantity + buttons",
+      "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "show_qty", "label": "Show quantity", "default": true },
-        { "type": "text", "id": "atc_label", "label": "Add to cart text", "default": "Add to cart" },
-        { "type": "text", "id": "soldout_label", "label": "Sold out text", "default": "Sold out" },
-        { "type": "checkbox", "id": "show_buy_now", "label": "Show buy it now", "default": true, "info": "Adds the selected pack and goes straight to checkout." },
-        { "type": "text", "id": "buy_now_label", "label": "Buy it now text", "default": "Buy it now" },
-        { "type": "checkbox", "id": "jump_buy_now", "label": "Bounce animation on buy it now", "default": true }
+        {
+          "type": "checkbox",
+          "id": "show_qty",
+          "label": "Show quantity",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "atc_label",
+          "label": "Add to cart text",
+          "default": "Add to cart"
+        },
+        {
+          "type": "text",
+          "id": "soldout_label",
+          "label": "Sold out text",
+          "default": "Sold out"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_buy_now",
+          "label": "Show buy it now",
+          "default": true,
+          "info": "Adds the selected pack and goes straight to checkout."
+        },
+        {
+          "type": "text",
+          "id": "buy_now_label",
+          "label": "Buy it now text",
+          "default": "Buy it now"
+        },
+        {
+          "type": "checkbox",
+          "id": "jump_buy_now",
+          "label": "Bounce animation on buy it now",
+          "default": true
+        }
       ]
     },
     {
-      "type": "ship", "name": "Shipping strip",
+      "type": "ship",
+      "name": "Shipping strip",
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "🚚 Free shipping + 3% prepaid bonus" }
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "🚚 Free shipping + 3% prepaid bonus"
+        }
       ]
     },
     {
-      "type": "trust", "name": "Trust icons",
+      "type": "trust",
+      "name": "Trust icons",
       "settings": [
-        { "type": "textarea", "id": "items", "label": "Items (icon | label, one per line)", "default": "🍃 | Tastes Fresh & Light\n☕ | Zero Caffeine\n🫖 | Plastic Free Teabags\n🚫 | No Added Sugar" }
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Items (icon | label, one per line)",
+          "default": "🍃 | Tastes Fresh & Light\n☕ | Zero Caffeine\n🫖 | Plastic Free Teabags\n🚫 | No Added Sugar"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "default": "circles",
+          "options": [
+            {
+              "value": "circles",
+              "label": "Tea bubbles (circles)"
+            },
+            {
+              "value": "cards",
+              "label": "Cards"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "tints",
+          "label": "Bubble colours",
+          "default": "#c8f169,#ffd23f,#bfe6ff,#ffc2b8",
+          "info": "Comma-separated, used in turn."
+        }
       ]
     },
     {
-      "type": "tabs", "name": "Tabs",
+      "type": "tabs",
+      "name": "Tabs",
       "settings": [
-        { "type": "text", "id": "tab1_title", "label": "Tab 1 title", "default": "Nutritional info" },
-        { "type": "richtext", "id": "tab1_content", "label": "Tab 1 content", "default": "<ul><li>Zero caffeine</li><li>No added sugar</li><li>Per-serving values: add from lab report</li></ul>" },
-        { "type": "text", "id": "tab2_title", "label": "Tab 2 title", "default": "Ingredients" },
-        { "type": "richtext", "id": "tab2_content", "label": "Tab 2 content", "default": "<ul><li>Blue Pea Flower</li><li>Ginger</li><li>Cinnamon</li><li>Fennel</li><li>Dandelion Root</li></ul>" },
-        { "type": "text", "id": "tab3_title", "label": "Tab 3 title" },
-        { "type": "richtext", "id": "tab3_content", "label": "Tab 3 content" }
+        {
+          "type": "text",
+          "id": "tab1_title",
+          "label": "Tab 1 title",
+          "default": "Nutritional info"
+        },
+        {
+          "type": "richtext",
+          "id": "tab1_content",
+          "label": "Tab 1 content",
+          "default": "<ul><li>Zero caffeine</li><li>No added sugar</li><li>Per-serving values: add from lab report</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "tab2_title",
+          "label": "Tab 2 title",
+          "default": "Ingredients"
+        },
+        {
+          "type": "richtext",
+          "id": "tab2_content",
+          "label": "Tab 2 content",
+          "default": "<ul><li>Blue Pea Flower</li><li>Ginger</li><li>Cinnamon</li><li>Fennel</li><li>Dandelion Root</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "tab3_title",
+          "label": "Tab 3 title"
+        },
+        {
+          "type": "richtext",
+          "id": "tab3_content",
+          "label": "Tab 3 content"
+        }
       ]
     },
     {
-      "type": "text", "name": "Text",
+      "type": "text",
+      "name": "Text",
       "settings": [
-        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add any extra text here.</p>" }
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add any extra text here.</p>"
+        }
       ]
     }
   ],
-  "enabled_on": { "templates": ["product"] },
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
   "presets": [
     {
       "name": "SF · Product main",
       "blocks": [
-        { "type": "title" }, { "type": "rating" }, { "type": "price" }, { "type": "stock" },
-        { "type": "chips" }, { "type": "description" }, { "type": "packs" }, { "type": "buy" },
-        { "type": "ship" }, { "type": "trust" }, { "type": "tabs" }
+        {
+          "type": "title"
+        },
+        {
+          "type": "rating"
+        },
+        {
+          "type": "price"
+        },
+        {
+          "type": "stock"
+        },
+        {
+          "type": "chips"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "packs"
+        },
+        {
+          "type": "buy"
+        },
+        {
+          "type": "ship"
+        },
+        {
+          "type": "trust"
+        },
+        {
+          "type": "tabs"
+        }
       ]
     }
   ]

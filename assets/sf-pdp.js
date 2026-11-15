@@ -385,4 +385,17 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => initReveal(document));
   else initReveal(document);
   document.addEventListener('shopify:section:load', (e) => initReveal(e.target));
+
+  /* trust "tea bubbles": fill with tea when scrolled into view */
+  (() => {
+    const run = () => document.querySelectorAll('[data-sf-trust].sf-trust--circles:not(.is-ready)').forEach((el) => {
+      el.classList.add('is-ready');
+      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('is-in'); return; }
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect(); } }), { threshold: 0.4 });
+      io.observe(el);
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+    document.addEventListener('shopify:section:load', run);
+    document.addEventListener('shopify:block:select', run);
+  })();
 })();
