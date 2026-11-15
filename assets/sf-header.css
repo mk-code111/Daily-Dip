@@ -278,3 +278,8 @@ html.sf-hd-locked, html.sf-hd-locked body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .sf-hd__wrap, .sf-hd__bar, .sf-hd__logo img, .sf-hd__panel, .sf-hd__overlay, .sf-hd__drop, .sf-hd__link::after { transition: none !important; }
 }
+
+/* phone menu open: lift the header (and its drawer) above the announcement bar */
+html.sf-hd-locked .sf-header-section,
+.sf-header-section:has(.sf-hd__drawer:not([hidden])) { z-index: 1100 !important; }
+html.sf-hd-locked #header-group { z-index: 1100; position: relative; }
