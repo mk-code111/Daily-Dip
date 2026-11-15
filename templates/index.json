@@ -96,7 +96,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF · Product cards",
+      "name": "SF \u00b7 Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -252,7 +252,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF · Moments",
+      "name": "SF \u00b7 Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -350,7 +350,8 @@
         "gap": 7,
         "pt": 4,
         "pb": 4
-      }
+      },
+      "disabled": true
     },
     "media_with_text_rdqJdz": {
       "type": "media-with-text",
@@ -379,11 +380,11 @@
             "external_video": "",
             "text_align_mobile": "text-center",
             "text_align_desktop": "text-desktop-start",
-            "subtitle": "☆☆☆☆☆",
+            "subtitle": "\u2606\u2606\u2606\u2606\u2606",
             "subtitle_font_size": "fs-md",
             "title": "Certified Organic Matcha",
             "title_font_size": "h1",
-            "description": "<p>Tap into a higher frequency with our organic, ceremonial grade matcha powder — it's the element your daily ritual has been missing. Enjoy elevated focus, energy, immunity and a pinch of enlightenment.</p>",
+            "description": "<p>Tap into a higher frequency with our organic, ceremonial grade matcha powder \u2014 it's the element your daily ritual has been missing. Enjoy elevated focus, energy, immunity and a pinch of enlightenment.</p>",
             "description_font_size": "fs-md",
             "btn_primary_text": "I Want Organic",
             "btn_primary_url": "",
@@ -421,7 +422,7 @@
             "external_video": "",
             "text_align_mobile": "text-center",
             "text_align_desktop": "text-desktop-start",
-            "subtitle": "☆☆☆☆☆",
+            "subtitle": "\u2606\u2606\u2606\u2606\u2606",
             "subtitle_font_size": "fs-md",
             "title": "Superior Japanese Matcha",
             "title_font_size": "h1",
@@ -536,7 +537,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep · sip · see",
+        "eyebrow": "steep \u00b7 sip \u00b7 see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -737,7 +738,7 @@
           "type": "item",
           "settings": {
             "title": "Can I order as a gift for someone else?",
-            "description": "<p>When ordering as a gift for someone, be sure to enter in your email address to receive all summary information but enter in the recipient’s name and shipping information. We will be sure to keep all prices and receipts out of the package.</p>"
+            "description": "<p>When ordering as a gift for someone, be sure to enter in your email address to receive all summary information but enter in the recipient\u2019s name and shipping information. We will be sure to keep all prices and receipts out of the package.</p>"
           }
         },
         "item_7DmaW8": {
@@ -784,7 +785,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -792,7 +793,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -800,7 +801,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -808,7 +809,7 @@
           "type": "item",
           "settings": {
             "title": "Ingredients & Allergies",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -816,7 +817,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         }
@@ -828,7 +829,7 @@
         "item_RDreYt",
         "item_EhK7pF"
       ],
-      "name": "SF · Know more",
+      "name": "SF \u00b7 Know more",
       "settings": {
         "heading": "FAQs",
         "intro": "",
@@ -1005,6 +1006,48 @@
         "pt": 10,
         "pb": 10
       }
+    },
+    "sf_marquee": {
+      "type": "sf-marquee",
+      "blocks": {
+        "mq_1": {
+          "type": "text",
+          "settings": {
+            "text": "You've met your matcha match",
+            "style": "fill",
+            "url": ""
+          }
+        },
+        "mq_2": {
+          "type": "text",
+          "settings": {
+            "text": "100% natural",
+            "style": "outline",
+            "url": ""
+          }
+        },
+        "mq_3": {
+          "type": "text",
+          "settings": {
+            "text": "Feel-good blends",
+            "style": "sticker",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "mq_1",
+        "mq_2",
+        "mq_3"
+      ],
+      "settings": {
+        "layout": "crossed",
+        "tilt": -2,
+        "speed": 70,
+        "direction": "left",
+        "separator": "leaf",
+        "second_text": "Steeped with love,Sip slow,Feel good daily"
+      }
     }
   },
   "order": [
@@ -1012,6 +1055,7 @@
     "sf_product_cards_cM7twj",
     "featured_products_haJFj8",
     "sf_moments_7ytUUJ",
+    "sf_marquee",
     "marquee_FFm8CP",
     "media_with_text_rdqJdz",
     "sf_shoppable_videos",
