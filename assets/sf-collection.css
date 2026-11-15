@@ -41,7 +41,8 @@
 .sf-ch__swash { position: absolute; left: 0; bottom: 0; width: 100%; height: 14px; overflow: visible; }
 .sf-ch__swash path { fill: none; stroke: var(--sf-lime, #c8f169); stroke-width: 9; stroke-linecap: round;
   stroke-dasharray: 320; stroke-dashoffset: 320; animation: sf-ch-swash 1s .25s cubic-bezier(.3, .7, .2, 1) forwards; }
-.sf-ch__swash { filter: drop-shadow(1.5px 1.5px 0 var(--sf-ink, #1c1c1c)); }
+/* shadow is a second stroke (not a CSS drop-shadow: iPhone Safari paints that as a black box) */
+.sf-ch__swash path.sf-ch__swash-sh { stroke: var(--sf-ink, #1c1c1c); }
 @keyframes sf-ch-swash { to { stroke-dashoffset: 0; } }
 
 .sf-ch__desc { max-width: 560px; margin-top: 10px; font-size: 15px; line-height: 1.6; color: color-mix(in srgb, var(--sf-ch-text) 78%, transparent); }
@@ -103,6 +104,8 @@
 
 /* ---------------- GRID ---------------- */
 .sf-cg { display: block; background: var(--sf-cg-bg, #fff); padding: var(--sf-cg-pt, 16px) 0 var(--sf-cg-pb, 56px); }
+.sf-cg > .sf-pdp__wrap { padding-top: 0; }
+@media (max-width: 749px) { .sf-ch__pills { margin-top: 14px; } .sf-ch__pills ul { padding-bottom: 4px; } }
 
 .sf-cg__bar {
   position: sticky; top: calc(var(--sf-hd-bar-h, 0px) + 6px); z-index: 5;
