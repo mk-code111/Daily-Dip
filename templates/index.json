@@ -96,7 +96,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF · Product cards",
+      "name": "SF \u00b7 Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -206,7 +206,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF · Moments",
+      "name": "SF \u00b7 Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -373,7 +373,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep · sip · see",
+        "eyebrow": "steep \u00b7 sip \u00b7 see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -407,7 +407,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -415,7 +415,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -423,7 +423,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -431,7 +431,7 @@
           "type": "item",
           "settings": {
             "title": "Ingredients & Allergies",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -439,7 +439,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         }
@@ -451,7 +451,7 @@
         "item_RDreYt",
         "item_EhK7pF"
       ],
-      "name": "SF · Know more",
+      "name": "SF \u00b7 Know more",
       "settings": {
         "heading": "FAQs",
         "intro": "",
@@ -552,6 +552,120 @@
         "pt": 64,
         "pb": 64
       }
+    },
+    "sf_testimonials": {
+      "type": "sf-testimonials",
+      "blocks": {
+        "tm_1": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Riya S.",
+            "location": "Pune",
+            "rating": 5,
+            "quote": "I swapped my evening coffee for Daily Sleep and I'm actually winding down now. Tastes lovely too.",
+            "product_label": "Daily Sleep",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_2": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Arjun M.",
+            "location": "Bengaluru",
+            "rating": 5,
+            "quote": "Cleanse has become my morning ritual. Light, fresh, and my stomach feels so much better.",
+            "product_label": "Daily Cleanse",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_3": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Meera K.",
+            "location": "Kochi",
+            "rating": 5,
+            "quote": "Finally a herbal tea that doesn't taste like hay. Lean is my 4 pm pick-me-up.",
+            "product_label": "Daily Lean",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_4": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Sameer P.",
+            "location": "Delhi",
+            "rating": 5,
+            "quote": "Ordered Detox after a heavy festive week. Arrived fast and the pouch keeps it so fresh.",
+            "product_label": "Daily Detox",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_5": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Ananya R.",
+            "location": "Mumbai",
+            "rating": 5,
+            "quote": "Love that it's just real herbs. I gift these pouches to friends now.",
+            "product_label": "Daily Cleanse",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_6": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Karthik V.",
+            "location": "Chennai",
+            "rating": 5,
+            "quote": "Two weeks of Sleep and I fall asleep without scrolling for an hour. Big win.",
+            "product_label": "Daily Sleep",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_7": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Neha D.",
+            "location": "Jaipur",
+            "rating": 4,
+            "quote": "The packaging is so cute and the tea is even better. Lean with a slice of lemon is perfect.",
+            "product_label": "Daily Lean",
+            "verified": true,
+            "tone": "auto"
+          }
+        },
+        "tm_8": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Farhan A.",
+            "location": "Hyderabad",
+            "rating": 5,
+            "quote": "Gentle, tasty and no bitterness. Detox is now a weekly habit at home.",
+            "product_label": "Daily Detox",
+            "verified": true,
+            "tone": "auto"
+          }
+        }
+      },
+      "block_order": [
+        "tm_1",
+        "tm_2",
+        "tm_3",
+        "tm_4",
+        "tm_5",
+        "tm_6",
+        "tm_7",
+        "tm_8"
+      ],
+      "settings": {
+        "sample_notice": true
+      }
     }
   },
   "order": [
@@ -561,6 +675,7 @@
     "sf_marquee",
     "sf_shoppable_videos",
     "sf_pdp_know_more_3iPGTz",
-    "sf_trust"
+    "sf_trust",
+    "sf_testimonials"
   ]
 }
