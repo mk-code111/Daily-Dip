@@ -6,8 +6,8 @@
         "slide_eGdG3z": {
           "type": "slide",
           "settings": {
-            "img_mobile": "shopify:\/\/shop_images\/pexels-pavel-danilyuk-8001234_4c7e434f-184b-4589-90ed-46048cf57904.jpg",
-            "img_desktop": "shopify:\/\/shop_images\/pexels-pavel-danilyuk-8038354_b7f7b141-5fb9-4785-bae3-0b4c98c1b88f.jpg",
+            "img_mobile": "shopify://shop_images/pexels-pavel-danilyuk-8001234_4c7e434f-184b-4589-90ed-46048cf57904.jpg",
+            "img_desktop": "shopify://shop_images/pexels-pavel-danilyuk-8038354_b7f7b141-5fb9-4785-bae3-0b4c98c1b88f.jpg",
             "overlay_color": "bs-body-color-rgb",
             "overlay_opacity": 30,
             "overlay_blur": 0,
@@ -21,7 +21,7 @@
             "subtitle_font_size": "fs-md",
             "title": "The Most Versatile Shopify Theme",
             "title_font_size": "h2",
-            "description": "<p>Best in class for customization options, yet extreme performance<\/p>",
+            "description": "<p>Best in class for customization options, yet extreme performance</p>",
             "description_font_size": "fs-lg",
             "btn_primary_text": "",
             "btn_primary_color": "btn-primary",
@@ -96,9 +96,9 @@
         "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-1": {
           "type": "item",
           "settings": {
-            "img": "shopify:\/\/shop_images\/pexels-pavel-danilyuk-8001285_90ae7f40-9b94-40a6-a6ef-4f51b60a7fe2.jpg",
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8001285_90ae7f40-9b94-40a6-a6ef-4f51b60a7fe2.jpg",
             "title": "John Doe",
-            "description": "<p>CEO & Founder<\/p>",
+            "description": "<p>CEO & Founder</p>",
             "btn_text": "Learn more",
             "btn_url": ""
           }
@@ -106,9 +106,9 @@
         "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-2": {
           "type": "item",
           "settings": {
-            "img": "shopify:\/\/shop_images\/pexels-pavel-danilyuk-8001234_4c7e434f-184b-4589-90ed-46048cf57904.jpg",
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8001234_4c7e434f-184b-4589-90ed-46048cf57904.jpg",
             "title": "Jane Doe",
-            "description": "<p>Marketing<\/p>",
+            "description": "<p>Marketing</p>",
             "btn_text": "Learn more",
             "btn_url": ""
           }
@@ -116,9 +116,9 @@
         "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-4": {
           "type": "item",
           "settings": {
-            "img": "shopify:\/\/shop_images\/pexels-pavel-danilyuk-8038354_b7f7b141-5fb9-4785-bae3-0b4c98c1b88f.jpg",
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8038354_b7f7b141-5fb9-4785-bae3-0b4c98c1b88f.jpg",
             "title": "Jim Doe",
-            "description": "<p>Sales<\/p>",
+            "description": "<p>Sales</p>",
             "btn_text": "Learn more",
             "btn_url": ""
           }
@@ -126,9 +126,9 @@
         "template--15889379819659__54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e-item-3": {
           "type": "item",
           "settings": {
-            "img": "shopify:\/\/shop_images\/pexels-pavel-danilyuk-8001065.jpg",
+            "img": "shopify://shop_images/pexels-pavel-danilyuk-8001065.jpg",
             "title": "Jill Doe",
-            "description": "<p>Developer<\/p>",
+            "description": "<p>Developer</p>",
             "btn_text": "Learn more",
             "btn_url": ""
           }
@@ -153,7 +153,7 @@
         "container_max_width": "",
         "header_title": "Our Team",
         "header_title_font_size": "h3",
-        "header_description": "<p>Add on optional description for this section<\/p>",
+        "header_description": "<p>Add on optional description for this section</p>",
         "header_description_font_size": "fs-md",
         "item_bg_color": "bg-body",
         "item_bg_opacity": 100,
@@ -195,10 +195,10 @@
         "subtitle_font_size": "fs-md",
         "title": "Want to get in touch?!",
         "title_font_size": "h3",
-        "description": "<p>Please contact us anytime from Monday to Friday<\/p>",
+        "description": "<p>Please contact us anytime from Monday to Friday</p>",
         "description_font_size": "",
         "btn_primary_text": "Contact us",
-        "btn_primary_url": "shopify:\/\/pages\/contact-us",
+        "btn_primary_url": "shopify://pages/contact-us",
         "btn_primary_color": "btn-light-primary",
         "btn_primary_size": "btn-md",
         "btn_secondary_text": "",
@@ -221,12 +221,75 @@
         "pt": 0,
         "pb": 0
       }
+    },
+    "sf_about_steps": {
+      "type": "sf-about-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Picked",
+            "text": "Directly from farmers.",
+            "icon": "leaf",
+            "tint": "#1f7a35",
+            "number": ""
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Sorted & cleaned",
+            "text": "At our facility.",
+            "icon": "sparkle",
+            "tint": "#ffd23f",
+            "number": ""
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Packed & stored",
+            "text": "At our facility.",
+            "icon": "box",
+            "tint": "#c8f169",
+            "number": ""
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "title": "Shipped",
+            "text": "Delivered to our valued customers.",
+            "icon": "truck",
+            "tint": "#ff5a4d",
+            "number": ""
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "eyebrow": "How we work",
+        "title": "From the farm to your <em>cup</em>",
+        "text": "<p>Every Dailydip blend makes the same short trip: hand-picked, cleaned with care, packed fresh and sent straight to your door.</p>",
+        "ratio": "3 / 2",
+        "float": true,
+        "c_bg": "#fbf8ef",
+        "c_card": "#ffffff",
+        "pt": 64,
+        "pb": 64
+      }
     }
   },
   "order": [
     "hero_carousel_tdHVay",
     "18e3bb8e-f1ba-421c-91c3-37c1c5b25a2a",
     "91fa2e27-741f-431f-b658-c6ce03d0f6eb",
+    "sf_about_steps",
     "54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e",
     "664feedb-7180-4e8f-a84d-1cf45bc1dd42",
     "cfc6ff50-e3a5-4219-8350-f2db73f829c8"
