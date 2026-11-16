@@ -281,7 +281,7 @@
       "type": "sf-about-story",
       "settings": {
         "float": true,
-        "ratio": "16 / 9",
+        "ratio": "16 / 10",
         "pt": 64,
         "pb": 64,
         "btn_label": "",
@@ -305,7 +305,7 @@
       "type": "sf-about-story",
       "settings": {
         "float": true,
-        "ratio": "16 / 9",
+        "ratio": "16 / 10",
         "pt": 64,
         "pb": 64,
         "btn_label": "",
@@ -329,7 +329,7 @@
       "type": "sf-about-story",
       "settings": {
         "float": true,
-        "ratio": "16 / 9",
+        "ratio": "16 / 10",
         "pt": 64,
         "pb": 64,
         "btn_label": "",
@@ -353,7 +353,7 @@
       "type": "sf-about-story",
       "settings": {
         "float": true,
-        "ratio": "16 / 9",
+        "ratio": "16 / 10",
         "pt": 64,
         "pb": 80,
         "btn_label": "Shop our blends",
