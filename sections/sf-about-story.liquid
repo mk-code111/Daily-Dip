@@ -17,13 +17,36 @@
   endif
   assign chips = s.chips | split: ','
   assign fb = 'sf-about-step-' | append: s.starter | append: '.jpg'
+  assign fit = 'cover'
+  assign r = 1.6
+  assign focal = 'center'
+  if s.image != blank
+    assign fit = s.image_fit
+    assign r = s.image.aspect_ratio | default: 1.6
+    if s.image.presentation.focal_point != blank
+      assign focal = s.image.presentation.focal_point
+    endif
+  endif
+  if fit == 'auto'
+    assign ratio_css = r
+  else
+    assign ratio_css = s.ratio
+    assign rp = s.ratio | split: ' / '
+    assign ra = rp[0] | times: 1.0
+    assign rb = rp[1] | times: 1
+    assign r = ra | divided_by: rb
+  endif
 -%}
 <style>
   #shopify-section-{{ section.id }} {
     --sf-as-bg: {{ s.c_bg }};
     --sf-as-tint: {{ s.tint }};
     --sf-as-num-ink: {{ num_ink }};
-    --sf-as-ratio: {{ s.ratio }};
+    --sf-as-ratio: {{ ratio_css }};
+    --sf-as-r: {{ r }};
+    --sf-as-mh: {{ s.max_h }}px;
+    --sf-as-fit: {{ fit | replace: 'auto', 'cover' }};
+    --sf-as-pos: {{ focal }};
     --sf-as-pt: {{ s.pt }}px;
     --sf-as-pb: {{ s.pb }}px;
   }
@@ -64,8 +87,9 @@
       </div>
 
       <div class="sf-as__media">
+       <div class="sf-as__fit">
         <div class="sf-as__blob" aria-hidden="true"></div>
-        <div class="sf-as__frame">
+        <div class="sf-as__frame sf-as__frame--{{ fit }}">
           {%- if s.image != blank -%}
             {{ s.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1300, 1600', sizes: '(min-width: 990px) 640px, 92vw', alt: s.image.alt | default: s.title, class: 'sf-as__img' }}
           {%- elsif s.starter != 'none' -%}
@@ -75,6 +99,7 @@
           {%- endif -%}
           {%- if s.sticker != blank -%}<span class="sf-as__sticker">{{ s.sticker | escape }}</span>{%- endif -%}
         </div>
+       </div>
       </div>
 
       <div class="sf-as__body">
@@ -136,7 +161,16 @@
     },
     { "type": "text", "id": "sticker", "label": "Sticker on image", "info": "Optional short note, e.g. Pure natural goodness." },
     {
-      "type": "select", "id": "ratio", "label": "Image shape", "default": "16 / 10",
+      "type": "select", "id": "image_fit", "label": "Your image", "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Show whole image (frame follows its shape)" },
+        { "value": "cover", "label": "Fill the shape below (crops edges)" },
+        { "value": "contain", "label": "Fit inside the shape below (no crop)" }
+      ],
+      "info": "For Fill, set the focus point on the image (Edit → Focal point) to choose what stays in view."
+    },
+    {
+      "type": "select", "id": "ratio", "label": "Image shape", "default": "16 / 10", "info": "Used by starter images and the Fill / Fit options.",
       "options": [
         { "value": "1 / 1", "label": "Square" },
         { "value": "4 / 3", "label": "4:3" },
@@ -148,6 +182,7 @@
       "type": "select", "id": "image_side", "label": "Image side on desktop", "default": "right",
       "options": [ { "value": "right", "label": "Right" }, { "value": "left", "label": "Left" } ]
     },
+    { "type": "range", "id": "max_h", "label": "Max image height", "min": 280, "max": 640, "step": 20, "unit": "px", "default": 460, "info": "Keeps tall or square photos from getting too big. Phones use 80% of this." },
     { "type": "checkbox", "id": "float", "label": "Floating image", "default": true },
 
     { "type": "header", "content": "Style" },

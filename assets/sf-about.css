@@ -188,14 +188,23 @@
 @media (hover: hover) { .sf-as__btn:hover { color: #fff; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--sf-ink); } }
 
 /* floating image */
-.sf-as__media { position: relative; padding: 10px 12px 14px 6px; }
+.sf-as__media { position: relative; padding: 10px 12px 14px 6px; display: flex; justify-content: center; }
+/* the frame keeps the image's shape; width shrinks so height never passes the max */
+.sf-as__fit {
+  position: relative; flex: 0 1 auto;
+  width: min(100%, calc(var(--sf-as-mh, 460px) * var(--sf-as-r, 1.6)));
+}
+@media (min-width: 990px) {
+  .sf-as--img-right .sf-as__media { justify-content: flex-end; }
+  .sf-as--img-left .sf-as__media { justify-content: flex-start; }
+}
 .sf-as__blob {
-  position: absolute; inset: 0 0 0 8%; z-index: 0;
+  position: absolute; inset: -10px -12px -14px 4%; z-index: 0;
   background: color-mix(in srgb, var(--sf-as-tint, #1f7a35) 35%, transparent);
   border-radius: 46% 54% 42% 58% / 55% 45% 55% 45%;
   transform: rotate(-3deg);
 }
-.sf-as--img-left .sf-as__blob { inset: 0 8% 0 0; transform: rotate(3deg); }
+.sf-as--img-left .sf-as__blob { inset: -10px 4% -14px -6px; transform: rotate(3deg); }
 .sf-as__frame {
   position: relative; z-index: 1; overflow: hidden;
   aspect-ratio: var(--sf-as-ratio, 16 / 10);
@@ -203,7 +212,11 @@
   border: 3px solid var(--sf-ink); border-radius: 26px; box-shadow: 7px 7px 0 var(--sf-ink);
   animation: sf-as-float 4s ease-in-out infinite;
 }
-.sf-as__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.sf-as__frame .sf-as__img {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; margin: 0;
+  object-fit: var(--sf-as-fit, cover); object-position: var(--sf-as-pos, center); display: block;
+}
+.sf-as__frame--contain .sf-as__img { padding: 0; }
 .sf-as__img--ph { fill: var(--sf-mute); opacity: .35; }
 .sf-as__sticker {
   position: absolute; z-index: 2; right: 14px; top: 14px; max-width: 60%;
@@ -224,6 +237,7 @@
   .sf-as__head .sf-as__lead { margin-top: 12px; }
   .sf-as__story { font-size: 15px; }
   .sf-as__frame { border-radius: 20px; box-shadow: 5px 5px 0 var(--sf-ink); }
+  .sf-as__fit { width: min(100%, calc(var(--sf-as-mh, 460px) * .8 * var(--sf-as-r, 1.6))); }
   .sf-as__sticker { font-size: 12.5px; padding: 5px 10px; right: 10px; top: 10px; }
   .sf-as--img-left .sf-as__sticker { left: 10px; }
   .sf-as__btn { width: 100%; }
