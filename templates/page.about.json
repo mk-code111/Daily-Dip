@@ -346,7 +346,8 @@
         "tint": "#c8f169",
         "c_bg": "#fbf8ef",
         "connector": true,
-        "anchor": ""
+        "anchor": "",
+        "image": "shopify://shop_images/pexels-pavel-danilyuk-8001065.jpg"
       }
     },
     "sf_story_4": {
@@ -371,7 +372,8 @@
         "c_bg": "#ffffff",
         "connector": true,
         "anchor": "",
-        "btn_url": "shopify://collections/all"
+        "btn_url": "shopify://collections/all",
+        "image": "shopify://shop_images/ChatGPT_Image_Sep_11_2026_02_47_22_PM.png"
       }
     }
   },
