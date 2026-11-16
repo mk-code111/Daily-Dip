@@ -96,7 +96,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF \u00b7 Product cards",
+      "name": "SF · Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -206,7 +206,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF \u00b7 Moments",
+      "name": "SF · Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -373,7 +373,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep \u00b7 sip \u00b7 see",
+        "eyebrow": "steep · sip · see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -407,7 +407,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -415,7 +415,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -423,7 +423,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -431,7 +431,7 @@
           "type": "item",
           "settings": {
             "title": "Ingredients & Allergies",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -439,7 +439,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         }
@@ -451,7 +451,7 @@
         "item_RDreYt",
         "item_EhK7pF"
       ],
-      "name": "SF \u00b7 Know more",
+      "name": "SF · Know more",
       "settings": {
         "heading": "FAQs",
         "intro": "",
@@ -561,8 +561,9 @@
           "settings": {
             "name": "Riya S.",
             "location": "Pune",
-            "rating": 5,
+            "rating": 4,
             "quote": "I swapped my evening coffee for Daily Sleep and I'm actually winding down now. Tastes lovely too.",
+            "product": "malanchi-pappaya-body-whitening",
             "product_label": "Daily Sleep",
             "verified": true,
             "tone": "auto"
@@ -575,6 +576,7 @@
             "location": "Bengaluru",
             "rating": 5,
             "quote": "Cleanse has become my morning ritual. Light, fresh, and my stomach feels so much better.",
+            "product": "malanchi-acne-control-serum",
             "product_label": "Daily Cleanse",
             "verified": true,
             "tone": "auto"
@@ -587,6 +589,7 @@
             "location": "Kochi",
             "rating": 5,
             "quote": "Finally a herbal tea that doesn't taste like hay. Lean is my 4 pm pick-me-up.",
+            "product": "malanchi-2-salicylic-acid-face-wash",
             "product_label": "Daily Lean",
             "verified": true,
             "tone": "auto"
@@ -599,6 +602,7 @@
             "location": "Delhi",
             "rating": 5,
             "quote": "Ordered Detox after a heavy festive week. Arrived fast and the pouch keeps it so fresh.",
+            "product": "malanchi-re-pairing-whitening-cream",
             "product_label": "Daily Detox",
             "verified": true,
             "tone": "auto"
@@ -611,6 +615,7 @@
             "location": "Mumbai",
             "rating": 5,
             "quote": "Love that it's just real herbs. I gift these pouches to friends now.",
+            "product": "malanchi-acne-control-serum",
             "product_label": "Daily Cleanse",
             "verified": true,
             "tone": "auto"
@@ -623,6 +628,7 @@
             "location": "Chennai",
             "rating": 5,
             "quote": "Two weeks of Sleep and I fall asleep without scrolling for an hour. Big win.",
+            "product": "malanchi-pappaya-body-whitening",
             "product_label": "Daily Sleep",
             "verified": true,
             "tone": "auto"
@@ -635,6 +641,7 @@
             "location": "Jaipur",
             "rating": 4,
             "quote": "The packaging is so cute and the tea is even better. Lean with a slice of lemon is perfect.",
+            "product": "malanchi-2-salicylic-acid-face-wash",
             "product_label": "Daily Lean",
             "verified": true,
             "tone": "auto"
@@ -647,6 +654,7 @@
             "location": "Hyderabad",
             "rating": 5,
             "quote": "Gentle, tasty and no bitterness. Detox is now a weekly habit at home.",
+            "product": "malanchi-re-pairing-whitening-cream",
             "product_label": "Daily Detox",
             "verified": true,
             "tone": "auto"
@@ -664,6 +672,35 @@
         "tm_8"
       ],
       "settings": {
+        "eyebrow": "What dippers say",
+        "title": "Loved in every <em>cup</em>",
+        "head_align": "split",
+        "show_rating": true,
+        "rating_value": "4.9",
+        "rating_text": "from 1,200+ happy dippers",
+        "rows": "2",
+        "two_rows_phone": false,
+        "autoplay": true,
+        "speed": 35,
+        "show_stars": true,
+        "show_avatar": true,
+        "show_location": true,
+        "show_verified": true,
+        "verified_label": "Verified buyer",
+        "show_product": true,
+        "show_quote_mark": true,
+        "tilt": true,
+        "card_w": 320,
+        "btn_label": "",
+        "btn_url": "",
+        "c_bg": "#1f7a35",
+        "c_head": "#fbf8ef",
+        "c_accent": "#c8f169",
+        "pattern": true,
+        "edge_top": false,
+        "c_edge": "#fbf8ef",
+        "pt": 64,
+        "pb": 64,
         "sample_notice": true
       }
     }
