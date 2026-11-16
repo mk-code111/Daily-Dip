@@ -13,6 +13,7 @@
   "sections": {
     "newsletter_popup_rpxAc3": {
       "type": "newsletter-popup",
+      "disabled": true,
       "settings": {
         "bg_color": "bg-body",
         "bg_opacity": 100,
