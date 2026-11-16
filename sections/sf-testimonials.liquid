@@ -1,0 +1,213 @@
+{%- comment -%}
+  sf-testimonials — DailyDip customer testimonials ("tea notes").
+  Sticker-style review cards in one or two rows that loop forever and drift on their
+  own (rows go opposite ways). Visitors can swipe or drag; hovering, touching or
+  focusing a card pauses it. Every extra (stars, avatar, verified, product tag,
+  rating summary) has its own switch and the card reflows neatly without it.
+  Styles: assets/sf-testimonials.css · Script: assets/sf-testimonials.js
+{%- endcomment -%}
+{{ 'sf-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'sf-testimonials.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sf-testimonials.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign total = section.blocks.size
+  assign two_rows = false
+  if s.rows == '2' and total >= 4
+    assign two_rows = true
+  endif
+  comment
+    Repeat the set so one loop is always wider than the screen, then the script
+    doubles it for the seamless wrap.
+  endcomment
+  assign per_row = total
+  if two_rows
+    assign per_row = total | divided_by: 2.0 | ceil
+  endif
+  assign reps = 1
+  if per_row > 0
+    assign reps = 8.0 | divided_by: per_row | ceil
+  endif
+  if reps < 1
+    assign reps = 1
+  endif
+  assign reps_all = 1
+  if total > 0
+    assign reps_all = 8.0 | divided_by: total | ceil
+  endif
+  if reps_all < 1
+    assign reps_all = 1
+  endif
+  assign tones = '#fbf8ef,#c8f169,#ffd23f,#ffffff' | split: ','
+-%}
+<style>
+  #shopify-section-{{ section.id }} {
+    --sf-tm-bg: {{ s.c_bg }};
+    --sf-tm-head: {{ s.c_head }};
+    --sf-tm-accent: {{ s.c_accent }};
+    --sf-tm-card-w: {{ s.card_w }}px;
+    --sf-tm-edge: {{ s.c_edge }};
+    --sf-tm-pt: {{ s.pt | times: 0.65 | round }}px;
+    --sf-tm-pb: {{ s.pb | times: 0.65 | round }}px;
+  }
+  @media (min-width: 990px) {
+    #shopify-section-{{ section.id }} { --sf-tm-pt: {{ s.pt }}px; --sf-tm-pb: {{ s.pb }}px; }
+  }
+</style>
+
+{%- capture cards_all -%}{%- for b in section.blocks -%}{%- render 'sf-testimonial-card', b: b, s: s, i: forloop.index0, tones: tones -%}{%- endfor -%}{%- endcapture -%}
+{%- capture cards_a -%}{%- for b in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 0 -%}{%- render 'sf-testimonial-card', b: b, s: s, i: forloop.index0, tones: tones -%}{%- endif -%}{%- endfor -%}{%- endcapture -%}
+{%- capture cards_b -%}{%- for b in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}{%- render 'sf-testimonial-card', b: b, s: s, i: forloop.index0, tones: tones -%}{%- endif -%}{%- endfor -%}{%- endcapture -%}
+
+<section
+  class="sf-pdp sf-tm{% if s.pattern %} sf-tm--dots{% endif %}{% if s.tilt %} sf-tm--tilt{% endif %}{% if two_rows %} sf-tm--two{% endif %}{% if s.two_rows_phone %} sf-tm--two-phone{% endif %}"
+  aria-label="{{ s.title | strip_html | default: 'Customer reviews' | escape }}"
+>
+  {%- if s.edge_top -%}<div class="sf-tm__edge" aria-hidden="true"></div>{%- endif -%}
+
+  {%- if request.design_mode and s.sample_notice -%}
+    <p class="sf-tm__notice">Sample reviews: replace them with real ones, then turn off “Show sample notice”. Only you see this note.</p>
+  {%- endif -%}
+
+  {%- if s.eyebrow != blank or s.title != blank or s.show_rating -%}
+    <div class="sf-pdp__wrap sf-tm__head sf-tm__head--{{ s.head_align }}">
+      <div class="sf-tm__titles">
+        {%- if s.eyebrow != blank -%}<p class="sf-tm__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        {%- if s.title != blank -%}<h2 class="sf-tm__title">{{ s.title }}</h2>{%- endif -%}
+      </div>
+      {%- if s.show_rating and s.rating_value != blank -%}
+        <div class="sf-tm__score">
+          <span class="sf-tm__score-num">{{ s.rating_value | escape }}</span>
+          <span class="sf-tm__score-side">
+            <span class="sf-tm__stars" aria-hidden="true">★★★★★</span>
+            {%- if s.rating_text != blank -%}<span class="sf-tm__score-txt">{{ s.rating_text | escape }}</span>{%- endif -%}
+          </span>
+          <span class="visually-hidden">Rated {{ s.rating_value | escape }} out of 5</span>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if total > 0 -%}
+    <div class="sf-tm__rows" data-sf-tm data-speed="{{ s.speed }}" data-auto="{{ s.autoplay }}">
+      {%- if two_rows -%}
+        <div class="sf-tm__row sf-tm__row--a sf-tm__row--desk" data-dir="1" role="region" aria-label="Customer reviews, row 1">
+          <div class="sf-tm__track">{%- for r in (1..reps) -%}{%- if forloop.first -%}{{ cards_a }}{%- else -%}<span class="sf-tm__rep" aria-hidden="true">{{ cards_a }}</span>{%- endif -%}{%- endfor -%}</div>
+        </div>
+        <div class="sf-tm__row sf-tm__row--b sf-tm__row--desk" data-dir="-1" aria-hidden="true">
+          <div class="sf-tm__track">{%- for r in (1..reps) -%}<span class="sf-tm__rep">{{ cards_b }}</span>{%- endfor -%}</div>
+        </div>
+        {%- unless s.two_rows_phone -%}
+          <div class="sf-tm__row sf-tm__row--phone" data-dir="1" role="region" aria-label="Customer reviews">
+            <div class="sf-tm__track">{%- for r in (1..reps_all) -%}{%- if forloop.first -%}{{ cards_all }}{%- else -%}<span class="sf-tm__rep" aria-hidden="true">{{ cards_all }}</span>{%- endif -%}{%- endfor -%}</div>
+          </div>
+        {%- endunless -%}
+      {%- else -%}
+        <div class="sf-tm__row sf-tm__row--a" data-dir="1" role="region" aria-label="Customer reviews">
+          <div class="sf-tm__track">{%- for r in (1..reps_all) -%}{%- if forloop.first -%}{{ cards_all }}{%- else -%}<span class="sf-tm__rep" aria-hidden="true">{{ cards_all }}</span>{%- endif -%}{%- endfor -%}</div>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- elsif request.design_mode -%}
+    <p class="sf-pdp__wrap sf-tm__empty">Add a testimonial block to show reviews here.</p>
+  {%- endif -%}
+
+  {%- if s.btn_label != blank -%}
+    <div class="sf-pdp__wrap sf-tm__foot">
+      <a class="sf-tm__btn" href="{{ s.btn_url | default: routes.all_products_collection_url }}">{{ s.btn_label | escape }}</a>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "SF · Testimonials",
+  "tag": "div",
+  "class": "sf-tm-section",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "What dippers say" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Loved in every <em>cup</em>", "info": "Italic words get the accent colour." },
+    { "type": "select", "id": "head_align", "label": "Heading layout", "default": "split",
+      "options": [
+        { "value": "split", "label": "Title left, rating right" },
+        { "value": "center", "label": "Centred" }
+      ] },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating summary", "default": true },
+    { "type": "text", "id": "rating_value", "label": "Rating", "default": "4.9" },
+    { "type": "text", "id": "rating_text", "label": "Rating note", "default": "from 1,200+ happy dippers" },
+
+    { "type": "header", "content": "Scrolling" },
+    { "type": "select", "id": "rows", "label": "Rows on desktop", "default": "2",
+      "options": [ { "value": "1", "label": "One row" }, { "value": "2", "label": "Two rows (opposite ways)" } ],
+      "info": "Two rows need at least 4 testimonials; with fewer it shows one row." },
+    { "type": "checkbox", "id": "two_rows_phone", "label": "Keep two rows on phones", "default": false, "info": "Off: phones show one row with every review." },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-scroll", "default": true, "info": "Pauses on hover or touch. Visitors can always swipe or drag." },
+    { "type": "range", "id": "speed", "label": "Speed", "min": 10, "max": 80, "step": 5, "unit": "px", "default": 35, "info": "Pixels per second." },
+
+    { "type": "header", "content": "Cards" },
+    { "type": "checkbox", "id": "show_stars", "label": "Show stars", "default": true },
+    { "type": "checkbox", "id": "show_avatar", "label": "Show photo or initials", "default": true },
+    { "type": "checkbox", "id": "show_location", "label": "Show city", "default": true },
+    { "type": "checkbox", "id": "show_verified", "label": "Show verified badge", "default": true },
+    { "type": "text", "id": "verified_label", "label": "Verified badge text", "default": "Verified buyer" },
+    { "type": "checkbox", "id": "show_product", "label": "Show product tag", "default": true },
+    { "type": "checkbox", "id": "show_quote_mark", "label": "Show quote mark", "default": true },
+    { "type": "checkbox", "id": "tilt", "label": "Tilt cards slightly", "default": true },
+    { "type": "range", "id": "card_w", "label": "Card width (desktop)", "min": 260, "max": 400, "step": 10, "unit": "px", "default": 320, "info": "Phones use about 80% of the screen." },
+
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "btn_label", "label": "Button label", "info": "Leave empty to hide." },
+    { "type": "url", "id": "btn_url", "label": "Button link" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#1f7a35" },
+    { "type": "color", "id": "c_head", "label": "Heading text", "default": "#fbf8ef" },
+    { "type": "color", "id": "c_accent", "label": "Accent (title highlight & rating)", "default": "#c8f169" },
+    { "type": "checkbox", "id": "pattern", "label": "Dot pattern", "default": true },
+    { "type": "checkbox", "id": "edge_top", "label": "Wavy top edge", "default": false },
+    { "type": "color", "id": "c_edge", "label": "Wavy edge colour", "default": "#fbf8ef", "info": "Match the section above." },
+    { "type": "range", "id": "pt", "label": "Top spacing", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Bottom spacing", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 },
+    { "type": "checkbox", "id": "sample_notice", "label": "Show sample notice (editor only)", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Customer name" },
+        { "type": "text", "id": "location", "label": "City" },
+        { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Review", "default": "Write what the customer said here." },
+        { "type": "image_picker", "id": "photo", "label": "Photo", "info": "Optional. Without a photo, the initials show in a coloured circle." },
+        { "type": "product", "id": "product", "label": "Product", "info": "The tag links to this product." },
+        { "type": "text", "id": "product_label", "label": "Product tag text", "info": "Optional. Uses the product name when empty." },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": true },
+        { "type": "select", "id": "tone", "label": "Card colour", "default": "auto",
+          "options": [
+            { "value": "auto", "label": "Auto (cycles)" },
+            { "value": "#fbf8ef", "label": "Cream" },
+            { "value": "#c8f169", "label": "Lime" },
+            { "value": "#ffd23f", "label": "Yellow" },
+            { "value": "#ffffff", "label": "White" },
+            { "value": "#e9f7d0", "label": "Mint" }
+          ] }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SF · Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "name": "Riya S.", "location": "Pune", "quote": "Sample: I swapped my evening coffee for Daily Sleep and I'm actually winding down now. Tastes lovely too.", "product_label": "Daily Sleep" } },
+        { "type": "testimonial", "settings": { "name": "Arjun M.", "location": "Bengaluru", "quote": "Sample: Cleanse has become my morning ritual. Light, fresh and my stomach feels so much better.", "product_label": "Daily Cleanse" } },
+        { "type": "testimonial", "settings": { "name": "Meera K.", "location": "Kochi", "quote": "Sample: Finally a herbal tea that doesn't taste like hay. The Lean blend is my 4pm pick-me-up.", "product_label": "Daily Lean" } },
+        { "type": "testimonial", "settings": { "name": "Sameer P.", "location": "Delhi", "quote": "Sample: Ordered Detox after a heavy festive week. Arrived fast and the pouch keeps it so fresh.", "product_label": "Daily Detox" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
