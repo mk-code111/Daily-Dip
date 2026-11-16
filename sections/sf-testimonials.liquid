@@ -43,16 +43,16 @@
 -%}
 <style>
   #shopify-section-{{ section.id }} {
-    --sf-tm-bg: {{ s.c_bg }};
-    --sf-tm-head: {{ s.c_head }};
-    --sf-tm-accent: {{ s.c_accent }};
-    --sf-tm-card-w: {{ s.card_w }}px;
-    --sf-tm-edge: {{ s.c_edge }};
-    --sf-tm-pt: {{ s.pt | times: 0.65 | round }}px;
-    --sf-tm-pb: {{ s.pb | times: 0.65 | round }}px;
+    --sf-tst-bg: {{ s.c_bg }};
+    --sf-tst-head: {{ s.c_head }};
+    --sf-tst-accent: {{ s.c_accent }};
+    --sf-tst-card-w: {{ s.card_w }}px;
+    --sf-tst-edge: {{ s.c_edge }};
+    --sf-tst-pt: {{ s.pt | times: 0.65 | round }}px;
+    --sf-tst-pb: {{ s.pb | times: 0.65 | round }}px;
   }
   @media (min-width: 990px) {
-    #shopify-section-{{ section.id }} { --sf-tm-pt: {{ s.pt }}px; --sf-tm-pb: {{ s.pb }}px; }
+    #shopify-section-{{ section.id }} { --sf-tst-pt: {{ s.pt }}px; --sf-tst-pb: {{ s.pb }}px; }
   }
 </style>
 
@@ -61,27 +61,27 @@
 {%- capture cards_b -%}{%- for b in section.blocks -%}{%- assign m = forloop.index0 | modulo: 2 -%}{%- if m == 1 -%}{%- render 'sf-testimonial-card', b: b, s: s, i: forloop.index0, tones: tones -%}{%- endif -%}{%- endfor -%}{%- endcapture -%}
 
 <section
-  class="sf-pdp sf-tm{% if s.pattern %} sf-tm--dots{% endif %}{% if s.tilt %} sf-tm--tilt{% endif %}{% if two_rows %} sf-tm--two{% endif %}{% if s.two_rows_phone %} sf-tm--two-phone{% endif %}"
+  class="sf-pdp sf-tst{% if s.pattern %} sf-tst--dots{% endif %}{% if s.tilt %} sf-tst--tilt{% endif %}{% if two_rows %} sf-tst--two{% endif %}{% if s.two_rows_phone %} sf-tst--two-phone{% endif %}"
   aria-label="{{ s.title | strip_html | default: 'Customer reviews' | escape }}"
 >
-  {%- if s.edge_top -%}<div class="sf-tm__edge" aria-hidden="true"></div>{%- endif -%}
+  {%- if s.edge_top -%}<div class="sf-tst__edge" aria-hidden="true"></div>{%- endif -%}
 
   {%- if request.design_mode and s.sample_notice -%}
-    <p class="sf-tm__notice">Sample reviews: replace them with real ones, then turn off “Show sample notice”. Only you see this note.</p>
+    <p class="sf-tst__notice">Sample reviews: replace them with real ones, then turn off “Show sample notice”. Only you see this note.</p>
   {%- endif -%}
 
   {%- if s.eyebrow != blank or s.title != blank or s.show_rating -%}
-    <div class="sf-pdp__wrap sf-tm__head sf-tm__head--{{ s.head_align }}">
-      <div class="sf-tm__titles">
-        {%- if s.eyebrow != blank -%}<p class="sf-tm__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
-        {%- if s.title != blank -%}<h2 class="sf-tm__title">{{ s.title }}</h2>{%- endif -%}
+    <div class="sf-pdp__wrap sf-tst__head sf-tst__head--{{ s.head_align }}">
+      <div class="sf-tst__titles">
+        {%- if s.eyebrow != blank -%}<p class="sf-tst__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        {%- if s.title != blank -%}<h2 class="sf-tst__title">{{ s.title }}</h2>{%- endif -%}
       </div>
       {%- if s.show_rating and s.rating_value != blank -%}
-        <div class="sf-tm__score">
-          <span class="sf-tm__score-num">{{ s.rating_value | escape }}</span>
-          <span class="sf-tm__score-side">
-            <span class="sf-tm__stars" aria-hidden="true">★★★★★</span>
-            {%- if s.rating_text != blank -%}<span class="sf-tm__score-txt">{{ s.rating_text | escape }}</span>{%- endif -%}
+        <div class="sf-tst__score">
+          <span class="sf-tst__score-num">{{ s.rating_value | escape }}</span>
+          <span class="sf-tst__score-side">
+            <span class="sf-tst__stars" aria-hidden="true">★★★★★</span>
+            {%- if s.rating_text != blank -%}<span class="sf-tst__score-txt">{{ s.rating_text | escape }}</span>{%- endif -%}
           </span>
           <span class="visually-hidden">Rated {{ s.rating_value | escape }} out of 5</span>
         </div>
@@ -90,32 +90,32 @@
   {%- endif -%}
 
   {%- if total > 0 -%}
-    <div class="sf-tm__rows" data-sf-tm data-speed="{{ s.speed }}" data-auto="{{ s.autoplay }}">
+    <div class="sf-tst__rows" data-sf-tst data-speed="{{ s.speed }}" data-auto="{{ s.autoplay }}">
       {%- if two_rows -%}
-        <div class="sf-tm__row sf-tm__row--a sf-tm__row--desk" data-dir="1" role="region" aria-label="Customer reviews, row 1">
-          <div class="sf-tm__track">{%- for r in (1..reps) -%}{%- if forloop.first -%}{{ cards_a }}{%- else -%}<span class="sf-tm__rep" aria-hidden="true">{{ cards_a }}</span>{%- endif -%}{%- endfor -%}</div>
+        <div class="sf-tst__row sf-tst__row--a sf-tst__row--desk" data-dir="1" role="region" aria-label="Customer reviews, row 1">
+          <div class="sf-tst__track">{%- for r in (1..reps) -%}{%- if forloop.first -%}{{ cards_a }}{%- else -%}<span class="sf-tst__rep" aria-hidden="true">{{ cards_a }}</span>{%- endif -%}{%- endfor -%}</div>
         </div>
-        <div class="sf-tm__row sf-tm__row--b sf-tm__row--desk" data-dir="-1" aria-hidden="true">
-          <div class="sf-tm__track">{%- for r in (1..reps) -%}<span class="sf-tm__rep">{{ cards_b }}</span>{%- endfor -%}</div>
+        <div class="sf-tst__row sf-tst__row--b sf-tst__row--desk" data-dir="-1" aria-hidden="true">
+          <div class="sf-tst__track">{%- for r in (1..reps) -%}<span class="sf-tst__rep">{{ cards_b }}</span>{%- endfor -%}</div>
         </div>
         {%- unless s.two_rows_phone -%}
-          <div class="sf-tm__row sf-tm__row--phone" data-dir="1" role="region" aria-label="Customer reviews">
-            <div class="sf-tm__track">{%- for r in (1..reps_all) -%}{%- if forloop.first -%}{{ cards_all }}{%- else -%}<span class="sf-tm__rep" aria-hidden="true">{{ cards_all }}</span>{%- endif -%}{%- endfor -%}</div>
+          <div class="sf-tst__row sf-tst__row--phone" data-dir="1" role="region" aria-label="Customer reviews">
+            <div class="sf-tst__track">{%- for r in (1..reps_all) -%}{%- if forloop.first -%}{{ cards_all }}{%- else -%}<span class="sf-tst__rep" aria-hidden="true">{{ cards_all }}</span>{%- endif -%}{%- endfor -%}</div>
           </div>
         {%- endunless -%}
       {%- else -%}
-        <div class="sf-tm__row sf-tm__row--a" data-dir="1" role="region" aria-label="Customer reviews">
-          <div class="sf-tm__track">{%- for r in (1..reps_all) -%}{%- if forloop.first -%}{{ cards_all }}{%- else -%}<span class="sf-tm__rep" aria-hidden="true">{{ cards_all }}</span>{%- endif -%}{%- endfor -%}</div>
+        <div class="sf-tst__row sf-tst__row--a" data-dir="1" role="region" aria-label="Customer reviews">
+          <div class="sf-tst__track">{%- for r in (1..reps_all) -%}{%- if forloop.first -%}{{ cards_all }}{%- else -%}<span class="sf-tst__rep" aria-hidden="true">{{ cards_all }}</span>{%- endif -%}{%- endfor -%}</div>
         </div>
       {%- endif -%}
     </div>
   {%- elsif request.design_mode -%}
-    <p class="sf-pdp__wrap sf-tm__empty">Add a testimonial block to show reviews here.</p>
+    <p class="sf-pdp__wrap sf-tst__empty">Add a testimonial block to show reviews here.</p>
   {%- endif -%}
 
   {%- if s.btn_label != blank -%}
-    <div class="sf-pdp__wrap sf-tm__foot">
-      <a class="sf-tm__btn" href="{{ s.btn_url | default: routes.all_products_collection_url }}">{{ s.btn_label | escape }}</a>
+    <div class="sf-pdp__wrap sf-tst__foot">
+      <a class="sf-tst__btn" href="{{ s.btn_url | default: routes.all_products_collection_url }}">{{ s.btn_label | escape }}</a>
     </div>
   {%- endif -%}
 </section>
@@ -124,7 +124,7 @@
 {
   "name": "SF · Testimonials",
   "tag": "div",
-  "class": "sf-tm-section",
+  "class": "sf-tst-section",
   "max_blocks": 24,
   "settings": [
     { "type": "header", "content": "Heading" },

@@ -6,7 +6,7 @@
   class Row {
     constructor(el, opts) {
       this.el = el;
-      this.track = el.querySelector('.sf-tm__track');
+      this.track = el.querySelector('.sf-tst__track');
       this.dir = Number(el.dataset.dir) || 1;
       this.speed = opts.speed;
       this.auto = opts.auto;
@@ -16,8 +16,8 @@
       this.period = 0;
       this.base = [...this.track.children];
       // Repeats rendered by the theme are decoration: keep one editable copy only.
-      const keepFirst = !this.track.querySelector(':scope > .sf-tm__card');
-      this.track.querySelectorAll('.sf-tm__rep').forEach((r, i) => {
+      const keepFirst = !this.track.querySelector(':scope > .sf-tst__card');
+      this.track.querySelectorAll('.sf-tst__rep').forEach((r, i) => {
         if (keepFirst && i === 0) return;
         r.querySelectorAll('a, button').forEach((a) => a.setAttribute('tabindex', '-1'));
         r.querySelectorAll('[data-shopify-editor-block]').forEach((b) => b.removeAttribute('data-shopify-editor-block'));
@@ -30,14 +30,14 @@
     measure() {
       const w = this.el.clientWidth;
       if (!w) { this.period = 0; return; }
-      this.track.querySelectorAll('[data-sf-tm-clone]').forEach((n) => n.remove());
+      this.track.querySelectorAll('[data-sf-tst-clone]').forEach((n) => n.remove());
       const first = this.base[0];
       if (!first) return;
       const clone = () => {
         const frag = document.createDocumentFragment();
         this.base.forEach((n) => {
           const c = n.cloneNode(true);
-          c.setAttribute('data-sf-tm-clone', '');
+          c.setAttribute('data-sf-tst-clone', '');
           c.setAttribute('aria-hidden', 'true');
           c.querySelectorAll('a, button').forEach((a) => a.setAttribute('tabindex', '-1'));
           c.querySelectorAll('[data-shopify-editor-block]').forEach((b) => b.removeAttribute('data-shopify-editor-block'));
@@ -46,7 +46,7 @@
         this.track.appendChild(frag);
       };
       clone();
-      const firstClone = this.track.querySelector('[data-sf-tm-clone]');
+      const firstClone = this.track.querySelector('[data-sf-tst-clone]');
       const startOf = (n) => (n.getBoundingClientRect ? (n.firstElementChild && getComputedStyle(n).display === 'contents' ? n.firstElementChild : n) : n);
       const a = startOf(first).getBoundingClientRect().left;
       const b = startOf(firstClone).getBoundingClientRect().left;
@@ -153,7 +153,7 @@
     constructor(root) {
       this.root = root;
       const opts = { speed: Number(root.dataset.speed) || 35, auto: root.dataset.auto !== 'false' };
-      this.rows = [...root.querySelectorAll('.sf-tm__row')].map((r) => new Row(r, opts));
+      this.rows = [...root.querySelectorAll('.sf-tst__row')].map((r) => new Row(r, opts));
       this.visible = true;
       this.prev = 0;
       if ('ResizeObserver' in window) {
@@ -194,7 +194,7 @@
 
   const all = new Map();
   const init = (scope = document) => {
-    scope.querySelectorAll('[data-sf-tm]').forEach((el) => { if (!all.has(el)) all.set(el, new Section(el)); });
+    scope.querySelectorAll('[data-sf-tst]').forEach((el) => { if (!all.has(el)) all.set(el, new Section(el)); });
   };
   window.SFTestimonials = { init };
 
@@ -203,15 +203,15 @@
 
   document.addEventListener('shopify:section:load', (e) => init(e.target));
   document.addEventListener('shopify:section:unload', (e) => {
-    e.target.querySelectorAll('[data-sf-tm]').forEach((el) => { const s = all.get(el); if (s) { s.destroy(); all.delete(el); } });
+    e.target.querySelectorAll('[data-sf-tst]').forEach((el) => { const s = all.get(el); if (s) { s.destroy(); all.delete(el); } });
   });
   document.addEventListener('shopify:block:select', (e) => {
-    const el = e.target.closest('.sf-tm') && e.target.closest('.sf-tm').querySelector('[data-sf-tm]');
+    const el = e.target.closest('.sf-tst') && e.target.closest('.sf-tst').querySelector('[data-sf-tst]');
     const s = el && all.get(el);
     if (s) s.rows.forEach((r) => r.el.offsetParent && r.showBlock(e.detail.blockId));
   });
   document.addEventListener('shopify:block:deselect', (e) => {
-    const el = e.target.closest('.sf-tm') && e.target.closest('.sf-tm').querySelector('[data-sf-tm]');
+    const el = e.target.closest('.sf-tst') && e.target.closest('.sf-tst').querySelector('[data-sf-tst]');
     const s = el && all.get(el);
     if (s) s.rows.forEach((r) => r.release('editor'));
   });

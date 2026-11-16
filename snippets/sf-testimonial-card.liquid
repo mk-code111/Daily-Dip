@@ -29,29 +29,29 @@
   endif
   assign tilt = i | modulo: 3
 -%}
-<figure class="sf-tm__card sf-tm__card--t{{ tilt }}" style="--sf-tm-tone: {{ tone }};" {{ b.shopify_attributes }}>
+<figure class="sf-tst__card sf-tst__card--t{{ tilt }}" style="--sf-tst-tone: {{ tone }};" {{ b.shopify_attributes }}>
   {%- if s.show_stars or show_ver -%}
-    <div class="sf-tm__top">
+    <div class="sf-tst__top">
       {%- if s.show_stars -%}
-        <span class="sf-tm__rate" role="img" aria-label="{{ bs.rating }} out of 5 stars">
+        <span class="sf-tst__rate" role="img" aria-label="{{ bs.rating }} out of 5 stars">
           {%- for n in (1..5) -%}<i class="{% if n <= bs.rating %}is-on{% endif %}" aria-hidden="true">★</i>{%- endfor -%}
         </span>
       {%- endif -%}
       {%- if show_ver -%}
-        <span class="sf-tm__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.4l3 3 6-6.4"/></svg>{{ s.verified_label | escape }}</span>
+        <span class="sf-tst__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.4l3 3 6-6.4"/></svg>{{ s.verified_label | escape }}</span>
       {%- endif -%}
     </div>
   {%- endif -%}
 
   {%- if bs.quote != blank -%}
-    <blockquote class="sf-tm__quote{% if s.show_quote_mark %} sf-tm__quote--mark{% endif %}">
+    <blockquote class="sf-tst__quote{% if s.show_quote_mark %} sf-tst__quote--mark{% endif %}">
       <p>{{ bs.quote | escape | newline_to_br }}</p>
     </blockquote>
   {%- endif -%}
 
-  <figcaption class="sf-tm__who">
+  <figcaption class="sf-tst__who">
     {%- if s.show_avatar -%}
-      <span class="sf-tm__ava" aria-hidden="true">
+      <span class="sf-tst__ava" aria-hidden="true">
         {%- if bs.photo != blank -%}
           {{ bs.photo | image_url: width: 120 | image_tag: loading: 'lazy', width: 48, height: 48, alt: '' }}
         {%- else -%}
@@ -59,15 +59,15 @@
         {%- endif -%}
       </span>
     {%- endif -%}
-    <span class="sf-tm__id">
-      {%- if bs.name != blank -%}<span class="sf-tm__name">{{ bs.name | escape }}</span>{%- endif -%}
-      {%- if s.show_location and bs.location != blank -%}<span class="sf-tm__loc">{{ bs.location | escape }}</span>{%- endif -%}
+    <span class="sf-tst__id">
+      {%- if bs.name != blank -%}<span class="sf-tst__name">{{ bs.name | escape }}</span>{%- endif -%}
+      {%- if s.show_location and bs.location != blank -%}<span class="sf-tst__loc">{{ bs.location | escape }}</span>{%- endif -%}
     </span>
     {%- if show_tag -%}
       {%- if bs.product != blank -%}
-        <a class="sf-tm__tag" href="{{ bs.product.url }}">{{ tag_label | escape }}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8M8.5 4.5L12 8l-3.5 3.5"/></svg></a>
+        <a class="sf-tst__tag" href="{{ bs.product.url }}">{{ tag_label | escape }}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8M8.5 4.5L12 8l-3.5 3.5"/></svg></a>
       {%- else -%}
-        <span class="sf-tm__tag">{{ tag_label | escape }}</span>
+        <span class="sf-tst__tag">{{ tag_label | escape }}</span>
       {%- endif -%}
     {%- endif -%}
   </figcaption>
