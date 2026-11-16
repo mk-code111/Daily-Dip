@@ -12,6 +12,7 @@
       this.auto = opts.auto;
       this.holds = new Set();
       this.pos = 0;
+      this.vel = 0;
       this.set = 0;
       this.period = 0;
       this.base = [...this.track.children];
@@ -61,15 +62,13 @@
 
     wrap() {
       if (!this.period) return;
-      // Stay in the middle loop so a swipe either way never hits an end.
+      // Stay in the middle loop so a swipe either way never reaches an end.
       while (this.pos >= this.period * 2) this.pos -= this.period;
       while (this.pos < this.period) this.pos += this.period;
     }
 
     apply() {
-      this.writing = true;
-      this.el.scrollLeft = this.pos;
-      this.last = this.el.scrollLeft;
+      this.track.style.transform = `translate3d(${-this.pos}px, 0, 0)`;
     }
 
     hold(k) { this.holds.add(k); }
@@ -81,6 +80,15 @@
 
     tick(dt) {
       if (!this.period || !this.el.offsetParent) return;
+      // momentum after a swipe
+      if (this.vel) {
+        this.pos += this.vel * dt;
+        this.vel *= Math.pow(0.0025, dt); // friction
+        if (Math.abs(this.vel) < 8) { this.vel = 0; this.release('fling', 1200); }
+        this.wrap();
+        this.apply();
+        return;
+      }
       if (!this.auto || reduce.matches || this.holds.size) return;
       this.pos += this.dir * this.speed * dt;
       this.wrap();
@@ -91,49 +99,79 @@
       const el = this.el;
       el.addEventListener('mouseenter', () => this.hold('hover'));
       el.addEventListener('mouseleave', () => this.release('hover'));
-      el.addEventListener('focusin', () => this.hold('focus'));
+      el.addEventListener('focusin', (e) => {
+        this.hold('focus');
+        const card = e.target.closest('.sf-tst__card');
+        if (!card || !this.period) return;
+        const r = el.getBoundingClientRect();
+        const c = card.getBoundingClientRect();
+        if (c.left < r.left || c.right > r.right) {
+          this.pos += c.left - r.left - (r.width - c.width) / 2;
+          this.wrap();
+          this.apply();
+        }
+        el.scrollLeft = 0; // focus can nudge an overflow:hidden box
+      });
       el.addEventListener('focusout', () => this.release('focus'));
-      el.addEventListener('touchstart', () => this.hold('touch'), { passive: true });
-      el.addEventListener('touchend', () => this.release('touch', 1800), { passive: true });
-      el.addEventListener('wheel', () => { this.hold('wheel'); this.release('wheel', 1500); }, { passive: true });
 
-      // Native scrolls (swipe, trackpad, keyboard) move the loop too.
-      el.addEventListener('scroll', () => {
-        if (Math.abs(el.scrollLeft - this.last) < 2) return;
-        this.pos = el.scrollLeft;
-        const before = this.pos;
-        this.wrap();
-        if (this.pos !== before) this.apply();
-        else this.last = el.scrollLeft;
-      }, { passive: true });
-
-      // Mouse drag on desktop.
-      let down = null;
+      // One gesture model for touch, pen and mouse. Sideways = we move the strip;
+      // up/down = we let the page scroll (touch-action: pan-y).
+      let g = null;
       el.addEventListener('pointerdown', (e) => {
-        if (e.pointerType !== 'mouse' || e.button !== 0) return;
-        down = { x: e.clientX, pos: this.pos, moved: false };
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        this.vel = 0;
+        g = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: this.pos, mode: null, lx: e.clientX, lt: e.timeStamp, v: 0 };
         this.hold('drag');
       });
-      window.addEventListener('pointermove', (e) => {
-        if (!down) return;
-        const dx = e.clientX - down.x;
-        if (!down.moved && Math.abs(dx) > 4) { down.moved = true; el.classList.add('is-drag'); }
-        if (!down.moved) return;
-        const target = down.pos - dx;
+      el.addEventListener('pointermove', (e) => {
+        if (!g || e.pointerId !== g.id) return;
+        const dx = e.clientX - g.x;
+        const dy = e.clientY - g.y;
+        if (!g.mode) {
+          if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+          g.mode = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+          if (g.mode === 'y') { g = null; this.release('drag', 600); return; }
+          try { el.setPointerCapture(e.pointerId); } catch (_) {}
+          el.classList.add('is-drag');
+        }
+        const target = g.pos - dx;
         this.pos = target;
         this.wrap();
-        down.pos += this.pos - target;
+        g.pos += this.pos - target; // keep finger and strip locked across the wrap
         this.apply();
+        const dt = (e.timeStamp - g.lt) / 1000;
+        if (dt > 0) { g.v = 0.8 * (-(e.clientX - g.lx) / dt) + 0.2 * g.v; g.lx = e.clientX; g.lt = e.timeStamp; }
       });
-      window.addEventListener('pointerup', () => {
-        if (!down) return;
-        const moved = down.moved;
-        down = null;
-        this.release('drag', 600);
-        if (moved) setTimeout(() => el.classList.remove('is-drag'), 0);
-      });
-      el.addEventListener('click', (e) => { if (el.classList.contains('is-drag')) e.preventDefault(); }, true);
+      const end = (e) => {
+        if (!g || (e && e.pointerId !== g.id)) return;
+        const dragged = g.mode === 'x';
+        const idle = e ? (e.timeStamp - g.lt) : 0;
+        const v = idle > 80 ? 0 : Math.max(-2600, Math.min(2600, g.v));
+        g = null;
+        if (dragged) {
+          setTimeout(() => el.classList.remove('is-drag'), 0);
+          if (Math.abs(v) > 60) { this.vel = v; this.hold('fling'); }
+        }
+        this.release('drag', dragged ? 1200 : 0);
+      };
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+      el.addEventListener('lostpointercapture', end);
+      el.addEventListener('click', (e) => { if (el.classList.contains('is-drag')) { e.preventDefault(); e.stopPropagation(); } }, true);
       el.addEventListener('dragstart', (e) => e.preventDefault());
+
+      // Trackpad / shift+wheel sideways scrolling.
+      el.addEventListener('wheel', (e) => {
+        const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+        if (!d) return;
+        e.preventDefault();
+        this.vel = 0;
+        this.pos += d;
+        this.wrap();
+        this.apply();
+        this.hold('wheel');
+        this.release('wheel', 1500);
+      }, { passive: false });
     }
 
     showBlock(id) {

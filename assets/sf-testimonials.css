@@ -56,16 +56,19 @@
 /* rows */
 .sf-tst__rows { display: flex; flex-direction: column; gap: 6px; }
 .sf-tst__row {
-  overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
-  scrollbar-width: none; -webkit-overflow-scrolling: touch;
-  cursor: grab; touch-action: pan-x pan-y;
+  position: relative; overflow: hidden;
+  cursor: grab; touch-action: pan-y; /* vertical page scroll stays native, sideways swipes are ours */
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
 }
-.sf-tst__row::-webkit-scrollbar { display: none; }
-.sf-tst__row.is-drag { cursor: grabbing; user-select: none; }
+.sf-tst__row.is-drag { cursor: grabbing; }
 .sf-tst__row.is-drag a { pointer-events: none; }
-.sf-tst__track { display: flex; align-items: stretch; gap: 22px; width: max-content; padding: 16px 22px 22px; }
+.sf-tst__row img { -webkit-user-drag: none; }
+.sf-tst__track {
+  display: flex; align-items: stretch; gap: 22px; width: max-content; padding: 16px 22px 22px;
+  will-change: transform; transform: translate3d(0, 0, 0); backface-visibility: hidden;
+}
 .sf-tst__rep { display: contents; }
 
 /* only one layout set shows at a time */
