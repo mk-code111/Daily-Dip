@@ -55,7 +55,8 @@
         "media_full": false,
         "pt": 0,
         "pb": 0
-      }
+      },
+      "disabled": true
     },
     "18e3bb8e-f1ba-421c-91c3-37c1c5b25a2a": {
       "type": "separator",
@@ -88,7 +89,8 @@
         "description_font_size": "fs-md",
         "pt": 9,
         "pb": 9
-      }
+      },
+      "disabled": true
     },
     "54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e": {
       "type": "card-list",
@@ -175,7 +177,8 @@
         "breakpoint_desktop": 4,
         "pt": 5,
         "pb": 10
-      }
+      },
+      "disabled": true
     },
     "664feedb-7180-4e8f-a84d-1cf45bc1dd42": {
       "type": "richtext",
@@ -207,7 +210,8 @@
         "btn_secondary_size": "btn-md",
         "pt": 8,
         "pb": 12
-      }
+      },
+      "disabled": true
     },
     "cfc6ff50-e3a5-4219-8350-f2db73f829c8": {
       "type": "separator",
@@ -222,74 +226,164 @@
         "pb": 0
       }
     },
-    "sf_about_steps": {
-      "type": "sf-about-steps",
+    "sf_about_hero": {
+      "type": "sf-about-hero",
       "blocks": {
-        "step_1": {
-          "type": "step",
+        "stat_1": {
+          "type": "stat",
           "settings": {
-            "title": "Picked",
-            "text": "Directly from farmers.",
-            "icon": "leaf",
-            "tint": "#1f7a35",
-            "number": ""
+            "value": "4",
+            "label": "Daily blends",
+            "tint": "#c8f169"
           }
         },
-        "step_2": {
-          "type": "step",
+        "stat_2": {
+          "type": "stat",
           "settings": {
-            "title": "Sorted & cleaned",
-            "text": "At our facility.",
-            "icon": "sparkle",
-            "tint": "#ffd23f",
-            "number": ""
+            "value": "Farm",
+            "label": "to cup",
+            "tint": "#ffd23f"
           }
         },
-        "step_3": {
-          "type": "step",
+        "stat_3": {
+          "type": "stat",
           "settings": {
-            "title": "Packed & stored",
-            "text": "At our facility.",
-            "icon": "box",
-            "tint": "#c8f169",
-            "number": ""
-          }
-        },
-        "step_4": {
-          "type": "step",
-          "settings": {
-            "title": "Shipped",
-            "text": "Delivered to our valued customers.",
-            "icon": "truck",
-            "tint": "#ff5a4d",
-            "number": ""
+            "value": "Free",
+            "label": "shipping",
+            "tint": "#ffffff"
           }
         }
       },
       "block_order": [
-        "step_1",
-        "step_2",
-        "step_3",
-        "step_4"
+        "stat_1",
+        "stat_2",
+        "stat_3"
       ],
       "settings": {
-        "eyebrow": "How we work",
-        "title": "From the farm to your <em>cup</em>",
-        "text": "<p>Every Dailydip blend makes the same short trip: hand-picked, cleaned with care, packed fresh and sent straight to your door.</p>",
-        "ratio": "3 / 2",
+        "eyebrow": "Our story",
+        "title": "Goodness in <em>every sip</em>",
+        "text": "<p>Dailydip started with a simple idea: everyday herbal blends that actually make you feel good. Here's how every cup gets from the farm to your kettle.</p>",
+        "btn1_label": "Shop our blends",
+        "btn1_url": "shopify://collections/all",
+        "btn2_label": "See the journey",
+        "btn2_url": "#our-story",
+        "use_starter": true,
+        "badge": "LET'S DIP",
         "float": true,
-        "c_bg": "#fbf8ef",
-        "c_card": "#ffffff",
+        "c_page": "#fbf8ef",
+        "c_bg": "#1f7a35",
+        "c_text": "#fbf8ef",
+        "pt": 16,
+        "pb": 24
+      }
+    },
+    "sf_story_1": {
+      "type": "sf-about-story",
+      "settings": {
+        "float": true,
+        "ratio": "16 / 10",
         "pt": 64,
-        "pb": 64
+        "pb": 64,
+        "btn_label": "",
+        "sticker": "",
+        "number": "01",
+        "kicker": "Chapter one",
+        "title": "Picked",
+        "lead": "Directly from farmers.",
+        "story": "<p>It all starts in the fields. We work directly with growers who hand-pick the leaves, flowers and roots that go into every Dailydip blend, right when they're ready.</p>",
+        "chips": "Hand-picked, Direct from farmers, Fresh harvest",
+        "icon": "leaf",
+        "starter": "1",
+        "image_side": "right",
+        "tint": "#1f7a35",
+        "c_bg": "#fbf8ef",
+        "connector": true,
+        "anchor": "our-story"
+      }
+    },
+    "sf_story_2": {
+      "type": "sf-about-story",
+      "settings": {
+        "float": true,
+        "ratio": "16 / 10",
+        "pt": 64,
+        "pb": 64,
+        "btn_label": "",
+        "sticker": "Pure natural goodness",
+        "number": "02",
+        "kicker": "Chapter two",
+        "title": "Sorted & cleaned",
+        "lead": "At our facility.",
+        "story": "<p>Back at our facility, every batch is sorted by hand and cleaned with care, so only the good stuff makes it into your cup.</p>",
+        "chips": "Hand-sorted, Carefully cleaned, Quality checked",
+        "icon": "sparkle",
+        "starter": "2",
+        "image_side": "left",
+        "tint": "#ffd23f",
+        "c_bg": "#ffffff",
+        "connector": true,
+        "anchor": ""
+      }
+    },
+    "sf_story_3": {
+      "type": "sf-about-story",
+      "settings": {
+        "float": true,
+        "ratio": "16 / 10",
+        "pt": 64,
+        "pb": 64,
+        "btn_label": "",
+        "sticker": "",
+        "number": "03",
+        "kicker": "Chapter three",
+        "title": "Packed & stored",
+        "lead": "At our facility.",
+        "story": "<p>Blends are packed fresh into our pouches and stored the right way, sealed to keep the aroma and flavour locked in until you open them.</p>",
+        "chips": "Packed fresh, Sealed pouches, Stored with care",
+        "icon": "box",
+        "starter": "3",
+        "image_side": "right",
+        "tint": "#c8f169",
+        "c_bg": "#fbf8ef",
+        "connector": true,
+        "anchor": ""
+      }
+    },
+    "sf_story_4": {
+      "type": "sf-about-story",
+      "settings": {
+        "float": true,
+        "ratio": "16 / 10",
+        "pt": 64,
+        "pb": 80,
+        "btn_label": "Shop our blends",
+        "sticker": "",
+        "number": "04",
+        "kicker": "Chapter four",
+        "title": "Shipped",
+        "lead": "Delivered to our valued customers.",
+        "story": "<p>Then it's off to you. We ship your order straight to your door, ready for your first dip.</p>",
+        "chips": "Straight to your door, Free shipping",
+        "icon": "truck",
+        "starter": "4",
+        "image_side": "left",
+        "tint": "#ff5a4d",
+        "c_bg": "#ffffff",
+        "connector": true,
+        "anchor": "",
+        "btn_url": "shopify://collections/all"
       }
     }
   },
   "order": [
+    "sf_about_hero",
+    "sf_story_1",
+    "sf_story_2",
+    "sf_story_3",
+    "sf_story_4",
     "hero_carousel_tdHVay",
     "18e3bb8e-f1ba-421c-91c3-37c1c5b25a2a",
     "91fa2e27-741f-431f-b658-c6ce03d0f6eb",
-    "sf_about_steps",
     "54fb0ae0-8c55-432c-8b0a-1211e6ba4a0e",
     "664feedb-7180-4e8f-a84d-1cf45bc1dd42",
     "cfc6ff50-e3a5-4219-8350-f2db73f829c8"
