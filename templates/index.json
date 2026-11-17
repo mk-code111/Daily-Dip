@@ -64,7 +64,8 @@
         "media_full": false,
         "pt": 0,
         "pb": 9
-      }
+      },
+      "disabled": true
     },
     "sf_product_cards_cM7twj": {
       "type": "sf-product-cards",
@@ -96,7 +97,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF · Product cards",
+      "name": "SF \u00b7 Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -206,7 +207,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF · Moments",
+      "name": "SF \u00b7 Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -373,7 +374,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep · sip · see",
+        "eyebrow": "steep \u00b7 sip \u00b7 see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -407,7 +408,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -415,7 +416,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -423,7 +424,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -431,7 +432,7 @@
           "type": "item",
           "settings": {
             "title": "Ingredients & Allergies",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -439,7 +440,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
             "open": false
           }
         }
@@ -451,7 +452,7 @@
         "item_RDreYt",
         "item_EhK7pF"
       ],
-      "name": "SF · Know more",
+      "name": "SF \u00b7 Know more",
       "settings": {
         "heading": "FAQs",
         "intro": "",
@@ -703,9 +704,66 @@
         "pb": 64,
         "sample_notice": true
       }
+    },
+    "sf_hero_wheel": {
+      "type": "sf-hero-wheel",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "caption": "Morning ritual",
+            "tone": "auto"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "caption": "",
+            "tone": "auto"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "caption": "Fresh from Kumily",
+            "tone": "auto"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "caption": "",
+            "tone": "auto"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "caption": "Lights out",
+            "tone": "auto"
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "caption": "",
+            "tone": "auto"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6"
+      ],
+      "settings": {}
     }
   },
   "order": [
+    "sf_hero_wheel",
     "hero_carousel_CmDneU",
     "sf_product_cards_cM7twj",
     "sf_moments_7ytUUJ",
