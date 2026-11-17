@@ -759,7 +759,9 @@
         "card_5",
         "card_6"
       ],
-      "settings": {}
+      "settings": {
+        "pt": 124
+      }
     }
   },
   "order": [

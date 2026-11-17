@@ -39,7 +39,7 @@
     --sf-hw-band: {{ s.c_band }};
     --sf-hw-dur: {{ dur }}s;
     --sf-hw-cw: {{ s.card_w }};
-    --sf-hw-pt: {{ s.pt | times: 0.6 | round }}px;
+    --sf-hw-pt: {{ s.pt | times: 0.75 | round }}px;
   }
   @media (min-width: 990px) { #shopify-section-{{ section.id }} { --sf-hw-pt: {{ s.pt }}px; } }
 </style>
@@ -190,7 +190,7 @@
     { "type": "checkbox", "id": "leaves", "label": "Floating leaves", "default": true },
     { "type": "checkbox", "id": "band", "label": "Green wave at the bottom", "default": true },
     { "type": "color", "id": "c_band", "label": "Wave colour", "default": "#1f7a35" },
-    { "type": "range", "id": "pt", "label": "Top spacing", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    { "type": "range", "id": "pt", "label": "Top spacing", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48, "info": "Raise it if the floating header covers the top of the banner." }
   ],
   "blocks": [
     {
