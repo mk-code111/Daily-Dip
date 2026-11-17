@@ -46,7 +46,7 @@
 </style>
 
 <section
-  class="sf-pdp sf-hw{% if s.direction == 'ccw' %} sf-hw--ccw{% endif %}{% if s.pause_hover %} sf-hw--hoverpause{% endif %}{% unless s.show_hub %} sf-hw--nohub{% endunless %}{% if s.m_layout == 'strip' %} sf-hw--mstrip{% endif %} sf-hw--edge-{{ s.edge | default: 'straight' }}"
+  class="sf-pdp sf-hw{% if s.direction == 'ccw' %} sf-hw--ccw{% endif %}{% if s.pause_hover %} sf-hw--hoverpause{% endif %}{% unless s.show_hub %} sf-hw--nohub{% endunless %}{% if s.m_layout == 'strip' %} sf-hw--mstrip{% endif %} sf-hw--edge-{{ s.edge | default: 'scallop' }}"
   aria-label="{{ s.title_1 | strip_html | default: shop.name | escape }}"
 >
   {%- if s.leaves -%}
@@ -138,14 +138,16 @@
     <svg class="sf-hw__band" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40C180 8 360 8 540 30s360 44 540 22 270-40 360-30V90H0z"/></svg>
   {%- endif -%}
   {%- case s.edge -%}
-    {%- when 'torn' -%}
-      <svg class="sf-hw__edge sf-hw__edge--torn" viewBox="0 0 1440 24" preserveAspectRatio="none" aria-hidden="true"><path d="M0 24 L0 7.5 L11 12.1 L21 10.5 L35 3.8 L50 3.5 L65 4.0 L75 8.9 L95 4.7 L107 11.8 L128 11.1 L142 16.7 L152 15.0 L165 5.0 L175 7.3 L195 5.5 L211 11.9 L225 10.7 L235 3.8 L247 12.5 L261 7.4 L278 9.3 L291 14.1 L309 6.4 L325 10.4 L346 13.2 L358 16.7 L369 8.9 L388 5.1 L403 3.5 L421 13.7 L437 15.3 L450 12.7 L467 11.1 L482 14.8 L503 9.6 L521 3.8 L539 12.1 L561 14.5 L574 8.4 L591 3.3 L606 5.4 L617 3.8 L636 4.8 L648 8.5 L668 4.1 L683 10.7 L704 14.5 L724 6.9 L738 8.0 L759 16.4 L770 5.5 L782 6.3 L797 11.2 L809 3.1 L824 8.2 L840 16.3 L858 10.2 L875 12.5 L885 15.6 L904 15.2 L924 8.5 L938 4.4 L955 3.9 L965 5.9 L976 7.8 L986 3.0 L997 4.4 L1010 3.4 L1031 11.6 L1042 6.5 L1055 8.1 L1066 14.9 L1088 9.5 L1103 4.2 L1113 7.8 L1126 14.6 L1137 3.3 L1158 10.4 L1169 10.6 L1178 10.4 L1200 15.1 L1218 6.7 L1232 5.3 L1251 10.5 L1270 7.6 L1282 14.4 L1304 14.9 L1323 14.5 L1342 6.2 L1358 8.0 L1367 3.4 L1380 6.6 L1398 16.4 L1412 16.1 L1434 16.4 L1440 6.1 L1440 24 Z"/></svg>
+    {%- when 'curve' -%}
+      <svg class="sf-hw__edge sf-hw__edge--curve" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0Q720 80 1440 0V48H0z"/></svg>
     {%- when 'wave' -%}
       <svg class="sf-hw__edge sf-hw__edge--wave" viewBox="0 0 1440 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 14C120 2 240 2 360 14s240 12 360 0 240-12 360 0 240 12 360 0V28H0z"/></svg>
+    {%- when 'slant' -%}
+      <svg class="sf-hw__edge sf-hw__edge--slant" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L1440 40H0z"/></svg>
     {%- when 'scallop' -%}
       <div class="sf-hw__edge sf-hw__edge--scallop" aria-hidden="true"></div>
-    {%- when 'zigzag' -%}
-      <div class="sf-hw__edge sf-hw__edge--zigzag" aria-hidden="true"></div>
+    {%- when 'ink' -%}
+      <div class="sf-hw__edge sf-hw__edge--ink" aria-hidden="true"></div>
   {%- endcase -%}
 </section>
 
@@ -203,12 +205,13 @@
     { "type": "checkbox", "id": "leaves", "label": "Floating leaves", "default": true },
     { "type": "checkbox", "id": "band", "label": "Green wave at the bottom", "default": true },
     { "type": "color", "id": "c_band", "label": "Wave colour", "default": "#1f7a35" },
-    { "type": "select", "id": "edge", "label": "Bottom edge", "default": "torn",
+    { "type": "select", "id": "edge", "label": "Bottom edge", "default": "scallop",
       "options": [
-        { "value": "torn", "label": "Torn paper" },
-        { "value": "wave", "label": "Soft wave" },
-        { "value": "scallop", "label": "Scallop" },
-        { "value": "zigzag", "label": "Zigzag" },
+        { "value": "scallop", "label": "Scallop (matches the top bar)" },
+        { "value": "curve", "label": "Curve" },
+        { "value": "wave", "label": "Wave" },
+        { "value": "slant", "label": "Slant" },
+        { "value": "ink", "label": "Ink line" },
         { "value": "straight", "label": "Straight (normal)" }
       ],
       "info": "How the banner finishes into the next section." },
