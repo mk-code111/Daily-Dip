@@ -1,7 +1,7 @@
 /* SF · Hero wheel — DailyDip "tea wheel" hero */
 .sf-hw {
   /* card size follows the screen height too, so the whole banner fits in one view */
-  --cw: calc(clamp(92px, min(9.6vw, (100vh - 450px) / 2.85), 176px) * var(--sf-hw-cw, 100) / 100);
+  --cw: calc(clamp(92px, min(9.6vw, (100vh - 490px) / 2.85), 176px) * var(--sf-hw-cw, 100) / 100);
   --ch: calc(var(--cw) * 1.3333);
   --R: calc(var(--cw) * 2.2);
   --below: 62px; /* how much of the wheel shows under its centre */
