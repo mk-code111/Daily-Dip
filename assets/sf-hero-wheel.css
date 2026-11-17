@@ -1,10 +1,10 @@
 /* SF · Hero wheel — DailyDip "tea wheel" hero */
 .sf-hw {
   /* card size follows the screen height too, so the whole banner fits in one view */
-  --cw: calc(clamp(124px, min(13.5vw, (100vh - 450px) / 1.95), 236px) * var(--sf-hw-cw, 100) / 100);
+  --cw: calc(clamp(124px, min(13vw, (100vh - 450px) / 1.63), 224px) * var(--sf-hw-cw, 100) / 100);
   --ch: calc(var(--cw) * 1.3333);
-  --R: calc(var(--cw) * 2.7);
-  --drop: calc(var(--R) * .56); /* wheel centre sits this far below the stage, so only the top of the arc shows */
+  --R: calc(var(--cw) * 3.3);
+  --drop: calc(var(--R) * .71); /* wheel centre sits this far below the stage, so only the top of the arc shows */
   position: relative; overflow: hidden; isolation: isolate;
   padding-top: var(--sf-hw-pt, 48px);
   background: linear-gradient(180deg, var(--sf-hw-top, #fbf8ef) 0%, var(--sf-hw-top, #fbf8ef) 25%, var(--sf-hw-bottom, #e9f7d0) 100%);
@@ -119,8 +119,9 @@
 @media (max-width: 749px) {
   /* phone wheel (default) */
   .sf-hw {
-    --cw: calc(clamp(112px, min(36vw, (100vh - 380px) / 1.95), 168px) * var(--sf-hw-cw, 100) / 100);
-    --R: calc(var(--cw) * 2.55);
+    --cw: calc(clamp(112px, min(34vw, (100vh - 380px) / 1.6), 160px) * var(--sf-hw-cw, 100) / 100);
+    --R: calc(var(--cw) * 3.1);
+    --drop: calc(var(--R) * .69);
   }
   .sf-hw__card { border-radius: 14px; box-shadow: 2px 3px 0 rgba(28, 28, 28, .85); }
   .sf-hw__hub { --hub: 88px; }
