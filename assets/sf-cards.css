@@ -284,17 +284,17 @@
 
 
 /* ---------- Clean navigation (overrides) ---------- */
-/* Section arrows: no box / 3D — a simple round chevron with a soft shadow */
+/* Section arrows: brand style kept simple — green circle, thin ink outline, white chevron (no 3D) */
 .sf-car__arrow {
-  width: 44px; height: 44px; border: 0; border-radius: 50%;
-  background: #fff; color: var(--sf-ink);
-  box-shadow: 0 0 0 1px rgba(70, 64, 40, .10), 0 8px 18px -8px rgba(70, 64, 40, .45);
-  transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+  width: 42px; height: 42px; border: 2px solid var(--sf-ink); border-radius: 50%;
+  background: var(--sf-green); color: #fff; box-shadow: none;
+  transition: transform .18s ease, background .18s ease, color .18s ease;
 }
-.sf-car__arrow svg { width: 20px; height: 20px; }
-@media (min-width: 768px) { .sf-car__arrow { width: 48px; height: 48px; box-shadow: 0 0 0 1px rgba(70, 64, 40, .10), 0 10px 22px -10px rgba(70, 64, 40, .5); } }
-.sf-car__arrow:hover { background: var(--sf-green); color: #fff; transform: translateY(-50%) scale(1.06); }
-.sf-car__arrow:active { transform: translateY(-50%) scale(.96); box-shadow: 0 0 0 1px rgba(70, 64, 40, .12), 0 4px 10px -6px rgba(70, 64, 40, .5); }
+.sf-car__arrow svg { width: 18px; height: 18px; }
+.sf-car__arrow svg path { stroke-width: 3; }
+@media (min-width: 768px) { .sf-car__arrow { width: 46px; height: 46px; box-shadow: none; } .sf-car__arrow svg { width: 20px; height: 20px; } }
+.sf-car__arrow:hover { background: var(--sf-lime); color: var(--sf-ink); transform: translateY(-50%) scale(1.06); }
+.sf-car__arrow:active { transform: translateY(-50%) scale(.95); box-shadow: none; }
 
 /* Card image: dots instead of arrows */
 .sf-pc__arrow { display: none; }
