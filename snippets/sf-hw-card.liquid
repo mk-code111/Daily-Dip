@@ -1,14 +1,8 @@
 {%- comment -%}
   One photo/video card for sf-hero-wheel.
-  Params: b (block or nil), i (index for starter + tone cycling), editable (bool: add editor attributes)
+  Params: b (block or nil), i (index for starter images), editable (bool: add editor attributes)
 {%- endcomment -%}
 {%- liquid
-  assign tones = '#ffffff,#c8f169,#ffd23f,#fbf8ef,#ff8a7a' | split: ','
-  assign tone = b.settings.tone
-  if tone == blank or tone == 'auto'
-    assign ti = i | modulo: tones.size
-    assign tone = tones[ti]
-  endif
   assign sn = i | modulo: 8
   case sn
     when 0
@@ -33,9 +27,9 @@
     assign focal = b.settings.image.presentation.focal_point
   endif
   assign img_style = 'object-position: ' | append: focal
-  assign alt = b.settings.image.alt | default: b.settings.caption | default: shop.name | escape
+  assign alt = b.settings.image.alt | default: shop.name | escape
 -%}
-<div class="sf-hw__card" style="--sf-hw-tone: {{ tone }};"{% if editable and b %} {{ b.shopify_attributes }}{% endif %}>
+<div class="sf-hw__card"{% if editable and b %} {{ b.shopify_attributes }}{% endif %}>
   <div class="sf-hw__media">
     {%- if b.settings.video != blank -%}
       {{ b.settings.video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'none', image_size: '600x', class: 'sf-hw__vid' }}
@@ -45,5 +39,4 @@
       <img class="sf-hw__img" src="{{ starter | asset_url }}" alt="{{ alt }}" loading="lazy" width="600" height="600">
     {%- endif -%}
   </div>
-  {%- if b.settings.caption != blank -%}<span class="sf-hw__cap">{{ b.settings.caption | escape }}</span>{%- endif -%}
 </div>

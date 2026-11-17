@@ -21,7 +21,7 @@
     Slots on the wheel: a whole multiple of the card count (so the order never breaks)
     that keeps the spacing close to one card width.
   endcomment
-  assign per = 16 | divided_by: n
+  assign per = 15 | divided_by: n
   if per < 1
     assign per = 1
   endif
@@ -200,17 +200,7 @@
       "name": "Card",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait works best (3:4). Set a focal point to choose what stays in view." },
-        { "type": "video", "id": "video", "label": "Video (optional)", "info": "Short, muted, loops. Shown instead of the image." },
-        { "type": "text", "id": "caption", "label": "Caption sticker", "info": "Optional, e.g. Morning ritual." },
-        { "type": "select", "id": "tone", "label": "Card frame colour", "default": "auto",
-          "options": [
-            { "value": "auto", "label": "Auto (cycles)" },
-            { "value": "#ffffff", "label": "White" },
-            { "value": "#c8f169", "label": "Lime" },
-            { "value": "#ffd23f", "label": "Yellow" },
-            { "value": "#fbf8ef", "label": "Cream" },
-            { "value": "#ff8a7a", "label": "Red" }
-          ] }
+        { "type": "video", "id": "video", "label": "Video (optional)", "info": "Short, muted, loops. Shown instead of the image." }
       ]
     }
   ],
@@ -218,11 +208,11 @@
     {
       "name": "SF · Hero wheel",
       "blocks": [
-        { "type": "card", "settings": { "caption": "Morning ritual" } },
         { "type": "card" },
-        { "type": "card", "settings": { "caption": "Fresh from Kumily" } },
         { "type": "card" },
-        { "type": "card", "settings": { "caption": "Lights out" } },
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" },
         { "type": "card" }
       ]
     }

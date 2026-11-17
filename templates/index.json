@@ -710,45 +710,27 @@
       "blocks": {
         "card_1": {
           "type": "card",
-          "settings": {
-            "caption": "Morning ritual",
-            "tone": "auto"
-          }
+          "settings": {}
         },
         "card_2": {
           "type": "card",
-          "settings": {
-            "caption": "",
-            "tone": "auto"
-          }
+          "settings": {}
         },
         "card_3": {
           "type": "card",
-          "settings": {
-            "caption": "Fresh from Kumily",
-            "tone": "auto"
-          }
+          "settings": {}
         },
         "card_4": {
           "type": "card",
-          "settings": {
-            "caption": "",
-            "tone": "auto"
-          }
+          "settings": {}
         },
         "card_5": {
           "type": "card",
-          "settings": {
-            "caption": "Lights out",
-            "tone": "auto"
-          }
+          "settings": {}
         },
         "card_6": {
           "type": "card",
-          "settings": {
-            "caption": "",
-            "tone": "auto"
-          }
+          "settings": {}
         }
       },
       "block_order": [

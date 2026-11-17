@@ -1,10 +1,10 @@
 /* SF · Hero wheel — DailyDip "tea wheel" hero */
 .sf-hw {
   /* card size follows the screen height too, so the whole banner fits in one view */
-  --cw: calc(clamp(92px, min(9.6vw, (100vh - 490px) / 2.85), 176px) * var(--sf-hw-cw, 100) / 100);
+  --cw: calc(clamp(124px, min(13.5vw, (100vh - 450px) / 1.95), 236px) * var(--sf-hw-cw, 100) / 100);
   --ch: calc(var(--cw) * 1.3333);
-  --R: calc(var(--cw) * 2.2);
-  --below: 62px; /* how much of the wheel shows under its centre */
+  --R: calc(var(--cw) * 2.7);
+  --drop: calc(var(--R) * .56); /* wheel centre sits this far below the stage, so only the top of the arc shows */
   position: relative; overflow: hidden; isolation: isolate;
   padding-top: var(--sf-hw-pt, 48px);
   background: linear-gradient(180deg, var(--sf-hw-top, #fbf8ef) 0%, var(--sf-hw-top, #fbf8ef) 25%, var(--sf-hw-bottom, #e9f7d0) 100%);
@@ -67,11 +67,11 @@
 /* ---------- desktop wheel ---------- */
 .sf-hw__stage {
   position: relative;
-  height: calc(var(--R) + var(--ch) / 2 + 26px + var(--below));
-  margin-top: -4px;
+  height: calc(var(--R) - var(--drop) + var(--ch) / 2 + 30px);
+  margin-top: 0;
 }
 .sf-hw__wheel {
-  position: absolute; left: 50%; top: calc(100% - var(--below)); width: 0; height: 0;
+  position: absolute; left: 50%; top: calc(100% + var(--drop)); width: 0; height: 0;
   animation: sf-hw-spin var(--sf-hw-dur, 48s) linear infinite;
   will-change: transform;
 }
@@ -81,24 +81,18 @@
 .sf-hw__slot { position: absolute; left: 0; top: 0; transform: rotate(var(--a)) translateY(calc(var(--R) * -1)); }
 .sf-hw__slot .sf-hw__card { position: absolute; width: var(--cw); height: var(--ch); left: calc(var(--cw) / -2); top: calc(var(--ch) / -2); }
 
-/* card */
+/* card — minimal: photo, thin ink border, soft hard shadow */
 .sf-hw__card {
-  padding: 7px; background: var(--sf-hw-tone, #fff);
-  border: 3px solid var(--sf-ink); border-radius: 18px; box-shadow: 4px 5px 0 var(--sf-ink);
+  overflow: hidden; background: var(--sf-chip);
+  border: 2px solid var(--sf-ink); border-radius: 18px; box-shadow: 3px 4px 0 rgba(28, 28, 28, .85);
   transition: transform .3s cubic-bezier(.3, 1.4, .5, 1);
 }
-.sf-hw__media { position: relative; width: 100%; height: 100%; overflow: hidden; border: 2px solid var(--sf-ink); border-radius: 12px; background: var(--sf-chip); }
+.sf-hw__media { position: relative; width: 100%; height: 100%; overflow: hidden; }
 .sf-hw__img, .sf-hw__vid, .sf-hw__media video { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; display: block; }
-.sf-hw__cap {
-  position: absolute; left: 50%; bottom: -12px; z-index: 2; max-width: calc(100% + 34px);
-  transform: translateX(-50%) rotate(-3deg); padding: 5px 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  font: 600 12px/1 var(--sf-font-head); background: #fff; color: var(--sf-ink);
-  border: 2px solid var(--sf-ink); border-radius: 99px; box-shadow: 2px 2px 0 var(--sf-ink);
-}
-@media (hover: hover) { .sf-hw__slot .sf-hw__card:hover { transform: scale(1.06); } }
+@media (hover: hover) { .sf-hw__slot .sf-hw__card:hover { transform: scale(1.04); } }
 
 /* hub */
-.sf-hw__hub { --hub: clamp(108px, calc(var(--cw) * .9), 150px); position: absolute; z-index: 4; left: 50%; top: calc(100% - var(--below)); width: var(--hub); height: var(--hub); margin: calc(var(--hub) / -2) 0 0 calc(var(--hub) / -2); }
+.sf-hw__hub { --hub: clamp(96px, calc(var(--cw) * .56), 128px); position: absolute; z-index: 4; left: 50%; top: calc(100% - var(--hub) * .62); width: var(--hub); height: var(--hub); margin-left: calc(var(--hub) / -2); }
 .sf-hw__badge {
   position: relative; width: 100%; height: 100%; border-radius: 50%;
   background: var(--sf-yellow); border: 3px solid var(--sf-ink); box-shadow: 5px 5px 0 var(--sf-ink);
@@ -125,17 +119,13 @@
 @media (max-width: 749px) {
   /* phone wheel (default) */
   .sf-hw {
-    --cw: calc(clamp(84px, min(25vw, (100vh - 400px) / 2.6), 124px) * var(--sf-hw-cw, 100) / 100);
-    --R: calc(var(--cw) * 2.1);
-    --below: 46px;
+    --cw: calc(clamp(112px, min(36vw, (100vh - 380px) / 1.95), 168px) * var(--sf-hw-cw, 100) / 100);
+    --R: calc(var(--cw) * 2.55);
   }
-  .sf-hw__card { border-width: 2.5px; border-radius: 14px; padding: 5px; box-shadow: 3px 4px 0 var(--sf-ink); }
-  .sf-hw__media { border-radius: 9px; }
-  .sf-hw__cap { font-size: 10.5px; padding: 4px 8px; bottom: -10px; }
-  .sf-hw__hub { --hub: 96px; }
-  .sf-hw__badge { box-shadow: 4px 4px 0 var(--sf-ink); }
-  .sf-hw__steam { width: 60px; height: 46px; margin-left: -30px; }
-  .sf-hw__stage { margin-top: 6px; }
+  .sf-hw__card { border-radius: 14px; box-shadow: 2px 3px 0 rgba(28, 28, 28, .85); }
+  .sf-hw__hub { --hub: 88px; }
+  .sf-hw__badge { box-shadow: 3px 3px 0 var(--sf-ink); }
+  .sf-hw__steam { width: 56px; height: 42px; margin-left: -28px; }
 
   /* phone strip (optional) */
   .sf-hw--mstrip .sf-hw__stage { display: none; }
@@ -146,8 +136,7 @@
   }
   .sf-hw__track { display: flex; gap: 12px; width: max-content; padding: 0 12px; transform-style: preserve-3d; will-change: transform; }
   .sf-hw__cell { flex: 0 0 min(46vw, 210px); transform-style: preserve-3d; will-change: transform; }
-  .sf-hw__cell .sf-hw__card { position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: 16px; padding: 6px; }
-  .sf-hw__cell .sf-hw__media { border-radius: 10px; }
+  .sf-hw__cell .sf-hw__card { position: relative; width: 100%; aspect-ratio: 3 / 4; }
   .sf-hw__strip img { -webkit-user-drag: none; }
   .sf-hw__band { height: 54px; }
   .sf-hw .sf-hw__title { font-size: clamp(32px, 9.4vw, 42px); }
