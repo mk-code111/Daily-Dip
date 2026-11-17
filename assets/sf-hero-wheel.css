@@ -67,11 +67,14 @@
 /* ---------- desktop wheel ---------- */
 .sf-hw__stage {
   position: relative;
-  height: calc(var(--R) - var(--drop) + var(--ch) / 2 + 30px);
+  /* extra room under the arc so the hub badge sits fully on the ground above the edge */
+  --hub: clamp(96px, calc(var(--cw) * .56), 128px);
+  --extra: calc(var(--hub) * .42 + var(--edge-h, 0px));
+  height: calc(var(--R) - var(--drop) + var(--ch) / 2 + 30px + var(--extra));
   margin-top: 0;
 }
 .sf-hw__wheel {
-  position: absolute; left: 50%; top: calc(100% + var(--drop)); width: 0; height: 0;
+  position: absolute; left: 50%; top: calc(100% - var(--extra) + var(--drop)); width: 0; height: 0;
   animation: sf-hw-spin var(--sf-hw-dur, 48s) linear infinite;
   will-change: transform;
 }
@@ -92,7 +95,7 @@
 @media (hover: hover) { .sf-hw__slot .sf-hw__card:hover { transform: scale(1.04); } }
 
 /* hub */
-.sf-hw__hub { --hub: clamp(96px, calc(var(--cw) * .56), 128px); position: absolute; z-index: 4; left: 50%; top: calc(100% - var(--hub) * .62); width: var(--hub); height: var(--hub); margin-left: calc(var(--hub) / -2); }
+.sf-hw__hub { position: absolute; z-index: 4; left: 50%; top: calc(100% - var(--hub) - var(--edge-h, 0px) - 8px); width: var(--hub); height: var(--hub); margin-left: calc(var(--hub) / -2); }
 .sf-hw__badge {
   position: relative; width: 100%; height: 100%; border-radius: 50%;
   background: var(--sf-yellow); border: 3px solid var(--sf-ink); box-shadow: 5px 5px 0 var(--sf-ink);
@@ -111,6 +114,23 @@
 .sf-hw__steam path:nth-child(3) { animation-delay: -2.2s; }
 @keyframes sf-hw-steam { from { stroke-dashoffset: 0; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } to { stroke-dashoffset: -200; opacity: 0; } }
 
+/* bottom edge: how the banner finishes into the next section */
+.sf-hw--edge-torn { --edge-h: 18px; }
+.sf-hw--edge-wave { --edge-h: 20px; }
+.sf-hw--edge-scallop { --edge-h: 12px; }
+.sf-hw--edge-zigzag { --edge-h: 11px; }
+.sf-hw--edge-straight { --edge-h: 0px; }
+.sf-hw__edge { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 6; width: 100%; height: calc(var(--edge-h) + 2px); pointer-events: none; fill: var(--sf-hw-edge, #fff); display: block; }
+.sf-hw__edge--torn { filter: drop-shadow(0 -2px 0 rgba(28, 28, 28, .14)); }
+.sf-hw__edge--scallop {
+  background: radial-gradient(circle at 50% 100%, var(--sf-hw-edge, #fff) 11px, transparent 11.6px) 0 100% / 24px 12px repeat-x;
+  height: 13px;
+}
+.sf-hw__edge--zigzag {
+  background: conic-gradient(from -45deg at 50% 100%, var(--sf-hw-edge, #fff) 90deg, transparent 0) 0 100% / 22px 11px repeat-x;
+  height: 12px;
+}
+
 /* bottom wave */
 .sf-hw__band { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 3; width: 100%; height: 64px; fill: var(--sf-hw-band, #1f7a35); pointer-events: none; }
 
@@ -124,7 +144,7 @@
     --drop: calc(var(--R) * .69);
   }
   .sf-hw__card { border-radius: 14px; box-shadow: 2px 3px 0 rgba(28, 28, 28, .85); }
-  .sf-hw__hub { --hub: 88px; }
+  .sf-hw__stage { --hub: 88px; }
   .sf-hw__badge { box-shadow: 3px 3px 0 var(--sf-ink); }
   .sf-hw__steam { width: 56px; height: 42px; margin-left: -28px; }
 
