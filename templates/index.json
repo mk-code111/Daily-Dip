@@ -14,7 +14,9 @@
       "blocks": {
         "card_1": {
           "type": "card",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_bcdbtvbcdbtvbcdb.png"
+          }
         },
         "card_2": {
           "type": "card",
