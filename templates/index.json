@@ -79,6 +79,8 @@
         "leaves": true,
         "band": true,
         "c_band": "#1f7a35",
+        "edge": "ink",
+        "c_edge": "#ffffff",
         "pt": 124
       }
     },
