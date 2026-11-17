@@ -3,9 +3,9 @@
 
   Renders:
     - frosted outer frame + white card
-    - image stage with own prev/next arrows (when the product has 2+ images),
+    - image stage with navigation dots + swipe (when the product has 2+ images),
       "NEW"-style tag and a round "-15%" discount sticker
-    - benefits strip: product metafields custom.benefit_1..3_text / _icon,
+    - (benefits strip removed),
       falling back to the section's Benefit blocks when a product has none
     - title, price, variant (pack) pills, Add to cart
 
@@ -19,7 +19,7 @@
     new_label     text for products tagged "new"
     atc_label     Add to cart text
     soldout_label Sold out text
-    show_arrows   boolean, per-card image arrows
+    show_arrows   boolean, per-card image dots
     show_discount boolean
     ratio         image aspect ratio (number)
     eager         boolean, load the first image eagerly
@@ -89,75 +89,15 @@
         {%- endif -%}
 
         {%- if show_arrows and img_count > 1 -%}
-          <button type="button" class="sf-pc__arrow sf-pc__arrow--prev" data-sf-pc-step="-1" aria-label="Previous image">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button type="button" class="sf-pc__arrow sf-pc__arrow--next" data-sf-pc-step="1" aria-label="Next image">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+          <div class="sf-pc__dots" role="group" aria-label="Product images">
+            {%- assign dot_count = img_count | at_most: 6 -%}
+            {%- for k in (1..dot_count) -%}
+              <button type="button" class="sf-pc__dot" data-sf-pc-go="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }} of {{ dot_count }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+            {%- endfor -%}
+          </div>
         {%- endif -%}
       </div>
     </div>
-
-    {%- liquid
-      # Benefits: product metafields custom.benefit_1..3_text / _icon (set per product in admin).
-      # If a product has none, the section's Benefit blocks are used instead.
-      assign mf_count = 0
-      for i in (1..3)
-        assign tkey = 'benefit_' | append: i | append: '_text'
-        if p.metafields.custom[tkey] != blank
-          assign mf_count = mf_count | plus: 1
-        endif
-      endfor
-      if mf_count > 0
-        assign b_cols = mf_count
-      else
-        assign b_cols = benefits.size | at_most: 4
-      endif
-    -%}
-    {%- if mf_count > 0 -%}
-      <ul class="sf-pc__benefits" style="--sf-pc-bcols: {{ b_cols }};">
-        {%- for i in (1..3) -%}
-          {%- liquid
-            assign tkey = 'benefit_' | append: i | append: '_text'
-            assign ikey = 'benefit_' | append: i | append: '_icon'
-            assign b_text = p.metafields.custom[tkey]
-            assign b_icon = p.metafields.custom[ikey]
-            assign fb_index = i | minus: 1
-            assign fb_block = benefits[fb_index]
-          -%}
-          {%- if b_text != blank -%}
-            <li>
-              <span class="sf-pc__bicon">
-                {%- if b_icon != blank -%}
-                  <img src="{{ b_icon | image_url: width: 72 }}" alt="" width="26" height="26" loading="lazy">
-                {%- elsif fb_block.settings.image != blank -%}
-                  {{ fb_block.settings.image | image_url: width: 72 | image_tag: width: 26, height: 26, loading: 'lazy', alt: '' }}
-                {%- else -%}
-                  {%- render 'sf-icon', name: fb_block.settings.icon -%}
-                {%- endif -%}
-              </span>
-              <span class="sf-pc__btext">{{ b_text }}</span>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
-    {%- elsif benefits.size > 0 -%}
-      <ul class="sf-pc__benefits" style="--sf-pc-bcols: {{ b_cols }};">
-        {%- for b in benefits limit: 4 -%}
-          <li {{ b.shopify_attributes }}>
-            <span class="sf-pc__bicon">
-              {%- if b.settings.image != blank -%}
-                {{ b.settings.image | image_url: width: 72 | image_tag: width: 26, height: 26, loading: 'lazy', alt: '' }}
-              {%- else -%}
-                {%- render 'sf-icon', name: b.settings.icon -%}
-              {%- endif -%}
-            </span>
-            <span class="sf-pc__btext">{{ b.settings.text }}</span>
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
 
     <a class="sf-pc__title" href="{{ p.url }}" title="{{ p.title | escape }}">{{ p.title }}</a>
 

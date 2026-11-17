@@ -14,11 +14,14 @@
       this.imgIndex = Math.max(0, this.imgs.findIndex((el) => el.classList.contains('is-active')));
       this.addEventListener('click', (e) => this.onClick(e));
       this.addEventListener('keydown', (e) => this.onKey(e));
+      this.dots = [...this.querySelectorAll('[data-sf-pc-go]')];
     }
 
     onClick(e) {
       const step = e.target.closest('[data-sf-pc-step]');
       if (step) { e.preventDefault(); this.showImage(this.imgIndex + Number(step.dataset.sfPcStep)); return; }
+      const go = e.target.closest('[data-sf-pc-go]');
+      if (go) { e.preventDefault(); e.stopPropagation(); this.showImage(Number(go.dataset.sfPcGo)); return; }
       const pack = e.target.closest('[data-sf-pc-variant]');
       if (pack) { e.preventDefault(); this.select(pack); return; }
       const add = e.target.closest('[data-sf-pc-add]');
@@ -46,6 +49,7 @@
         if (on) { el.removeAttribute('aria-hidden'); el.removeAttribute('tabindex'); }
         else { el.setAttribute('aria-hidden', 'true'); el.setAttribute('tabindex', '-1'); }
       });
+      (this.dots || []).forEach((d, k) => { if (k === this.imgIndex) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
     }
 
     select(pack) {

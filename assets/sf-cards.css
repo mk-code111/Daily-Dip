@@ -281,3 +281,38 @@
 
 /* fewer cards than fit in a row: centre them instead of leaving a gap on the right */
 .sf-car.is-static .sf-car__track { justify-content: center; transform: none !important; }
+
+
+/* ---------- Clean navigation (overrides) ---------- */
+/* Section arrows: no box / 3D — a simple round chevron with a soft shadow */
+.sf-car__arrow {
+  width: 44px; height: 44px; border: 0; border-radius: 50%;
+  background: #fff; color: var(--sf-ink);
+  box-shadow: 0 0 0 1px rgba(70, 64, 40, .10), 0 8px 18px -8px rgba(70, 64, 40, .45);
+  transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.sf-car__arrow svg { width: 20px; height: 20px; }
+@media (min-width: 768px) { .sf-car__arrow { width: 48px; height: 48px; box-shadow: 0 0 0 1px rgba(70, 64, 40, .10), 0 10px 22px -10px rgba(70, 64, 40, .5); } }
+.sf-car__arrow:hover { background: var(--sf-green); color: #fff; transform: translateY(-50%) scale(1.06); }
+.sf-car__arrow:active { transform: translateY(-50%) scale(.96); box-shadow: 0 0 0 1px rgba(70, 64, 40, .12), 0 4px 10px -6px rgba(70, 64, 40, .5); }
+
+/* Card image: dots instead of arrows */
+.sf-pc__arrow { display: none; }
+.sf-pc__dots {
+  position: absolute; z-index: 2; left: 50%; bottom: clamp(6px, 2.6cqi, 10px); transform: translateX(-50%);
+  display: flex; align-items: center; gap: 5px; padding: 4px 7px;
+  background: rgba(255, 255, 255, .72); border-radius: 99px;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px -3px rgba(28, 28, 28, .3);
+}
+.sf-pc__dot {
+  width: 7px; height: 7px; padding: 0; border: 0; border-radius: 99px; cursor: pointer;
+  background: rgba(28, 28, 28, .28); transition: width .25s ease, background .2s ease;
+}
+.sf-pc__dot[aria-current="true"] { width: 18px; background: var(--sf-green); }
+.sf-pc__dot:hover { background: rgba(28, 28, 28, .5); }
+.sf-pc__dot[aria-current="true"]:hover { background: var(--sf-green); }
+.sf-pc__dot:focus-visible { outline: 2px solid var(--sf-green); outline-offset: 2px; }
+/* bigger tap area without bigger dots */
+.sf-pc__dot { position: relative; }
+.sf-pc__dot::before { content: ""; position: absolute; inset: -6px -3px; }
