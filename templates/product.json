@@ -135,6 +135,8 @@
         "c_yellow": "#ffd23f",
         "c_red": "#ff5a4d",
         "c_chip": "#e9f7d0",
+        "c_atc_depth": "#3C9360",
+        "c_buy_depth": "#1c1c1c",
         "c_mute": "#6b6557",
         "load_fonts": true,
         "pt": 16,
