@@ -1,9 +1,10 @@
 /* SF · Hero wheel — DailyDip "tea wheel" hero */
 .sf-hw {
-  --cw: calc(clamp(118px, 9.6vw, 176px) * var(--sf-hw-cw, 100) / 100);
+  /* card size follows the screen height too, so the whole banner fits in one view */
+  --cw: calc(clamp(92px, min(9.6vw, (100vh - 450px) / 2.85), 176px) * var(--sf-hw-cw, 100) / 100);
   --ch: calc(var(--cw) * 1.3333);
-  --R: calc(var(--cw) * 2.35);
-  --below: 70px; /* how much of the wheel shows under its centre */
+  --R: calc(var(--cw) * 2.2);
+  --below: 62px; /* how much of the wheel shows under its centre */
   position: relative; overflow: hidden; isolation: isolate;
   padding-top: var(--sf-hw-pt, 48px);
   background: linear-gradient(180deg, var(--sf-hw-top, #fbf8ef) 0%, var(--sf-hw-top, #fbf8ef) 25%, var(--sf-hw-bottom, #e9f7d0) 100%);
@@ -28,14 +29,14 @@
 /* heading */
 .sf-hw__head { position: relative; z-index: 2; text-align: center; }
 .sf-hw__eyebrow {
-  display: inline-block; margin: 0 0 14px; padding: 5px 14px;
+  display: inline-block; margin: 0 0 10px; padding: 5px 14px;
   font: 600 12.5px/1 var(--sf-font-head); letter-spacing: .12em; text-transform: uppercase;
   background: var(--sf-lime); border: 2.5px solid var(--sf-ink); border-radius: 99px;
   box-shadow: 3px 3px 0 var(--sf-ink); transform: rotate(-2deg);
 }
 .sf-hw .sf-hw__title {
   margin: 0 auto; max-width: 900px;
-  font: 700 clamp(32px, 4.5vw, 58px)/1.02 var(--sf-font-head); letter-spacing: -.8px;
+  font: 700 clamp(30px, min(4.4vw, 6.4vh), 58px)/1.02 var(--sf-font-head); letter-spacing: -.8px;
 }
 .sf-hw__t1, .sf-hw__t2 { display: block; }
 .sf-hw__t1 { color: var(--sf-hw-t1, #1f7a35); }
@@ -43,7 +44,7 @@
 .sf-hw__title em { font-style: normal; padding: 0 .08em; background: linear-gradient(transparent 58%, var(--sf-lime) 58% 90%, transparent 90%); }
 .sf-hw__text { margin: 12px auto 0; max-width: 560px; font: 400 16px/1.55 var(--sf-font-body); color: var(--sf-mute); }
 
-.sf-hw__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 14px; margin-top: 18px; }
+.sf-hw__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 14px; margin-top: 14px; }
 .sf-hw__socials { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .sf-hw__soc {
   display: grid; place-items: center; width: 40px; height: 40px; color: #fff; background: var(--sf-green);
@@ -66,8 +67,8 @@
 /* ---------- desktop wheel ---------- */
 .sf-hw__stage {
   position: relative;
-  height: calc(var(--R) + var(--ch) / 2 + 34px + var(--below));
-  margin-top: -6px;
+  height: calc(var(--R) + var(--ch) / 2 + 26px + var(--below));
+  margin-top: -4px;
 }
 .sf-hw__wheel {
   position: absolute; left: 50%; top: calc(100% - var(--below)); width: 0; height: 0;
@@ -97,7 +98,7 @@
 @media (hover: hover) { .sf-hw__slot .sf-hw__card:hover { transform: scale(1.06); } }
 
 /* hub */
-.sf-hw__hub { position: absolute; z-index: 4; left: 50%; top: calc(100% - var(--below)); width: 150px; height: 150px; margin: -75px 0 0 -75px; }
+.sf-hw__hub { --hub: clamp(108px, calc(var(--cw) * .9), 150px); position: absolute; z-index: 4; left: 50%; top: calc(100% - var(--below)); width: var(--hub); height: var(--hub); margin: calc(var(--hub) / -2) 0 0 calc(var(--hub) / -2); }
 .sf-hw__badge {
   position: relative; width: 100%; height: 100%; border-radius: 50%;
   background: var(--sf-yellow); border: 3px solid var(--sf-ink); box-shadow: 5px 5px 0 var(--sf-ink);
@@ -105,10 +106,10 @@
 .sf-hw__ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: sf-hw-spin 16s linear infinite; }
 .sf-hw__ring text { font: 700 15.5px var(--sf-font-head); letter-spacing: 2.6px; fill: var(--sf-ink); text-transform: uppercase; }
 .sf-hw__core {
-  position: absolute; left: 50%; top: 50%; width: 66px; height: 66px; margin: -33px 0 0 -33px; overflow: hidden;
+  position: absolute; left: 50%; top: 50%; width: 44%; height: 44%; margin: -22% 0 0 -22%; overflow: hidden;
   display: grid; place-items: center; border-radius: 50%; background: var(--sf-green); color: #fff; border: 2.5px solid var(--sf-ink);
 }
-.sf-hw__core svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sf-hw__core svg { width: 52%; height: 52%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .sf-hw__core-img { width: 100%; height: 100%; object-fit: cover; }
 .sf-hw__steam { position: absolute; left: 50%; bottom: 100%; width: 84px; height: 64px; margin: 0 0 -6px -42px; fill: none; stroke: var(--sf-ink); stroke-width: 3; stroke-linecap: round; opacity: .28; }
 .sf-hw__steam path { stroke-dasharray: 60 140; animation: sf-hw-steam 3.2s linear infinite; }
@@ -122,8 +123,23 @@
 /* ---------- phone strip ---------- */
 .sf-hw__strip { display: none; }
 @media (max-width: 749px) {
-  .sf-hw__stage { display: none; }
-  .sf-hw__strip {
+  /* phone wheel (default) */
+  .sf-hw {
+    --cw: calc(clamp(84px, min(25vw, (100vh - 400px) / 2.6), 124px) * var(--sf-hw-cw, 100) / 100);
+    --R: calc(var(--cw) * 2.1);
+    --below: 46px;
+  }
+  .sf-hw__card { border-width: 2.5px; border-radius: 14px; padding: 5px; box-shadow: 3px 4px 0 var(--sf-ink); }
+  .sf-hw__media { border-radius: 9px; }
+  .sf-hw__cap { font-size: 10.5px; padding: 4px 8px; bottom: -10px; }
+  .sf-hw__hub { --hub: 96px; }
+  .sf-hw__badge { box-shadow: 4px 4px 0 var(--sf-ink); }
+  .sf-hw__steam { width: 60px; height: 46px; margin-left: -30px; }
+  .sf-hw__stage { margin-top: 6px; }
+
+  /* phone strip (optional) */
+  .sf-hw--mstrip .sf-hw__stage { display: none; }
+  .sf-hw--mstrip .sf-hw__strip {
     display: block; position: relative; z-index: 1; overflow: hidden;
     margin-top: 22px; padding: 14px 0 76px;
     perspective: 760px; touch-action: pan-y; -webkit-user-select: none; user-select: none; cursor: grab;

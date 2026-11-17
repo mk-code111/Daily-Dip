@@ -45,7 +45,7 @@
 </style>
 
 <section
-  class="sf-pdp sf-hw{% if s.direction == 'ccw' %} sf-hw--ccw{% endif %}{% if s.pause_hover %} sf-hw--hoverpause{% endif %}{% unless s.show_hub %} sf-hw--nohub{% endunless %}"
+  class="sf-pdp sf-hw{% if s.direction == 'ccw' %} sf-hw--ccw{% endif %}{% if s.pause_hover %} sf-hw--hoverpause{% endif %}{% unless s.show_hub %} sf-hw--nohub{% endunless %}{% if s.m_layout == 'strip' %} sf-hw--mstrip{% endif %}"
   aria-label="{{ s.title_1 | strip_html | default: shop.name | escape }}"
 >
   {%- if s.leaves -%}
@@ -179,8 +179,10 @@
     { "type": "image_picker", "id": "hub_image", "label": "Hub centre image", "info": "Optional, e.g. a pouch or logo mark. Shows a tea cup when empty." },
     { "type": "checkbox", "id": "steam", "label": "Steam above the hub", "default": true },
 
-    { "type": "header", "content": "Phone strip" },
-    { "type": "range", "id": "m_speed", "label": "Phone speed", "min": 10, "max": 60, "step": 5, "unit": "px", "default": 30, "info": "Pixels per second. Visitors can also swipe." },
+    { "type": "header", "content": "Phone" },
+    { "type": "select", "id": "m_layout", "label": "Phone layout", "default": "wheel",
+      "options": [ { "value": "wheel", "label": "Wheel (same as desktop)" }, { "value": "strip", "label": "Curved swipe strip" } ] },
+    { "type": "range", "id": "m_speed", "label": "Strip speed", "min": 10, "max": 60, "step": 5, "unit": "px", "default": 30, "info": "Pixels per second. Visitors can also swipe." },
 
     { "type": "header", "content": "Style" },
     { "type": "color", "id": "c_top", "label": "Background top", "default": "#fbf8ef" },
