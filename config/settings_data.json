@@ -44,6 +44,9 @@
       "bestsellers"
     ],
     "sf_rw_mode": "highest",
+    "sf_rw_t1_min": 499,
+    "sf_rw_t2_min": 599,
+    "sf_rw_t3_min": 999,
     "cart_upsells_collection": "best-selling",
     "cart_upsells_limit": 8,
     "cart_upsells_btn_color": "btn-light-primary",
