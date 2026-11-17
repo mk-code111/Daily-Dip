@@ -9,6 +9,77 @@
  */
 {
   "sections": {
+    "sf_hero_wheel": {
+      "type": "sf-hero-wheel",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {}
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {}
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {}
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {}
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {}
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6"
+      ],
+      "settings": {
+        "eyebrow": "Daily rituals · small sips",
+        "title_1": "Real herbs. Real rituals.",
+        "title_2": "Steeped for the everyday you.",
+        "heading_tag": "h1",
+        "text": "",
+        "show_social": true,
+        "url_instagram": "",
+        "url_youtube": "",
+        "url_facebook": "",
+        "url_tiktok": "",
+        "url_whatsapp": "",
+        "btn1_label": "Shop our blends",
+        "btn1_url": "",
+        "btn2_label": "Our story",
+        "btn2_url": "",
+        "seconds": 3,
+        "direction": "cw",
+        "pause_hover": true,
+        "card_w": 115,
+        "show_hub": true,
+        "hub_text": "LET'S DIP",
+        "steam": true,
+        "m_layout": "wheel",
+        "m_speed": 30,
+        "c_top": "#fbf8ef",
+        "c_bottom": "#e9f7d0",
+        "c_title_1": "#1f7a35",
+        "c_title_2": "#1c1c1c",
+        "leaves": true,
+        "band": true,
+        "c_band": "#1f7a35",
+        "pt": 124
+      }
+    },
     "hero_carousel_CmDneU": {
       "type": "hero-carousel",
       "blocks": {
@@ -46,6 +117,7 @@
       "block_order": [
         "slide_MEHyHK"
       ],
+      "disabled": true,
       "settings": {
         "border_top_width": 0,
         "border_bottom_width": 0,
@@ -64,8 +136,7 @@
         "media_full": false,
         "pt": 0,
         "pb": 9
-      },
-      "disabled": true
+      }
     },
     "sf_product_cards_cM7twj": {
       "type": "sf-product-cards",
@@ -97,7 +168,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF \u00b7 Product cards",
+      "name": "SF · Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -207,7 +278,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF \u00b7 Moments",
+      "name": "SF · Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -374,7 +445,7 @@
         "border_color": "#1c1c1c",
         "container_max_width": "",
         "load_fonts": true,
-        "eyebrow": "steep \u00b7 sip \u00b7 see",
+        "eyebrow": "steep · sip · see",
         "header_title": "Watch before",
         "header_highlight": "you dip.",
         "header_title_font_size": "lg",
@@ -408,7 +479,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -416,7 +487,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -424,7 +495,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -432,7 +503,7 @@
           "type": "item",
           "settings": {
             "title": "Ingredients & Allergies",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         },
@@ -440,7 +511,7 @@
           "type": "item",
           "settings": {
             "title": "Directions",
-            "content": "<p>Dip one teabag in a cup of hot water for 3\u20135 minutes. Sip and enjoy.</p>",
+            "content": "<p>Dip one teabag in a cup of hot water for 3–5 minutes. Sip and enjoy.</p>",
             "open": false
           }
         }
@@ -452,7 +523,7 @@
         "item_RDreYt",
         "item_EhK7pF"
       ],
-      "name": "SF \u00b7 Know more",
+      "name": "SF · Know more",
       "settings": {
         "heading": "FAQs",
         "intro": "",
@@ -703,46 +774,6 @@
         "pt": 64,
         "pb": 64,
         "sample_notice": true
-      }
-    },
-    "sf_hero_wheel": {
-      "type": "sf-hero-wheel",
-      "blocks": {
-        "card_1": {
-          "type": "card",
-          "settings": {}
-        },
-        "card_2": {
-          "type": "card",
-          "settings": {}
-        },
-        "card_3": {
-          "type": "card",
-          "settings": {}
-        },
-        "card_4": {
-          "type": "card",
-          "settings": {}
-        },
-        "card_5": {
-          "type": "card",
-          "settings": {}
-        },
-        "card_6": {
-          "type": "card",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "card_1",
-        "card_2",
-        "card_3",
-        "card_4",
-        "card_5",
-        "card_6"
-      ],
-      "settings": {
-        "pt": 124
       }
     }
   },
