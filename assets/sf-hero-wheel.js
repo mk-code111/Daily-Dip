@@ -62,7 +62,7 @@
         const d = (c.mid - this.pos - h) / h; // -1 left edge, 0 centre, 1 right edge
         if (d < -2 || d > 2) continue;
         const k = Math.max(-1.6, Math.min(1.6, d));
-        c.el.style.transform = `rotateY(${(-k * 26).toFixed(2)}deg) translateZ(${(-Math.abs(k) * 46).toFixed(1)}px)`;
+        c.el.style.transform = `rotateY(${(-k * 34).toFixed(2)}deg) translateZ(${(-Math.abs(k) * 70).toFixed(1)}px)`;
       }
     }
 
