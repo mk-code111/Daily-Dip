@@ -29,6 +29,8 @@
     --sf-red: {{ section.settings.c_red }};
     --sf-mute: {{ section.settings.c_mute }};
     --sf-chip: {{ section.settings.c_chip }};
+    --sf-atc-depth: {{ section.settings.c_atc_depth | default: section.settings.c_ink }};
+    --sf-buy-depth: {{ section.settings.c_buy_depth | default: section.settings.c_ink }};
     {%- unless section.settings.load_fonts %}
     --sf-font-head: inherit;
     --sf-font-body: inherit;
@@ -647,6 +649,19 @@
       "id": "c_chip",
       "label": "Benefit chip background",
       "default": "#e9f7d0"
+    },
+    {
+      "type": "color",
+      "id": "c_atc_depth",
+      "label": "Add to cart button 3D colour",
+      "default": "#1c1c1c",
+      "info": "The solid edge under the Add to cart button."
+    },
+    {
+      "type": "color",
+      "id": "c_buy_depth",
+      "label": "Buy now button 3D colour",
+      "default": "#1c1c1c"
     },
     {
       "type": "color",

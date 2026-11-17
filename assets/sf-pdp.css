@@ -238,15 +238,16 @@
   font: 700 20px/1.2 var(--sf-font-head); letter-spacing: .5px; text-transform: uppercase;
   color: #fff; background: var(--sf-green);
   border: 3px solid var(--sf-ink); border-radius: 16px; padding: 14px;
-  cursor: pointer; box-shadow: 0 6px 0 var(--sf-ink);
+  cursor: pointer; box-shadow: 0 6px 0 var(--sf-btn-depth);
+  --sf-btn-depth: var(--sf-atc-depth, var(--sf-ink));
   transition: transform .08s, box-shadow .08s, background .12s;
   text-decoration: none;
 }
 .sf-btn:hover { background: var(--sf-green-h); color: #fff; }
-.sf-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--sf-ink); }
-.sf-btn[disabled] { background: #9a9a9a; cursor: not-allowed; transform: none; box-shadow: 0 6px 0 var(--sf-ink); }
+.sf-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--sf-btn-depth); }
+.sf-btn[disabled] { background: #9a9a9a; cursor: not-allowed; transform: none; box-shadow: 0 6px 0 var(--sf-btn-depth); }
 .sf-btn[aria-busy="true"] { opacity: .8; pointer-events: none; }
-.sf-btn--alt { background: var(--sf-yellow); color: var(--sf-ink); width: 100%; margin-top: 14px; flex: none; }
+.sf-btn--alt { --sf-btn-depth: var(--sf-buy-depth, var(--sf-ink)); background: var(--sf-yellow); color: var(--sf-ink); width: 100%; margin-top: 14px; flex: none; }
 .sf-btn--alt[disabled] { background: #d6d6d6; color: #777; }
 @media (max-width: 380px) {
   .sf-btn { font-size: 17px; padding: 12px 10px; }
@@ -307,9 +308,9 @@
 .sf-sticky__price { font: 700 16px var(--sf-font-head); color: var(--sf-green); }
 .sf-sticky__btns { display: flex; gap: 8px; flex: none; }
 [data-sf-sticky-variant]:not(:empty)::after { content: " · "; }
-.sf-sticky .sf-btn { flex: none; font-size: 15px; padding: 10px 18px; box-shadow: 0 4px 0 var(--sf-ink); white-space: nowrap; }
+.sf-sticky .sf-btn { flex: none; font-size: 15px; padding: 10px 18px; box-shadow: 0 4px 0 var(--sf-btn-depth); white-space: nowrap; }
 .sf-sticky .sf-btn--alt { width: auto; margin-top: 0; }
-.sf-sticky .sf-btn:not([disabled]):active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sf-ink); }
+.sf-sticky .sf-btn:not([disabled]):active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sf-btn-depth); }
 /* Two buttons on a phone: drop the product name, keep pack + price */
 @media (max-width: 480px) {
   .sf-sticky--both { gap: 8px; padding-left: 10px; padding-right: 10px; }
@@ -418,12 +419,12 @@
   transform: translateX(-120%);
 }
 @media (hover: hover) {
-  .sf-btn:not([disabled]):hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--sf-ink); }
+  .sf-btn:not([disabled]):hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--sf-btn-depth); }
   .sf-btn:not([disabled]):hover::after { animation: sf-shine .7s ease forwards; }
-  .sf-card .sf-btn:not([disabled]):hover { box-shadow: 0 6px 0 var(--sf-ink); }
-  .sf-sticky .sf-btn:not([disabled]):hover { box-shadow: 0 6px 0 var(--sf-ink); }
+  .sf-card .sf-btn:not([disabled]):hover { box-shadow: 0 6px 0 var(--sf-btn-depth); }
+  .sf-sticky .sf-btn:not([disabled]):hover { box-shadow: 0 6px 0 var(--sf-btn-depth); }
 }
-.sf-btn:not([disabled]):active { transform: translateY(5px); box-shadow: 0 1px 0 var(--sf-ink); transition-duration: .05s; }
+.sf-btn:not([disabled]):active { transform: translateY(5px); box-shadow: 0 1px 0 var(--sf-btn-depth); transition-duration: .05s; }
 @keyframes sf-shine { to { transform: translateX(120%); } }
 
 /* Added-to-cart pop */
@@ -553,8 +554,8 @@
 .sf-card__price { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 0 2px 10px; }
 .sf-card__price b { background: var(--sf-green); color: #fff; font: 600 14px/1.4 var(--sf-font-head); padding: 1px 8px; border: 2px solid var(--sf-ink); border-radius: 9px; }
 .sf-card__price s { color: var(--sf-red); font-size: 12px; }
-.sf-card .sf-btn { margin-top: auto; font-size: 14px; padding: 9px 8px; border-radius: 12px; box-shadow: 0 4px 0 var(--sf-ink); flex: none; }
-.sf-card .sf-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sf-ink); }
+.sf-card .sf-btn { margin-top: auto; font-size: 14px; padding: 9px 8px; border-radius: 12px; box-shadow: 0 4px 0 var(--sf-btn-depth); flex: none; }
+.sf-card .sf-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sf-btn-depth); }
 
 /* ---------- Trust icons as "tea bubbles" (trust block, style: circles) ---------- */
 .sf-pdp .sf-trust--circles { gap: 6px; padding: 10px 0 4px; font: 500 12px/1.25 var(--sf-font-body); }
@@ -620,3 +621,28 @@
   .sf-trust__bubble::before, .sf-trust__tea svg { animation: none; }
   .sf-trust__tea::after, .sf-trust__tea svg, .sf-trust__bubble { transition: none !important; }
 }
+
+
+/* ---------- Pack cards: soft light frame (same feel as the product image), gentle pop when chosen ---------- */
+.sf-pack__card,
+.sf-pack input:not(:checked):not(:disabled) + .sf-pack__card {
+  border: 0; border-radius: 22px;
+  background: rgba(70, 64, 40, .05);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), 0 0 0 1px rgba(70, 64, 40, .10), 0 10px 22px -16px rgba(70, 64, 40, .35);
+  transition: transform .25s cubic-bezier(.3, 1.4, .5, 1), box-shadow .25s ease, background .2s ease;
+}
+.sf-pack__media { border: 0; border-radius: 14px; box-shadow: 0 0 0 1px rgba(70, 64, 40, .10), 0 2px 10px rgba(70, 64, 40, .10); }
+@media (hover: hover) {
+  .sf-pack:hover input:not(:checked):not(:disabled) + .sf-pack__card {
+    transform: translateY(-2px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), 0 0 0 1px rgba(70, 64, 40, .14), 0 14px 26px -16px rgba(70, 64, 40, .42);
+  }
+}
+.sf-pack input:checked + .sf-pack__card {
+  background: color-mix(in srgb, var(--sf-chip) 70%, #fff);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .8), 0 0 0 2px var(--sf-green), 0 0 0 7px color-mix(in srgb, var(--sf-green) 14%, transparent), 0 18px 30px -16px rgba(31, 122, 53, .45);
+}
+.sf-pack input:checked + .sf-pack__card .sf-pack__media { box-shadow: 0 0 0 1px rgba(31, 122, 53, .25), 0 6px 14px -6px rgba(31, 122, 53, .35); }
+.sf-pack input:focus-visible + .sf-pack__card { outline: 3px solid var(--sf-green); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .sf-pack input:checked + .sf-pack__card { transform: none; } }
