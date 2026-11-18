@@ -23,7 +23,7 @@
       // changes made outside the page (drawer, gifts, add to cart): refresh this section
       this._outside = () => { if (!this.busy && Date.now() - (this._own || 0) > 900) this.refresh(); };
       document.addEventListener('cart:updated', this._outside);
-      document.addEventListener('sf:cart-changed', this._outside);
+      document.addEventListener('tbm:cart-changed', this._outside);
       const drawer = document.getElementById('offcanvas-cart');
       if (drawer) {
         let t;
@@ -35,7 +35,7 @@
     }
     disconnectedCallback() {
       document.removeEventListener('cart:updated', this._outside);
-      document.removeEventListener('sf:cart-changed', this._outside);
+      document.removeEventListener('tbm:cart-changed', this._outside);
       this._mo && this._mo.disconnect();
     }
 
@@ -77,7 +77,7 @@
         if (!res.ok || data.status) throw new Error(data.description || data.message || 'Something went wrong. Please try again.');
         if (data.sections) this.renderAll(data.sections);
         this._own = Date.now();
-        document.dispatchEvent(new CustomEvent('sf:cart-page-updated', { detail: data }));
+        document.dispatchEvent(new CustomEvent('tbm:cart-page-updated', { detail: data }));
         return data;
       } catch (err) {
         this.alert(err.message);
