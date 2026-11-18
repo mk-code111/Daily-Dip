@@ -1,7 +1,7 @@
 /* TBM · Hero wheel — phone strip engine, video play/pause and theme-editor helpers.
    The desktop wheel turns with pure CSS. */
 (() => {
-  if (window.SFHeroWheel) return;
+  if (window.TBMHeroWheel) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ---------- phone strip: endless, swipeable, curved ---------- */
@@ -232,7 +232,7 @@
   const init = (scope = document) => {
     scope.querySelectorAll('.tbm-hw').forEach((el) => { if (!all.has(el)) all.set(el, new Hero(el)); });
   };
-  window.SFHeroWheel = { init };
+  window.TBMHeroWheel = { init };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => init());
   else init();
 

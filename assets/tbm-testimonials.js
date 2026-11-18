@@ -1,6 +1,6 @@
 /* TBM · Testimonials — endless, self-scrolling rows that visitors can swipe or drag. */
 (() => {
-  if (window.SFTestimonials) return;
+  if (window.TBMTestimonials) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   class Row {
@@ -234,7 +234,7 @@
   const init = (scope = document) => {
     scope.querySelectorAll('[data-tbm-tst]').forEach((el) => { if (!all.has(el)) all.set(el, new Section(el)); });
   };
-  window.SFTestimonials = { init };
+  window.TBMTestimonials = { init };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => init());
   else init();
