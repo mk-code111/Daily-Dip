@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "sf_hero_wheel": {
-      "type": "sf-hero-wheel",
+    "tbm_hero_wheel": {
+      "type": "tbm-hero-wheel",
       "blocks": {
         "card_1": {
           "type": "card",
@@ -142,8 +142,8 @@
         "pb": 9
       }
     },
-    "sf_product_cards_cM7twj": {
-      "type": "sf-product-cards",
+    "tbm_product_cards_cM7twj": {
+      "type": "tbm-product-cards",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",
@@ -172,7 +172,7 @@
         "benefit_HqqpFN",
         "benefit_y4y34L"
       ],
-      "name": "SF · Product cards",
+      "name": "TBM · Product cards",
       "settings": {
         "heading": "Pick your dip",
         "subheading": "",
@@ -200,8 +200,8 @@
         "pb": 40
       }
     },
-    "sf_moments_7ytUUJ": {
-      "type": "sf-moments",
+    "tbm_moments_7ytUUJ": {
+      "type": "tbm-moments",
       "blocks": {
         "moment_jmjQpJ": {
           "type": "moment",
@@ -282,7 +282,7 @@
         "feature_fK7RrK",
         "feature_q99fip"
       ],
-      "name": "SF · Moments",
+      "name": "TBM · Moments",
       "settings": {
         "eyebrow": "For every moment",
         "heading": "Tea for every part of",
@@ -303,8 +303,8 @@
         "pb": 12
       }
     },
-    "sf_marquee": {
-      "type": "sf-marquee",
+    "tbm_marquee": {
+      "type": "tbm-marquee",
       "blocks": {
         "mq_1": {
           "type": "text",
@@ -362,8 +362,8 @@
         "pb": 36
       }
     },
-    "sf_shoppable_videos": {
-      "type": "sf-shoppable-videos",
+    "tbm_shoppable_videos": {
+      "type": "tbm-shoppable-videos",
       "blocks": {
         "video_1": {
           "type": "item",
@@ -476,8 +476,8 @@
         "pb": 56
       }
     },
-    "sf_pdp_know_more_3iPGTz": {
-      "type": "sf-pdp-know-more",
+    "tbm_pdp_know_more_3iPGTz": {
+      "type": "tbm-pdp-know-more",
       "blocks": {
         "item_PVf3Kz": {
           "type": "item",
@@ -527,7 +527,7 @@
         "item_RDreYt",
         "item_EhK7pF"
       ],
-      "name": "SF · Know more",
+      "name": "TBM · Know more",
       "settings": {
         "heading": "FAQs",
         "intro": "",
@@ -535,8 +535,8 @@
         "pb": 16
       }
     },
-    "sf_trust": {
-      "type": "sf-trust",
+    "tbm_trust": {
+      "type": "tbm-trust",
       "blocks": {
         "promise_1": {
           "type": "item",
@@ -629,8 +629,8 @@
         "pb": 64
       }
     },
-    "sf_testimonials": {
-      "type": "sf-testimonials",
+    "tbm_testimonials": {
+      "type": "tbm-testimonials",
       "blocks": {
         "tm_1": {
           "type": "testimonial",
@@ -782,14 +782,14 @@
     }
   },
   "order": [
-    "sf_hero_wheel",
+    "tbm_hero_wheel",
     "hero_carousel_CmDneU",
-    "sf_product_cards_cM7twj",
-    "sf_moments_7ytUUJ",
-    "sf_marquee",
-    "sf_shoppable_videos",
-    "sf_pdp_know_more_3iPGTz",
-    "sf_trust",
-    "sf_testimonials"
+    "tbm_product_cards_cM7twj",
+    "tbm_moments_7ytUUJ",
+    "tbm_marquee",
+    "tbm_shoppable_videos",
+    "tbm_pdp_know_more_3iPGTz",
+    "tbm_trust",
+    "tbm_testimonials"
   ]
 }

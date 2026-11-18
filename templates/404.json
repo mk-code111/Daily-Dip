@@ -100,12 +100,12 @@
       },
       "disabled": true
     },
-    "sf_404": {
-      "type": "sf-404",
+    "tbm_404": {
+      "type": "tbm-404",
       "settings": {}
     },
-    "sf_404_products": {
-      "type": "sf-product-cards",
+    "tbm_404_products": {
+      "type": "tbm-product-cards",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",
@@ -162,8 +162,8 @@
     }
   },
   "order": [
-    "sf_404",
-    "sf_404_products",
+    "tbm_404",
+    "tbm_404_products",
     "richtext",
     "separator_TdBaEC",
     "featured_products_UhEbjM"

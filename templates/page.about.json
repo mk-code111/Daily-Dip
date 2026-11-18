@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "sf_about_hero": {
-      "type": "sf-about-hero",
+    "tbm_about_hero": {
+      "type": "tbm-about-hero",
       "blocks": {
         "stat_1": {
           "type": "stat",
@@ -60,8 +60,8 @@
         "pb": 24
       }
     },
-    "sf_story_1": {
-      "type": "sf-about-story",
+    "tbm_story_1": {
+      "type": "tbm-about-story",
       "settings": {
         "number": "01",
         "kicker": "Chapter one",
@@ -88,8 +88,8 @@
         "pb": 64
       }
     },
-    "sf_story_2": {
-      "type": "sf-about-story",
+    "tbm_story_2": {
+      "type": "tbm-about-story",
       "settings": {
         "number": "02",
         "kicker": "Chapter two",
@@ -115,8 +115,8 @@
         "pb": 64
       }
     },
-    "sf_story_3": {
-      "type": "sf-about-story",
+    "tbm_story_3": {
+      "type": "tbm-about-story",
       "settings": {
         "number": "03",
         "kicker": "Chapter three",
@@ -142,8 +142,8 @@
         "pb": 64
       }
     },
-    "sf_story_4": {
-      "type": "sf-about-story",
+    "tbm_story_4": {
+      "type": "tbm-about-story",
       "settings": {
         "number": "04",
         "kicker": "Chapter four",
@@ -391,11 +391,11 @@
     }
   },
   "order": [
-    "sf_about_hero",
-    "sf_story_1",
-    "sf_story_2",
-    "sf_story_3",
-    "sf_story_4",
+    "tbm_about_hero",
+    "tbm_story_1",
+    "tbm_story_2",
+    "tbm_story_3",
+    "tbm_story_4",
     "hero_carousel_tdHVay",
     "18e3bb8e-f1ba-421c-91c3-37c1c5b25a2a",
     "91fa2e27-741f-431f-b658-c6ce03d0f6eb",

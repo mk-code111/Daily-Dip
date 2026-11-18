@@ -112,8 +112,8 @@
         "pb": 7
       }
     },
-    "sf_footer": {
-      "type": "sf-footer",
+    "tbm_footer": {
+      "type": "tbm-footer",
       "settings": {
         "logo_width": 160,
         "brand_text": "DailyDip",
@@ -170,6 +170,6 @@
   "order": [
     "newsletter_popup_rpxAc3",
     "footer",
-    "sf_footer"
+    "tbm_footer"
   ]
 }

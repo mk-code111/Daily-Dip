@@ -13,8 +13,8 @@
       },
       "disabled": true
     },
-    "sf_search": {
-      "type": "sf-search-main",
+    "tbm_search": {
+      "type": "tbm-search-main",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",
@@ -50,7 +50,7 @@
     }
   },
   "order": [
-    "sf_search",
+    "tbm_search",
     "template-search"
   ]
 }

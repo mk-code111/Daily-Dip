@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "sf-cart-main",
+      "type": "tbm-cart-main",
       "blocks": {
         "trust_lock": {
           "type": "trust",
@@ -45,7 +45,7 @@
       "settings": {}
     },
     "related": {
-      "type": "sf-product-cards",
+      "type": "tbm-product-cards",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",

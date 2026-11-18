@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "sf_collection_hero": {
-      "type": "sf-collection-hero",
+    "tbm_collection_hero": {
+      "type": "tbm-collection-hero",
       "settings": {
         "show_breadcrumb": true,
         "crumb_home": "Home",
@@ -43,8 +43,8 @@
         "pb": 8
       }
     },
-    "sf_collection_grid": {
-      "type": "sf-collection-grid",
+    "tbm_collection_grid": {
+      "type": "tbm-collection-grid",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",
@@ -328,8 +328,8 @@
     }
   },
   "order": [
-    "sf_collection_hero",
-    "sf_collection_grid",
+    "tbm_collection_hero",
+    "tbm_collection_grid",
     "collection_header_JKf7mh",
     "simple_collections_tA6GqX",
     "collection_utilities_YfkBEV",

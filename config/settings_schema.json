@@ -1120,7 +1120,7 @@
     ]
   },
   {
-    "name": "SF Cart · Timer",
+    "name": "TBM Cart · Timer",
     "settings": [
       {
         "type": "paragraph",
@@ -1128,13 +1128,13 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_timer_enable",
+        "id": "tbm_timer_enable",
         "label": "Show cart timer",
         "default": true
       },
       {
         "type": "text",
-        "id": "sf_timer_message",
+        "id": "tbm_timer_message",
         "label": "Message",
         "default": "Offer expires soon {{timer}}",
         "info": "Use {{timer}} where the countdown should appear. Up to 100 characters."
@@ -1145,13 +1145,13 @@
       },
       {
         "type": "number",
-        "id": "sf_timer_minutes",
+        "id": "tbm_timer_minutes",
         "label": "Minutes",
         "default": 10
       },
       {
         "type": "number",
-        "id": "sf_timer_seconds",
+        "id": "tbm_timer_seconds",
         "label": "Seconds",
         "default": 0
       },
@@ -1161,7 +1161,7 @@
       },
       {
         "type": "radio",
-        "id": "sf_timer_end",
+        "id": "tbm_timer_end",
         "label": "When the timer ends",
         "default": "hide",
         "options": [
@@ -1178,7 +1178,7 @@
     ]
   },
   {
-    "name": "SF Cart · Rewards",
+    "name": "TBM Cart · Rewards",
     "settings": [
       {
         "type": "paragraph",
@@ -1186,7 +1186,7 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_enable",
+        "id": "tbm_rw_enable",
         "label": "Show reward progress bar",
         "default": true,
         "info": "Replaces the theme's Cart goal bar."
@@ -1197,7 +1197,7 @@
       },
       {
         "type": "radio",
-        "id": "sf_rw_measure",
+        "id": "tbm_rw_measure",
         "label": "Measure by",
         "default": "value",
         "options": [
@@ -1213,7 +1213,7 @@
       },
       {
         "type": "select",
-        "id": "sf_rw_applies",
+        "id": "tbm_rw_applies",
         "label": "Applies to",
         "default": "all",
         "options": [
@@ -1233,19 +1233,19 @@
       },
       {
         "type": "product_list",
-        "id": "sf_rw_products",
+        "id": "tbm_rw_products",
         "label": "Products (when \"Specific products\")",
         "limit": 50
       },
       {
         "type": "collection_list",
-        "id": "sf_rw_collections",
+        "id": "tbm_rw_collections",
         "label": "Collections (when \"Specific collections\")",
         "limit": 25
       },
       {
         "type": "select",
-        "id": "sf_rw_calc",
+        "id": "tbm_rw_calc",
         "label": "Calculate reward bar",
         "default": "before",
         "options": [
@@ -1261,19 +1261,19 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_exclude",
+        "id": "tbm_rw_exclude",
         "label": "Exclude products / collections",
         "default": false
       },
       {
         "type": "product_list",
-        "id": "sf_rw_ex_products",
+        "id": "tbm_rw_ex_products",
         "label": "Excluded products",
         "limit": 50
       },
       {
         "type": "collection_list",
-        "id": "sf_rw_ex_collections",
+        "id": "tbm_rw_ex_collections",
         "label": "Excluded collections",
         "limit": 25
       },
@@ -1283,7 +1283,7 @@
       },
       {
         "type": "text",
-        "id": "sf_rw_done_text",
+        "id": "tbm_rw_done_text",
         "label": "Text after completing full reward bar",
         "default": "Congratulations! You have unlocked all rewards 🎉"
       },
@@ -1293,7 +1293,7 @@
       },
       {
         "type": "radio",
-        "id": "sf_rw_mode",
+        "id": "tbm_rw_mode",
         "label": "Rewards",
         "default": "highest",
         "options": [
@@ -1314,13 +1314,13 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_t1_enable",
+        "id": "tbm_rw_t1_enable",
         "label": "Use tier 1",
         "default": true
       },
       {
         "type": "select",
-        "id": "sf_rw_t1_icon",
+        "id": "tbm_rw_t1_icon",
         "label": "Tier icon",
         "default": "truck-fast",
         "options": [
@@ -1352,7 +1352,7 @@
       },
       {
         "type": "select",
-        "id": "sf_rw_t1_type",
+        "id": "tbm_rw_t1_type",
         "label": "Reward type",
         "default": "shipping",
         "options": [
@@ -1372,20 +1372,20 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t1_min",
+        "id": "tbm_rw_t1_min",
         "label": "Min cart value (₹) or item quantity",
         "default": 399
       },
       {
         "type": "text",
-        "id": "sf_rw_t1_desc",
+        "id": "tbm_rw_t1_desc",
         "label": "Reward description",
         "default": "Free delivery",
         "info": "Short label under the tier icon, up to about 15 characters."
       },
       {
         "type": "select",
-        "id": "sf_rw_t1_value_type",
+        "id": "tbm_rw_t1_value_type",
         "label": "Discount / reward value",
         "default": "free",
         "options": [
@@ -1405,14 +1405,14 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t1_value",
+        "id": "tbm_rw_t1_value",
         "label": "Value (% or ₹)",
         "default": 0,
         "info": "Not used when the value is Free."
       },
       {
         "type": "radio",
-        "id": "sf_rw_t1_ship_scope",
+        "id": "tbm_rw_t1_ship_scope",
         "label": "Apply to (shipping discount)",
         "default": "all",
         "options": [
@@ -1429,19 +1429,19 @@
       },
       {
         "type": "product_list",
-        "id": "sf_rw_t1_products",
+        "id": "tbm_rw_t1_products",
         "label": "Gift products (Product reward)",
         "limit": 10
       },
       {
         "type": "number",
-        "id": "sf_rw_t1_max",
+        "id": "tbm_rw_t1_max",
         "label": "Max rewards per order (Product reward)",
         "default": 1
       },
       {
         "type": "radio",
-        "id": "sf_rw_t1_gift_mode",
+        "id": "tbm_rw_t1_gift_mode",
         "label": "How customers get the gift",
         "default": "popup",
         "options": [
@@ -1457,7 +1457,7 @@
       },
       {
         "type": "textarea",
-        "id": "sf_rw_t1_text",
+        "id": "tbm_rw_t1_text",
         "label": "Text before completing tier",
         "default": "You are {{min_amount}} away from Free delivery",
         "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
@@ -1468,13 +1468,13 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_t2_enable",
+        "id": "tbm_rw_t2_enable",
         "label": "Use tier 2",
         "default": true
       },
       {
         "type": "select",
-        "id": "sf_rw_t2_icon",
+        "id": "tbm_rw_t2_icon",
         "label": "Tier icon",
         "default": "percent",
         "options": [
@@ -1506,7 +1506,7 @@
       },
       {
         "type": "select",
-        "id": "sf_rw_t2_type",
+        "id": "tbm_rw_t2_type",
         "label": "Reward type",
         "default": "discount",
         "options": [
@@ -1526,20 +1526,20 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t2_min",
+        "id": "tbm_rw_t2_min",
         "label": "Min cart value (₹) or item quantity",
         "default": 799
       },
       {
         "type": "text",
-        "id": "sf_rw_t2_desc",
+        "id": "tbm_rw_t2_desc",
         "label": "Reward description",
         "default": "5% off",
         "info": "Short label under the tier icon, up to about 15 characters."
       },
       {
         "type": "select",
-        "id": "sf_rw_t2_value_type",
+        "id": "tbm_rw_t2_value_type",
         "label": "Discount / reward value",
         "default": "percentage",
         "options": [
@@ -1559,14 +1559,14 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t2_value",
+        "id": "tbm_rw_t2_value",
         "label": "Value (% or ₹)",
         "default": 5,
         "info": "Not used when the value is Free."
       },
       {
         "type": "radio",
-        "id": "sf_rw_t2_ship_scope",
+        "id": "tbm_rw_t2_ship_scope",
         "label": "Apply to (shipping discount)",
         "default": "all",
         "options": [
@@ -1583,19 +1583,19 @@
       },
       {
         "type": "product_list",
-        "id": "sf_rw_t2_products",
+        "id": "tbm_rw_t2_products",
         "label": "Gift products (Product reward)",
         "limit": 10
       },
       {
         "type": "number",
-        "id": "sf_rw_t2_max",
+        "id": "tbm_rw_t2_max",
         "label": "Max rewards per order (Product reward)",
         "default": 1
       },
       {
         "type": "radio",
-        "id": "sf_rw_t2_gift_mode",
+        "id": "tbm_rw_t2_gift_mode",
         "label": "How customers get the gift",
         "default": "popup",
         "options": [
@@ -1611,7 +1611,7 @@
       },
       {
         "type": "textarea",
-        "id": "sf_rw_t2_text",
+        "id": "tbm_rw_t2_text",
         "label": "Text before completing tier",
         "default": "You are {{min_amount}} away from 5% off your order",
         "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
@@ -1622,13 +1622,13 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_t3_enable",
+        "id": "tbm_rw_t3_enable",
         "label": "Use tier 3",
         "default": true
       },
       {
         "type": "select",
-        "id": "sf_rw_t3_icon",
+        "id": "tbm_rw_t3_icon",
         "label": "Tier icon",
         "default": "percent",
         "options": [
@@ -1660,7 +1660,7 @@
       },
       {
         "type": "select",
-        "id": "sf_rw_t3_type",
+        "id": "tbm_rw_t3_type",
         "label": "Reward type",
         "default": "discount",
         "options": [
@@ -1680,20 +1680,20 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t3_min",
+        "id": "tbm_rw_t3_min",
         "label": "Min cart value (₹) or item quantity",
         "default": 1599
       },
       {
         "type": "text",
-        "id": "sf_rw_t3_desc",
+        "id": "tbm_rw_t3_desc",
         "label": "Reward description",
         "default": "10% off",
         "info": "Short label under the tier icon, up to about 15 characters."
       },
       {
         "type": "select",
-        "id": "sf_rw_t3_value_type",
+        "id": "tbm_rw_t3_value_type",
         "label": "Discount / reward value",
         "default": "percentage",
         "options": [
@@ -1713,14 +1713,14 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t3_value",
+        "id": "tbm_rw_t3_value",
         "label": "Value (% or ₹)",
         "default": 10,
         "info": "Not used when the value is Free."
       },
       {
         "type": "radio",
-        "id": "sf_rw_t3_ship_scope",
+        "id": "tbm_rw_t3_ship_scope",
         "label": "Apply to (shipping discount)",
         "default": "all",
         "options": [
@@ -1737,19 +1737,19 @@
       },
       {
         "type": "product_list",
-        "id": "sf_rw_t3_products",
+        "id": "tbm_rw_t3_products",
         "label": "Gift products (Product reward)",
         "limit": 10
       },
       {
         "type": "number",
-        "id": "sf_rw_t3_max",
+        "id": "tbm_rw_t3_max",
         "label": "Max rewards per order (Product reward)",
         "default": 1
       },
       {
         "type": "radio",
-        "id": "sf_rw_t3_gift_mode",
+        "id": "tbm_rw_t3_gift_mode",
         "label": "How customers get the gift",
         "default": "popup",
         "options": [
@@ -1765,7 +1765,7 @@
       },
       {
         "type": "textarea",
-        "id": "sf_rw_t3_text",
+        "id": "tbm_rw_t3_text",
         "label": "Text before completing tier",
         "default": "You are {{min_amount}} away from 10% off your order",
         "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
@@ -1776,13 +1776,13 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_t4_enable",
+        "id": "tbm_rw_t4_enable",
         "label": "Use tier 4",
         "default": false
       },
       {
         "type": "select",
-        "id": "sf_rw_t4_icon",
+        "id": "tbm_rw_t4_icon",
         "label": "Tier icon",
         "default": "gift",
         "options": [
@@ -1814,7 +1814,7 @@
       },
       {
         "type": "select",
-        "id": "sf_rw_t4_type",
+        "id": "tbm_rw_t4_type",
         "label": "Reward type",
         "default": "product",
         "options": [
@@ -1834,20 +1834,20 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t4_min",
+        "id": "tbm_rw_t4_min",
         "label": "Min cart value (₹) or item quantity",
         "default": 2499
       },
       {
         "type": "text",
-        "id": "sf_rw_t4_desc",
+        "id": "tbm_rw_t4_desc",
         "label": "Reward description",
         "default": "Free gift",
         "info": "Short label under the tier icon, up to about 15 characters."
       },
       {
         "type": "select",
-        "id": "sf_rw_t4_value_type",
+        "id": "tbm_rw_t4_value_type",
         "label": "Discount / reward value",
         "default": "free",
         "options": [
@@ -1867,14 +1867,14 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t4_value",
+        "id": "tbm_rw_t4_value",
         "label": "Value (% or ₹)",
         "default": 0,
         "info": "Not used when the value is Free."
       },
       {
         "type": "radio",
-        "id": "sf_rw_t4_ship_scope",
+        "id": "tbm_rw_t4_ship_scope",
         "label": "Apply to (shipping discount)",
         "default": "all",
         "options": [
@@ -1891,19 +1891,19 @@
       },
       {
         "type": "product_list",
-        "id": "sf_rw_t4_products",
+        "id": "tbm_rw_t4_products",
         "label": "Gift products (Product reward)",
         "limit": 10
       },
       {
         "type": "number",
-        "id": "sf_rw_t4_max",
+        "id": "tbm_rw_t4_max",
         "label": "Max rewards per order (Product reward)",
         "default": 1
       },
       {
         "type": "radio",
-        "id": "sf_rw_t4_gift_mode",
+        "id": "tbm_rw_t4_gift_mode",
         "label": "How customers get the gift",
         "default": "popup",
         "options": [
@@ -1919,7 +1919,7 @@
       },
       {
         "type": "textarea",
-        "id": "sf_rw_t4_text",
+        "id": "tbm_rw_t4_text",
         "label": "Text before completing tier",
         "default": "Spend {{min_amount}} more to unlock a free gift",
         "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."
@@ -1930,13 +1930,13 @@
       },
       {
         "type": "checkbox",
-        "id": "sf_rw_t5_enable",
+        "id": "tbm_rw_t5_enable",
         "label": "Use tier 5",
         "default": false
       },
       {
         "type": "select",
-        "id": "sf_rw_t5_icon",
+        "id": "tbm_rw_t5_icon",
         "label": "Tier icon",
         "default": "award",
         "options": [
@@ -1968,7 +1968,7 @@
       },
       {
         "type": "select",
-        "id": "sf_rw_t5_type",
+        "id": "tbm_rw_t5_type",
         "label": "Reward type",
         "default": "discount",
         "options": [
@@ -1988,20 +1988,20 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t5_min",
+        "id": "tbm_rw_t5_min",
         "label": "Min cart value (₹) or item quantity",
         "default": 3499
       },
       {
         "type": "text",
-        "id": "sf_rw_t5_desc",
+        "id": "tbm_rw_t5_desc",
         "label": "Reward description",
         "default": "15% off",
         "info": "Short label under the tier icon, up to about 15 characters."
       },
       {
         "type": "select",
-        "id": "sf_rw_t5_value_type",
+        "id": "tbm_rw_t5_value_type",
         "label": "Discount / reward value",
         "default": "percentage",
         "options": [
@@ -2021,14 +2021,14 @@
       },
       {
         "type": "number",
-        "id": "sf_rw_t5_value",
+        "id": "tbm_rw_t5_value",
         "label": "Value (% or ₹)",
         "default": 15,
         "info": "Not used when the value is Free."
       },
       {
         "type": "radio",
-        "id": "sf_rw_t5_ship_scope",
+        "id": "tbm_rw_t5_ship_scope",
         "label": "Apply to (shipping discount)",
         "default": "all",
         "options": [
@@ -2045,19 +2045,19 @@
       },
       {
         "type": "product_list",
-        "id": "sf_rw_t5_products",
+        "id": "tbm_rw_t5_products",
         "label": "Gift products (Product reward)",
         "limit": 10
       },
       {
         "type": "number",
-        "id": "sf_rw_t5_max",
+        "id": "tbm_rw_t5_max",
         "label": "Max rewards per order (Product reward)",
         "default": 1
       },
       {
         "type": "radio",
-        "id": "sf_rw_t5_gift_mode",
+        "id": "tbm_rw_t5_gift_mode",
         "label": "How customers get the gift",
         "default": "popup",
         "options": [
@@ -2073,7 +2073,7 @@
       },
       {
         "type": "textarea",
-        "id": "sf_rw_t5_text",
+        "id": "tbm_rw_t5_text",
         "label": "Text before completing tier",
         "default": "You are {{min_amount}} away from 15% off your order",
         "info": "Variables: {{min_amount}} = what is still needed, {{reward}} = the reward description."

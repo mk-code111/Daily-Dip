@@ -94,8 +94,8 @@
       },
       "disabled": true
     },
-    "sf_header": {
-      "type": "sf-header",
+    "tbm_header": {
+      "type": "tbm-header",
       "settings": {
         "logo": "shopify://shop_images/Logo.png",
         "logo_width": 120,
@@ -118,8 +118,8 @@
         "shrink_on_scroll": true
       }
     },
-    "sf_announcement": {
-      "type": "sf-announcement",
+    "tbm_announcement": {
+      "type": "tbm-announcement",
       "blocks": {
         "msg_1": {
           "type": "message",
@@ -150,9 +150,9 @@
     }
   },
   "order": [
-    "sf_announcement",
+    "tbm_announcement",
     "announcement_bar_Ge9W3V",
-    "sf_header",
+    "tbm_header",
     "navbar"
   ]
 }

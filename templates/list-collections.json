@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "sf_collections_list": {
-      "type": "sf-collections-list",
+    "tbm_collections_list": {
+      "type": "tbm-collections-list",
       "blocks": {
         "collection_gAbGN4": {
           "type": "collection",
@@ -78,8 +78,8 @@
         "pb": 64
       }
     },
-    "sf_bestsellers": {
-      "type": "sf-product-cards",
+    "tbm_bestsellers": {
+      "type": "tbm-product-cards",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",
@@ -289,8 +289,8 @@
     }
   },
   "order": [
-    "sf_collections_list",
-    "sf_bestsellers",
+    "tbm_collections_list",
+    "tbm_bestsellers",
     "featured_collections_mM4ajz",
     "featured_products_M8rk9w"
   ]

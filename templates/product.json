@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "sf-pdp-main",
+      "type": "tbm-pdp-main",
       "blocks": {
         "title": {
           "type": "title",
@@ -144,7 +144,7 @@
       }
     },
     "banner": {
-      "type": "sf-pdp-banner",
+      "type": "tbm-pdp-banner",
       "settings": {
         "heading": "Gut care?\nLet's dip.",
         "subheading": "Tear · Dip · Sip",
@@ -161,7 +161,7 @@
       }
     },
     "ingredients": {
-      "type": "sf-pdp-ingredients",
+      "type": "tbm-pdp-ingredients",
       "blocks": {
         "ing_1": {
           "type": "ingredient",
@@ -254,7 +254,7 @@
       }
     },
     "brew": {
-      "type": "sf-pdp-brew",
+      "type": "tbm-pdp-brew",
       "blocks": {
         "step_1": {
           "type": "step",
@@ -318,7 +318,7 @@
       }
     },
     "know_more": {
-      "type": "sf-pdp-know-more",
+      "type": "tbm-pdp-know-more",
       "blocks": {
         "item_1": {
           "type": "item",
@@ -385,7 +385,7 @@
       "settings": {}
     },
     "related": {
-      "type": "sf-pdp-related",
+      "type": "tbm-pdp-related",
       "blocks": {
         "benefit_qiXfqC": {
           "type": "benefit",
