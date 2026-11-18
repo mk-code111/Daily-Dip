@@ -1,0 +1,156 @@
+{%- comment -%}
+  tbm-pdp-ingredients — "What's in your cup" ingredient spotlight for the product page.
+  Each ingredient is a flip card: front = round botanical art + name + tag,
+  back = what it does + "good for" chips. Tap (or hover on desktop) to flip.
+  Each card can be limited to certain products, so one template serves every blend;
+  the section hides itself when no card matches the product.
+  Styles: assets/tbm-pdp-extras.css · Script: assets/tbm-pdp-extras.js
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign mf_count = 0
+  for i in (1..6)
+    assign key = 'ingredient_' | append: i
+    assign ref = product.metafields.custom[key].value
+    if ref != blank and ref.name.value != blank
+      assign mf_count = mf_count | plus: 1
+    endif
+  endfor
+
+  assign shown = mf_count
+  if mf_count == 0
+    for block in section.blocks
+      assign ok = true
+      if block.settings.products != blank
+        assign ok = false
+        for p in block.settings.products
+          if p.id == product.id
+            assign ok = true
+          endif
+        endfor
+      endif
+      if ok
+        assign shown = shown | plus: 1
+      endif
+    endfor
+  endif
+-%}
+{%- if shown > 0 or request.design_mode -%}
+{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'tbm-pdp-extras.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tbm-pdp-extras.js' | asset_url }}" defer></script>
+<style>
+  #shopify-section-{{ section.id }} { --tbm-ig-bg: {{ s.c_bg }}; --tbm-ig-pt: {{ s.pt }}px; --tbm-ig-pb: {{ s.pb }}px; --tbm-ig-cols: {{ s.cols_desktop }}; }
+</style>
+
+<section class="tbm-pdp tbm-ig">
+  <div class="tbm-pdp__wrap">
+    <div class="tbm-ig__head">
+      {%- if s.eyebrow != blank -%}<p class="tbm-ig__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="tbm-ig__title">{{ s.title }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<p class="tbm-ig__text">{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+
+    {%- if shown == 0 -%}
+      <p class="tbm-ig__empty">No ingredients for this product yet. Pick them in Products → this product → Metafields → Ingredient 1–6.</p>
+    {%- endif -%}
+
+    <ul class="tbm-ig__grid" role="list" data-tbm-ig data-count="{{ shown }}" data-source="{% if mf_count > 0 %}metafields{% else %}blocks{% endif %}" style="--n: {{ shown }};">
+      {%- assign n = 0 -%}
+      {%- if mf_count > 0 -%}
+        {%- for i in (1..6) -%}
+          {%- liquid
+            assign key = 'ingredient_' | append: i
+            assign ref = product.metafields.custom[key].value
+          -%}
+          {%- if ref != blank and ref.name.value != blank -%}
+            {%- liquid
+              assign ig_name = ref.name.value
+              assign ig_tag = ref.tag.value
+              assign ig_benefit = ref.benefit.value
+              assign ig_goods = ref.good_for.value | split: ','
+              assign ig_img = ref.image.value
+              assign ig_art = ref.illustration.value | default: 'leaf' | downcase | strip
+              assign ig_tint = ref.colour.value | default: '#c8f169'
+            -%}
+            {%- render 'tbm-ingredient-card', name: ig_name, tag: ig_tag, benefit: ig_benefit, goods: ig_goods, image: ig_img, art: ig_art, tint: ig_tint, i: n, hint: s.flip_hint, attrs: '' -%}
+            {%- assign n = n | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign ok = true
+          if b.products != blank
+            assign ok = false
+            for p in b.products
+              if p.id == product.id
+                assign ok = true
+              endif
+            endfor
+          endif
+        -%}
+        {%- if ok -%}
+          {%- assign goods = b.good_for | split: ',' -%}
+          {%- capture attrs -%}{{ block.shopify_attributes }}{%- endcapture -%}
+          {%- render 'tbm-ingredient-card', name: b.name, tag: b.tag, benefit: b.benefit, goods: goods, image: b.image, art: b.art, tint: b.tint, i: n, hint: s.flip_hint, attrs: attrs -%}
+          {%- assign n = n | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- endif -%}
+    </ul>
+
+    {%- if s.note != blank -%}<p class="tbm-ig__note">{{ s.note | escape }}</p>{%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "TBM · Ingredients",
+  "tag": "div",
+  "class": "tbm-ig-section",
+  "max_blocks": 40,
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Ingredient spotlight" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "What's in your <em>cup</em>" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Real botanicals, nothing hidden. Tap a card to see what each one does." },
+    { "type": "text", "id": "flip_hint", "label": "Flip hint (screen readers)", "default": "tap to see what it does" },
+    { "type": "paragraph", "content": "Ingredients come from each product's metafields Ingredient 1–6 (Content → Metaobjects → Ingredient). The blocks below are only used for products with none set." },
+    { "type": "range", "id": "cols_desktop", "label": "Max cards per row: desktop", "min": 3, "max": 6, "step": 1, "default": 6 },
+    { "type": "text", "id": "note", "label": "Small print", "default": "Traditional uses shown. Not intended to diagnose, treat or cure any condition." },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient (fallback)",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Ginger" },
+        { "type": "text", "id": "tag", "label": "Tag", "default": "Warming" },
+        {
+          "type": "select", "id": "art", "label": "Illustration", "default": "leaf",
+          "options": [
+            { "value": "flower", "label": "Flower" }, { "value": "chamomile", "label": "Chamomile" },
+            { "value": "ginger", "label": "Ginger" }, { "value": "cinnamon", "label": "Cinnamon" },
+            { "value": "fennel", "label": "Fennel" }, { "value": "root", "label": "Root" },
+            { "value": "leaf", "label": "Leaf" }, { "value": "mint", "label": "Mint" },
+            { "value": "citrus", "label": "Citrus" }, { "value": "berry", "label": "Berry" },
+            { "value": "seed", "label": "Seeds" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Own image", "info": "Replaces the illustration. A cut-out PNG looks best." },
+        { "type": "textarea", "id": "benefit", "label": "What it does", "default": "Traditionally used to support comfortable digestion." },
+        { "type": "text", "id": "good_for", "label": "Good for", "default": "Digestion,Warmth", "info": "Comma-separated chips on the back." },
+        { "type": "color", "id": "tint", "label": "Colour", "default": "#c8f169" },
+        { "type": "product_list", "id": "products", "label": "Show on these products", "limit": 50, "info": "Leave empty to show on every product." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "TBM · Ingredients" }]
+}
+{% endschema %}

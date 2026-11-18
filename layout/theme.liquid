@@ -31,7 +31,7 @@
   {% render 'meta-tags' %}
 
   {{ content_for_header }}
-  {%- if request.page_type == 'policy' -%}{{ 'sf-policy.css' | asset_url | stylesheet_tag }}{%- endif -%}
+  {%- if request.page_type == 'policy' -%}{{ 'tbm-policy.css' | asset_url | stylesheet_tag }}{%- endif -%}
 
   {% render 'styles-scripts' %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -57,8 +57,8 @@
     {% sections 'footer-group' %}
   </div>
 
-  {{ 'sf-cart.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'sf-cart.js' | asset_url }}" defer></script>
+  {{ 'tbm-cart.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'tbm-cart.js' | asset_url }}" defer></script>
   {% liquid
     render 'offcanvas-cart'
     render 'offcanvas-search'

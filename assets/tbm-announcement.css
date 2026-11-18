@@ -1,0 +1,129 @@
+/* ==========================================================================
+   TBM Announcement bar (sections/tbm-announcement.liquid)
+   ========================================================================== */
+.tbm-ann-section { position: relative; z-index: 31; }
+
+.tbm-ann {
+  --tbm-ann-h: 36px;
+  display: block; position: relative;
+  background-color: var(--tbm-ann-bg, #1f7a35);
+  color: var(--tbm-ann-text, #fff);
+  font: 500 12.5px/1.2 var(--tbm-font-body, "Poppins", system-ui, sans-serif);
+  letter-spacing: .2px;
+}
+@media (min-width: 990px) { .tbm-ann { --tbm-ann-h: 40px; font-size: 13.5px; } }
+
+/* faint tea leaves */
+.tbm-ann--pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.11' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M14 30c0-9 6-15 15-15 0 9-6 15-15 15zM14 30l9-9'/%3E%3Cpath d='M78 14c6-1 11 3 12 9-6 1-11-3-12-9zM78 14l8 6'/%3E%3Ccircle cx='52' cy='8' r='1.6'/%3E%3Ccircle cx='104' cy='33' r='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 40px;
+}
+
+/* scalloped tea-bag edge hanging under the bar */
+.tbm-ann--scallop::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 6px;
+  background: radial-gradient(circle at 7px 0, var(--tbm-ann-bg, #1f7a35) 6px, transparent 6.5px) 0 0 / 14px 6px repeat-x;
+  pointer-events: none;
+}
+
+.tbm-ann__inner {
+  display: flex; align-items: center; gap: 8px;
+  max-width: 1320px; margin: 0 auto; padding: 0 12px;
+  height: var(--tbm-ann-h);
+}
+.tbm-ann__viewport { position: relative; flex: 1; min-width: 0; height: 100%; overflow: hidden; }
+
+/* ---------- message ---------- */
+.tbm-ann__item {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  height: var(--tbm-ann-h); white-space: nowrap;
+}
+.tbm-ann__ico {
+  flex: none; display: grid; place-items: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--tbm-ann-ico, #c8f169); color: var(--tbm-ink, #1c1c1c);
+  border: 1.5px solid var(--tbm-ink, #1c1c1c);
+  box-shadow: 1.5px 1.5px 0 var(--tbm-ink, #1c1c1c);
+}
+.tbm-ann__ico .tbm-icon { width: 13px; height: 13px; stroke-width: 2.2; }
+.tbm-ann__text { color: inherit; text-decoration: none; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+a.tbm-ann__text:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tbm-ann__text strong, .tbm-ann__text b { font-weight: 700; color: var(--tbm-ann-ico, #c8f169); }
+
+/* code sticker: tap to copy */
+.tbm-ann__code {
+  position: relative; flex: none; cursor: pointer;
+  display: inline-grid; place-items: center;
+  padding: 3px 9px 2px; border-radius: 7px;
+  background: var(--tbm-ann-chip, #ffd23f); color: var(--tbm-ink, #1c1c1c);
+  border: 1.5px dashed var(--tbm-ink, #1c1c1c);
+  box-shadow: 2px 2px 0 var(--tbm-ink, #1c1c1c);
+  font: 700 11.5px/1.2 var(--tbm-font-head, "Fredoka", system-ui, sans-serif); letter-spacing: .8px;
+  transform: rotate(-3deg);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.tbm-ann__code:hover { transform: rotate(0) translateY(-1px); }
+.tbm-ann__code:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--tbm-ink, #1c1c1c); }
+.tbm-ann__code > span { grid-area: 1 / 1; transition: opacity .2s ease, transform .2s ease; }
+.tbm-ann__code-done { opacity: 0; transform: scale(.6); }
+.tbm-ann__code.is-copied { background: var(--tbm-ann-ico, #c8f169); border-style: solid; }
+.tbm-ann__code.is-copied .tbm-ann__code-txt { opacity: 0; transform: scale(.6); }
+.tbm-ann__code.is-copied .tbm-ann__code-done { opacity: 1; transform: none; }
+
+.tbm-ann__link {
+  display: none; flex: none; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 99px;
+  background: rgba(255, 255, 255, .14); color: inherit; text-decoration: none;
+  font-weight: 600; font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  transition: background .2s ease;
+}
+.tbm-ann__link:hover { background: rgba(255, 255, 255, .26); }
+@media (min-width: 750px) { .tbm-ann__link { display: inline-flex; } }
+
+/* ---------- arrows ---------- */
+.tbm-ann__nav {
+  display: none; flex: none; place-items: center;
+  width: 24px; height: 24px; padding: 0; border-radius: 50%; cursor: pointer;
+  background: transparent; color: inherit; border: 1.5px solid rgba(255, 255, 255, .45);
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.tbm-ann__nav:hover { background: var(--tbm-ann-ico, #c8f169); color: var(--tbm-ink, #1c1c1c); border-color: var(--tbm-ink, #1c1c1c); }
+@media (min-width: 990px) { .tbm-ann__nav { display: grid; } }
+
+/* ---------- rotate: one at a time, rises in with a little bounce ---------- */
+.tbm-ann--rotate .tbm-ann__item {
+  position: absolute; inset: 0;
+  opacity: 0; transform: translateY(110%);
+  transition: transform .55s cubic-bezier(.34, 1.45, .5, 1), opacity .35s ease;
+  pointer-events: none;
+}
+.tbm-ann--rotate .tbm-ann__item.is-in { opacity: 1; transform: none; pointer-events: auto; }
+.tbm-ann--rotate .tbm-ann__item.is-out { opacity: 0; transform: translateY(-110%); transition: transform .4s ease, opacity .3s ease; }
+.tbm-ann--rotate .tbm-ann__item.is-in .tbm-ann__ico { animation: tbm-ann-pop .6s .15s cubic-bezier(.34, 1.6, .5, 1) both; }
+@keyframes tbm-ann-pop { 0% { transform: scale(.4) rotate(-30deg); } 100% { transform: none; } }
+
+/* ---------- marquee: scrolling ticker ---------- */
+.tbm-ann--marquee .tbm-ann__track {
+  display: flex; width: max-content; height: 100%;
+  animation: tbm-ann-marq var(--tbm-ann-dur, 30s) linear infinite;
+}
+.tbm-ann--marquee:hover .tbm-ann__track,
+.tbm-ann--marquee:focus-within .tbm-ann__track { animation-play-state: paused; }
+.tbm-ann--marquee .tbm-ann__item { padding-right: 34px; position: relative; }
+.tbm-ann--marquee .tbm-ann__item::after {
+  content: ""; position: absolute; right: 13px; top: 50%; width: 8px; height: 8px; margin-top: -4px;
+  background: var(--tbm-ann-ico, #c8f169); border-radius: 0 60% 0 60%; transform: rotate(45deg);
+}
+.tbm-ann--marquee .tbm-ann__viewport {
+  -webkit-mask: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+          mask: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+@keyframes tbm-ann-marq { to { transform: translateX(-50%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tbm-ann--marquee .tbm-ann__track { animation: none; }
+  .tbm-ann--marquee .tbm-ann__viewport { overflow-x: auto; }
+  .tbm-ann--rotate .tbm-ann__item, .tbm-ann__code, .tbm-ann__code > span { transition: none !important; }
+  .tbm-ann--rotate .tbm-ann__item.is-in .tbm-ann__ico { animation: none; }
+}

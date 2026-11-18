@@ -1,0 +1,74 @@
+{%- comment -%}
+  One testimonial card for tbm-testimonials.
+  Params: b (block), s (section settings), i (index), tones (array of auto colours)
+{%- endcomment -%}
+{%- liquid
+  assign bs = b.settings
+  assign tone = bs.tone
+  if tone == 'auto' or tone == blank
+    assign ti = i | modulo: tones.size
+    assign tone = tones[ti]
+  endif
+  assign words = bs.name | strip | split: ' '
+  assign initials = ''
+  for w in words limit: 2
+    assign ch = w | slice: 0, 1 | upcase
+    assign initials = initials | append: ch
+  endfor
+  assign tag_label = bs.product_label
+  if tag_label == blank and bs.product != blank
+    assign tag_label = bs.product.title
+  endif
+  assign show_tag = false
+  if s.show_product and tag_label != blank
+    assign show_tag = true
+  endif
+  assign show_ver = false
+  if s.show_verified and bs.verified and s.verified_label != blank
+    assign show_ver = true
+  endif
+  assign tilt = i | modulo: 3
+-%}
+<figure class="tbm-tst__card tbm-tst__card--t{{ tilt }}" style="--tbm-tst-tone: {{ tone }};" {{ b.shopify_attributes }}>
+  {%- if s.show_stars or show_ver -%}
+    <div class="tbm-tst__top">
+      {%- if s.show_stars -%}
+        <span class="tbm-tst__rate" role="img" aria-label="{{ bs.rating }} out of 5 stars">
+          {%- for n in (1..5) -%}<i class="{% if n <= bs.rating %}is-on{% endif %}" aria-hidden="true">★</i>{%- endfor -%}
+        </span>
+      {%- endif -%}
+      {%- if show_ver -%}
+        <span class="tbm-tst__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.4l3 3 6-6.4"/></svg>{{ s.verified_label | escape }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if bs.quote != blank -%}
+    <blockquote class="tbm-tst__quote{% if s.show_quote_mark %} tbm-tst__quote--mark{% endif %}">
+      <p>{{ bs.quote | escape | newline_to_br }}</p>
+    </blockquote>
+  {%- endif -%}
+
+  <figcaption class="tbm-tst__who">
+    {%- if s.show_avatar -%}
+      <span class="tbm-tst__ava" aria-hidden="true">
+        {%- if bs.photo != blank -%}
+          {{ bs.photo | image_url: width: 120 | image_tag: loading: 'lazy', width: 48, height: 48, alt: '' }}
+        {%- else -%}
+          <span>{{ initials | default: '★' }}</span>
+        {%- endif -%}
+      </span>
+    {%- endif -%}
+    <span class="tbm-tst__id">
+      {%- if bs.name != blank -%}<span class="tbm-tst__name">{{ bs.name | escape }}</span>{%- endif -%}
+      {%- if s.show_location and bs.location != blank -%}<span class="tbm-tst__loc">{{ bs.location | escape }}</span>{%- endif -%}
+    </span>
+    {%- if show_tag -%}
+      {%- if bs.product != blank -%}
+        <a class="tbm-tst__tag" href="{{ bs.product.url }}">{{ tag_label | escape }}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8M8.5 4.5L12 8l-3.5 3.5"/></svg></a>
+      {%- else -%}
+        <span class="tbm-tst__tag">{{ tag_label | escape }}</span>
+      {%- endif -%}
+    {%- endif -%}
+  </figcaption>
+</figure>

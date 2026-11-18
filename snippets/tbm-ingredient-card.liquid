@@ -1,0 +1,34 @@
+{%- comment -%}
+  One flip card for TBM · Ingredients.
+  Params: name, tag, benefit (text), goods (array), image (image or blank),
+          art (illustration name), tint (colour), i (index), hint, attrs (block attributes)
+{%- endcomment -%}
+<li class="tbm-ig__item" style="--tint: {{ tint | default: '#c8f169' }}; --i: {{ i }};" {{ attrs }}>
+  <button type="button" class="tbm-ig__card" aria-pressed="false" aria-label="{{ name | escape }}: {{ hint | escape }}" data-tbm-ig-card>
+    <span class="tbm-ig__inner">
+      <span class="tbm-ig__face tbm-ig__front">
+        <span class="tbm-ig__art">
+          {%- if image != blank -%}
+            {{ image | image_url: width: 300 | image_tag: alt: '', loading: 'lazy' }}
+          {%- else -%}
+            {%- render 'tbm-brew-art', name: art -%}
+          {%- endif -%}
+        </span>
+        <span class="tbm-ig__name">{{ name | escape }}</span>
+        {%- if tag != blank -%}<span class="tbm-ig__tag">{{ tag | escape }}</span>{%- endif -%}
+        <span class="tbm-ig__flip" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5"/><path d="M20 4v4.5h-4.5"/></svg>
+        </span>
+      </span>
+      <span class="tbm-ig__face tbm-ig__back">
+        <span class="tbm-ig__bname">{{ name | escape }}</span>
+        {%- if benefit != blank -%}<span class="tbm-ig__benefit">{{ benefit | strip_html | escape | newline_to_br }}</span>{%- endif -%}
+        {%- if goods.size > 0 -%}
+          <span class="tbm-ig__goods">
+            {%- for g in goods -%}{%- assign gg = g | strip -%}{%- if gg != blank -%}<span>{{ gg | escape }}</span>{%- endif -%}{%- endfor -%}
+          </span>
+        {%- endif -%}
+      </span>
+    </span>
+  </button>
+</li>

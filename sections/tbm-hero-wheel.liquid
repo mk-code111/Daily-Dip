@@ -1,0 +1,245 @@
+{%- comment -%}
+  tbm-hero-wheel — DailyDip "tea wheel" hero.
+  Desktop: photo/video cards ride a slowly turning arc around a spinning LET'S DIP hub.
+  Phone: the same cards on a curved 3D strip that drifts forever and can be swiped.
+  Up to 10 card blocks; repeats are added automatically so the loop is always seamless.
+  Styles: assets/tbm-hero-wheel.css · Script: assets/tbm-hero-wheel.js
+{%- endcomment -%}
+{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'tbm-hero-wheel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tbm-hero-wheel.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign n = section.blocks.size
+  assign use_starter = false
+  if n == 0
+    assign n = 6
+    assign use_starter = true
+  endif
+  comment
+    Slots on the wheel: a whole multiple of the card count (so the order never breaks)
+    that keeps the spacing close to one card width.
+  endcomment
+  assign per = 18 | divided_by: n
+  if per < 1
+    assign per = 1
+  endif
+  assign slots = n | times: per
+  assign step = 360.0 | divided_by: slots
+  assign dur = s.seconds | times: slots
+  assign socials = 'instagram,youtube,facebook,tiktok,whatsapp' | split: ','
+-%}
+<style>
+  #shopify-section-{{ section.id }} {
+    --tbm-hw-top: {{ s.c_top }};
+    --tbm-hw-bottom: {{ s.c_bottom }};
+    --tbm-hw-t1: {{ s.c_title_1 }};
+    --tbm-hw-t2: {{ s.c_title_2 }};
+    --tbm-hw-band: {{ s.c_band }};
+    --tbm-hw-edge: {{ s.c_edge }};
+    --tbm-hw-dur: {{ dur }}s;
+    --tbm-hw-cw: {{ s.card_w }};
+    --tbm-hw-pt: {{ s.pt | times: 0.75 | round }}px;
+  }
+  @media (min-width: 990px) { #shopify-section-{{ section.id }} { --tbm-hw-pt: {{ s.pt }}px; } }
+</style>
+
+<section
+  class="tbm-pdp tbm-hw{% if s.direction == 'ccw' %} tbm-hw--ccw{% endif %}{% if s.pause_hover %} tbm-hw--hoverpause{% endif %}{% unless s.show_hub %} tbm-hw--nohub{% endunless %}{% if s.m_layout == 'strip' %} tbm-hw--mstrip{% endif %} tbm-hw--edge-{{ s.edge | default: 'scallop' }}"
+  aria-label="{{ s.title_1 | strip_html | default: shop.name | escape }}"
+>
+  {%- if s.leaves -%}
+    <div class="tbm-hw__leaves" aria-hidden="true">
+      {%- for k in (1..6) -%}
+        <svg class="tbm-hw__leaf tbm-hw__leaf--{{ k }}" viewBox="0 0 40 40"><path d="M6 34C6 16 18 6 36 4c0 18-10 30-30 30z"/><path d="M6 34L26 14" fill="none"/></svg>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="tbm-pdp__wrap tbm-hw__head">
+    {%- if s.eyebrow != blank -%}<p class="tbm-hw__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+    {%- if s.title_1 != blank or s.title_2 != blank -%}
+      {%- if s.heading_tag == 'h1' -%}<h1 class="tbm-hw__title">{%- else -%}<h2 class="tbm-hw__title">{%- endif -%}
+        {%- if s.title_1 != blank -%}<span class="tbm-hw__t1">{{ s.title_1 }}</span>{%- endif -%}
+        {%- if s.title_2 != blank -%}<span class="tbm-hw__t2">{{ s.title_2 }}</span>{%- endif -%}
+      {%- if s.heading_tag == 'h1' -%}</h1>{%- else -%}</h2>{%- endif -%}
+    {%- endif -%}
+    {%- if s.text != blank -%}<p class="tbm-hw__text">{{ s.text | escape }}</p>{%- endif -%}
+
+    {%- capture soc -%}
+      {%- if s.show_social -%}
+        {%- for name in socials -%}
+          {%- assign key = 'url_' | append: name -%}
+          {%- assign tkey = 'social_' | append: name -%}
+          {%- assign url = s[key] | default: settings[tkey] -%}
+          {%- if url != blank and url != '#' -%}
+            <li><a class="tbm-hw__soc" href="{{ url }}" target="_blank" rel="noopener" aria-label="{{ name | capitalize }}">{% render 'tbm-social-icon', name: name %}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- if soc != blank or s.btn1_label != blank or s.btn2_label != blank -%}
+      <div class="tbm-hw__actions">
+        {%- if soc != blank -%}<ul class="tbm-hw__socials" role="list">{{ soc }}</ul>{%- endif -%}
+        {%- if s.btn1_label != blank -%}
+          <a class="tbm-hw__btn tbm-hw__btn--main" href="{{ s.btn1_url | default: routes.all_products_collection_url }}">{{ s.btn1_label | escape }}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        {%- endif -%}
+        {%- if s.btn2_label != blank -%}
+          <a class="tbm-hw__btn tbm-hw__btn--alt" href="{{ s.btn2_url | default: '/pages/about' }}">{{ s.btn2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Desktop wheel {%- endcomment -%}
+  <div class="tbm-hw__stage" data-tbm-hw-stage data-slots="{{ slots }}" data-count="{{ n }}">
+    <div class="tbm-hw__wheel">
+      {%- for k in (1..slots) -%}
+        {%- assign idx = forloop.index0 | modulo: n -%}
+        {%- assign ang = forloop.index0 | times: step -%}
+        {%- if use_starter -%}{%- assign blk = nil -%}{%- else -%}{%- assign blk = section.blocks[idx] -%}{%- endif -%}
+        <div class="tbm-hw__slot" style="--a: {{ ang }}deg;"{% if forloop.index0 >= n %} aria-hidden="true"{% endif %} data-i="{{ idx }}">
+          {%- render 'tbm-hw-card', b: blk, i: idx, editable: false -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if s.show_hub -%}
+      <div class="tbm-hw__hub" aria-hidden="true">
+        {%- if s.steam -%}
+          <svg class="tbm-hw__steam" viewBox="0 0 120 90"><path d="M30 86c-12-14 12-22 0-38s10-24 0-40"/><path d="M60 86c-12-14 12-22 0-38s10-24 0-40"/><path d="M90 86c-12-14 12-22 0-38s10-24 0-40"/></svg>
+        {%- endif -%}
+        <div class="tbm-hw__badge">
+          <svg class="tbm-hw__ring" viewBox="0 0 150 150"><defs><path id="tbmHwC-{{ section.id }}" d="M75 75 m-52 0 a52 52 0 1 1 104 0 a52 52 0 1 1 -104 0"/></defs><text><textPath href="#tbmHwC-{{ section.id }}">{{ s.hub_text | escape }} · {{ s.hub_text | escape }} ·</textPath></text></svg>
+          <span class="tbm-hw__core">
+            {%- if s.hub_image != blank -%}
+              {{ s.hub_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '', class: 'tbm-hw__core-img' }}
+            {%- else -%}
+              <svg viewBox="0 0 24 24"><path d="M4 10h13v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c-1 1.2 1 2 0 3.2M12 3c-1 1.2 1 2 0 3.2"/></svg>
+            {%- endif -%}
+          </span>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Phone strip {%- endcomment -%}
+  <div class="tbm-hw__strip" data-tbm-hw-strip data-speed="{{ s.m_speed }}" role="region" aria-label="Photos">
+    <div class="tbm-hw__track">
+      {%- for k in (1..n) -%}
+        {%- assign idx = forloop.index0 -%}
+        {%- if use_starter -%}{%- assign blk = nil -%}{%- else -%}{%- assign blk = section.blocks[idx] -%}{%- endif -%}
+        <div class="tbm-hw__cell">{%- render 'tbm-hw-card', b: blk, i: idx, editable: true -%}</div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if s.band -%}
+    <svg class="tbm-hw__band" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40C180 8 360 8 540 30s360 44 540 22 270-40 360-30V90H0z"/></svg>
+  {%- endif -%}
+  {%- case s.edge -%}
+    {%- when 'curve' -%}
+      <svg class="tbm-hw__edge tbm-hw__edge--curve" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0Q720 80 1440 0V48H0z"/></svg>
+    {%- when 'wave' -%}
+      <svg class="tbm-hw__edge tbm-hw__edge--wave" viewBox="0 0 1440 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 14C120 2 240 2 360 14s240 12 360 0 240-12 360 0 240 12 360 0V28H0z"/></svg>
+    {%- when 'slant' -%}
+      <svg class="tbm-hw__edge tbm-hw__edge--slant" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L1440 40H0z"/></svg>
+    {%- when 'scallop' -%}
+      <div class="tbm-hw__edge tbm-hw__edge--scallop" aria-hidden="true"></div>
+    {%- when 'ink' -%}
+      <div class="tbm-hw__edge tbm-hw__edge--ink" aria-hidden="true"></div>
+  {%- endcase -%}
+</section>
+
+{% schema %}
+{
+  "name": "TBM · Hero wheel",
+  "tag": "div",
+  "class": "tbm-hw-section",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Daily rituals · small sips" },
+    { "type": "inline_richtext", "id": "title_1", "label": "Title line 1 (green)", "default": "Real herbs. Real rituals." },
+    { "type": "inline_richtext", "id": "title_2", "label": "Title line 2 (dark)", "default": "Steeped for the everyday you." },
+    { "type": "select", "id": "heading_tag", "label": "Heading level", "default": "h1",
+      "options": [ { "value": "h1", "label": "H1 (use when this is the first section)" }, { "value": "h2", "label": "H2" } ] },
+    { "type": "text", "id": "text", "label": "Short text", "info": "Optional line under the title." },
+
+    { "type": "header", "content": "Social icons" },
+    { "type": "checkbox", "id": "show_social", "label": "Show social icons", "default": true },
+    { "type": "paragraph", "content": "Leave a link empty to use the one in Theme settings → Social. Icons with no link anywhere are hidden." },
+    { "type": "url", "id": "url_instagram", "label": "Instagram" },
+    { "type": "url", "id": "url_youtube", "label": "YouTube" },
+    { "type": "url", "id": "url_facebook", "label": "Facebook" },
+    { "type": "url", "id": "url_tiktok", "label": "TikTok" },
+    { "type": "url", "id": "url_whatsapp", "label": "WhatsApp" },
+
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "btn1_label", "label": "Main button", "default": "Shop our blends", "info": "Leave empty to hide." },
+    { "type": "url", "id": "btn1_url", "label": "Main button link" },
+    { "type": "text", "id": "btn2_label", "label": "Second button", "default": "Our story", "info": "Leave empty to hide." },
+    { "type": "url", "id": "btn2_url", "label": "Second button link" },
+
+    { "type": "header", "content": "Wheel (desktop)" },
+    { "type": "range", "id": "seconds", "label": "Speed (seconds per card)", "min": 1, "max": 8, "step": 0.5, "unit": "s", "default": 3, "info": "Higher is slower." },
+    { "type": "select", "id": "direction", "label": "Direction", "default": "cw",
+      "options": [ { "value": "cw", "label": "Clockwise" }, { "value": "ccw", "label": "Anticlockwise" } ] },
+    { "type": "checkbox", "id": "pause_hover", "label": "Pause on hover", "default": true },
+    { "type": "range", "id": "card_w", "label": "Card size", "min": 80, "max": 120, "step": 5, "unit": "%", "default": 100 },
+    { "type": "checkbox", "id": "show_hub", "label": "Show spinning hub badge", "default": true },
+    { "type": "text", "id": "hub_text", "label": "Hub text", "default": "LET'S DIP" },
+    { "type": "image_picker", "id": "hub_image", "label": "Hub centre image", "info": "Optional, e.g. a pouch or logo mark. Shows a tea cup when empty." },
+    { "type": "checkbox", "id": "steam", "label": "Steam above the hub", "default": true },
+
+    { "type": "header", "content": "Phone" },
+    { "type": "select", "id": "m_layout", "label": "Phone layout", "default": "wheel",
+      "options": [ { "value": "wheel", "label": "Wheel (same as desktop)" }, { "value": "strip", "label": "Curved swipe strip" } ] },
+    { "type": "range", "id": "m_speed", "label": "Strip speed", "min": 10, "max": 60, "step": 5, "unit": "px", "default": 30, "info": "Pixels per second. Visitors can also swipe." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_top", "label": "Background top", "default": "#fbf8ef" },
+    { "type": "color", "id": "c_bottom", "label": "Background bottom", "default": "#e9f7d0" },
+    { "type": "color", "id": "c_title_1", "label": "Title line 1", "default": "#1f7a35" },
+    { "type": "color", "id": "c_title_2", "label": "Title line 2", "default": "#1c1c1c" },
+    { "type": "checkbox", "id": "leaves", "label": "Floating leaves", "default": true },
+    { "type": "checkbox", "id": "band", "label": "Green wave at the bottom", "default": true },
+    { "type": "color", "id": "c_band", "label": "Wave colour", "default": "#1f7a35" },
+    { "type": "select", "id": "edge", "label": "Bottom edge", "default": "scallop",
+      "options": [
+        { "value": "scallop", "label": "Scallop (matches the top bar)" },
+        { "value": "curve", "label": "Curve" },
+        { "value": "wave", "label": "Wave" },
+        { "value": "slant", "label": "Slant" },
+        { "value": "ink", "label": "Ink line" },
+        { "value": "straight", "label": "Straight (normal)" }
+      ],
+      "info": "How the banner finishes into the next section." },
+    { "type": "color", "id": "c_edge", "label": "Bottom edge colour", "default": "#ffffff", "info": "Match the background of the section below." },
+    { "type": "range", "id": "pt", "label": "Top spacing", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48, "info": "Raise it if the floating header covers the top of the banner." }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait works best (3:4). Set a focal point to choose what stays in view." },
+        { "type": "video", "id": "video", "label": "Video (optional)", "info": "Short, muted, loops. Shown instead of the image." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TBM · Hero wheel",
+      "blocks": [
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" },
+        { "type": "card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

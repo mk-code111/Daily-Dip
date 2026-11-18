@@ -1,0 +1,149 @@
+{%- comment -%}
+  tbm-pdp-brew — "How to brew" for the product page.
+  Steps as round illustrated bubbles joined by a dashed steam trail, quick-fact chips
+  (water, temperature, time) and a tap-to-start steeping timer: a cup that fills while
+  it counts down, then says it's ready.
+  Per-product timer: product metafield custom.steep_minutes (number) overrides the setting.
+  Styles: assets/tbm-pdp-extras.css · Script: assets/tbm-pdp-extras.js
+{%- endcomment -%}
+{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'tbm-pdp-extras.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tbm-pdp-extras.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign minutes = s.timer_minutes
+  if product.metafields.custom.steep_minutes != blank
+    assign minutes = product.metafields.custom.steep_minutes.value | default: product.metafields.custom.steep_minutes
+  endif
+  assign seconds = minutes | times: 60
+-%}
+<style>
+  #shopify-section-{{ section.id }} { --tbm-br-bg: {{ s.c_bg }}; --tbm-br-pt: {{ s.pt }}px; --tbm-br-pb: {{ s.pb }}px; }
+</style>
+
+<section class="tbm-pdp tbm-br">
+  <div class="tbm-pdp__wrap">
+    <div class="tbm-br__head">
+      {%- if s.eyebrow != blank -%}<p class="tbm-br__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="tbm-br__title">{{ s.title }}</h2>{%- endif -%}
+      {%- if s.chip_1 != blank or s.chip_2 != blank or s.chip_3 != blank -%}
+        <ul class="tbm-br__facts" role="list">
+          {%- if s.chip_1 != blank -%}<li><span aria-hidden="true">💧</span>{{ s.chip_1 | escape }}</li>{%- endif -%}
+          {%- if s.chip_2 != blank -%}<li><span aria-hidden="true">🌡️</span>{{ s.chip_2 | escape }}</li>{%- endif -%}
+          {%- if s.chip_3 != blank -%}<li><span aria-hidden="true">⏱️</span>{{ s.chip_3 | escape }}</li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="tbm-br__body{% unless s.show_timer %} tbm-br__body--notimer{% endunless %}">
+      <ol class="tbm-br__steps" role="list" data-tbm-reveal-group>
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <li class="tbm-br__step" style="--tint: {{ b.tint }}; --i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+            <span class="tbm-br__bubble" aria-hidden="true">
+              <span class="tbm-br__num">{{ forloop.index }}</span>
+              {%- if b.image != blank -%}
+                {{ b.image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy', class: 'tbm-br__img' }}
+              {%- else -%}
+                {%- render 'tbm-brew-art', name: b.art -%}
+              {%- endif -%}
+            </span>
+            <span class="tbm-br__stitle">{{ b.title | escape }}</span>
+            {%- if b.text != blank -%}<span class="tbm-br__stext">{{ b.text | escape }}</span>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+
+      {%- if s.show_timer -%}
+        <div class="tbm-br__timer" data-tbm-steep="{{ seconds }}">
+          <div class="tbm-br__cup" aria-hidden="true">
+            <svg viewBox="0 0 160 140">
+              <g class="tbm-br__steam"><path d="M58 30c-6-8 6-13 0-22"/><path d="M80 26c-6-8 6-13 0-22"/><path d="M102 30c-6-8 6-13 0-22"/></g>
+              <defs><clipPath id="TbmBrCup-{{ section.id }}"><path d="M34 44h92v34a40 40 0 0 1-40 40h-12a40 40 0 0 1-40-40z"/></clipPath></defs>
+              <g clip-path="url(#TbmBrCup-{{ section.id }})">
+                <rect class="tbm-br__liquid" x="30" y="44" width="100" height="80" data-tbm-steep-fill/>
+              </g>
+              <path class="tbm-br__mug" d="M34 44h92v34a40 40 0 0 1-40 40h-12a40 40 0 0 1-40-40z"/>
+              <path class="tbm-br__handle" d="M126 56h8a16 16 0 0 1 0 32h-10"/>
+              <path class="tbm-br__string" d="M88 44c4 12 12 16 18 28"/>
+              <rect class="tbm-br__tag" x="96" y="70" width="22" height="18" rx="3"/>
+              <ellipse class="tbm-br__saucer" cx="80" cy="126" rx="62" ry="8"/>
+            </svg>
+          </div>
+          <p class="tbm-br__ttitle">{{ s.timer_title | escape }}</p>
+          <p class="tbm-br__clock" data-tbm-steep-clock aria-live="polite">{{ minutes }}:00</p>
+          <button type="button" class="tbm-br__start" data-tbm-steep-btn
+            data-label-start="{{ s.timer_start | escape }}" data-label-pause="{{ s.timer_pause | escape }}" data-label-again="{{ s.timer_again | escape }}">
+            {{ s.timer_start | escape }}
+          </button>
+          <p class="tbm-br__done" data-tbm-steep-done hidden>{{ s.timer_done | escape }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TBM · How to brew",
+  "tag": "div",
+  "class": "tbm-br-section",
+  "max_blocks": 6,
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Brew guide" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "How to <em>dip</em> it right" },
+    { "type": "text", "id": "chip_1", "label": "Fact 1 (water)", "default": "200 ml water" },
+    { "type": "text", "id": "chip_2", "label": "Fact 2 (temperature)", "default": "90–95°C, just off the boil" },
+    { "type": "text", "id": "chip_3", "label": "Fact 3 (time)", "default": "Steep 3–5 min" },
+    { "type": "header", "content": "Steeping timer" },
+    { "type": "checkbox", "id": "show_timer", "label": "Show timer", "default": true },
+    { "type": "range", "id": "timer_minutes", "label": "Steep time", "min": 1, "max": 10, "step": 1, "unit": "min", "default": 4, "info": "A product metafield custom.steep_minutes (number) overrides this for that product." },
+    { "type": "text", "id": "timer_title", "label": "Timer title", "default": "Steep with us" },
+    { "type": "text", "id": "timer_start", "label": "Start button", "default": "Start steeping" },
+    { "type": "text", "id": "timer_pause", "label": "Pause button", "default": "Pause" },
+    { "type": "text", "id": "timer_again", "label": "Restart button", "default": "Brew another" },
+    { "type": "text", "id": "timer_done", "label": "Done message", "default": "Ready! Remove the bag and sip slowly ☕" },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#fbf8ef" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "select", "id": "art", "label": "Illustration", "default": "kettle",
+          "options": [
+            { "value": "kettle", "label": "Kettle (boil)" },
+            { "value": "bag", "label": "Tea bag (dip)" },
+            { "value": "timer", "label": "Timer (steep)" },
+            { "value": "cup", "label": "Cup (sip)" },
+            { "value": "honey", "label": "Honey / lemon (add)" },
+            { "value": "repeat", "label": "Calendar (repeat)" },
+            { "value": "ice", "label": "Ice (iced tea)" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Own image", "info": "Replaces the illustration." },
+        { "type": "text", "id": "title", "label": "Title", "default": "Boil water" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Heat 200 ml of fresh water." },
+        { "type": "color", "id": "tint", "label": "Bubble colour", "default": "#c8f169" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "TBM · How to brew",
+      "blocks": [
+        { "type": "step", "settings": { "art": "kettle", "title": "Boil water", "text": "Heat 200 ml fresh water, then let it rest a moment.", "tint": "#bfe6ff" } },
+        { "type": "step", "settings": { "art": "bag", "title": "Dip the bag", "text": "Drop in one Dailydip bag.", "tint": "#c8f169" } },
+        { "type": "step", "settings": { "art": "timer", "title": "Steep 3–5 min", "text": "Longer steep, bolder taste.", "tint": "#ffd23f" } },
+        { "type": "step", "settings": { "art": "cup", "title": "Sip & repeat", "text": "Enjoy daily for best results.", "tint": "#ffc2b8" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

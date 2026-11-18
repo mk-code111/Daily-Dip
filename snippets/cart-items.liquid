@@ -27,8 +27,8 @@
                   {{ line_item.product.title }}
                 </a>
               </h3>
-              {%- if line_item.properties['_sf_gift'] != blank -%}
-                <span class="sf-gift-tag">🎁 Free gift</span>
+              {%- if line_item.properties['_tbm_gift'] != blank -%}
+                <span class="tbm-gift-tag">🎁 Free gift</span>
               {%- endif -%}
               {% unless line_item.product.has_only_default_variant %}
                 <p class="cart-item-variant-title d-block opacity-70 mb-1 small">
@@ -72,18 +72,18 @@
                     {% endfor %}
                   </select>
                   {%- comment -%} SF: pack buttons that drive the theme's select above {%- endcomment -%}
-                  <div class="sf-vpills" role="radiogroup" aria-label="{{ 'product.select_variant' | t }}">
+                  <div class="tbm-vpills" role="radiogroup" aria-label="{{ 'product.select_variant' | t }}">
                     {%- for variant in line_item.product.variants -%}
                       <button
                         type="button"
-                        class="sf-vpill"
+                        class="tbm-vpill"
                         role="radio"
-                        data-sf-vpick="{{ variant.id }}"
+                        data-tbm-vpick="{{ variant.id }}"
                         aria-checked="{% if line_item.variant.id == variant.id %}true{% else %}false{% endif %}"
                         {%- unless variant.available %} disabled{% endunless %}
                       >
-                        <span class="sf-vpill__name">{{ variant.title }}</span>
-                        <span class="sf-vpill__price">
+                        <span class="tbm-vpill__name">{{ variant.title }}</span>
+                        <span class="tbm-vpill__price">
                           {%- if variant.available -%}{{ variant.price | money_without_trailing_zeros }}{%- else -%}{{ 'product.sold_out' | t }}{%- endif -%}
                         </span>
                       </button>

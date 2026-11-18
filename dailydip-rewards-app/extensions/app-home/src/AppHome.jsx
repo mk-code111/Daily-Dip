@@ -5,7 +5,7 @@
  *   1. creates / updates / switches off the matching Shopify automatic discounts
  *      (free shipping, % off or ₹ off the order, with a minimum cart value or quantity), and
  *   2. saves the tiers to the shop metafield `dailydip.rewards` (JSON),
- *      which the theme's cart reward bar reads (snippets/sf-cart-rewards.liquid).
+ *      which the theme's cart reward bar reads (snippets/tbm-cart-rewards.liquid).
  * So the cart bar and checkout always show the same offers.
  *
  * Free-gift tiers are shown in the cart bar, but their discount is not created
