@@ -78,7 +78,7 @@
         "ship": {
           "type": "ship",
           "settings": {
-            "text": "🚚 Free shipping + 3% prepaid bonus"
+            "text": "🚚 Free shipping above ₹499 + 3% prepaid bonus"
           }
         },
         "trust": {

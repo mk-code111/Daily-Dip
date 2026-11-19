@@ -6,9 +6,7 @@
   moment passing the top is highlighted. Feature blocks form the strip underneath.
   All motion is CSS (assets/tbm-moments.css) and stops under prefers-reduced-motion.
 {%- endcomment -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
 {{ 'tbm-moments.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'tbm-pdp.js' | asset_url }}" defer></script>
 
 {%- if section.settings.load_fonts -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -36,7 +36,6 @@
   endif
 -%}
 {%- if shown > 0 or request.design_mode -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
 {{ 'tbm-pdp-extras.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'tbm-pdp-extras.js' | asset_url }}" defer></script>
 <style>

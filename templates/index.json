@@ -555,7 +555,7 @@
           "settings": {
             "icon": "truck",
             "title": "Free Shipping",
-            "description": "<p>Have a treat with free shipping for all orders over $100. Ready to shop?!</p>",
+            "description": "<p>Enjoy free shipping on every order above ₹499.</p>",
             "tint": "#ffd23f",
             "badge": "",
             "link": "",

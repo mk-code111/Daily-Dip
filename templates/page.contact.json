@@ -79,9 +79,9 @@
           "settings": {
             "icon": "phone",
             "title": "Call us",
-            "value": "+91 8369487891",
+            "value": "+91 8921399136",
             "note": "Mon\u2013Sat, 10am\u20137pm",
-            "link": "tel:+918369487891",
+            "link": "tel:+918921399136",
             "tint": "#c8f169"
           }
         },
@@ -92,7 +92,7 @@
             "title": "WhatsApp",
             "value": "Chat with us",
             "note": "Fastest reply",
-            "link": "https://wa.me/918369487891",
+            "link": "https://wa.me/918921399136",
             "new_tab": true,
             "tint": "#bff0c9"
           }
@@ -102,7 +102,9 @@
           "settings": {
             "icon": "mail",
             "title": "Email",
-            "value": "Drop us a line",
+            "value": "dailydip@gmail.com",
+            "note": "Drop us a line anytime",
+            "link": "mailto:dailydip@gmail.com",
             "tint": "#ffd23f"
           }
         },
@@ -111,7 +113,7 @@
           "settings": {
             "icon": "pin",
             "title": "Visit us",
-            "value": "WeWork Enam Sambhav, BKC, Mumbai 400051",
+            "value": "Dailydip Organics Pvt Ltd.\nFirst mile, Attappallam P.O\nKumily, Idukki\nKerala - 685509",
             "tint": "#ffc2b8"
           }
         }

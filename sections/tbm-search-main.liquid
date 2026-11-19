@@ -5,12 +5,8 @@
   and "Load more" reuse the collection grid (tbm-collection.js). No results → an
   empty-tin message, the chips and a row of picks.
 {%- endcomment -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
-{{ 'tbm-cards.css' | asset_url | stylesheet_tag }}
 {{ 'tbm-collection.css' | asset_url | stylesheet_tag }}
 {{ 'tbm-pages.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'tbm-pdp.js' | asset_url }}" defer></script>
-<script src="{{ 'tbm-cards.js' | asset_url }}" defer></script>
 <script src="{{ 'tbm-collection.js' | asset_url }}" defer></script>
 <script src="{{ 'tbm-pages.js' | asset_url }}" defer></script>
 

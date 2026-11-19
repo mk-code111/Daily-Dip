@@ -73,6 +73,8 @@
 {% comment %} 
   Scripts 
 {% endcomment %}
+{%- comment -%} Needed by the theme's core scripts below (they decrypt themselves); deferred so it no longer blocks the page. {%- endcomment -%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" defer></script>
 <script src="{{ 'base.js' | asset_url }}" defer></script>
 <script src="{{ 'sections.js' | asset_url }}" defer></script>
 <script src="{{ 'cart.js' | asset_url }}" defer></script>
@@ -87,3 +89,10 @@
 {% endcomment %}
 <link href="{{ 'custom.css' | asset_url }}" rel="stylesheet">
 <script src="{{ 'custom.js' | asset_url }}" defer></script>
+
+{%- comment -%} TBM shared styles + scripts: loaded once here instead of by every section {%- endcomment -%}
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
+{{ 'tbm-cards.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tbm-pdp.js' | asset_url }}" defer></script>
+<script src="{{ 'tbm-cards.js' | asset_url }}" defer></script>

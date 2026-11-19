@@ -24,7 +24,7 @@
           "type": "trust",
           "settings": {
             "icon": "truck",
-            "text": "Free shipping",
+            "text": "Free shipping above ₹499",
             "tint": "#ffd23f"
           }
         },

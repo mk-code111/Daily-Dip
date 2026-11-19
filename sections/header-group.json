@@ -8,14 +8,14 @@
         "slide_j46kwk": {
           "type": "slide",
           "settings": {
-            "announcement": "Free Shipping On All Orders"
+            "announcement": "Free shipping on orders above ₹499"
           }
         },
         "slide_mwF4Tk": {
           "type": "slide",
           "disabled": true,
           "settings": {
-            "announcement": "Free Shipping For All Orders Over $100"
+            "announcement": "Free shipping on orders above ₹499"
           }
         }
       },
@@ -124,7 +124,7 @@
         "msg_1": {
           "type": "message",
           "settings": {
-            "text": "Free Shipping On All Orders",
+            "text": "Free shipping on orders above ₹499",
             "icon": "truck",
             "code": "",
             "link": "",

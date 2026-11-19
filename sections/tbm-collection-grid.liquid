@@ -5,11 +5,7 @@
   Filters open in a drawer and apply instantly (Section Rendering API, no reload).
   Styles: assets/tbm-collection.css + tbm-cards.css · Script: assets/tbm-collection.js
 {%- endcomment -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
-{{ 'tbm-cards.css' | asset_url | stylesheet_tag }}
 {{ 'tbm-collection.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'tbm-pdp.js' | asset_url }}" defer></script>
-<script src="{{ 'tbm-cards.js' | asset_url }}" defer></script>
 <script src="{{ 'tbm-collection.js' | asset_url }}" defer></script>
 
 {%- liquid

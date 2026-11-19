@@ -4,10 +4,6 @@
   Products: "Products" list if set, otherwise the chosen collection, otherwise "all".
   Benefit blocks are shown on every card.
 {%- endcomment -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
-{{ 'tbm-cards.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'tbm-pdp.js' | asset_url }}" defer></script>
-<script src="{{ 'tbm-cards.js' | asset_url }}" defer></script>
 
 {%- if section.settings.load_fonts -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">

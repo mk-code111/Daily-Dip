@@ -3,10 +3,6 @@
   card (snippets/tbm-product-card) in the shared carousel (<tbm-carousel>), same as
   TBM · Product cards. Loads lazily via the Section Rendering API (recommendations).
 {%- endcomment -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
-{{ 'tbm-cards.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'tbm-pdp.js' | asset_url }}" defer></script>
-<script src="{{ 'tbm-cards.js' | asset_url }}" defer></script>
 
 <style>
   #shopify-section-{{ section.id }} .tbm-pcs {

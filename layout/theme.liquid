@@ -34,7 +34,6 @@
   {%- if request.page_type == 'policy' -%}{{ 'tbm-policy.css' | asset_url | stylesheet_tag }}{%- endif -%}
 
   {% render 'styles-scripts' %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 
 <body class="{{ request.page_type | prepend: 'page-type-' }}">
@@ -85,11 +84,9 @@
     Enter a valid license to access this theme.
 </div>
 <div id="theme-content" style="display: none;">
-    <h1>Welcome to the Jhango Theme!</h1>
-    <p>This content will be hidden if the license is invalid.</p>
+    <div>Welcome to the Jhango Theme!</div>
 </div>
 
-  {{ 'custom-script.js' | asset_url | script_tag }}
 </body>
 </html>
     

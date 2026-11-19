@@ -5,7 +5,6 @@
   pills to hop between collections.
   Styles: assets/tbm-collection.css · Script: assets/tbm-collection.js
 {%- endcomment -%}
-{{ 'tbm-pdp.css' | asset_url | stylesheet_tag }}
 {{ 'tbm-collection.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'tbm-collection.js' | asset_url }}" defer></script>
 
@@ -146,7 +145,7 @@
     { "type": "checkbox", "id": "show_count", "label": "Product count sticker", "default": true },
     { "type": "text", "id": "count_one", "label": "Count label (one)", "default": "blend" },
     { "type": "text", "id": "count_many", "label": "Count label (many)", "default": "blends" },
-    { "type": "text", "id": "chip_1", "label": "Extra chip 1", "default": "Free delivery over ₹399" },
+    { "type": "text", "id": "chip_1", "label": "Extra chip 1", "default": "Free delivery above ₹499" },
     {
       "type": "select", "id": "chip_1_icon", "label": "Chip 1 icon", "default": "truck",
       "options": [
